@@ -53,7 +53,7 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
                         <Border Background="{TemplateBinding Background}" CornerRadius="15"
-                                BorderThickness="1" BorderBrush="#8a7fc7">
+                                BorderThickness="1" BorderBrush="{StaticResource darkerColor}">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                         </Border>
                     </ControlTemplate>
@@ -62,7 +62,7 @@
         </Style>
 
         <Style x:Key="titleText" TargetType="TextBlock">
-            <Setter Property="Foreground" Value="#594e7f"/>
+            <Setter Property="Foreground" Value="{StaticResource darkerColor}"/>
             <Setter Property="FontSize" Value="18"/>
             <Setter Property="FontWeight" Value="Bold"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
@@ -583,10 +583,10 @@
             </Setter>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#5a5080"/>
+                    <Setter Property="Background" Value="{StaticResource selectedColor}"/>
                 </Trigger>
                 <Trigger Property="IsFocused" Value="True">
-                    <Setter Property="Background" Value="#5a5080"/>
+                    <Setter Property="Background" Value="{StaticResource selectedColor}"/>
                 </Trigger>
             </Style.Triggers>
         </Style>
@@ -601,7 +601,7 @@
 
 
         <Style x:Key="calendarButtonBig" TargetType="Button" BasedOn="{StaticResource calendarButton}">
-            <Setter Property="Foreground" Value="#5a5080" />
+            <Setter Property="Foreground" Value="{StaticResource selectedColor}" />
         </Style>
 
 
@@ -628,8 +628,8 @@
 
 
         <Style x:Key="calendarTextBox" TargetType="TextBox">
-            <Setter Property="Background" Value="#FF7163BA" />
-            <Setter Property="Foreground" Value="#5a5080" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="{StaticResource selectedColor}" />
             <Setter Property="FontSize" Value="14" />
             <Setter Property="Grid.Column" Value="1" />
             <Setter Property="Margin" Value="10 0 0 0" />
@@ -1530,7 +1530,7 @@
             <Setter Property="Grid.Column" Value="1" />
             <Setter Property="Panel.ZIndex" Value="1" />
             <Setter Property="Margin" Value="10 0 0 0" />
-            <Setter Property="Foreground" Value="#7163ba" />
+            <Setter Property="Foreground" Value="{StaticResource darkerColor}" />
         </Style>
 
 
@@ -1538,7 +1538,7 @@
             <Setter Property="FontSize" Value="14" />
             <Setter Property="Grid.Column" Value="1" />
             <Setter Property="Margin" Value="10 0 0 0" />
-            <Setter Property="Foreground" Value="#7163ba" />
+            <Setter Property="Foreground" Value="{StaticResource darkerColor}" />
             <Setter Property="BorderBrush" Value="Transparent" />
             <Setter Property="BorderThickness" Value="0" />
         </Style>
@@ -1549,7 +1549,7 @@
             <Setter Property="FontFamily" Value="arial"/>
             <Setter Property="Margin" Value="0 20 0 0" />
             <Setter Property="Width" Value="200" />
-            <Setter Property="Background" Value="#7163ba" />
+            <Setter Property="Background" Value="{StaticResource lighterColor}" />
             <Setter Property="Foreground" Value="#FDFEFE" />
             <Setter Property="FocusVisualStyle" Value="{x:Null}" />
             <Setter Property="Template">
@@ -1563,11 +1563,11 @@
             </Setter>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#339685" />
+                    <Setter Property="Background" Value="{StaticResource darkerColor}" />
                     <Setter Property="Foreground" Value="{StaticResource lightFontColor}" />
                 </Trigger>
                 <Trigger Property="IsMouseCaptured" Value="True">
-                    <Setter Property="Background" Value="#2d7a6c" />
+                    <Setter Property="Background" Value="{StaticResource darkerColor}" />
                     <Setter Property="Foreground" Value="{StaticResource lightFontColor}" />
                 </Trigger>
             </Style.Triggers>

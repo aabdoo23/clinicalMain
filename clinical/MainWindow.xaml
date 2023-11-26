@@ -24,6 +24,7 @@
             </Border.Background>
 
             <Grid>
+                
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="130"/>
                     <ColumnDefinition/>
