@@ -11,7 +11,7 @@
         <SolidColorBrush x:Key="lighterColor" Color="#FF4D4D4D"/>
         <SolidColorBrush x:Key="selectedColor" Color="#FF3F3F3E"/>
         <SolidColorBrush x:Key="lightFontColor" Color="#FFD6D6D6"/>
-
+        
 
         <Style x:Key="menuButton" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
@@ -491,7 +491,7 @@
 
 
         <!--#region Check Box Style-->
-        <SolidColorBrush x:Key="OptionMark.Static.Background" Color="{StaticResource lightFontColor}FF"/>
+        <SolidColorBrush x:Key="OptionMark.Static.Background" Color="#FFD6D6D6"/>
         <SolidColorBrush x:Key="OptionMark.Static.Border" Color="#FF707070"/>
         <SolidColorBrush x:Key="OptionMark.Static.Glyph" Color="#FF212121"/>
         <SolidColorBrush x:Key="OptionMark.MouseOver.Background" Color="#FFF3F9FF"/>
@@ -788,7 +788,7 @@
                                     <VisualState x:Name="Selected">
                                         <Storyboard>
                                             <DoubleAnimation Duration="0" Storyboard.TargetName="SelectedBackground" Storyboard.TargetProperty="Opacity" To=".9"/>
-                                            <ColorAnimation Duration="0" Storyboard.TargetName="NormalText" Storyboard.TargetProperty="(TextElement.Foreground).(SolidColorBrush.Color)" To="{StaticResource lightFontColor}"/>
+                                            <ColorAnimation Duration="0" Storyboard.TargetName="NormalText" Storyboard.TargetProperty="(TextElement.Foreground).(SolidColorBrush.Color)" To="#FFD6D6D6"/>
                                         </Storyboard>
                                     </VisualState>
                                 </VisualStateGroup>
@@ -838,7 +838,7 @@
                                     <VisualState x:Name="Today">
                                         <Storyboard>
                                             <DoubleAnimation Duration="0" Storyboard.TargetName="TodayBackground" Storyboard.TargetProperty="Opacity" To="1"/>
-                                            <ColorAnimation Duration="0" Storyboard.TargetName="NormalText" Storyboard.TargetProperty="(TextElement.Foreground).(SolidColorBrush.Color)" To="{StaticResource lightFontColor}FF"/>
+                                            <ColorAnimation Duration="0" Storyboard.TargetName="NormalText" Storyboard.TargetProperty="(TextElement.Foreground).(SolidColorBrush.Color)" To="#FFD6D6D6"/>
                                         </Storyboard>
                                     </VisualState>
                                 </VisualStateGroup>
@@ -904,7 +904,7 @@
         </LinearGradientBrush>
         <SolidColorBrush x:Key="ComboBox.Static.Border1" Color="#FFACACAC"/>
         <SolidColorBrush x:Key="ComboBox.Static.Glyph1" Color="#FF606060"/>
-        <SolidColorBrush x:Key="ComboBox.Static.Editable.Background1" Color="{StaticResource lightFontColor}FF"/>
+        <SolidColorBrush x:Key="ComboBox.Static.Editable.Background1" Color="#FFD6D6D6"/>
         <SolidColorBrush x:Key="ComboBox.Static.Editable.Border1" Color="#FFABADB3"/>
         <SolidColorBrush x:Key="ComboBox.Static.Editable.Button.Background1" Color="Transparent"/>
         <SolidColorBrush x:Key="ComboBox.Static.Editable.Button.Border1" Color="Transparent"/>
@@ -914,7 +914,7 @@
         </LinearGradientBrush>
         <SolidColorBrush x:Key="ComboBox.MouseOver.Border1" Color="#FF7EB4EA"/>
         <SolidColorBrush x:Key="ComboBox.MouseOver.Glyph1" Color="#FF000000"/>
-        <SolidColorBrush x:Key="ComboBox.MouseOver.Editable.Background1" Color="{StaticResource lightFontColor}FF"/>
+        <SolidColorBrush x:Key="ComboBox.MouseOver.Editable.Background1" Color="#FFD6D6D6"/>
         <SolidColorBrush x:Key="ComboBox.MouseOver.Editable.Border1" Color="#FF7EB4EA"/>
         <LinearGradientBrush x:Key="ComboBox.MouseOver.Editable.Button.Background1" EndPoint="0,1" StartPoint="0,0">
             <GradientStop Color="#FFEBF4FC" Offset="0.0"/>
@@ -927,7 +927,7 @@
         </LinearGradientBrush>
         <SolidColorBrush x:Key="ComboBox.Pressed.Border1" Color="#FF569DE5"/>
         <SolidColorBrush x:Key="ComboBox.Pressed.Glyph1" Color="#FF000000"/>
-        <SolidColorBrush x:Key="ComboBox.Pressed.Editable.Background1" Color="{StaticResource lightFontColor}FF"/>
+        <SolidColorBrush x:Key="ComboBox.Pressed.Editable.Background1" Color="#FFD6D6D6"/>
         <SolidColorBrush x:Key="ComboBox.Pressed.Editable.Border1" Color="#FF569DE5"/>
         <LinearGradientBrush x:Key="ComboBox.Pressed.Editable.Button.Background1" EndPoint="0,1" StartPoint="0,0">
             <GradientStop Color="#FFDAEBFC" Offset="0.0"/>
@@ -937,7 +937,7 @@
         <SolidColorBrush x:Key="ComboBox.Disabled.Background1" Color="#FFF0F0F0"/>
         <SolidColorBrush x:Key="ComboBox.Disabled.Border1" Color="#FFD9D9D9"/>
         <SolidColorBrush x:Key="ComboBox.Disabled.Glyph1" Color="#FFBFBFBF"/>
-        <SolidColorBrush x:Key="ComboBox.Disabled.Editable.Background1" Color="{StaticResource lightFontColor}FF"/>
+        <SolidColorBrush x:Key="ComboBox.Disabled.Editable.Background1" Color="#FFD6D6D6"/>
         <SolidColorBrush x:Key="ComboBox.Disabled.Editable.Border1" Color="#FFBFBFBF"/>
         <SolidColorBrush x:Key="ComboBox.Disabled.Editable.Button.Background1" Color="Transparent"/>
         <SolidColorBrush x:Key="ComboBox.Disabled.Editable.Button.Border1" Color="Transparent"/>
