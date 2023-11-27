@@ -1,5 +1,4 @@
-﻿using clinical.userControls;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,21 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace clinical
+namespace clinical.Pages
 {
     /// <summary>
-    /// Interaction logic for patientView.xaml
+    /// Interaction logic for DashBoardPage.xaml
     /// </summary>
-    public partial class patientView : Window
+    public partial class DashBoardPage : Page
     {
-        public patientView()
+        public DashBoardPage()
         {
             InitializeComponent();
-        }
-
-        private void medicalRecordObject_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            
         }
     }
 }

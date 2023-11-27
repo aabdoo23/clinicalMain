@@ -5,10 +5,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:clinical.userControls"
              xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
-
+                Name="previousVisit"
              mc:Ignorable="d" 
              d:DesignHeight="60" d:DesignWidth="310">
-    <Border Background="{StaticResource darkerColor}" CornerRadius="10" BorderThickness="1" BorderBrush="{StaticResource lightFontColor}">
+    <Border Background="{StaticResource selectedColor}" CornerRadius="10" BorderThickness="1" BorderBrush="{StaticResource lightFontColor}">
 
         <Grid Margin="5">
             <Grid.RowDefinitions>
@@ -21,8 +21,8 @@
                 
             </Grid.ColumnDefinitions>
 
-            <TextBlock Name="dateTxt" Text="Monday, 6/10/2020" Foreground="{StaticResource lightFontColor}" Margin="3" Grid.Row="0" Grid.Column="0"/>
-            <TextBlock Name="cheifComplaintTxt" Text="Ankle injury" Foreground="{StaticResource lightFontColor}" Margin="10 2" Grid.Row="1" Grid.Column="0"/>
+            <TextBlock Name="dateTxt" Text="{Binding Path=VisitDate,ElementName=previousVisit}" Foreground="{StaticResource lightFontColor}" Margin="3" Grid.Row="0" Grid.Column="0"/>
+            <TextBlock Name="cheifComplaintTxt" Text="{Binding Path=VisitReason,ElementName=previousVisit}" Foreground="{StaticResource lightFontColor}" Margin="10 2" Grid.Row="1" Grid.Column="0"/>
             <Icon:PackIconMaterial Grid.RowSpan="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Width="25" Height="25" Kind="Eye" Foreground="{StaticResource lightFontColor}"/>
 
         </Grid>

@@ -8,7 +8,7 @@
              Name="medicalRecord"
              mc:Ignorable="d" 
              d:DesignHeight="60" d:DesignWidth="310">
-    <Border Background="{StaticResource darkerColor}" CornerRadius="10" BorderThickness="1" BorderBrush="{StaticResource lightFontColor}">
+    <Border Background="{StaticResource selectedColor}" CornerRadius="10" BorderThickness="1" BorderBrush="{StaticResource lightFontColor}">
 
         <Grid Margin="5">
             <Grid.RowDefinitions>
@@ -21,8 +21,8 @@
 
             </Grid.ColumnDefinitions>
 
-            <TextBlock Text="{Binding Path=RecordType,ElementName=medicalRecord}" Foreground="{StaticResource lightFontColor}" Margin="10 3" Grid.Row="0" Grid.Column="0"/>
-            <TextBlock Text="{Binding Path=RecordDate,ElementName=medicalRecord}" Foreground="{StaticResource lightFontColor}" Margin="10 2" Grid.Row="1" Grid.Column="0"/>
+            <TextBlock Text="{Binding Path=RecordType,ElementName=medicalRecord}" Foreground="{StaticResource lightFontColor}" FontSize="16" FontWeight="Bold"  Margin="10 3" Grid.Row="0" Grid.Column="0"/>
+            <TextBlock Text="{Binding Path=RecordDate,ElementName=medicalRecord}" Foreground="{StaticResource lightFontColor}" FontSize="14" Margin="10 2" Grid.Row="1" Grid.Column="0"/>
             <Icon:PackIconMaterial Grid.RowSpan="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Width="25" Height="25" Kind="Eye" Foreground="{StaticResource lightFontColor}"/>
 
         </Grid>

@@ -24,5 +24,22 @@ namespace clinical.userControls
         {
             InitializeComponent();
         }
+        public string VisitReason
+        {
+            get { return (string)GetValue(VisitReasonProperty); }
+            set { SetValue(VisitReasonProperty, value); }
+        }
+
+        public static DependencyProperty VisitReasonProperty = DependencyProperty.Register("VisitReason", typeof(string), typeof(previousVisitObject));
+
+
+        public string VisitDate
+        {
+            get { return (string)GetValue(VisitDateProperty); }
+            set { SetValue(VisitDateProperty, value); }
+        }
+
+        public static readonly DependencyProperty VisitDateProperty = DependencyProperty.Register("VisitDate", typeof(string), typeof(previousVisitObject));
+
     }
 }

@@ -60,25 +60,39 @@
 
 
                 <Border Background="{StaticResource darkerColor}" CornerRadius="10" Margin="10 0 10 10">
-                    <Border Background="{StaticResource lighterColor}" CornerRadius="10" Margin="10" Grid.RowSpan="1">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="20*"/>
-                                <RowDefinition Height="20*"/>
-                                <RowDefinition Height="20*"/>
-                                <RowDefinition Height="20*"/>
-                                
-                            </Grid.RowDefinitions>
+                    
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="90*"/>
+                            <ColumnDefinition Width="15*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="15*"/>
+                            <RowDefinition Height="80*"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="User Info" FontSize="25" FontWeight="Bold" VerticalAlignment="Center" Foreground="{StaticResource lightFontColor}" Margin="20 10" Grid.Column="0"/>
+                        <Icon:PackIconMaterial Kind="ClipboardEdit" Foreground="{StaticResource lightFontColor}" Grid.Column="1" VerticalAlignment="Center" Width="25" Height="25" Margin="1,0,0,0"/>
 
-                            <TextBlock Name="patientNameText" Text="3alolo" FontWeight="Bold" Grid.Row="0" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Center" Margin="10" FontSize="30"/>
-                            <TextBlock Name="visitIdText" Text="1232" Grid.Row="1" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Center" Margin="10" FontSize="27"/>
-                            <TextBlock Name="visitDate" Text="Monday, 6/10/2020" Grid.Row="2" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Center" Margin="10" FontSize="27"/>
-                            <TextBlock x:Name="physicianName" Text="Dr. Yasser Batawy" Grid.Row="3" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Center" Margin="10" FontSize="27"/>
-                            <!--<TextBlock Text="Monday, 6/10/2020" Grid.Row="4" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Center" Margin="10" FontSize="30"/>
+                        <Border Grid.Row="1" Grid.ColumnSpan="2" Background="{StaticResource lighterColor}" CornerRadius="10" Margin="10" Grid.RowSpan="1">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="20*"/>
+                                    <RowDefinition Height="20*"/>
+                                    <RowDefinition Height="20*"/>
+                                    <RowDefinition Height="20*"/>
+
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Name="patientNameText" Text="3alolo" FontWeight="Bold" Grid.Row="0" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Center" Margin="10" FontSize="30"/>
+                                <TextBlock Name="visitIdText" Text="1232" Grid.Row="1" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Center" Margin="10" FontSize="27"/>
+                                <TextBlock Name="visitDate" Text="Monday, 6/10/2020" Grid.Row="2" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Center" Margin="10" FontSize="27"/>
+                                <TextBlock x:Name="physicianName" Text="Dr. Yasser Batawy" Grid.Row="3" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Center" Margin="10" FontSize="27"/>
+                                <!--<TextBlock Text="Monday, 6/10/2020" Grid.Row="4" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Center" Margin="10" FontSize="30"/>
                             <TextBlock Text="Monday, 6/10/2020" Grid.Row="5" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Center" Margin="10" FontSize="30"/>-->
 
-                        </Grid>
-                    </Border>
+                            </Grid>
+                        </Border>
+                    </Grid>
                 </Border>
                 <!--transaction info-->
                 <Border Style="{StaticResource theBorder}" Grid.Row="1">
