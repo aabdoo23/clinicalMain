@@ -10,9 +10,8 @@
 		 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
 		 xmlns:fa="http://schemas.fontawesome.io/icons/" mc:Ignorable="av" Height="768" Width="1360">
     
-    <Border Background="#cfd5e5" CornerRadius="40" BorderThickness="2" BorderBrush="#ebedf3"
-            Padding="20">
-        <Border CornerRadius="40">
+    <Border Background="{StaticResource lightFontColor}" CornerRadius="30" Padding="10">
+        <Border CornerRadius="20">
             <Border.Background>
                 <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
                     <GradientStop Color="#fefefe" Offset="0"/>

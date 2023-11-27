@@ -1549,13 +1549,13 @@
             <Setter Property="FontFamily" Value="arial"/>
             <Setter Property="Margin" Value="0 20 0 0" />
             <Setter Property="Width" Value="200" />
-            <Setter Property="Background" Value="{StaticResource lighterColor}" />
-            <Setter Property="Foreground" Value="#FDFEFE" />
+            <Setter Property="Background" Value="{StaticResource darkerColor}" />
+            <Setter Property="Foreground" Value="{StaticResource lightFontColor}" />
             <Setter Property="FocusVisualStyle" Value="{x:Null}" />
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">
-                        <Border Background="{TemplateBinding Background}" CornerRadius="25" BorderBrush="#49B7A3" Padding="15" BorderThickness="1">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="10" BorderBrush="{StaticResource lighterColor}" Padding="15" BorderThickness="1">
                             <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                         </Border>
                     </ControlTemplate>

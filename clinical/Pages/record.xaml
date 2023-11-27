@@ -22,8 +22,8 @@
                 <RowDefinition Height="88*"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="127*"/>
-                <ColumnDefinition Width="213*"/>
+                <ColumnDefinition Width="35*"/>
+                <ColumnDefinition Width="65*"/>
             </Grid.ColumnDefinitions>
 
             <!-- Top bar -->
@@ -51,40 +51,23 @@
 
             <!-- Side Panel -->
             <Grid Grid.Column="0" Margin="0,92,0,0" Grid.RowSpan="2">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="100*"/>
-                </Grid.RowDefinitions>
+
                 <Border Style="{StaticResource theBorder}" Grid.Row="0" Grid.RowSpan="2" >
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="8*"/>
-                            <RowDefinition Height="80*"/>
-                        </Grid.RowDefinitions>
-                        <Grid Grid.Row="0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="90*"/>
-                                <ColumnDefinition Width="15*"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Text="Record Gallery" FontSize="25" FontWeight="Bold" VerticalAlignment="Center" Foreground="{StaticResource lightFontColor}" Margin="20,0,91,0" Grid.Column="0"/>
-                            <Icon:PackIconMaterial Kind="ClipboardEdit" Foreground="{StaticResource lightFontColor}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Width="25" Height="25"/>
-                        </Grid>
-                        <Border Background="{StaticResource darkerColor}" CornerRadius="10" Margin="10,10,10,0" Grid.RowSpan="2">
-                            <Border Background="{StaticResource lighterColor}" CornerRadius="10" Margin="10,10,10,10">
+                            <Border Background="{StaticResource lighterColor}" CornerRadius="10" Margin="20">
                                 <ScrollViewer>
                                     <StackPanel Orientation="Vertical">
                                         <Border Style="{StaticResource theBorder}" Margin="10">
                                             <Image Source="@\..\..\images\hand.jpg" Margin="10" />
                                         </Border>
                                         <Border Style="{StaticResource theBorder}" Margin="10">
-                                            <Image Source="@\..\..\images\openHand.jpg" Margin="0,0,10,0" />
+                                            <Image Source="@\..\..\images\openHand.jpg" Margin="10" />
                                         </Border>
                                         
                                     </StackPanel>
                                 </ScrollViewer>
                             </Border>
                         </Border>
-                    </Grid>
-                </Border>
+                   
             </Grid>
 
             <!-- Main Section -->
