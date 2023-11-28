@@ -72,6 +72,16 @@ namespace clinical
             }
         }
 
-        
+        private void PackIconMaterial_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            Window.GetWindow(this).Close();
+
+        }
+
+        private void PackIconMaterial_MouseDown_1(object sender, MouseButtonEventArgs e)
+        {
+            Window.GetWindow(this).WindowState = WindowState.Minimized;
+
+        }
     }
 }

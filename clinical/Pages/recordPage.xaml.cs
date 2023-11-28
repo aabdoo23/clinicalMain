@@ -16,13 +16,18 @@ using System.Windows.Shapes;
 namespace clinical.Pages
 {
     /// <summary>
-    /// Interaction logic for record.xaml
+    /// Interaction logic for recordPage.xaml
     /// </summary>
-    public partial class record : Page
+    public partial class recordPage : Page
     {
-        public record()
+        public recordPage()
         {
             InitializeComponent();
+        }
+
+        private void goBackPage(object sender, MouseButtonEventArgs e)
+        {
+            NavigationService.GoBack();
         }
     }
 }

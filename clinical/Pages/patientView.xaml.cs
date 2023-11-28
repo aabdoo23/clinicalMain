@@ -1,4 +1,6 @@
-﻿using clinical.userControls;
+﻿using clinical.BaseClasses;
+using clinical.Pages;
+using clinical.userControls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,14 +23,34 @@ namespace clinical
     /// </summary>
     public partial class patientView : Window
     {
-        public patientView()
+        Patient selectedPatient;
+        public patientView(Patient patient)
         {
             InitializeComponent();
+            selectedPatient= patient;
+            mainFrame.Navigate(new patientViewMainPage(selectedPatient));
+
+
         }
 
-        private void medicalRecordObject_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            
+        private void PackIconMaterial_MouseDown(object sender, MouseButtonEventArgs e){
+            Window.GetWindow(this).Close();
+
         }
+
+        private void PackIconMaterial_MouseDown_1(object sender, MouseButtonEventArgs e)
+        {
+            Window.GetWindow(this).WindowState = WindowState.Minimized;
+
+        }
+
+        private void Border_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Left)
+            {
+                this.DragMove();
+            }
+        }
+
     }
 }

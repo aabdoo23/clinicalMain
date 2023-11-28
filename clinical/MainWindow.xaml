@@ -8,69 +8,83 @@
         xmlns:av="http://schemas.microsoft.com/expression/blend/2008" 
 		 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
 		 xmlns:fa="http://schemas.fontawesome.io/icons/" mc:Ignorable="av" x:Class="clinical.MainWindow"
-        Height="760" Width="1280" Background="Transparent" ResizeMode="NoResize"
+        Height="760" Width="1280" Background="Transparent" ResizeMode="CanResizeWithGrip"
         AllowsTransparency="True" WindowStyle="None" WindowStartupLocation="CenterScreen">
-    
+
     <Border Background="{StaticResource lightFontColor}" CornerRadius="20" BorderThickness="2" BorderBrush="#ebedf3"
-            Padding="15" MouseDown="Border_MouseDown">
-        <Border CornerRadius="20" Background="#FEFEFE" Margin="0 10 0 0">
-            <Grid>
+            Padding="10" MouseDown="Border_MouseDown">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="6*"/>
+                <RowDefinition Height="90*"/>
                 
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="130"/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
+            </Grid.RowDefinitions>
 
-				<!--Main Section-->
-                
+            <Icon:PackIconMaterial Kind="Close" MouseDown="PackIconMaterial_MouseDown" HorizontalAlignment="Right" Height="30" Width="30" Margin="0,1,12,0" Foreground="{StaticResource darkerColor}"/>
+            <Icon:PackIconMaterial Kind="WindowMinimize" MouseDown="PackIconMaterial_MouseDown_1" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="30" Width="30" Margin="0,0,55,4" Foreground="{StaticResource darkerColor}"/>
 
-                <Frame Grid.Column="1" x:Name="mainFrame" NavigationUIVisibility="Hidden"/>
+            <Border CornerRadius="20" Background="#FEFEFE" Grid.Row="1">
+                <Grid>
 
-                <!--Side panel-->
-                <Border CornerRadius="30" Background="{StaticResource lighterColor}" Margin="20,20,20,20">
-                    <Grid>
-                        <StackPanel VerticalAlignment="Top">
-
-                            <Button Style="{StaticResource topMenuButton}">
-                                <Icon:PackIconMaterial Kind="BellCheckOutline" Style="{StaticResource menuButtonIcon}"/>
-                            </Button>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="130"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
 
 
-                            <Separator Background="{StaticResource lighterColor}" Margin="20 0 20 10" Height="0.8"/>
+
+                    <!--Main Section-->
 
 
-                            <Button Style="{StaticResource menuButton}" Background="{StaticResource selectedColor}" Name="homeBTN" Click="homeBTN_Click">
-                                <Icon:PackIconMaterial Kind="HomeVariant" Style="{StaticResource menuButtonIcon}"/>
-                            </Button>
+                    <Frame Grid.Column="1" x:Name="mainFrame" NavigationUIVisibility="Hidden"/>
+
+                    <!--Side panel-->
+                    <Border CornerRadius="30" Background="{StaticResource lighterColor}" Margin="20,20,20,20">
+                        <Grid>
+                            <StackPanel VerticalAlignment="Top">
+
+                                <Button Style="{StaticResource topMenuButton}">
+                                    <Icon:PackIconMaterial Kind="BellCheckOutline" Style="{StaticResource menuButtonIcon}"/>
+                                </Button>
 
 
-                            <Button Style="{StaticResource menuButton}"  Name="patientSearchBTN" Click="patientSearchBTN_Click">
-                                <Icon:PackIconMaterial Kind="TableSearch" Style="{StaticResource menuButtonIcon}"/>
-                            </Button>
+                                <Separator Background="{StaticResource lighterColor}" Margin="20 0 20 10" Height="0.8"/>
 
 
-                            <Button Style="{StaticResource menuButton}" Name="calendarBtn" Click="calendarBtn_Click">
-                                <Icon:PackIconMaterial Kind="Calendar" Style="{StaticResource menuButtonIcon}"/>
-                            </Button>
+                                <Button Style="{StaticResource menuButton}" Name="homeBTN" Click="homeBTN_Click">
+                                    <Icon:PackIconMaterial Kind="HomeVariant" Style="{StaticResource menuButtonIcon}"/>
+                                </Button>
 
 
-                            <Button Style="{StaticResource menuButton}" Name="chatBtn" Click="chatBtn_Click" >
-                                <Icon:PackIconMaterial Kind="ChatProcessing" Style="{StaticResource menuButtonIcon}"/>
-                            </Button>
+                                <Button Style="{StaticResource menuButton}"  Name="patientSearchBTN" Click="patientSearchBTN_Click">
+                                    <Icon:PackIconMaterial Kind="TableSearch" Style="{StaticResource menuButtonIcon}"/>
+                                </Button>
 
 
-                            <Button Style="{StaticResource menuButton}">
-                                <Icon:PackIconMaterial Kind="AlarmMultiple" Style="{StaticResource menuButtonIcon}"/>
-                            </Button>
+                                <Button Style="{StaticResource menuButton}" Name="calendarBtn" Click="calendarBtn_Click">
+                                    <Icon:PackIconMaterial Kind="Calendar" Style="{StaticResource menuButtonIcon}"/>
+                                </Button>
 
-                        </StackPanel>
-                    </Grid>
 
-                </Border>
-                
-            </Grid>
-        </Border>
+                                <Button Style="{StaticResource menuButton}" Name="chatBtn" Click="chatBtn_Click" >
+                                    <Icon:PackIconMaterial Kind="ChatProcessing" Style="{StaticResource menuButtonIcon}"/>
+                                </Button>
+
+
+                                <Button Style="{StaticResource menuButton}">
+                                    <Icon:PackIconMaterial Kind="AlarmMultiple" Style="{StaticResource menuButtonIcon}"/>
+                                </Button>
+
+                            </StackPanel>
+                        </Grid>
+
+                    </Border>
+
+                </Grid>
+            </Border>
+
+        </Grid>
 
     </Border>
 </Window>

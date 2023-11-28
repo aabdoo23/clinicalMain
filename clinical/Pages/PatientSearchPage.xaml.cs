@@ -1,5 +1,7 @@
-﻿using System;
+﻿using clinical.BaseClasses;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,9 +22,29 @@ namespace clinical.Pages
     /// </summary>
     public partial class PatientSearchPage : Page
     {
+        private ObservableCollection<Patient> patients;
+
         public PatientSearchPage()
         {
             InitializeComponent();
+            patients = new ObservableCollection<Patient>
+            {
+                new Patient(1, "Ali M'alol", "123 Main St", new DateTime(1980, 1, 1), "555-1234"),
+                new Patient(2, "Mohamed Elshenawy", "456 Oak St", new DateTime(1990, 5, 15), "555-5678")
+            };
+
+            patientsDataGrid.ItemsSource = patients;
+        }
+
+        private void view_Click(object sender, RoutedEventArgs e)
+        {
+            Patient selectedPatient = (Patient)patientsDataGrid.SelectedItem;
+            if (selectedPatient != null)
+            {
+                // Open the PatientDetailsWindow and pass the selected patient
+                patientView detailsWindow = new patientView(selectedPatient);
+                detailsWindow.ShowDialog();
+            }
         }
     }
 }
