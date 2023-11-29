@@ -45,10 +45,10 @@
         <TextBlock Grid.Row="1" FontSize="32" FontWeight="SemiBold" Margin="0 20 0 0" Foreground="{StaticResource darkerColor}" HorizontalAlignment="Left" Text="Patients"/>
 
         <!--Add Button-->
-        <Button Style="{StaticResource addButton}">
+        <Button Style="{StaticResource addButton}" Click="addNewPatient">
             <StackPanel Orientation="Horizontal">
                 <Icon:PackIconMaterial Kind="Plus" VerticalAlignment="Center" Margin="0 1 8 0" Width="11" Height="11"/>
-                <TextBlock Text="Add New Member"/>
+                <TextBlock Text="Add New Patient"/>
             </StackPanel>
         </Button>
 

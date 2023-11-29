@@ -43,8 +43,14 @@ namespace clinical.Pages
             {
                 // Open the PatientDetailsWindow and pass the selected patient
                 patientView detailsWindow = new patientView(selectedPatient);
-                detailsWindow.ShowDialog();
+                detailsWindow.Show();
             }
+        }
+
+        private void addNewPatient(object sender, RoutedEventArgs e)
+        {
+            newPatientForm form = new newPatientForm(0);
+            form.Show();
         }
     }
 }

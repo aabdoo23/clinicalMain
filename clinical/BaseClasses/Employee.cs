@@ -8,12 +8,15 @@ namespace clinical.BaseClasses
 {
     class Employee
     {
-        public Employee(int employeeID, string name, DateTime dateOfBirth, string contactInfo, DateTime hireDate)
+        
+        public Employee(int employeeID, string name, DateTime dateOfBirth, string contactInfo, string role, string nationalID, DateTime hireDate)
         {
             EmployeeID = employeeID;
             Name = name;
             DateOfBirth = dateOfBirth;
             ContactInfo = contactInfo;
+            Role = role;
+            NationalID = nationalID;
             HireDate = hireDate;
         }
 
@@ -21,6 +24,8 @@ namespace clinical.BaseClasses
         public string Name { get; set; }
         public DateTime DateOfBirth { get; set; }
         public string ContactInfo { get; set; }
+        public string Role { get; set; }
+        public string NationalID { get; set; }
         public DateTime HireDate { get; set; }
     }
 }

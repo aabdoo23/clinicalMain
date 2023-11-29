@@ -15,7 +15,7 @@ namespace clinical
             InitializeComponent();
             //chatGrid.Visibility = Visibility.Hidden;
             homeBTN.Focus();
-            mainFrame.Navigate(new DashBoardPage());
+            mainFrame.Navigate(new adminDashboardPage());
         }
 
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)

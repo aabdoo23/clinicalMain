@@ -153,11 +153,11 @@
 
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="#7B5CD6" />
+                    <Setter Property="Background" Value="{StaticResource lighterColor}" />
                     <Setter Property="Foreground" Value="{StaticResource lightFontColor}" />
                 </Trigger>
                 <Trigger Property="IsPressed" Value="True">
-                    <Setter Property="Background" Value="#7B5CD6" />
+                    <Setter Property="Background" Value="{StaticResource lighterColor}" />
                     <Setter Property="Foreground" Value="{StaticResource lightFontColor}" />
                 </Trigger>
             </Style.Triggers>
@@ -1548,7 +1548,7 @@
             <Setter Property="FontSize" Value="14" />
             <Setter Property="FontFamily" Value="arial"/>
             <Setter Property="Margin" Value="0 20 0 0" />
-            <Setter Property="Width" Value="200" />
+            <Setter Property="Width" Value="150" />
             <Setter Property="Background" Value="{StaticResource darkerColor}" />
             <Setter Property="Foreground" Value="{StaticResource lightFontColor}" />
             <Setter Property="FocusVisualStyle" Value="{x:Null}" />
@@ -1563,11 +1563,11 @@
             </Setter>
             <Style.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="{StaticResource darkerColor}" />
+                    <Setter Property="Background" Value="{StaticResource lighterColor}" />
                     <Setter Property="Foreground" Value="{StaticResource lightFontColor}" />
                 </Trigger>
                 <Trigger Property="IsMouseCaptured" Value="True">
-                    <Setter Property="Background" Value="{StaticResource darkerColor}" />
+                    <Setter Property="Background" Value="{StaticResource lighterColor}" />
                     <Setter Property="Foreground" Value="{StaticResource lightFontColor}" />
                 </Trigger>
             </Style.Triggers>

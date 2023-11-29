@@ -7,15 +7,21 @@ using System.Threading.Tasks;
 namespace clinical.BaseClasses
 {
     class PhysioTherapist{
-        public PhysioTherapist(int physioTherapistID, string name, string phoneNumber)
+        public PhysioTherapist(int employeeID, string name, DateTime dateOfBirth, string contactInfo, string nationalID, DateTime hireDate)
         {
-            PhysioTherapistID = physioTherapistID;
+            PhysioTherapistID = employeeID;
             Name = name;
-            PhoneNumber = phoneNumber;
+            DateOfBirth = dateOfBirth;
+            ContactInfo = contactInfo;
+            NationalID = nationalID;
+            HireDate = hireDate;
         }
 
         public int PhysioTherapistID { get; set; }
         public string Name { get; set; }
-        public string PhoneNumber { get; set; }
+        public DateTime DateOfBirth { get; set; }
+        public string ContactInfo { get; set; }
+        public string NationalID { get; set; }
+        public DateTime HireDate { get; set; }
     }
 }
