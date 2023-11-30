@@ -51,5 +51,11 @@ namespace clinical.Pages
         {
 
         }
+
+        private void newMedicalRecord(object sender, MouseButtonEventArgs e)
+        {
+            NavigationService.Navigate(new newRecordPage());
+
+        }
     }
 }

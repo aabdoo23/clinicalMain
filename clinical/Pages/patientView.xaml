@@ -9,6 +9,7 @@
         xmlns:av="http://schemas.microsoft.com/expression/blend/2008" 
 		 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
 		 xmlns:fa="http://schemas.fontawesome.io/icons/" mc:Ignorable="av" Height="768" Width="1360"
+        MinHeight="600" MinWidth="1000"
         WindowStyle="None" Background="Transparent" ResizeMode="CanResize" WindowStartupLocation="CenterScreen">
 
     <Border Background="{StaticResource lightFontColor}" CornerRadius="20" Padding="0 10 0 0" MouseDown="Border_MouseDown">
