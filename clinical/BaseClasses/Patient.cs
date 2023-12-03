@@ -1,14 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace clinical.BaseClasses
 {
     public class Patient
     {
-        public Patient(int patientID, string name, string address, DateTime birthDate, string phoneNumber){
+        public Patient(int patientID, string name, string address, DateTime birthDate, string phoneNumber)
+        {
             PatientID = patientID;
             Name = name;
             Address = address;
@@ -21,7 +18,8 @@ namespace clinical.BaseClasses
         {
             DateTime currentDate = DateTime.Now;
             int age = currentDate.Year - birthdate.Year;
-            if (birthdate > currentDate.AddYears(-age)){
+            if (birthdate > currentDate.AddYears(-age))
+            {
                 age--;
             }
 

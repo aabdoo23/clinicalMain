@@ -10,12 +10,17 @@ namespace clinical
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        int state;
+        public MainWindow(int stat)
         {
+            state = stat;
             InitializeComponent();
-            //chatGrid.Visibility = Visibility.Hidden;
             homeBTN.Focus();
-            mainFrame.Navigate(new adminDashboardPage());
+            if(state==1)
+                mainFrame.Navigate(new adminDashboardPage());
+            else if(state==2)
+                mainFrame.Navigate(new PhysioTherapistDashboard());
+            else mainFrame.Navigate(new ReceptionistDashboard());
         }
 
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)
@@ -28,7 +33,12 @@ namespace clinical
 
         private void homeBTN_Click(object sender, RoutedEventArgs e)
         {
-            mainFrame.Navigate(new DashBoardPage());
+
+            if (state == 1)
+                mainFrame.Navigate(new adminDashboardPage());
+            else if (state == 2)
+                mainFrame.Navigate(new PhysioTherapistDashboard());
+            else mainFrame.Navigate(new ReceptionistDashboard());
 
         }
 

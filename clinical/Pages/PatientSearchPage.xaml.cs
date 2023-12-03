@@ -1,19 +1,6 @@
 ﻿using clinical.BaseClasses;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace clinical.Pages
 {
@@ -22,18 +9,13 @@ namespace clinical.Pages
     /// </summary>
     public partial class PatientSearchPage : Page
     {
-        private ObservableCollection<Patient> patients;
 
         public PatientSearchPage()
         {
             InitializeComponent();
-            patients = new ObservableCollection<Patient>
-            {
-                new Patient(1, "Ali M'alol", "123 Main St", new DateTime(1980, 1, 1), "555-1234"),
-                new Patient(2, "Mohamed Elshenawy", "456 Oak St", new DateTime(1990, 5, 15), "555-5678")
-            };
 
-            patientsDataGrid.ItemsSource = patients;
+
+            patientsDataGrid.ItemsSource = globals.samplePatients;
         }
 
         private void view_Click(object sender, RoutedEventArgs e)

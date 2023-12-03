@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace clinical.BaseClasses
 {
-    class Visit{
-        Visit(int visitID, int patientID, DateTime date, string reason, string doctorNotes, int physioTherapistID, int roomID)
+    class Visit
+    {
+        public Visit(int visitID, int patientID, int physioTherapistID, DateTime date, string reason, string doctorNotes, int roomID)
         {
             VisitID = visitID;
             PatientID = patientID;
@@ -25,5 +22,27 @@ namespace clinical.BaseClasses
         public string DoctorNotes { get; set; }
         public int PhysioTherapistID { get; set; }
         public int RoomID { get; set; }
+        public string PhysioTherapistName
+        {
+            get
+            {
+                foreach (PhysioTherapist physio in globals.sampleTherapists)
+                {
+                    if (physio.PhysioTherapistID == PhysioTherapistID) return physio.Name;
+                }
+                return "Not assigned";
+            }
+        }
+        public string PatientName
+        {
+            get
+            {
+                foreach (Patient physio in globals.samplePatients)
+                {
+                    if (physio.PatientID == PatientID) return physio.Name;
+                }
+                return "Not assigned";
+            }
+        }
     }
 }

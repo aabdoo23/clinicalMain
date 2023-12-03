@@ -19,6 +19,7 @@ namespace clinical
     {
         public loginPage()
         {
+            new globals();
             InitializeComponent();
         }
         private void Border_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -68,7 +69,11 @@ namespace clinical
 
         private void logInBTN_Click(object sender, RoutedEventArgs e)
         {
-            MainWindow mainWindow= new MainWindow();
+            int s;
+            if (txtEmail.Text.StartsWith("a")) s = 1;
+            else if (txtEmail.Text.StartsWith("p")) s = 2;
+            else s = 3;
+            MainWindow mainWindow= new MainWindow(s);
             mainWindow.Show();
             this.Close();
         }
