@@ -10,18 +10,29 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace clinical
+namespace clinical.Pages
 {
     /// <summary>
-    /// Interaction logic for AddDrugToPrescriptionWindow.xaml
+    /// Interaction logic for ChatPage.xaml
     /// </summary>
-    public partial class AddDrugToPrescriptionWindow : Window
+    public partial class ChatPage : Page
     {
-        public AddDrugToPrescriptionWindow()
+        public ChatPage()
         {
             InitializeComponent();
         }
+        private void Border_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            
+        }
+
+        private bool IsMaximize = false;
+        private void Border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+        }
+
     }
 }

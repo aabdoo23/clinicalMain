@@ -14,7 +14,6 @@ namespace clinical.Pages
         {
             InitializeComponent();
 
-
             patientsDataGrid.ItemsSource = globals.samplePatients;
         }
 

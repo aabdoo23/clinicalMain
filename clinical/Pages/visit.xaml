@@ -44,11 +44,8 @@
                         <TextBlock x:Name="patientNameMainTxt" Text="3alolo" Foreground="{StaticResource darkerColor}" FontSize="24" FontWeight="Bold" VerticalAlignment="Center"/>
                     </StackPanel>
                     <!--User Image-->
-                    <Ellipse Width="45" Height="45" Margin="15 0 7 0" Grid.Column="2">
-                        <Ellipse.Fill>
-                            <ImageBrush ImageSource="@\..\..\images\shenawi.png"/>
-                        </Ellipse.Fill>
-                    </Ellipse>
+                    <Icon:PackIconMaterial Kind="FaceManOutline" Width="45" Height="45" Foreground="{StaticResource darkerColor}" VerticalAlignment="Center" Grid.Column="2"/>
+                    
                 </Grid>
             </Border>
             <!--Side Panel-->
@@ -112,7 +109,7 @@
 
                         <Border Grid.Column="1" Background="{StaticResource lighterColor}" Grid.Row="1" CornerRadius="10" Margin="10 0 10 10">
                             <StackPanel Name="StPanel" Orientation="Vertical" Grid.Row="2" Background="Transparent" Margin="7" >
-                                <Border Background="{StaticResource darkerColor}" CornerRadius="10" Margin="10 10 10 0" Height="60"/>
+                                <Border Background="{StaticResource lightFontColor}" CornerRadius="10" Margin="10 10 10 0" Height="60"/>
 
                             </StackPanel>
 

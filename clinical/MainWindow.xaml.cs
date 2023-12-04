@@ -55,9 +55,10 @@ namespace clinical
         }
         private void chatBtn_Click(object sender, RoutedEventArgs e)
         {
+            mainFrame.Navigate(new ChatPage());
 
         }
-        
+
 
 
         private bool IsMaximize = false;

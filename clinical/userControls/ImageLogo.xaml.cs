@@ -13,26 +13,24 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace clinical.Pages
+namespace clinical.userControls
 {
     /// <summary>
-    /// Interaction logic for visit.xaml
+    /// Interaction logic for ImageLogo.xaml
     /// </summary>
-    public partial class visit : Page
+    public partial class ImageLogo : UserControl
     {
-        public visit()
+        public ImageLogo()
         {
             InitializeComponent();
         }
-
-        private void newAppointment(object sender, MouseButtonEventArgs e)
+        public ImageSource Image
         {
-
+            get { return (ImageSource)GetValue(ImageProperty); }
+            set { SetValue(ImageProperty, value); }
         }
 
-        private void view_Click(object sender, RoutedEventArgs e)
-        {
+        public static readonly DependencyProperty ImageProperty = DependencyProperty.Register("Image", typeof(ImageSource), typeof(ImageLogo));
 
-        }
     }
 }

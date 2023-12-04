@@ -13,26 +13,24 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace clinical.Pages
+namespace clinical.userControls
 {
     /// <summary>
-    /// Interaction logic for visit.xaml
+    /// Interaction logic for MyMessageChat.xaml
     /// </summary>
-    public partial class visit : Page
+    public partial class MyMessageChat : UserControl
     {
-        public visit()
+        public MyMessageChat()
         {
             InitializeComponent();
         }
-
-        private void newAppointment(object sender, MouseButtonEventArgs e)
+        public string Message
         {
-
+            get { return (string)GetValue(MessageProperty); }
+            set { SetValue(MessageProperty, value); }
         }
 
-        private void view_Click(object sender, RoutedEventArgs e)
-        {
+        public static readonly DependencyProperty MessageProperty = DependencyProperty.Register("Message", typeof(string), typeof(MyMessageChat));
 
-        }
     }
 }
