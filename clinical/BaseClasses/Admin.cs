@@ -8,7 +8,7 @@ namespace clinical.BaseClasses
 {
     class Admin
     {
-        Admin(int userID, string userName, string password, int role)
+        public Admin(int userID, string userName, string password, int role)
         {
             UserID = userID;
             UserName = userName;

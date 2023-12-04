@@ -61,6 +61,7 @@
 
                 <TextBlock Text="Age:" Foreground="#FFE5E5E5" FontSize="20" Grid.Row="5" Margin="30 10 20 20"/>
                 <TextBlock Name="ageTxt" Text="25" Foreground="#FFE5E5E5" FontSize="25" Grid.Row="5" Grid.Column="1" Margin="0 7 20 10" TextWrapping="Wrap"/>
+                    <TextBlock Text="cheif complaint:" Foreground="#FFE5E5E5" FontSize="20" Grid.Row="6" Margin="30 10 20 20"/>
 
             </Grid>
 
@@ -113,7 +114,7 @@
                             <RowDefinition Height="15*"/>
                             <RowDefinition Height="90*"/>
                         </Grid.RowDefinitions>
-                        <TextBlock Text="Previous visits" FontSize="20" Foreground="{StaticResource lightFontColor}" Margin="20 10" Grid.Row="0" Grid.Column="0"/>
+                        <TextBlock Text="Previous visits" FontSize="20" Foreground="{StaticResource darkerColor}" FontWeight="Bold" Margin="20 10" Grid.Row="0" Grid.Column="0"/>
 
                         <Border Grid.Column="1" Background="{StaticResource lightFontColor}" Grid.Row="1" CornerRadius="10" Margin="10 0 10 10">
                             <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="previousVisitsDataGrid" Style="{DynamicResource DataGridStyle1}">
@@ -156,7 +157,7 @@
                     <Border Grid.Column="0" Grid.Row="2" Style="{StaticResource theBorder}">
                         <Grid>
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="20*"/>
+                                <RowDefinition Height="50"/>
                                 <RowDefinition Height="80*"/>
                             </Grid.RowDefinitions>
                             <Grid Grid.Row="0">
@@ -164,8 +165,8 @@
                                     <ColumnDefinition Width="90*"/>
                                     <ColumnDefinition Width="15*"/>
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Text="Medical records" FontSize="20" Foreground="{StaticResource lightFontColor}" Margin="20 10" Grid.Column="0"/>
-                                <Icon:PackIconMaterial MouseDown="newMedicalRecord" Kind="PlusBox" Foreground="{StaticResource lightFontColor}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Width="25" Height="25"/>
+                                <TextBlock Text="Medical records" FontSize="20" FontWeight="Bold" Foreground="{StaticResource darkerColor}" Margin="20 10" Grid.Column="0"/>
+                                <Icon:PackIconMaterial MouseDown="newMedicalRecord" Kind="PlusBox" Foreground="{StaticResource darkerColor}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Width="25" Height="25"/>
                             </Grid>
 
                             <Border Grid.Column="1" Background="{StaticResource lightFontColor}" Grid.Row="1" CornerRadius="10" Margin="10 0 10 10">
@@ -210,8 +211,8 @@
                                     <ColumnDefinition Width="90*"/>
                                     <ColumnDefinition Width="15*"/>
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Text="Active treatment plan" FontSize="20" Foreground="{StaticResource lightFontColor}" Margin="20 10" Grid.Column="0"/>
-                                <Icon:PackIconMaterial Kind="ClipboardEdit" Foreground="{StaticResource lightFontColor}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Width="25" Height="25"/>
+                                <TextBlock Text="Active treatment plan" FontSize="20" Foreground="{StaticResource darkerColor}" FontWeight="Bold" Margin="20 10" Grid.Column="0"/>
+                                <Icon:PackIconMaterial Kind="ClipboardEdit" Foreground="{StaticResource darkerColor}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Width="25" Height="25"/>
                             </Grid>
 
                             <Border Grid.Column="1" Background="{StaticResource lighterColor}" Grid.Row="1" CornerRadius="10" Margin="10 0 10 10">
@@ -235,19 +236,17 @@
                                     <ColumnDefinition Width="90*"/>
                                     <ColumnDefinition Width="15*"/>
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Text="Cheif complaint" FontSize="20" Foreground="{StaticResource lightFontColor}" Margin="20 10" Grid.Column="0"/>
-                                <Icon:PackIconMaterial Kind="ClipboardEdit" Foreground="{StaticResource lightFontColor}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Width="25" Height="25"/>
+                                <TextBlock Text="Sessions?" FontSize="20" Foreground="{StaticResource darkerColor}" FontWeight="Bold" Margin="20 10" Grid.Column="0"/>
+                                <Icon:PackIconMaterial Kind="ClipboardEdit" Foreground="{StaticResource darkerColor}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Width="25" Height="25"/>
                             </Grid>
 
                             <Border Grid.Column="1" Background="{StaticResource lighterColor}" Grid.Row="1" CornerRadius="10" Margin="10 0 10 10">
-                                <StackPanel Name="sStackPanel" Orientation="Vertical" Grid.Row="2" Background="Transparent" Margin="7" >
+                                <StackPanel Name="StackPane" Orientation="Vertical" Grid.Row="2" Background="Transparent" Margin="7" >
                                     <Border Background="{StaticResource selectedColor}" CornerRadius="10" Margin="10 10 10 0" Height="60"/>
 
                                 </StackPanel>
 
                             </Border>
-
-
                         </Grid>
                     </Border>
 

@@ -19,9 +19,9 @@
 
             </Grid.RowDefinitions>
 
-            <Label Name="formTitle" Content="Registration Form" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{StaticResource lightFontColor}" FontSize="22" Margin="11,0,0,0"/>
-            <Icon:PackIconMaterial Kind="CloseBox" Width="30" Height="50" Margin="0 0 10 0" Foreground="{StaticResource lightFontColor}" HorizontalAlignment="Right" VerticalAlignment="Center" MouseDown="closeBTN"/>
-            <Icon:PackIconMaterial Kind="WindowMinimize" Width="25" Height="15" Margin="0 0 45 6" Foreground="{StaticResource lightFontColor}" HorizontalAlignment="Right" VerticalAlignment="Bottom" MouseDown="minimizeBTN"/>
+            <Label Name="formTitle" Content="Registration Form" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{StaticResource darkerColor}" FontSize="22" Margin="11,0,0,0"/>
+            <Icon:PackIconMaterial Kind="CloseBox" Width="30" Height="50" Margin="0 0 10 0" Foreground="{StaticResource darkerColor}" HorizontalAlignment="Right" VerticalAlignment="Center" MouseDown="closeBTN"/>
+            <Icon:PackIconMaterial Kind="WindowMinimize" Width="25" Height="15" Margin="0 0 45 6" Foreground="{StaticResource darkerColor}" HorizontalAlignment="Right" VerticalAlignment="Bottom" MouseDown="minimizeBTN"/>
             <Frame Name="mainFrame" Grid.Row="1" NavigationUIVisibility="Hidden"/>
 
 

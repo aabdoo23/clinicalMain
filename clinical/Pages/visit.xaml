@@ -56,7 +56,7 @@
                 </Grid.RowDefinitions>
 
 
-                <Border Style="{StaticResource theBorder}">
+                <Border Style="{StaticResource theBorder}" Grid.RowSpan="2">
                     
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -67,12 +67,20 @@
                             <RowDefinition Height="50"/>
                             <RowDefinition Height="80*"/>
                         </Grid.RowDefinitions>
-                        <TextBlock Text="User Info" FontSize="25" FontWeight="Bold" VerticalAlignment="Center" Foreground="{StaticResource darkerColor}" Margin="20 10" Grid.Column="0"/>
-                        <Icon:PackIconMaterial Kind="ClipboardEdit" Foreground="{StaticResource lightFontColor}" Grid.Column="1" VerticalAlignment="Center" Width="25" Height="25" Margin="1,0,0,0"/>
+                        <TextBlock Text="Patient Info" FontSize="25" FontWeight="Bold" VerticalAlignment="Center" Foreground="{StaticResource darkerColor}" Margin="20 10" Grid.Column="0"/>
+                        <Icon:PackIconMaterial Kind="Eye" Foreground="{StaticResource darkerColor}" Grid.Column="1" VerticalAlignment="Center" Width="25" Height="25" Margin="1,0,0,0"/>
 
                         <Border Grid.Row="1" Grid.ColumnSpan="2" Background="{StaticResource lighterColor}" CornerRadius="10" Margin="10 0 10 10" Grid.RowSpan="1">
                             <Grid>
                                 <Grid.RowDefinitions>
+                                    <RowDefinition Height="20*"/>
+                                    <RowDefinition Height="20*"/>
+                                    <RowDefinition Height="20*"/>
+                                    <RowDefinition Height="20*"/>
+                                    <RowDefinition Height="20*"/>
+                                    <RowDefinition Height="20*"/>
+                                    <RowDefinition Height="20*"/>
+                                    <RowDefinition Height="20*"/>
                                     <RowDefinition Height="20*"/>
                                     <RowDefinition Height="20*"/>
                                     <RowDefinition Height="20*"/>
@@ -92,32 +100,6 @@
                     </Grid>
                 </Border>
                 <!--transaction info-->
-                <Border Style="{StaticResource theBorder}" Grid.Row="1">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="15*"/>
-                            <RowDefinition Height="80*"/>
-                        </Grid.RowDefinitions>
-                        <Grid Grid.Row="0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="90*"/>
-                                <ColumnDefinition Width="15*"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Text="Billing information" FontSize="25" FontWeight="Bold" VerticalAlignment="Center" Foreground="{StaticResource darkerColor}" Margin="20 10" Grid.Column="0"/>
-                            <Icon:PackIconMaterial Kind="ClipboardEdit" Foreground="{StaticResource lightFontColor}" Grid.Column="1" VerticalAlignment="Center" Width="25" Height="25" Margin="1,0,0,0"/>
-                        </Grid>
-
-                        <Border Grid.Column="1" Background="{StaticResource lighterColor}" Grid.Row="1" CornerRadius="10" Margin="10 0 10 10">
-                            <StackPanel Name="StPanel" Orientation="Vertical" Grid.Row="2" Background="Transparent" Margin="7" >
-                                <Border Background="{StaticResource lightFontColor}" CornerRadius="10" Margin="10 10 10 0" Height="60"/>
-
-                            </StackPanel>
-
-                        </Border>
-                        <!--<uc:medicalRecordObject/>-->
-
-                    </Grid>
-                </Border>
             </Grid>
 
             <!--Main Section-->
@@ -189,35 +171,9 @@
                 </Border>
 
                 <!--Treatment plan-->
-                <Border Style="{StaticResource theBorder}" Grid.Column="0" Grid.Row="1">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="20*"/>
-                            <RowDefinition Height="80*"/>
-                        </Grid.RowDefinitions>
-                        <Grid Grid.Row="0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="90*"/>
-                                <ColumnDefinition Width="15*"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Text="Treatment Plan" FontSize="25" FontWeight="Bold" VerticalAlignment="Center" Foreground="{StaticResource darkerColor}" Margin="20 10" Grid.Column="0"/>
-                            <Icon:PackIconMaterial Kind="ClipboardEdit" Foreground="{StaticResource darkerColor}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Width="25" Height="25"/>
-                        </Grid>
-
-                        <Border Grid.Column="1" Background="{StaticResource lighterColor}" Grid.Row="1" CornerRadius="10" Margin="10 0 10 10">
-                            <StackPanel Name="StaPane" Orientation="Vertical" Grid.Row="2" Background="Transparent" Margin="7" >
-                                <Border Background="{StaticResource lightFontColor}" CornerRadius="10" Margin="10 10 10 0" Height="60"/>
-
-                            </StackPanel>
-
-                        </Border>
-                        <!--<uc:medicalRecordObject/>-->
-
-                    </Grid>
-                </Border>
 
                 <!--Today appointments-->
-                <Border Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Style="{StaticResource theBorder}" Background="{StaticResource lightFontColor}">
+                <Border Grid.Column="0" Grid.Row="1"  Style="{StaticResource theBorder}" Background="{StaticResource lightFontColor}">
                     <Grid Margin="10">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="13*"/>
@@ -256,7 +212,7 @@
 
                     </Grid>
                 </Border>
-
+                <!--radiology-->
             </Grid>
 
 

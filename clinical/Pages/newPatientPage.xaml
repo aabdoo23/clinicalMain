@@ -36,10 +36,10 @@
             <DatePicker Name="bdDatePicker" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Center" FontSize="14" Margin="10" Foreground="{StaticResource darkerColor}"/>
             <TextBlock TextWrapping="Wrap" Grid.Row="1" Grid.Column="3" Text="*Gender:" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{StaticResource lightFontColor}" FontSize="18" FontWeight="Bold"/>
             <Viewbox Margin="15" Grid.Column="4" Grid.Row="1" >
-                <RadioButton Content="Male" Foreground="{StaticResource lightFontColor}"/>
+                <RadioButton Name="maleRB" Content="Male" Foreground="{StaticResource lightFontColor}" GroupName="genderGroup" IsChecked="True"/>
             </Viewbox>
             <Viewbox Margin="7" Grid.Column="5" Grid.Row="1" >
-                <RadioButton  Content="Female" Foreground="{StaticResource lightFontColor}"/>
+                <RadioButton Name="femaleRB" Content="Female" Foreground="{StaticResource lightFontColor}" GroupName="genderGroup"/>
             </Viewbox>
 
             <TextBlock TextWrapping="Wrap" Grid.Row="2" Grid.Column="0"  Text="Address:" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{StaticResource lightFontColor}" FontSize="18" FontWeight="Bold"/>
@@ -52,7 +52,7 @@
             
 
             <Border Name="saveBTN" Style="{StaticResource theBorder}" BorderBrush="{StaticResource lightFontColor}" BorderThickness="2" CornerRadius="5" Margin="10" Grid.Row="5" Grid.Column="5" MouseDown="save">
-                <Label Content="Save" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="15" FontWeight="Bold" Margin="0,-2,0,0"/>
+                <Label Content="Save" Foreground="{StaticResource darkerColor}" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="15" FontWeight="Bold" Margin="0,-2,0,0"/>
             </Border>
         </Grid>
     </Border>

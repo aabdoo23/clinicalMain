@@ -4,13 +4,14 @@ namespace clinical.BaseClasses
 {
     public class Patient
     {
-        public Patient(int patientID, string name, string address, DateTime birthDate, string phoneNumber)
+        public Patient(int patientID, string name, string address, DateTime birthDate, string phoneNumber, string gender)
         {
             PatientID = patientID;
             Name = name;
             Address = address;
             BirthDate = birthDate;
             PhoneNumber = phoneNumber;
+            Gender = gender;
         }
         public int Age => CalculateAge(BirthDate);
 
@@ -30,5 +31,7 @@ namespace clinical.BaseClasses
         public string Address { get; set; }
         public DateTime BirthDate { get; set; }
         public string PhoneNumber { get; set; }
+
+        public string Gender {  get; set; }
     }
 }
