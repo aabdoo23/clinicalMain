@@ -31,17 +31,19 @@
 
                 <DataGrid Grid.Row="1" Margin="10" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="physiciansDataGrid" Style="{DynamicResource DataGridStyle1}">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="5*" Binding="{Binding PhysioTherapistID}"/>
-                        <DataGridTextColumn Header="Name" Binding="{Binding Name}" IsReadOnly="True" Width="30*"/>
-                        <DataGridTextColumn Header="Phone Number" Binding="{Binding PhoneNumber}" IsReadOnly="True" Width="20*"/>
-                        <DataGridTemplateColumn Header="Actions" IsReadOnly="True" Width="10*">
+                        <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" Binding="{Binding PhysioTherapistID}"/>
+                        <DataGridTextColumn Header="Name" Binding="{Binding Name}" IsReadOnly="True" Width="*"/>
+                        <DataGridTextColumn Header="Phone Number" Binding="{Binding ContactInfo}" IsReadOnly="True" Width="*"/>
+                        <DataGridTemplateColumn Header="Details" IsReadOnly="True" Width="*">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
                                         <Button Name="view" Style="{StaticResource gridEditButton}" Click="view_Click">
                                             <Icon:PackIconMaterial Kind="EyeCircleOutline" Style="{StaticResource gridButtonIcon}"/>
                                         </Button>
-                                        
+                                        <Button Margin="5 0 0 0" Style="{StaticResource gridRemoveButton}" Click="deleteClick">
+                                            <Icon:PackIconMaterial Kind="DeleteOutline" Style="{StaticResource gridButtonIcon}"/>
+                                        </Button>
                                     </StackPanel>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
@@ -60,23 +62,22 @@
                 </Grid.RowDefinitions>
                 <TextBlock Text="Today's Patients" Margin="5" VerticalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource darkerColor}" FontSize="25"/>
                 <Icon:PackIconMaterial Kind="PlusBox" Foreground="{StaticResource darkerColor}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Width="30" Height="30" Margin="0 0 10 0" MouseDown="newEmployee"/>
-
-                <DataGrid Grid.Row="1" Margin="10" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="patientsDataGrid" Style="{DynamicResource DataGridStyle1}">
+                <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="patientsDataGrid" Style="{DynamicResource DataGridStyle1}">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="5*" Binding="{Binding EmployeeID}"/>
-                        <DataGridTextColumn Header="Name" Binding="{Binding Name}" IsReadOnly="True" Width="30*"/>
-                        <DataGridTextColumn Header="Phone Number" Binding="{Binding PhoneNumber}" IsReadOnly="True" Width="20*"/>
-                        <DataGridTextColumn Header="Role" Binding="{Binding Role}" IsReadOnly="True" Width="10*"/>
-                        <DataGridTemplateColumn Header="Actions" IsReadOnly="True" Width="10*">
+                        <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" Binding="{Binding PatientID}"/>
+                        <DataGridTextColumn Header="Name" Binding="{Binding Name}" IsReadOnly="True" Width="*"/>
+                        <DataGridTextColumn Header="Age" Binding="{Binding Age}" IsReadOnly="True" Width="*"/>
+                        <DataGridTextColumn Header="Phone Number" Binding="{Binding PhoneNumber}" IsReadOnly="True" Width="*"/>
+                        <DataGridTemplateColumn Header="Details" IsReadOnly="True" Width="auto">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
                                         <Button Name="view" Style="{StaticResource gridEditButton}" Click="view_Click">
                                             <Icon:PackIconMaterial Kind="EyeCircleOutline" Style="{StaticResource gridButtonIcon}"/>
                                         </Button>
-                                        <Button Margin="5 0 0 0" Style="{StaticResource gridRemoveButton}">
-                                            <Icon:PackIconMaterial Kind="DeleteOutline" Style="{StaticResource gridButtonIcon}"/>
-                                        </Button>
+                                        <!--<Button Margin="5 0 0 0" Style="{StaticResource gridRemoveButton}">
+                            <Icon:PackIconMaterial Kind="DeleteOutline" Style="{StaticResource gridButtonIcon}"/>
+                        </Button>-->
                                     </StackPanel>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>

@@ -12,9 +12,8 @@ namespace clinical.Pages
         {
 
             InitializeComponent();
-            todayAppointmentsDataGrid.ItemsSource = globals.sampleAppointments;
-            ActiveAppointmentsDataGrid.ItemsSource = globals.sampleAppointments;
-            patientsDataGrid.ItemsSource = globals.samplePatients;
+            patientsDataGrid.ItemsSource = DB.GetAllPatients();
+
         }
 
         private void view_Click(object sender, RoutedEventArgs e)

@@ -2,11 +2,7 @@
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace clinical
 {
@@ -129,18 +125,126 @@ namespace clinical
                     command.Parameters.AddWithValue("@PhoneNumber", patient.PhoneNumber);
                     command.Parameters.AddWithValue("@Gender", patient.Gender);
 
-                    int rowsAffected = command.ExecuteNonQuery();
-
-                    //if (rowsAffected > 0)
-                    //{
-                    //    Console.WriteLine("Patient inserted successfully!");
-                    //}
-                    //else
-                    //{
-                    //    Console.WriteLine("Failed to insert patient.");
-                    //}
                 }
             }
+        }
+
+        public static void InsertEmployee(Employee employee)
+        {
+
+            using (connection)
+            {
+                connection.Open();
+
+                string query = "INSERT INTO Employee (EmployeeID, Name, DateOfBirth, ContactInfo, Role, NationalID, HireDate) " +
+                               "VALUES (@EmployeeID ,@Name, @DateOfBirth, @ContactInfo, @Role, @NationalID, @HireDate)";
+
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@EmployeeID", employee.EmployeeID);
+                    command.Parameters.AddWithValue("@Name", employee.Name);
+                    command.Parameters.AddWithValue("@DateOfBirth", employee.DateOfBirth);
+                    command.Parameters.AddWithValue("@ContactInfo", employee.ContactInfo);
+                    command.Parameters.AddWithValue("@Role", employee.Role);
+                    command.Parameters.AddWithValue("@NationalID", employee.NationalID);
+                    command.Parameters.AddWithValue("@HireDate", employee.HireDate);
+
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public static List<Employee> GetAllEmployees()
+        {
+            List<Employee> employees = new List<Employee>();
+
+            using (connection)
+            {
+                connection.Open();
+
+                string query = "SELECT * FROM Employee";
+
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    using (MySqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Employee employee = new Employee((int)reader["EmployeeID"],
+                                reader["Name"].ToString(),
+                                (DateTime)reader["DateOfBirth"],
+                                reader["ContactInfo"].ToString(),
+                                reader["Role"].ToString(),
+                                reader["NationalID"].ToString(),
+                                (DateTime)reader["HireDate"]);
+                            
+
+                            employees.Add(employee);
+                        }
+                    }
+                }
+            }
+
+            return employees;
+        }
+
+        public static void InsertPhysioTherapist(PhysioTherapist physioTherapist)
+        {
+            using (connection)
+            {
+                connection.Open();
+
+                string query = "INSERT INTO PhysioTherapist (PhysioTherapistID, Name, DateOfBirth, ContactInfo, NationalID, HireDate, Address) " +
+                               "VALUES (@PhysioTherapistID, @Name, @DateOfBirth, @ContactInfo, @NationalID, @HireDate, @Address)";
+
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@PhysioTherapistID", physioTherapist.PhysioTherapistID);
+                    command.Parameters.AddWithValue("@Name", physioTherapist.Name);
+                    command.Parameters.AddWithValue("@DateOfBirth", physioTherapist.DateOfBirth);
+                    command.Parameters.AddWithValue("@ContactInfo", physioTherapist.ContactInfo);
+                    command.Parameters.AddWithValue("@NationalID", physioTherapist.NationalID);
+                    command.Parameters.AddWithValue("@HireDate", physioTherapist.HireDate);
+                    command.Parameters.AddWithValue("@Address", physioTherapist.Address);
+
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public static List<PhysioTherapist> GetAllPhysioTherapists()
+        {
+            List<PhysioTherapist> physiotherapists = new List<PhysioTherapist>();
+
+            using (connection)
+            {
+                connection.Open();
+
+                string query = "SELECT * FROM PhysioTherapist";
+
+                using (MySqlCommand command = new MySqlCommand(query, connection))
+                {
+                    using (MySqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            PhysioTherapist physiotherapist = new PhysioTherapist(
+                                (int)reader["PhysioTherapistID"],
+                                reader["Name"].ToString(),
+                                (DateTime)reader["DateOfBirth"],
+                                reader["ContactInfo"].ToString(),
+                                reader["NationalID"].ToString(),
+                                (DateTime)reader["HireDate"],
+                                reader["Address"].ToString()
+                            );
+
+                            physiotherapists.Add(physiotherapist);
+                        }
+                    }
+                }
+            }
+
+            return physiotherapists;
         }
     }
 }

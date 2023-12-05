@@ -25,15 +25,20 @@ namespace clinical.Pages
             InitializeComponent();
             if (type == 0)
             {
+                window.Height = 621;
                 formTitle.Content = "New Patient";
                 mainFrame.Navigate(new newPatientPage());
             }
             else if(type == 1) {
+                window.Height = 421;
+
                 formTitle.Content = "New Physio Therapist";
                 mainFrame.Navigate(new newPhysioTherapistPage());
             }
             else if(type==2)
             {
+                window.Height = 421;
+
                 formTitle.Content = "New Employee";
                 mainFrame.Navigate(new newEmployeePage());
             }

@@ -6,7 +6,7 @@
       xmlns:uc="clr-namespace:clinical.userControls"
       xmlns:av="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      mc:Ignorable="av" Height="768" Width="1360">
+      mc:Ignorable="av" Height="668" Width="1260">
 
     <Border CornerRadius="20">
         <Border.Background>
@@ -36,7 +36,7 @@
                             <ColumnDefinition Width="90*"/>
                             <ColumnDefinition Width="25*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="Scanned physical records" FontSize="25" FontWeight="Bold" VerticalAlignment="Center" Foreground="{StaticResource darkerColor}" Margin="20 10" Grid.Column="0"/>
+                        <TextBlock Text="Scanned physical records" FontSize="24" FontWeight="Bold" VerticalAlignment="Center" Foreground="{StaticResource darkerColor}" Margin="20 10" Grid.Column="0"/>
                         <Icon:PackIconMaterial MouseDown="newXRAY" Name="uploadNewRecord" Kind="GoogleLens" Foreground="{StaticResource darkerColor}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 20 0" Width="25" Height="25"/>
                     </Grid>
 
@@ -79,8 +79,11 @@
 
                         </Grid>
 
+                        
                         <Border Grid.Column="1" Background="{StaticResource lighterColor}" Grid.Row="1" Margin="10 0 10 10">
+                            <ScrollViewer>
                             <TextBlock Name="physicianNotesTXT" Background="{StaticResource darkerColor}" Padding="5" Margin="5" FontSize="24" TextWrapping="WrapWithOverflow" Foreground="{StaticResource lightFontColor}" />
+                            </ScrollViewer>
                         </Border>
                         <!--<uc:medicalRecordObject/>-->
 
@@ -107,7 +110,7 @@
 
                         <Border Grid.Column="1" Background="{StaticResource lighterColor}" Grid.Row="1" Margin="10 0 10 10">
                             <ScrollViewer>
-                            <TextBlock Name="reportTXT" Background="{StaticResource darkerColor}" IsEnabled="false" Padding="5" Margin="5" FontSize="20" TextWrapping="WrapWithOverflow" Foreground="{StaticResource lightFontColor}" />
+                            <TextBlock Name="reportTXT" Background="{StaticResource darkerColor}" Padding="5" Margin="5" FontSize="20" TextWrapping="WrapWithOverflow" Foreground="{StaticResource lightFontColor}" />
                             </ScrollViewer>
                         </Border>
                         <!--<uc:medicalRecordObject/>-->

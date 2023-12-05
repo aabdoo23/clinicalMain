@@ -23,10 +23,8 @@ namespace clinical.Pages
         public ReceptionistDashboard()
         {
             InitializeComponent();
-            todayAppointmentsDataGrid.ItemsSource = globals.sampleAppointments;
-            ActiveAppointmentsDataGrid.ItemsSource = globals.sampleAppointments;
-            patientsDataGrid.ItemsSource = globals.samplePatients;
-            physiciansDataGrid.ItemsSource = globals.sampleTherapists;
+            patientsDataGrid.ItemsSource = DB.GetAllPatients();
+
         }
 
         private void view_Click(object sender, RoutedEventArgs e)
@@ -36,10 +34,16 @@ namespace clinical.Pages
 
         private void newEmployee(object sender, MouseButtonEventArgs e)
         {
-
+            newPatientForm window = new newPatientForm(0);
+            window.Show();
         }
 
         private void newAppointment(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
+        private void deleteClick(object sender, RoutedEventArgs e)
         {
 
         }

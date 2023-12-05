@@ -7,11 +7,12 @@
       xmlns:av="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       mc:Ignorable="av" Height="421" Width="600" 
+        Name="window"
         MinHeight="400" MinWidth="600"
         AllowsTransparency="True" WindowStyle="None" WindowStartupLocation="CenterScreen" Background="Transparent">
 
 
-    <Border Style="{StaticResource theBorder}" MouseDown="Border_MouseDown" BorderBrush="{StaticResource lightFontColor}" BorderThickness="2">
+    <Border Style="{StaticResource theBorder}" MouseDown="Border_MouseDown" BorderBrush="{StaticResource darkerColor}" BorderThickness="4">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="50"/>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using clinical.BaseClasses;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,12 +28,43 @@ namespace clinical.Pages
 
         private void save(object sender, MouseButtonEventArgs e)
         {
+            string fn = firstNameTextBox.Text;
+            string ln = lastNameTextBox.Text;
+            string name = fn + " " + ln;
+            string gender;
+            if (maleRB.IsChecked == true)
+            {
+                gender = "Male";
+            }
+            else gender = "Female";
+            string address = addressTextBox.Text + ", " + cityTextBox.Text;
+            string phone = phoneTextBox.Text;
+            DateTime bd = DateTime.Now;
+            if (bdDatePicker.SelectedDate.HasValue)
+                bd = bdDatePicker.SelectedDate.Value;
 
+            DateTime hd = DateTime.Now;
+            if (hiringDatePicker.SelectedDate.HasValue)
+                hd = hiringDatePicker.SelectedDate.Value;
+
+            string nid = NIDTextBox.Text;
+            Random r = new Random();
+
+            Employee physio = new Employee(r.Next(1, 100), name, bd, phone,"2", nid, hd);
+            DB.InsertEmployee(physio);
         }
 
-        private void cityTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void nowCheck(object sender, RoutedEventArgs e)
         {
+            hiringDatePicker.SelectedDate = DateTime.Now;
+            hiringDatePicker.IsEnabled = false;
+        }
+
+        private void nowUnCheck(object sender, RoutedEventArgs e)
+        {
+            hiringDatePicker.IsEnabled = true;
 
         }
+
     }
 }

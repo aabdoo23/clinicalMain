@@ -172,7 +172,7 @@
 
                 <!--Treatment plan-->
 
-                <!--Today appointments-->
+                <!--Prescription-->
                 <Border Grid.Column="0" Grid.Row="1"  Style="{StaticResource theBorder}" Background="{StaticResource lightFontColor}">
                     <Grid Margin="10">
                         <Grid.RowDefinitions>
@@ -212,7 +212,9 @@
 
                     </Grid>
                 </Border>
+                
                 <!--radiology-->
+                
             </Grid>
 
 

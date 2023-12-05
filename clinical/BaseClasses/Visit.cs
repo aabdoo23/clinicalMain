@@ -22,27 +22,6 @@ namespace clinical.BaseClasses
         public string DoctorNotes { get; set; }
         public int PhysioTherapistID { get; set; }
         public int RoomID { get; set; }
-        public string PhysioTherapistName
-        {
-            get
-            {
-                foreach (PhysioTherapist physio in globals.sampleTherapists)
-                {
-                    if (physio.PhysioTherapistID == PhysioTherapistID) return physio.Name;
-                }
-                return "Not assigned";
-            }
-        }
-        public string PatientName
-        {
-            get
-            {
-                foreach (Patient physio in globals.samplePatients)
-                {
-                    if (physio.PatientID == PatientID) return physio.Name;
-                }
-                return "Not assigned";
-            }
-        }
+        
     }
 }

@@ -6,13 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
+
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+
 
 namespace clinical.Pages
 {
@@ -48,5 +44,22 @@ namespace clinical.Pages
             Patient newPatient = new Patient(r.Next(1, 100),name,address,bd,phone,gender);
             DB.InsertPatient(newPatient);
         }
+
+        private void addChronic(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
+        private void viewInjury(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void viewChronic(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        
     }
 }

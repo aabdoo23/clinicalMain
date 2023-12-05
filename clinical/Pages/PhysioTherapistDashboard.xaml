@@ -12,7 +12,7 @@
     </Page.Resources>
     <Grid Margin="10">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="50*"/>
+            <ColumnDefinition Width="60*"/>
             <ColumnDefinition Width="50*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
@@ -29,10 +29,12 @@
                 </Grid.RowDefinitions>
                 <TextBlock Text="Patients" Margin="5" VerticalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource darkerColor}" FontSize="25"/>
 
-                <DataGrid Grid.Row="1" Margin="10" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="patientsDataGrid" Style="{DynamicResource DataGridStyle1}">
+                <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="patientsDataGrid" Style="{DynamicResource DataGridStyle1}">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" Binding="{Binding PatientID}"/>
                         <DataGridTextColumn Header="Name" Binding="{Binding Name}" IsReadOnly="True" Width="*"/>
+                        <DataGridTextColumn Header="Address" Binding="{Binding Address}" IsReadOnly="True" Width="*"/>
+                        <DataGridTextColumn Header="Age" Binding="{Binding Age}" IsReadOnly="True" Width="*"/>
                         <DataGridTextColumn Header="Phone Number" Binding="{Binding PhoneNumber}" IsReadOnly="True" Width="*"/>
                         <DataGridTemplateColumn Header="Details" IsReadOnly="True" Width="auto">
                             <DataGridTemplateColumn.CellTemplate>
@@ -41,13 +43,15 @@
                                         <Button Name="view" Style="{StaticResource gridEditButton}" Click="view_Click">
                                             <Icon:PackIconMaterial Kind="EyeCircleOutline" Style="{StaticResource gridButtonIcon}"/>
                                         </Button>
+                                        <!--<Button Margin="5 0 0 0" Style="{StaticResource gridRemoveButton}">
+                            <Icon:PackIconMaterial Kind="DeleteOutline" Style="{StaticResource gridButtonIcon}"/>
+                        </Button>-->
                                     </StackPanel>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
                     </DataGrid.Columns>
                 </DataGrid>
-
             </Grid>
         </Border>
 
@@ -64,8 +68,7 @@
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" Binding="{Binding VisitID}"/>
                         <DataGridTextColumn Header="Patient Name" Binding="{Binding PatientName}" IsReadOnly="True" Width="*"/>
-                        <DataGridTextColumn Header="Date" Binding="{Binding Date}" IsReadOnly="True" Width="auto"/>
-                        <DataGridTextColumn Header="Physiotherapist" Binding="{Binding PhysioTherapistName}" IsReadOnly="True" Width="auto"/>
+                        <DataGridTextColumn Header="Time" Binding="{Binding Date}" IsReadOnly="True" Width="auto"/>
                         <DataGridTemplateColumn Header="Details" IsReadOnly="True" Width="auto">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
@@ -99,8 +102,7 @@
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" Binding="{Binding VisitID}"/>
                         <DataGridTextColumn Header="Patient Name" Binding="{Binding PatientName}" IsReadOnly="True" Width="*"/>
-                        <DataGridTextColumn Header="Date" Binding="{Binding Date}" IsReadOnly="True" Width="auto"/>
-                        <DataGridTextColumn Header="Physiotherapist" Binding="{Binding PhysioTherapistName}" IsReadOnly="True" Width="auto"/>
+                        <DataGridTextColumn Header="Time" Binding="{Binding Date}" IsReadOnly="True" Width="auto"/>
                         <DataGridTemplateColumn Header="Details" IsReadOnly="True" Width="auto">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>

@@ -30,11 +30,11 @@
                 <TextBlock Text="Physicians" Margin="5" VerticalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource darkerColor}" FontSize="25"/>
                 <Icon:PackIconMaterial Kind="PlusBox" Foreground="{StaticResource darkerColor}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Width="30" Height="30" Margin="0 0 10 0" MouseDown="newPhysician"/>
 
-                <DataGrid Grid.Row="1" Margin="10" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="doctorsDataGrid" Style="{DynamicResource DataGridStyle1}">
+                <DataGrid Grid.Row="1" Margin="10" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="physiciansDataGrid" Style="{DynamicResource DataGridStyle1}">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" Binding="{Binding PhysioTherapistID}"/>
                         <DataGridTextColumn Header="Name" Binding="{Binding Name}" IsReadOnly="True" Width="*"/>
-                        <DataGridTextColumn Header="Phone Number" Binding="{Binding PhoneNumber}" IsReadOnly="True" Width="*"/>
+                        <DataGridTextColumn Header="Phone Number" Binding="{Binding ContactInfo}" IsReadOnly="True" Width="*"/>
                         <DataGridTemplateColumn Header="Details" IsReadOnly="True" Width="auto">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
@@ -42,7 +42,7 @@
                                         <Button Name="view" Style="{StaticResource gridEditButton}" Click="view_Click">
                                             <Icon:PackIconMaterial Kind="EyeCircleOutline" Style="{StaticResource gridButtonIcon}"/>
                                         </Button>
-                                        <Button Margin="5 0 0 0" Style="{StaticResource gridRemoveButton}">
+                                        <Button Margin="5 0 0 0" Style="{StaticResource gridRemoveButton}" Click="deleteClick">
                                             <Icon:PackIconMaterial Kind="DeleteOutline" Style="{StaticResource gridButtonIcon}"/>
                                         </Button>
                                     </StackPanel>
