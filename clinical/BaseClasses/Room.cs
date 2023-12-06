@@ -6,19 +6,18 @@ using System.Threading.Tasks;
 
 namespace clinical.BaseClasses
 {
-    class Room
+    public class Room
     {
-        public Room(int roomID, int capacity, string roomType, bool isAvailable)
+        public int RoomID { get; set; }
+        public string RoomNumber { get; set; }
+        public List<int> EquipmentIDs { get; set; }
+
+        // Constructor
+        public Room(int roomID, string roomNumber, List<int> equipmentIDs)
         {
             RoomID = roomID;
-            Capacity = capacity;
-            RoomType = roomType;
-            IsAvailable = isAvailable;
+            RoomNumber = roomNumber;
+            EquipmentIDs = equipmentIDs;
         }
-
-        public int RoomID { get; set; }
-        public int Capacity { get; set; }
-        public string RoomType { get; set; }
-        public bool IsAvailable { get; set; }
     }
 }

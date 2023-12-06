@@ -6,17 +6,24 @@ using System.Threading.Tasks;
 
 namespace clinical.BaseClasses
 {
-    class TreatmentPlan{
-        TreatmentPlan(int patient_Id, int plan_Id, string description, string progress){
-            Patient_Id = patient_Id;
-            Plan_Id = plan_Id;
-            Description = description;
-            Progress = progress;
-        }
+    public class TreatmentPlan
+    {
+        public int PlanID { get; set; }
+        public string PlanName { get; set; }
+        public int PlanTimeInWeeks { get; set; }
+        public int InjuryID { get; set; }
+        public decimal Price { get; set; }
+        public string Notes { get; set; }
 
-        public int Patient_Id { get; set; }
-        public int Plan_Id { get; set; }
-        public string Description { get; set; }
-        public string Progress { get; set; }
+        // Constructor
+        public TreatmentPlan(int planID, string planName, int planTimeInWeeks, int injuryID, decimal price, string notes)
+        {
+            PlanID = planID;
+            PlanName = planName;
+            PlanTimeInWeeks = planTimeInWeeks;
+            InjuryID = injuryID;
+            Price = price;
+            Notes = notes;
+        }
     }
 }

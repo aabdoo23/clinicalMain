@@ -1,4 +1,5 @@
-﻿using System;
+﻿using clinical.BaseClasses;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,7 +28,7 @@ namespace clinical.Pages
             {
                 window.Height = 621;
                 formTitle.Content = "New Patient";
-                mainFrame.Navigate(new newPatientPage());
+                mainFrame.Navigate(new newPatientPage(null));
             }
             else if(type == 1) {
                 window.Height = 421;
@@ -42,6 +43,15 @@ namespace clinical.Pages
                 formTitle.Content = "New Employee";
                 mainFrame.Navigate(new newEmployeePage());
             }
+            
+        }
+
+        public newPatientForm(Patient editable)
+        {
+            InitializeComponent();
+            window.Height = 621;
+            formTitle.Content = "Edit Patient";
+            mainFrame.Navigate(new newPatientPage(editable));
         }
 
         private void closeBTN(object sender, MouseButtonEventArgs e)

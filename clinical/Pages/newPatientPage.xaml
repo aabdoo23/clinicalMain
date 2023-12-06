@@ -5,12 +5,13 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:clinical.Pages" xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
       mc:Ignorable="d" 
-      d:DesignHeight="522" d:DesignWidth="576"
+      d:DesignHeight="572" d:DesignWidth="576"
       Title="newPatientPage">
 
     <Border Grid.Row="1" CornerRadius="0 0 19 19" Background="{StaticResource lighterColor}" >
         <Grid Margin="10">
             <Grid.RowDefinitions>
+                <RowDefinition Height="10*"/>
                 <RowDefinition Height="10*"/>
                 <RowDefinition Height="10*"/>
                 <RowDefinition Height="10*"/>
@@ -33,11 +34,14 @@
             </Grid.ColumnDefinitions>
 
             <TextBlock TextWrapping="Wrap" Grid.Row="0" Text="*First Name:" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{StaticResource lightFontColor}" FontSize="18" FontWeight="Bold"/>
-            <TextBlock TextWrapping="Wrap" Grid.Row="0" Grid.Column="3" Text="*Last Name:" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{StaticResource lightFontColor}" FontSize="18" FontWeight="Bold"/>
-            <TextBlock TextWrapping="Wrap" Grid.Row="1" Text="*Birthdate:" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{StaticResource lightFontColor}" FontSize="17" FontWeight="Bold"/>
-            <TextBox Name="firstNameTextBox" Grid.Column="1" Grid.ColumnSpan="2" Margin="-20 15 10 15" Background="{StaticResource lightFontColor}" Foreground="{StaticResource darkerColor}"/>
-            <TextBox Name="lastNameTextBox" Foreground="{StaticResource darkerColor}" Grid.Column="4" Grid.ColumnSpan="2" Margin="-10 15 10 15" Background="{StaticResource lightFontColor}"/>
-            <DatePicker Name="bdDatePicker" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" VerticalAlignment="Center" FontSize="14" Margin="10" Foreground="{StaticResource darkerColor}"/>
+            <TextBlock TextWrapping="Wrap" Grid.Row="0" Grid.Column="2" Text="*Last Name:" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{StaticResource lightFontColor}" FontSize="18" FontWeight="Bold"/>
+            <TextBlock TextWrapping="Wrap" Grid.Row="0" Grid.Column="4" Text="*Age:" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{StaticResource lightFontColor}" FontSize="17" FontWeight="Bold"/>
+            
+            <TextBox Name="ageTextBox" Foreground="{StaticResource darkerColor}" VerticalAlignment="Center" Grid.Column="5" Grid.Row="0" Margin="-15 0 5 0" Background="{StaticResource lightFontColor}"/>
+
+            <TextBox Name="firstNameTextBox" Grid.Column="1" Margin="-20 15 -10 15" Background="{StaticResource lightFontColor}" Foreground="{StaticResource darkerColor}"/>
+            <TextBox Name="lastNameTextBox" Foreground="{StaticResource darkerColor}" Grid.Column="3" Margin="-10 15 -10 15" Background="{StaticResource lightFontColor}"/>
+
             <TextBlock TextWrapping="Wrap" Grid.Row="1" Grid.Column="3" Text="*Gender:" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{StaticResource lightFontColor}" FontSize="18" FontWeight="Bold"/>
             <Viewbox Margin="15" Grid.Column="4" Grid.Row="1" >
                 <RadioButton Name="maleRB" Content="Male" Foreground="{StaticResource lightFontColor}" GroupName="genderGroup" IsChecked="True"/>
@@ -50,10 +54,15 @@
             <TextBox Name="addressTextBox" Foreground="{StaticResource darkerColor}" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" Margin="-10 15 -30 15" Background="{StaticResource lightFontColor}"/>
             <TextBlock TextWrapping="Wrap" Grid.Row="2" Grid.Column="3" Text="Referring Physician:" Grid.ColumnSpan="2" VerticalAlignment="Center" Margin="40 0 0 -5" Foreground="{StaticResource lightFontColor}" FontSize="18" FontWeight="Bold"/>
             <TextBox Name="cityTextBox" Foreground="{StaticResource darkerColor}" TextAlignment="Center" Grid.Column="5" Grid.Row="2" Margin="-40 15 10 15" Background="{StaticResource lightFontColor}" />
-            <TextBlock TextWrapping="Wrap" Grid.Row="3" Grid.Column="0" Text="*Phone Number:" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{StaticResource lightFontColor}" FontSize="18" FontWeight="Bold"/>
-            <TextBox Name="phoneTextBox" Foreground="{StaticResource darkerColor}" Grid.Column="2" Grid.Row="3" Grid.ColumnSpan="1" Margin="-40 15 10 15" Background="{StaticResource lightFontColor}"/>
+            <TextBlock TextWrapping="Wrap" Grid.Row="1" Grid.Column="0" Text="*Phone Number:" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{StaticResource lightFontColor}" FontSize="18" FontWeight="Bold"/>
+            <TextBox Name="phoneTextBox" Foreground="{StaticResource darkerColor}" Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="1" Margin="-40 15 10 15" Background="{StaticResource lightFontColor}"/>
+            <TextBlock TextWrapping="Wrap" Grid.Row="3" Grid.Column="0" Text="*Height:" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{StaticResource lightFontColor}" FontSize="18" FontWeight="Bold"/>
+            <TextBlock TextWrapping="Wrap" Margin="0 0 -25 0" Grid.Row="3" Grid.Column="1" Text="*Width:" VerticalAlignment="Center" HorizontalAlignment="Right" Foreground="{StaticResource lightFontColor}" FontSize="18" FontWeight="Bold"/>
+            <TextBox Name="heightTextBox" Foreground="{StaticResource darkerColor}" Grid.Column="0" Grid.Row="3" Margin="78,17,50,13" Background="{StaticResource lightFontColor}" Grid.ColumnSpan="2"/>
+            <TextBox Name="widthTextBox" Foreground="{StaticResource darkerColor}" Grid.Column="2" Grid.Row="3" Margin="31,17,5,13" Background="{StaticResource lightFontColor}"/>
+
             <!--Chronic-->
-            <Border Style="{StaticResource theBorder}"  BorderBrush="{StaticResource darkerColor}" BorderThickness="2" CornerRadius="5" Margin="10" Grid.Row="4" Grid.ColumnSpan="3" Grid.RowSpan="6" Grid.Column="0">
+            <Border Style="{StaticResource theBorder}"  BorderBrush="{StaticResource darkerColor}" BorderThickness="2" CornerRadius="5" Margin="10" Grid.Row="4" Grid.ColumnSpan="3" Grid.RowSpan="7" Grid.Column="0">
                 <Grid Margin="5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="3*"/>
@@ -67,13 +76,14 @@
                         <RowDefinition Height="1*"/>
                         <RowDefinition Height="1*"/>
                         <RowDefinition Height="1*"/>
+                        <RowDefinition Height="1*"/>
                     </Grid.RowDefinitions>
-                    <Label Content="Chronic diseases" Foreground="{StaticResource darkerColor}" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="15" FontWeight="Bold" Margin="0,-2,0,0"/>
+                    <Label Content="Chronic diseases" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="15" FontWeight="Bold" Margin="0,-2,0,0"/>
                     <TextBox Name="searchChronicDiseaseTXTBOX" Foreground="{StaticResource darkerColor}" TextAlignment="Center" Grid.Column="0" Grid.Row="1" Margin="5" Background="{StaticResource lightFontColor}" />
-                    <Border Name="addChronicBTN"  Style="{StaticResource theBorder}" BorderBrush="{StaticResource lighterColor}" Background="{StaticResource darkerColor}" Margin="5" BorderThickness="2" CornerRadius="5" Grid.Row="1" Grid.Column="1" MouseDown="addChronic">
+                    <Border Name="addChronicBTN"  Style="{StaticResource theBorder}" BorderBrush="{StaticResource lighterColor}"  Margin="5" BorderThickness="2" CornerRadius="5" Grid.Row="1" Grid.Column="1" MouseDown="addChronic">
                         <Label Content="Add" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="9" FontWeight="Bold" Margin="0,-3,0,0"/>
                     </Border>
-                    <Border Style="{StaticResource theBorder}"  BorderBrush="{StaticResource darkerColor}" BorderThickness="2" CornerRadius="5" Margin="10" Grid.Row="2" Grid.ColumnSpan="3" Grid.RowSpan="5" Grid.Column="0">
+                    <Border Style="{StaticResource theBorder}"  BorderBrush="{StaticResource lighterColor}" BorderThickness="2" CornerRadius="5" Margin="2" Grid.Row="2" Grid.ColumnSpan="2" Grid.RowSpan="6" Grid.Column="0">
 
                         <DataGrid Grid.Row="2" Grid.RowSpan="5" Grid.ColumnSpan="2" Margin="10" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="selectedChronicDataGrid" Style="{DynamicResource DataGridStyle1}">
                             <DataGrid.Columns>
@@ -99,7 +109,7 @@
             </Border>
 
             <!--prev injuries-->
-            <Border Style="{StaticResource theBorder}"  BorderBrush="{StaticResource darkerColor}" BorderThickness="2" CornerRadius="5" Margin="10" Grid.Row="3" Grid.ColumnSpan="3" Grid.RowSpan="6" Grid.Column="3">
+            <Border Style="{StaticResource theBorder}"  BorderBrush="{StaticResource darkerColor}" BorderThickness="2" CornerRadius="5" Margin="10" Grid.Row="3" Grid.ColumnSpan="3" Grid.RowSpan="7" Grid.Column="3">
                 <Grid Margin="5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="3*"/>
@@ -113,15 +123,16 @@
                         <RowDefinition Height="1*"/>
                         <RowDefinition Height="1*"/>
                         <RowDefinition Height="1*"/>
+                        <RowDefinition Height="1*"/>
                     </Grid.RowDefinitions>
-                    <Label Content="Previous Injuries" Foreground="{StaticResource darkerColor}" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="15" FontWeight="Bold" Margin="0,-2,0,0"/>
-                    <TextBox Name="searchInjuriesTXTBOX" Foreground="{StaticResource darkerColor}" TextAlignment="Center" Grid.Column="0" Grid.Row="1" Margin="5" Background="{StaticResource lightFontColor}" />
+                    <Label Content="Previous Injuries" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="15" FontWeight="Bold" Margin="0,-2,0,0"/>
+                    <TextBox Name="searchInjuriesTXTBOX" Foreground="{StaticResource lightFontColor}" TextAlignment="Center" Grid.Column="0" Grid.Row="1" Margin="5" Background="{StaticResource lightFontColor}" />
                     <Border Name="addInjuryBTN"  Style="{StaticResource theBorder}" BorderBrush="{StaticResource lighterColor}" Background="{StaticResource darkerColor}" Margin="5" BorderThickness="2" CornerRadius="5" Grid.Row="1" Grid.Column="1" MouseDown="addChronic">
                         <Label Content="Add" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="9" FontWeight="Bold" Margin="0,-3,0,0"/>
                     </Border>
-                    <Border Style="{StaticResource theBorder}"  BorderBrush="{StaticResource darkerColor}" BorderThickness="2" CornerRadius="5" Margin="10" Grid.Row="2" Grid.ColumnSpan="3" Grid.RowSpan="5" Grid.Column="0">
+                    <Border Style="{StaticResource theBorder}"  BorderBrush="{StaticResource lighterColor}" BorderThickness="2" CornerRadius="5" Margin="3" Grid.Row="2" Grid.ColumnSpan="3" Grid.RowSpan="6" Grid.Column="0">
 
-                        <DataGrid Grid.Row="2" Grid.RowSpan="5" Grid.ColumnSpan="2" Margin="10" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="selectedInjuriesDataGrid" Style="{DynamicResource DataGridStyle1}">
+                        <DataGrid Grid.Row="2" Grid.RowSpan="6" Grid.ColumnSpan="2" Margin="10" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="selectedInjuriesDataGrid" Style="{DynamicResource DataGridStyle1}">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" Binding="{Binding PhysioTherapistID}"/>
                                 <DataGridTextColumn Header="Name" Binding="{Binding Name}" IsReadOnly="True" Width="*"/>
@@ -144,12 +155,12 @@
                 </Grid>
             </Border>
 
-            <Viewbox Grid.Row="9" Grid.Column="3" Grid.ColumnSpan="2" HorizontalAlignment="Left">
+            <Viewbox Grid.Row="10" Grid.Column="3" Grid.ColumnSpan="2" HorizontalAlignment="Left">
 
-                <CheckBox Content="Previous PhysioTherapy sessions" VerticalAlignment="Center" Foreground="{StaticResource lightFontColor}" FontSize="14"/>
+                <CheckBox Content="Previous PhysioTherapy sessions" VerticalAlignment="Center" Foreground="{StaticResource darkerColor}" FontWeight="Bold" FontSize="14"/>
             </Viewbox>
-            <Border Name="saveBTN" Style="{StaticResource theBorder}" BorderBrush="{StaticResource lightFontColor}" BorderThickness="2" CornerRadius="5" Margin="10" Grid.Row="9" Grid.Column="5" MouseDown="save">
-                <Label Content="Save" Foreground="{StaticResource darkerColor}" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="15" FontWeight="Bold" Margin="0,-2,0,0"/>
+            <Border Name="saveBTN" Style="{StaticResource theBorder}" BorderBrush="{StaticResource lightFontColor}" BorderThickness="2" CornerRadius="5" Margin="10" Grid.Row="10" Grid.Column="5" MouseDown="save">
+                <Label Content="Save" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="15" FontWeight="Bold" Margin="0,-2,0,0"/>
             </Border>
         </Grid>
     </Border>

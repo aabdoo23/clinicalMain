@@ -22,7 +22,7 @@ namespace clinical
             new globals();
             InitializeComponent();
             new DB();
-            DB.AddAdminToTable(new BaseClasses.Admin(2, "aaggg", "123123", 22));
+
         }
         private void Border_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {

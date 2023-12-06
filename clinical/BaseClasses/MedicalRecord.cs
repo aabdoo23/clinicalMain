@@ -4,26 +4,31 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-
 namespace clinical.BaseClasses
 {
-    class MedicalRecord
+    public class MedicalRecord
     {
-        public MedicalRecord(int recordID, int patientID, DateTime recordDate, string description, string type)
+        public int RecordID { get; set; }
+        public string Type { get; set; }
+        public DateTime TimeStamp { get; set; }
+        public string Report { get; set; }
+        public List<string> Images { get; set; }
+        public int VisitID { get; set; }
+        public int PatientID { get; set; }
+        public string PhysicianNotes { get; set; }
+
+        // Constructor
+        public MedicalRecord(int recordID, string type, DateTime timeStamp, string report, List<string> images, int visitID, int patientID, string physicianNotes)
         {
             RecordID = recordID;
+            Type = type;
+            TimeStamp = timeStamp;
+            Report = report;
+            Images = images;
+            VisitID = visitID;
             PatientID = patientID;
-            RecordDate = recordDate;
-            Description = description;
-            Type=type;
+            PhysicianNotes = physicianNotes;
         }
 
-        public int RecordID { get; set; }
-        public int PatientID { get; set; }
-        public DateTime RecordDate { get; set; }
-        public string Description { get; set; }
-        public string Type { get; set; }
-
-       
     }
 }

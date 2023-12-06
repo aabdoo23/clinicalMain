@@ -1,27 +1,33 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace clinical.BaseClasses
 {
-    class Visit
+    public class Visit
     {
-        public Visit(int visitID, int patientID, int physioTherapistID, DateTime date, string reason, string doctorNotes, int roomID)
+        public int VisitID { get; set; }
+        public int PhysiotherapistID { get; set; }
+        public int PatientID { get; set; }
+        public int PackageID { get; set; }
+        public DateTime TimeStamp { get; set; }
+        public int RoomID { get; set; }
+        public string Type { get; set; }
+        public string TherapistNotes { get; set; }
+
+        // Constructor
+        public Visit(int visitID, int physiotherapistID, int patientID, int packageID, DateTime timeStamp, int roomID, string type, string therapistNotes)
         {
             VisitID = visitID;
+            PhysiotherapistID = physiotherapistID;
             PatientID = patientID;
-            Date = date;
-            Reason = reason;
-            DoctorNotes = doctorNotes;
-            PhysioTherapistID = physioTherapistID;
+            PackageID = packageID;
+            TimeStamp = timeStamp;
             RoomID = roomID;
+            Type = type;
+            TherapistNotes = therapistNotes;
         }
-
-        public int VisitID { get; set; }
-        public int PatientID { get; set; }
-        public DateTime Date { get; set; }
-        public string Reason { get; set; }
-        public string DoctorNotes { get; set; }
-        public int PhysioTherapistID { get; set; }
-        public int RoomID { get; set; }
-        
     }
 }

@@ -23,7 +23,7 @@ namespace clinical.Pages
         public ReceptionistDashboard()
         {
             InitializeComponent();
-            patientsDataGrid.ItemsSource = DB.GetAllPatients();
+            //patientsDataGrid.ItemsSource = DB.GetAllPatients();
 
         }
 

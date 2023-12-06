@@ -28,15 +28,15 @@ namespace clinical.Pages
         {
             InitializeComponent();
             patientIDTxt.Text = patient.PatientID.ToString();
-            patientNameMainTxt.Text = patient.Name;
-            patientNameTxt.Text = patient.Name;
-            ageTxt.Text = patient.Age.ToString();
+            patientNameMainTxt.Text = patient.FirstName+" "+patient.LastName;
+            patientNameTxt.Text = patient.FirstName + " " + patient.LastName;
+            ageTxt.Text = patient.Age().ToString();
             contactInfoTxt.Text = patient.PhoneNumber;
 
             medicalRecords = new ObservableCollection<MedicalRecord>
             {
-                new MedicalRecord(1,patient.PatientID,new DateTime(2023,2,23),"good","Lab Results"),
-                new MedicalRecord(2,patient.PatientID,new DateTime(2023,2,23),"good","Screen Results")
+                //new MedicalRecord(1,patient.PatientID,new DateTime(2023,2,23),"good","Lab Results"),
+                //new MedicalRecord(2,patient.PatientID,new DateTime(2023,2,23),"good","Screen Results")
             };
 
             medicalRecordsDataGrid.ItemsSource = medicalRecords;
@@ -55,6 +55,16 @@ namespace clinical.Pages
         private void newMedicalRecord(object sender, MouseButtonEventArgs e)
         {
             NavigationService.Navigate(new newRecordPage());
+
+        }
+
+        private void enableNotes(object sender, MouseButtonEventArgs e)
+        {
+            noteTXT.IsEnabled=!noteTXT.IsEnabled;
+        }
+
+        private void editPersonalInfo(object sender, MouseButtonEventArgs e)
+        {
 
         }
     }

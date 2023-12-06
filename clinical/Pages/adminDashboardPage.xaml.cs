@@ -23,9 +23,9 @@ namespace clinical.Pages
         public adminDashboardPage()
         {
             InitializeComponent();
-            employeesDataGrid.ItemsSource=DB.GetAllEmployees();
-            physiciansDataGrid.ItemsSource = DB.GetAllPhysioTherapists();
-            employeesDataGrid.ItemsSource = DB.GetAllEmployees();
+            //employeesDataGrid.ItemsSource=DB.GetAllEmployees();
+            //physiciansDataGrid.ItemsSource = DB.GetAllPhysioTherapists();
+            //employeesDataGrid.ItemsSource = DB.GetAllEmployees();
         }
 
         private void view_Click(object sender, RoutedEventArgs e)

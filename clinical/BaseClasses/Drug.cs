@@ -6,16 +6,19 @@ using System.Threading.Tasks;
 
 namespace clinical.BaseClasses
 {
-    class Drug
+    public class Drug
     {
-        int DrugID { set; get; }    
-        String Name {  set; get; }
-        int Frequency {set; get; }
-        Drug(int drugID, string name, int frequency)
+        public int DrugID { get; set; }
+        public string DrugName { get; set; }
+        public string NormalDosage { get; set; }
+        public string Notes { get; set; }
+
+        public Drug(int drugID, string drugName, string normalDosage, string notes)
         {
             DrugID = drugID;
-            Name = name;
-            Frequency = frequency;
-        }   
+            DrugName = drugName;
+            NormalDosage = normalDosage;
+            Notes = notes;
+        }
     }
 }

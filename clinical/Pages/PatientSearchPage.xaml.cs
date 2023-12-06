@@ -14,7 +14,7 @@ namespace clinical.Pages
         {
             InitializeComponent();
 
-            patientsDataGrid.ItemsSource = DB.GetAllPatients();
+            //patientsDataGrid.ItemsSource = DB.GetAllPatients();
         }
 
         private void view_Click(object sender, RoutedEventArgs e)

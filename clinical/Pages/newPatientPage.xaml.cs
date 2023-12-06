@@ -17,10 +17,25 @@ namespace clinical.Pages
     /// </summary>
     public partial class newPatientPage : Page
     {
-        public newPatientPage()
+        bool edit=false;
+        Patient patient;
+        public newPatientPage(Patient toEdit)
         {
             InitializeComponent();
-            bdDatePicker.SelectedDate=DateTime.Now;
+            if (toEdit == null) edit = false;
+            else { edit = true; patient = toEdit; }
+
+            if (edit &&toEdit!=null)
+            {
+                firstNameTextBox.Text = toEdit.FirstName;
+                lastNameTextBox.Text= toEdit.LastName;
+                if(toEdit.Gender=="Male")maleRB.IsChecked=true;
+                else maleRB.IsChecked=false;
+                addressTextBox.Text=toEdit.Address.Split(", ")[0];
+                cityTextBox.Text=toEdit.Address.Split(", ")[1];
+                phoneTextBox.Text = toEdit.PhoneNumber;
+                ageTextBox.Text = toEdit.Age().ToString();
+            }
         }
 
         private void save(object sender, MouseButtonEventArgs e)
@@ -36,13 +51,10 @@ namespace clinical.Pages
             else gender = "Female";
             string address= addressTextBox.Text+", "+cityTextBox.Text;
             string phone= phoneTextBox.Text;
-            DateTime bd=DateTime.Now;
-            if (bdDatePicker.SelectedDate.HasValue)
-                bd = bdDatePicker.SelectedDate.Value;
+            DateTime bd = globals.CalculateBirthdate(int.Parse(ageTextBox.Text));
 
-            Random r = new Random();
-            Patient newPatient = new Patient(r.Next(1, 100),name,address,bd,phone,gender);
-            DB.InsertPatient(newPatient);
+            //Patient newPatient = new Patient(globals.generateNewPatientID(),name,address,bd,phone,gender);
+            //DB.InsertPatient(newPatient);
         }
 
         private void addChronic(object sender, MouseButtonEventArgs e)

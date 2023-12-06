@@ -50,8 +50,8 @@ namespace clinical.Pages
             string nid = NIDTextBox.Text;
             Random r = new Random();
 
-            PhysioTherapist physio = new PhysioTherapist(r.Next(1, 100), name, bd, phone, nid, hd,address);
-            DB.InsertPhysioTherapist(physio);
+            //PhysioTherapist physio = new PhysioTherapist(r.Next(1, 100), name, bd, phone, nid, hd,address);
+            //DB.InsertPhysioTherapist(physio);
         }
 
         private void nowCheck(object sender, RoutedEventArgs e)

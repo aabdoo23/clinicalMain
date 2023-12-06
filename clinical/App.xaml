@@ -7,10 +7,10 @@
              StartupUri="loginPage.xaml">
     <Application.Resources>
 
-        <SolidColorBrush x:Key="darkerColor" Color="#FF2E2E2E"/>
-        <SolidColorBrush x:Key="lighterColor" Color="#FF4D4D4D"/>
-        <SolidColorBrush x:Key="selectedColor" Color="#FF3F3F3E"/>
-        <SolidColorBrush x:Key="lightFontColor" Color="#FFD6D6D6"/>
+        <SolidColorBrush x:Key="darkerColor" Color="#2f3e46"/>
+        <SolidColorBrush x:Key="lighterColor" Color="#708d81"/>
+        <SolidColorBrush x:Key="selectedColor" Color="#354f52"/>
+        <SolidColorBrush x:Key="lightFontColor" Color="#FFD7E2D0"/>
         
 
         <Style x:Key="menuButton" TargetType="Button">
@@ -70,15 +70,16 @@
         </Style>
 
         <Style x:Key="theBorder" TargetType="Border">
-            <Setter Property="Background" Value="{StaticResource lightFontColor}"/>
+            <Setter Property="Background" Value="{StaticResource darkerColor}"/>
             <Setter Property="CornerRadius" Value="20"/>
             <Setter Property="Margin" Value="10 0 10 10"/>
         </Style>
 
         <Style x:Key="searchTextbox" TargetType="TextBox">
-            <Setter Property="Background" Value="#f3f3f3"/>
-            <Setter Property="Foreground" Value="#594f7f"/>
-            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Background" Value="{StaticResource lighterColor}"/>
+            <Setter Property="Foreground" Value="{StaticResource lightFontColor}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource darkerColor}"/>
+            <Setter Property="BorderThickness" Value="2"/>
             <Setter Property="FontSize" Value="12"/>
             <Setter Property="Padding" Value="40 13 15 13"/>
             <Setter Property="VerticalAlignment" Value="Center"/>
@@ -470,7 +471,7 @@
         <Style x:Key="DataGridColumnHeaderStyle1" TargetType="{x:Type DataGridColumnHeader}">
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="Background" Value="Transparent" />
-            <Setter Property="Foreground" Value="{StaticResource darkerColor}" />
+            <Setter Property="Foreground" Value="{StaticResource lightFontColor}" />
             <Setter Property="Margin" Value="15 0 15 10" />
             <Setter Property="Template">
                 <Setter.Value>
@@ -1172,7 +1173,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ToggleButton}">
-                        <Border x:Name="templateRoot" Background="{StaticResource lightFontColor}" BorderThickness="0" CornerRadius="20" SnapsToDevicePixels="true">
+                        <Border x:Name="templateRoot" Background="{StaticResource lightFontColor}" BorderThickness="0" CornerRadius="10" SnapsToDevicePixels="true">
                             <Border x:Name="splitBorder" BorderThickness="1" BorderBrush="Transparent" HorizontalAlignment="Right" Margin="0 0 0 0" SnapsToDevicePixels="true" Width="{DynamicResource {x:Static SystemParameters.VerticalScrollBarWidthKey}}">
                                 <Path x:Name="arrow" Data="F1 M 0,0 L 2.667,2.66665 L 5.3334,0 L 5.3334,-1.78168 L 2.6667,0.88501 L0,-1.78168 L0,0 Z" Fill="#868686" HorizontalAlignment="Left" Margin="0 4 0 0" VerticalAlignment="Center"/>
                             </Border>

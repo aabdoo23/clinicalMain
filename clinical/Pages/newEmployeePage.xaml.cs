@@ -37,7 +37,7 @@ namespace clinical.Pages
                 gender = "Male";
             }
             else gender = "Female";
-            string address = addressTextBox.Text + ", " + cityTextBox.Text;
+            string address = addressTextBox.Text;
             string phone = phoneTextBox.Text;
             DateTime bd = DateTime.Now;
             if (bdDatePicker.SelectedDate.HasValue)
@@ -50,8 +50,8 @@ namespace clinical.Pages
             string nid = NIDTextBox.Text;
             Random r = new Random();
 
-            Employee physio = new Employee(r.Next(1, 100), name, bd, phone,"2", nid, hd);
-            DB.InsertEmployee(physio);
+            //Employee physio = new Employee(r.Next(1, 100), name, bd, phone,"2", nid, hd);
+            //DB.InsertEmployee(physio);
         }
 
         private void nowCheck(object sender, RoutedEventArgs e)

@@ -48,5 +48,15 @@ namespace clinical
         {
 
         }
+
+        private void newExcersice(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
+        private void newTreatment(object sender, MouseButtonEventArgs e)
+        {
+
+        }
     }
 }
