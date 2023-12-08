@@ -24,13 +24,14 @@ namespace clinical.Pages
         public newEmployeePage()
         {
             InitializeComponent();
+            bdDatePicker.SelectedDate = DateTime.Now;
+            hiringDatePicker.SelectedDate = DateTime.Now;
         }
 
         private void save(object sender, MouseButtonEventArgs e)
         {
             string fn = firstNameTextBox.Text;
             string ln = lastNameTextBox.Text;
-            string name = fn + " " + ln;
             string gender;
             if (maleRB.IsChecked == true)
             {
@@ -48,10 +49,14 @@ namespace clinical.Pages
                 hd = hiringDatePicker.SelectedDate.Value;
 
             string nid = NIDTextBox.Text;
-            Random r = new Random();
+            string email = emailTextBox.Text;
 
-            //Employee physio = new Employee(r.Next(1, 100), name, bd, phone,"2", nid, hd);
-            //DB.InsertEmployee(physio);
+            User user = new User(globals.generateNewEmployeeID(fn, nid), fn.Trim(), ln.Trim(), gender.Trim(), hd, bd, address.Trim(), phone.Trim(), email.Trim(), nid.Trim());
+            DB.InsertUser(user);
+
+            MessageBox.Show("Successfully added new Employee, ID: " + user.UserID, "Success");
+
+            Window.GetWindow(this).Close();
         }
 
         private void nowCheck(object sender, RoutedEventArgs e)

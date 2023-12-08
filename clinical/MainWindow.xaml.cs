@@ -1,4 +1,5 @@
-﻿using clinical.Pages;
+﻿using clinical.BaseClasses;
+using clinical.Pages;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -10,17 +11,19 @@ namespace clinical
     /// </summary>
     public partial class MainWindow : Window
     {
+        User loggedIn;
         int state;
-        public MainWindow(int stat)
+        public MainWindow(int stat,User user)
         {
+            loggedIn=user;
             state = stat;
             InitializeComponent();
             homeBTN.Focus();
             if(state==1)
-                mainFrame.Navigate(new adminDashboardPage());
+                mainFrame.Navigate(new adminDashboardPage(user));
             else if(state==2)
-                mainFrame.Navigate(new PhysioTherapistDashboard());
-            else mainFrame.Navigate(new ReceptionistDashboard());
+                mainFrame.Navigate(new PhysioTherapistDashboard(user));
+            else mainFrame.Navigate(new ReceptionistDashboard(user));
         }
 
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)
@@ -35,10 +38,10 @@ namespace clinical
         {
 
             if (state == 1)
-                mainFrame.Navigate(new adminDashboardPage());
+                mainFrame.Navigate(new adminDashboardPage(loggedIn));
             else if (state == 2)
-                mainFrame.Navigate(new PhysioTherapistDashboard());
-            else mainFrame.Navigate(new ReceptionistDashboard());
+                mainFrame.Navigate(new PhysioTherapistDashboard(loggedIn));
+            else mainFrame.Navigate(new ReceptionistDashboard(loggedIn));
 
         }
 

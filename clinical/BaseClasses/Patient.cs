@@ -16,9 +16,10 @@ namespace clinical.BaseClasses
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
         public string Address { get; set; }
-        public List<string> ChronicDiseasesIDs { get; set; }
+        public List<int> ChronicDiseasesIDs { get; set; }
         public List<int> PreviousInjuriesIDs { get; set; }
         public bool Referred { get; set; }
+        public User Physician { get; set; }
         public bool PreviouslyTreated { get; set; }
         public double Height { get; set; }
         public double Weight { get; set; }
@@ -28,8 +29,9 @@ namespace clinical.BaseClasses
         public Patient(int patientID, string firstName, string lastname, 
             DateTime birthdate, string gender, string phoneNumber, 
             string email, string address, 
-            List<string> chronicDiseasesIDs, 
+            List<int> chronicDiseasesIDs, 
             List<int> previousInjuriesIDs, 
+            User physician,
             bool referred, bool previouslyTreated, double height, 
             double weight, double dueAmount)
         {
@@ -43,6 +45,7 @@ namespace clinical.BaseClasses
             Address = address;
             ChronicDiseasesIDs = chronicDiseasesIDs;
             PreviousInjuriesIDs = previousInjuriesIDs;
+            Physician = physician;
             Referred = referred;
             PreviouslyTreated = previouslyTreated;
             Height = height;

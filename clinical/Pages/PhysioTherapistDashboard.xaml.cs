@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using clinical.BaseClasses;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace clinical.Pages
@@ -8,7 +9,7 @@ namespace clinical.Pages
     /// </summary>
     public partial class PhysioTherapistDashboard : Page
     {
-        public PhysioTherapistDashboard()
+        public PhysioTherapistDashboard(User therapist)
         {
 
             InitializeComponent();

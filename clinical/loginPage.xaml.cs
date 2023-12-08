@@ -1,4 +1,5 @@
-﻿using System;
+﻿using clinical.BaseClasses;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +23,7 @@ namespace clinical
             new globals();
             InitializeComponent();
             new DB();
+            //DB.InsertUser(new User("A123", "Abdelrahman", "Saleh", "Male", DateTime.Now, DateTime.MinValue, "address", "0100010100", "emaily", "NID"));
 
         }
         private void Border_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -35,33 +37,33 @@ namespace clinical
             Application.Current.Shutdown();
         }
 
-        private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
-        {
-            if (!string.IsNullOrEmpty(passwordBox.Password) && passwordBox.Password.Length > 0)
-                textPassword.Visibility = Visibility.Collapsed;
-            else
-                textPassword.Visibility = Visibility.Visible;
-        }
+        //private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        //{
+        //    if (!string.IsNullOrEmpty(passwordBox.Password) && passwordBox.Password.Length > 0)
+        //        textPassword.Visibility = Visibility.Collapsed;
+        //    else
+        //        textPassword.Visibility = Visibility.Visible;
+        //}
 
-        private void textPassword_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            passwordBox.Focus();
-        }
+        //private void textPassword_MouseDown(object sender, MouseButtonEventArgs e)
+        //{
+        //    passwordBox.Focus();
+        //}
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            if (!string.IsNullOrEmpty(txtEmail.Text) && !string.IsNullOrEmpty(passwordBox.Password))
-            {
-                MessageBox.Show("Successfully Signed In");
-            }
-        }
+        //private void Button_Click(object sender, RoutedEventArgs e)
+        //{
+        //    if (!string.IsNullOrEmpty(txtEmail.Text) && !string.IsNullOrEmpty(passwordBox.Password))
+        //    {
+        //        MessageBox.Show("Successfully Signed In");
+        //    }
+        //}
 
         private void txtEmail_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {
             if (!string.IsNullOrEmpty(txtEmail.Text) && txtEmail.Text.Length > 0)
-                textEmail.Visibility = Visibility.Collapsed;
+                textEmailHint.Visibility = Visibility.Collapsed;
             else
-                textEmail.Visibility = Visibility.Visible;
+                textEmailHint.Visibility = Visibility.Visible;
         }
 
         private void textEmail_MouseDown(object sender, MouseButtonEventArgs e)
@@ -71,13 +73,26 @@ namespace clinical
 
         private void logInBTN_Click(object sender, RoutedEventArgs e)
         {
-            int s;
-            if (txtEmail.Text.StartsWith("a")) s = 1;
-            else if (txtEmail.Text.StartsWith("p")) s = 2;
-            else s = 3;
-            MainWindow mainWindow= new MainWindow(s);
-            mainWindow.Show();
-            this.Close();
+
+            User user=DB.GetUserById(txtEmail.Text.Trim());
+            if (user != null)
+            {
+                //MessageBox.Show("Successfully Signed In"+user.HireDate.ToString());
+                int s;
+                if (txtEmail.Text.StartsWith("A")) s = 1;
+                else if (txtEmail.Text.StartsWith("P")) s = 2;
+                else s = 3;
+                MainWindow mainWindow = new MainWindow(s,user);
+                mainWindow.Show();
+                this.Close();
+
+
+            }
+            else if (user==null) { 
+                MessageBox.Show("Invalid ID");
+            }
+            
+
         }
     }
 

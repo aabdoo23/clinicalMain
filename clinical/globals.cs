@@ -31,37 +31,37 @@ namespace clinical
             return int.Parse(s);
             
         }
-        public static string generateNewPhysicianID(User ph )
+        public static string generateNewPhysicianID(string fn,string nid )
         {
             DateTime dateTime = DateTime.Now;
             string s = "P";
-            s += ph.FirstName[0];
-            s += ph.FirstName[1];
-            s += ph.NationalID[10];
-            s += ph.NationalID[11];
-            s += ph.NationalID[12];
-            s += ph.NationalID[13];
+            s += fn[0];
+            s += fn[1];
+            s += nid[10];
+            s += nid[11];
+            s += nid[12];
+            s += nid[13];
             return s;
             
         }
-        public static string generateNewEmployeeID(User ph)
+        public static string generateNewEmployeeID(string fn, string nid)
         {
             DateTime dateTime = DateTime.Now;
             string s = "E";
-            s += ph.FirstName[0];
-            s += ph.FirstName[1];
-            s += ph.NationalID[10];
-            s += ph.NationalID[11];
-            s += ph.NationalID[12];
-            s += ph.NationalID[13];
+            s += fn[0];
+            s += fn[1];
+            s += nid[10];
+            s += nid[11];
+            s += nid[12];
+            s += nid[13];
             return s;
             
         }
-        public static string generateNewAdminID(User ph)
+        public static string generateNewAdminID(string fn)
         {
             string s = "A";
-            s += ph.FirstName[0];
-            s += ph.FirstName[1];
+            s += fn[0];
+            s += fn[1];
             return s;
 
         }

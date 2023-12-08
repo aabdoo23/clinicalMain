@@ -21,20 +21,20 @@
             <RowDefinition Height="40*"/>
         </Grid.RowDefinitions>
         <!--Physicians-->
-        <Border Style="{StaticResource theBorder}" Background="{StaticResource lightFontColor}">
+        <Border Style="{StaticResource theBorder}">
             <Grid Margin="10">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="17*"/>
                     <RowDefinition Height="87*"/>
                 </Grid.RowDefinitions>
-                <TextBlock Text="Physicians" Margin="5" VerticalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource darkerColor}" FontSize="25"/>
-                <Icon:PackIconMaterial Kind="PlusBox" Foreground="{StaticResource darkerColor}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Width="30" Height="30" Margin="0 0 10 0" MouseDown="newPhysician"/>
+                <TextBlock Text="Physicians" Margin="5" VerticalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource lightFontColor}" FontSize="25"/>
+                <Icon:PackIconMaterial Kind="PlusBox" Foreground="{StaticResource lightFontColor}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Width="30" Height="30" Margin="0 0 10 0" MouseDown="newPhysician"/>
 
                 <DataGrid Grid.Row="1" Margin="10" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="physiciansDataGrid" Style="{DynamicResource DataGridStyle1}">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" Binding="{Binding PhysioTherapistID}"/>
-                        <DataGridTextColumn Header="Name" Binding="{Binding Name}" IsReadOnly="True" Width="*"/>
-                        <DataGridTextColumn Header="Phone Number" Binding="{Binding ContactInfo}" IsReadOnly="True" Width="*"/>
+                        <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" Binding="{Binding UserID}"/>
+                        <DataGridTextColumn Header="Name" Binding="{Binding FirstName}" IsReadOnly="True" Width="*"/>
+                        <DataGridTextColumn Header="Phone Number" Binding="{Binding PhoneNumber}" IsReadOnly="True" Width="*"/>
                         <DataGridTemplateColumn Header="Details" IsReadOnly="True" Width="auto">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
@@ -55,14 +55,14 @@
             </Grid>
         </Border>
         <!--Physicians-->
-        <Border Grid.Row="1" Margin="10" Grid.RowSpan="2" Style="{StaticResource theBorder}" Background="{StaticResource lightFontColor}">
+        <Border Grid.Row="1" Margin="10" Grid.RowSpan="2" Style="{StaticResource theBorder}">
             <Grid Margin="10">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="17*"/>
                     <RowDefinition Height="87*"/>
                 </Grid.RowDefinitions>
-                <TextBlock Text="Employees" Margin="5" VerticalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource darkerColor}" FontSize="25"/>
-                <Icon:PackIconMaterial Kind="PlusBox" Foreground="{StaticResource darkerColor}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Width="30" Height="30" Margin="0 0 10 0" MouseDown="newEmployee"/>
+                <TextBlock Text="Employees" Margin="5" VerticalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource lightFontColor}" FontSize="25"/>
+                <Icon:PackIconMaterial Kind="PlusBox" Foreground="{StaticResource lightFontColor}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Width="30" Height="30" Margin="0 0 10 0" MouseDown="newEmployee"/>
 
                 <DataGrid Grid.Row="1" Margin="10" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="employeesDataGrid" Style="{DynamicResource DataGridStyle1}">
                     <DataGrid.Columns>
@@ -90,14 +90,14 @@
             </Grid>
         </Border>
         <!--Today appointments-->
-        <Border Grid.Column="1" Grid.RowSpan="2" Style="{StaticResource theBorder}" Background="{StaticResource lightFontColor}">
+        <Border Grid.Column="1" Grid.RowSpan="2" Style="{StaticResource theBorder}">
             <Grid Margin="10">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="13*"/>
                     <RowDefinition Height="87*"/>
                 </Grid.RowDefinitions>
-                <TextBlock Text="Today's Appointments" Margin="10 5" VerticalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource darkerColor}" FontSize="25"/>
-                <Icon:PackIconMaterial Kind="PlusBox" Foreground="{StaticResource darkerColor}" MouseDown="newAppointment" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Width="30" Height="30" Margin="0 0 10 0"/>
+                <TextBlock Text="Today's Appointments" Margin="10 5" VerticalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource lightFontColor}" FontSize="25"/>
+                <Icon:PackIconMaterial Kind="PlusBox" Foreground="{StaticResource lightFontColor}" MouseDown="newAppointment" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Width="30" Height="30" Margin="0 0 10 0"/>
 
                 <DataGrid Grid.Row="1" Margin="10" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="todayAppointmentsDataGrid" Style="{DynamicResource DataGridStyle1}">
                     <DataGrid.Columns>
@@ -128,13 +128,13 @@
             </Grid>
         </Border>
         <!--Active appointments-->
-        <Border Grid.Column="1" Grid.Row="2" Grid.RowSpan="2" Style="{StaticResource theBorder}" Margin="10" Background="{StaticResource lightFontColor}">
+        <Border Grid.Column="1" Grid.Row="2" Grid.RowSpan="2" Style="{StaticResource theBorder}" Margin="10" >
             <Grid Margin="10">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="20*"/>
                     <RowDefinition Height="87*"/>
                 </Grid.RowDefinitions>
-                <TextBlock Text="Active Appointments" Margin="5" VerticalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource darkerColor}" FontSize="25"/>
+                <TextBlock Text="Active Appointments" Margin="5" VerticalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource lightFontColor}" FontSize="25"/>
 
                 <DataGrid Grid.Row="1" Margin="10" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="ActiveAppointmentsDataGrid" Style="{DynamicResource DataGridStyle1}">
                     <DataGrid.Columns>

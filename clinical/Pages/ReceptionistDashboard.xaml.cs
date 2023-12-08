@@ -1,4 +1,5 @@
-﻿using System;
+﻿using clinical.BaseClasses;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,7 +21,7 @@ namespace clinical.Pages
     /// </summary>
     public partial class ReceptionistDashboard : Page
     {
-        public ReceptionistDashboard()
+        public ReceptionistDashboard(User employee)
         {
             InitializeComponent();
             //patientsDataGrid.ItemsSource = DB.GetAllPatients();

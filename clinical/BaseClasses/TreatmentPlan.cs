@@ -11,17 +11,14 @@ namespace clinical.BaseClasses
         public int PlanID { get; set; }
         public string PlanName { get; set; }
         public int PlanTimeInWeeks { get; set; }
-        public int InjuryID { get; set; }
-        public decimal Price { get; set; }
+        public double Price { get; set; }
         public string Notes { get; set; }
 
-        // Constructor
-        public TreatmentPlan(int planID, string planName, int planTimeInWeeks, int injuryID, decimal price, string notes)
+        public TreatmentPlan(int planID, string planName, int planTimeInWeeks, double price, string notes)
         {
             PlanID = planID;
             PlanName = planName;
             PlanTimeInWeeks = planTimeInWeeks;
-            InjuryID = injuryID;
             Price = price;
             Notes = notes;
         }

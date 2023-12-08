@@ -1,18 +1,8 @@
 ﻿using clinical.BaseClasses;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace clinical.Pages
 {
@@ -24,20 +14,21 @@ namespace clinical.Pages
         public newPhysioTherapistPage()
         {
             InitializeComponent();
+            bdDatePicker.SelectedDate= DateTime.Now;
+            hiringDatePicker.SelectedDate=DateTime.Now;
         }
 
         private void save(object sender, MouseButtonEventArgs e)
         {
             string fn = firstNameTextBox.Text;
             string ln = lastNameTextBox.Text;
-            string name = fn + " " + ln;
             string gender;
             if (maleRB.IsChecked == true)
             {
                 gender = "Male";
             }
             else gender = "Female";
-            string address = addressTextBox.Text + ", " + cityTextBox.Text;
+            string address = addressTextBox.Text;
             string phone = phoneTextBox.Text;
             DateTime bd = DateTime.Now;
             if (bdDatePicker.SelectedDate.HasValue)
@@ -48,10 +39,14 @@ namespace clinical.Pages
                 hd = hiringDatePicker.SelectedDate.Value;
 
             string nid = NIDTextBox.Text;
-            Random r = new Random();
+            string email = emailTextBox.Text;
 
-            //PhysioTherapist physio = new PhysioTherapist(r.Next(1, 100), name, bd, phone, nid, hd,address);
-            //DB.InsertPhysioTherapist(physio);
+            User user = new User(globals.generateNewPhysicianID(fn, nid), fn.Trim(), ln.Trim(), gender.Trim(), hd, bd, address.Trim(), phone.Trim(), email.Trim(), nid.Trim());
+            DB.InsertUser(user);
+
+            MessageBox.Show("Successfully added new Physiotherapist, ID: "+user.UserID,"Success");
+
+            Window.GetWindow(this).Close();
         }
 
         private void nowCheck(object sender, RoutedEventArgs e)

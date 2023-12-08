@@ -1,17 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using clinical.BaseClasses;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace clinical.Pages
 {
@@ -20,14 +10,18 @@ namespace clinical.Pages
     /// </summary>
     public partial class adminDashboardPage : Page
     {
-        public adminDashboardPage()
+        public adminDashboardPage(User admin)
         {
             InitializeComponent();
-            //employeesDataGrid.ItemsSource=DB.GetAllEmployees();
-            //physiciansDataGrid.ItemsSource = DB.GetAllPhysioTherapists();
-            //employeesDataGrid.ItemsSource = DB.GetAllEmployees();
-        }
+            refresh();
 
+        }
+        public void refresh()
+        {
+            physiciansDataGrid.ItemsSource = DB.GetAllPhysiotherapists();
+
+
+        }
         private void view_Click(object sender, RoutedEventArgs e)
         {
 
@@ -37,6 +31,7 @@ namespace clinical.Pages
         {
             newAppointmentWindow window = new newAppointmentWindow();
             window.Show();
+
         }
 
         private void newEmployee(object sender, MouseButtonEventArgs e)
