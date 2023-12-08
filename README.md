@@ -69,37 +69,39 @@ Designed for front desk efficiency, the Reception View prioritizes schedule mana
 
 
 UML Diagram:
- 
+
+![Image](Images/UML.png)
+
 Front-end explanations:
 Upon initiation of the Recover360 application, users encounter a user-friendly interface designed for intuitive navigation. The primary screen serves as the entry point, prompting users to log in. Upon entering their ID, the interface dynamically adapts to either the admin, physician, or reception view.
  
-Figure 1
+![Image](Images/fig1.jpg)
 Let’s take an example of the user entering the admin view, Figure 2 depicts the main dashboard post-login, providing a centralized overview. It includes the names and statuses of physicians actively working today, a list of employees, todays, and active appointments. This hub empowers the admin to swiftly access vital information and seamlessly navigate different sections of the application. Additionally, the home page features a search bar, enabling users to efficiently locate specific physicians or appointments, contributing to an enhanced navigation experience.
  
-Figure 2
+![Image](Images/fig2.jpg)
 Physicians are equipped with an "Add" button, opening a detailed sub-page for the admin to add physicians (Figure 3).
 
  
-Figure 3
+![Image](Images/fig3.jpg)
 Furthermore, there's an "Add Appointment" button (Figure 4), facilitating manual or automatic reservation of appointments for patients based on room and physician availability.
  
-Figure 4
+![Image](Images/fig4.jpg)
 To initiate the information retrieval process, entering the patient's ID or name on the landing page promptly retrieves the patient's comprehensive data, presenting it on the dedicated "Patient Integrated View" page (Figure 5).
  
-Figure 5
+![Image](Images/fig5.jpg)
 
 Adding a new patient is seamlessly designed. Navigating and selecting "Add Patient" opens a window tailored for admin use. Intuitive design elements make it effortless to input patient details. Clicking "Save" not only confirms the addition but also provides validation feedback for assurance.  
-Figure 6
+![Image](Images/fig6.jpg)
 Within the patient view (Figure 7), the admin can conveniently review the patient's Overview, encompassing crucial details like medical records, screening results, and active treatment plans.
  
-Figure 7
+![Image](Images/fig7.jpg)
 
 For a deeper dive into the patient's medical history, the "Medical Records" tab provides access to detailed information such as lab results, screening outcomes, and summaries of past visits. To ensure up-to-date patient information, the "Active Treatment Plan" tab empowers modifications to medications or other treatment aspects. Accessing valuable insights from the patient's history is simplified through the "Previous Visits" tab, offering a consolidated view of past visit summaries.
 A thorough medical history is recorded. Medications, allergies, and other relevant medical information are also documented. Physical therapists conduct initial evaluations and initial complaints are recorded and saved in the notes.
 
 
 
-
+![Image](Images/fig8.jpg)
 
 
 
@@ -108,29 +110,29 @@ Diagnostic test results, imaging reports, and referral data related to the patie
 
 The calendar page within the physical therapy software system offers staff members a comprehensive overview of scheduled appointments. It displays appointments by days, weeks, or months, with each entry including vital details such as appointment time, reason for the appointment, and additional instructions or notes. Users can navigate through past, present, and future appointments with ease. The system generates reminders or notifications to alert staff or providers of upcoming appointments or schedule changes, ensuring effective appointment administration.
  
-Figure 8
+![Image](Images/fig9.jpg)
 Chat Page features accessible to all staff members, fostering seamless communication and collaboration within the physiotherapy clinic. The Chat Page serves as a centralized platform where administrators, physicians, and receptionists can connect in real-time. 
  
-Figure 9
+![Image](Images/fig10.jpg)
 
 Physiotherapists access personal details, patient overviews, visit histories, and financial records effortlessly. This comprehensive dashboard facilitates efficient care delivery, allowing physiotherapists to track patient progress and manage administrative tasks seamlessly.
  
-Figure 10
+![Image](Images/fig11.jpg)
 The system incorporates Optical Character Recognition (OCR) technology, enabling seamless conversion of images, including prescriptions or X-ray reports, into editable text. This ensures that critical information is readily available, fostering efficient communication and decision-making among healthcare professionals.
  
-Figure 11
+![Image](Images/fig12.jpg)
 Recover360's receptionist dashboard provides a quick and focused interface. It displays active physiotherapists, today's patients for easy updates, and real-time appointment management. The dashboard ensures efficient front-desk operations, enabling receptionists to stay on top of daily clinic activities effortlessly.  
-Figure 12
+![Image](Images/fig13.jpg)
 Designed for streamlined patient management, the physiotherapist dashboard offers quick access to assigned patients, today's appointments, and active appointments, ensuring efficient and focused care.
  
-Figure 13
+![Image](Images/fig14.jpg)
 
 Efficiently view patient information, notes, prescriptions, and chief complaints on a single page. Streamlining the patient encounter for physiotherapists and physicians, this feature enhances treatment planning accuracy.  
-Figure 14
+![Image](Images/fig15.jpg)
 You can click on X-ray images, and they have the option to zoom in or out.  
-Figure 15
+![Image](Images/fig16.jpg)
 Advanced prescription systems allow healthcare professionals to create detailed exercise prescriptions for patients. Physiotherapists can input specific exercises, define their frequency, and add any relevant notes. The system ensures a comprehensive and organized record of prescribed exercises tailored to each patient's needs.
- 
+ ![Image](Images/fig17.jpg)
 
 **Contribution List:**
 
