@@ -1,4 +1,6 @@
 ﻿using clinical.BaseClasses;
+using System.Data;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -19,7 +21,7 @@ namespace clinical.Pages
         public void refresh()
         {
             physiciansDataGrid.ItemsSource = DB.GetAllPhysiotherapists();
-
+            employeesDataGrid.ItemsSource= DB.GetAllEmployees();
 
         }
         private void view_Click(object sender, RoutedEventArgs e)
@@ -49,6 +51,11 @@ namespace clinical.Pages
         private void deleteClick(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private void viewPhysician(object sender, RoutedEventArgs e)
+        {
+            
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using clinical.BaseClasses;
+using clinical.Pages;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,23 +17,17 @@ using System.Windows.Shapes;
 namespace clinical
 {
     /// <summary>
-    /// Interaction logic for prescriptionWindow.xaml
+    /// Interaction logic for viewUser.xaml
     /// </summary>
-    public partial class prescriptionWindow : Window
+    public partial class viewUser : Window
     {
-        public prescriptionWindow()
+        public viewUser(User user)
         {
             InitializeComponent();
-        }
-
-        private void print(object sender, MouseButtonEventArgs e)
-        {
-
-        }
-
-        private void save(object sender, MouseButtonEventArgs e)
-        {
-
+            if (user.UserID.StartsWith('P'))
+            {
+                mainFrame.Navigate(new viewPhysiotherapist(user));
+            }
         }
 
         private void closeBTN(object sender, MouseButtonEventArgs e)
@@ -43,21 +39,6 @@ namespace clinical
         private void minimizeBTN(object sender, MouseButtonEventArgs e)
         {
             Window.GetWindow(this).WindowState = WindowState.Minimized;
-
-        }
-
-        private void Border_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-
-        }
-
-        private void newExcersice(object sender, MouseButtonEventArgs e)
-        {
-
-        }
-
-        private void newTreatment(object sender, MouseButtonEventArgs e)
-        {
 
         }
     }

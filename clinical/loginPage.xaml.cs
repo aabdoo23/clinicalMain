@@ -23,6 +23,7 @@ namespace clinical
             new globals();
             InitializeComponent();
             new DB();
+            new patientView(new Patient(globals.generateNewPatientID(), "Abdelrahman", "Saleh", DateTime.Now, "Male", "0100100100", "email.com", "zccddreesss", new List<int>(), new List<int>(), DB.GetUserById("PAb1141"), true, false, 178, 66, 128.5)).Show();
             //DB.InsertUser(new User("A123", "Abdelrahman", "Saleh", "Male", DateTime.Now, DateTime.MinValue, "address", "0100010100", "emaily", "NID"));
 
         }

@@ -57,7 +57,7 @@
             <TextBlock TextWrapping="Wrap" Grid.Row="1" Grid.Column="0" Text="*Phone Number:" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{StaticResource lightFontColor}" FontSize="18" FontWeight="Bold"/>
             <TextBox Name="phoneTextBox" Foreground="{StaticResource darkerColor}" Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="1" Margin="-40 15 10 15" Background="{StaticResource lightFontColor}"/>
             <TextBlock TextWrapping="Wrap" Grid.Row="3" Grid.Column="0" Text="*Height:" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{StaticResource lightFontColor}" FontSize="18" FontWeight="Bold"/>
-            <TextBlock TextWrapping="Wrap" Margin="0 0 -25 0" Grid.Row="3" Grid.Column="1" Text="*Width:" VerticalAlignment="Center" HorizontalAlignment="Right" Foreground="{StaticResource lightFontColor}" FontSize="18" FontWeight="Bold"/>
+            <TextBlock TextWrapping="Wrap" Margin="0 0 -25 0" Grid.Row="3" Grid.Column="1" Text="*Weight:" VerticalAlignment="Center" HorizontalAlignment="Right" Foreground="{StaticResource lightFontColor}" FontSize="17" FontWeight="Bold"/>
             <TextBox Name="heightTextBox" Foreground="{StaticResource darkerColor}" Grid.Column="0" Grid.Row="3" Margin="78,17,50,13" Background="{StaticResource lightFontColor}" Grid.ColumnSpan="2"/>
             <TextBox Name="widthTextBox" Foreground="{StaticResource darkerColor}" Grid.Column="2" Grid.Row="3" Margin="31,17,5,13" Background="{StaticResource lightFontColor}"/>
 

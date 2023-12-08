@@ -39,7 +39,7 @@
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
-                                        <Button Name="view" Style="{StaticResource gridEditButton}" Click="view_Click">
+                                        <Button Name="view" Style="{StaticResource gridEditButton}" Click="viewPhysician">
                                             <Icon:PackIconMaterial Kind="EyeCircleOutline" Style="{StaticResource gridButtonIcon}"/>
                                         </Button>
                                         <Button Margin="5 0 0 0" Style="{StaticResource gridRemoveButton}" Click="deleteClick">
@@ -66,8 +66,8 @@
 
                 <DataGrid Grid.Row="1" Margin="10" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="employeesDataGrid" Style="{DynamicResource DataGridStyle1}">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" Binding="{Binding EmployeeID}"/>
-                        <DataGridTextColumn Header="Name" Binding="{Binding Name}" IsReadOnly="True" Width="*"/>
+                        <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" Binding="{Binding UserID}"/>
+                        <DataGridTextColumn Header="Name" Binding="{Binding FirstName}" IsReadOnly="True" Width="*"/>
                         <DataGridTextColumn Header="Phone Number" Binding="{Binding PhoneNumber}" IsReadOnly="True" Width="*"/>
                         <DataGridTextColumn Header="Role" Binding="{Binding Role}" IsReadOnly="True" Width="*"/>
                         <DataGridTemplateColumn Header="Details" IsReadOnly="True" Width="auto">
@@ -97,7 +97,6 @@
                     <RowDefinition Height="87*"/>
                 </Grid.RowDefinitions>
                 <TextBlock Text="Today's Appointments" Margin="10 5" VerticalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource lightFontColor}" FontSize="25"/>
-                <Icon:PackIconMaterial Kind="PlusBox" Foreground="{StaticResource lightFontColor}" MouseDown="newAppointment" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Width="30" Height="30" Margin="0 0 10 0"/>
 
                 <DataGrid Grid.Row="1" Margin="10" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="todayAppointmentsDataGrid" Style="{DynamicResource DataGridStyle1}">
                     <DataGrid.Columns>
@@ -134,12 +133,12 @@
                     <RowDefinition Height="20*"/>
                     <RowDefinition Height="87*"/>
                 </Grid.RowDefinitions>
-                <TextBlock Text="Active Appointments" Margin="5" VerticalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource lightFontColor}" FontSize="25"/>
+                <TextBlock Text="Financial summary" Margin="5" VerticalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource lightFontColor}" FontSize="25"/>
 
                 <DataGrid Grid.Row="1" Margin="10" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="ActiveAppointmentsDataGrid" Style="{DynamicResource DataGridStyle1}">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" Binding="{Binding VisitID}"/>
-                        <DataGridTextColumn Header="Patient Name" Binding="{Binding PatientName}" IsReadOnly="True" Width="*"/>
+                        <DataGridTextColumn Header="Record Name" Binding="{Binding PatientName}" IsReadOnly="True" Width="*"/>
                         <DataGridTextColumn Header="Date" Binding="{Binding Date}" IsReadOnly="True" Width="auto"/>
                         <DataGridTextColumn Header="Physiotherapist" Binding="{Binding PhysioTherapistName}" IsReadOnly="True" Width="auto"/>
                         <DataGridTemplateColumn Header="Details" IsReadOnly="True" Width="auto">
