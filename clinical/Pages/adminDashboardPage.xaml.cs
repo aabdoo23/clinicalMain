@@ -22,6 +22,7 @@ namespace clinical.Pages
         {
             physiciansDataGrid.ItemsSource = DB.GetAllPhysiotherapists();
             employeesDataGrid.ItemsSource= DB.GetAllEmployees();
+            
 
         }
         private void view_Click(object sender, RoutedEventArgs e)

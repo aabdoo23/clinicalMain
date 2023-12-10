@@ -31,30 +31,55 @@ namespace clinical.Pages
                 lastNameTextBox.Text= toEdit.LastName;
                 if(toEdit.Gender=="Male")maleRB.IsChecked=true;
                 else maleRB.IsChecked=false;
-                addressTextBox.Text=toEdit.Address.Split(", ")[0];
-                cityTextBox.Text=toEdit.Address.Split(", ")[1];
+                addressTextBox.Text=toEdit.Address;
                 phoneTextBox.Text = toEdit.PhoneNumber;
                 ageTextBox.Text = toEdit.Age().ToString();
             }
+        }
+        public newPatientPage()
+        {
+            InitializeComponent();
+            assignedPhys.ItemsSource = DB.GetAllPhysiotherapists();
         }
 
         private void save(object sender, MouseButtonEventArgs e)
         {
             string fn = firstNameTextBox.Text;
             string ln= lastNameTextBox.Text;
-            string name = fn + " " + ln;
             string gender;
             if (maleRB.IsChecked == true)
             {
                 gender = "Male";
             }
             else gender = "Female";
-            string address= addressTextBox.Text+", "+cityTextBox.Text;
+            string address= addressTextBox.Text;
             string phone= phoneTextBox.Text;
             DateTime bd = globals.CalculateBirthdate(int.Parse(ageTextBox.Text));
+            string em = emailTextBox.Text;
+            User phys = (User)(assignedPhys.SelectedItem);
+            bool isRef = (bool)referredCB.IsChecked;
+            bool prevSessions = (bool)prevSessionsCB.IsChecked;
 
-            //Patient newPatient = new Patient(globals.generateNewPatientID(),name,address,bd,phone,gender);
-            //DB.InsertPatient(newPatient);
+            Patient newPatient = new Patient(
+                globals.generateNewPatientID(),
+                fn,
+                ln,
+                bd,
+                gender,
+                phone,
+                em, 
+                address, 
+                new List<int>(),
+                new List<int>(),
+                phys.UserID,
+                isRef,
+                prevSessions,
+                Convert.ToDouble(heightTextBox.Text),
+                Convert.ToDouble(weightTextBox.Text),
+                0,
+                referringTextBox.Text,
+                referringPNTextBox.Text);
+            DB.InsertPatient(newPatient);
         }
 
         private void addChronic(object sender, MouseButtonEventArgs e)

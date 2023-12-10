@@ -10,6 +10,7 @@
     <Page.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
     </Page.Resources>
+    <Border Style="{StaticResource theBorder}" Margin="10">
     <Grid Grid.Column="1" Margin="30,20,20,20" Name="patientGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -42,10 +43,10 @@
         </Button>
 
         <!--Page Title-->
-        <TextBlock Grid.Row="1" FontSize="32" FontWeight="SemiBold" Margin="0 20 0 0" Foreground="{StaticResource darkerColor}" HorizontalAlignment="Left" Text="Patients"/>
+        <TextBlock Grid.Row="1" FontSize="32" FontWeight="SemiBold" Margin="0 20 0 0" Foreground="{StaticResource lightFontColor}" HorizontalAlignment="Left" Text="Patients"/>
 
         <!--Add Button-->
-        <Button Style="{StaticResource addButton}" Click="addNewPatient">
+            <Button Style="{StaticResource addButton}" Click="addNewPatient">
             <StackPanel Orientation="Horizontal">
                 <Icon:PackIconMaterial Kind="Plus" VerticalAlignment="Center" Margin="0 1 8 0" Width="11" Height="11"/>
                 <TextBlock Text="Add New Patient"/>
@@ -57,8 +58,8 @@
 
         <!--Tab buttons-->
         <StackPanel Grid.Row="2" Orientation="Horizontal" Margin="0 10 0 0">
-            <Button Style="{StaticResource tabButton}" Content="Active Patients"  Width="109"/>
-            <Button Style="{StaticResource tabButton}" Content="All Patients" Width="95"/>
+            <Button Style="{StaticResource tabButton}" Foreground="{StaticResource lightFontColor}" Content="Active Patients"  Width="109"/>
+                <Button Style="{StaticResource tabButton}" Foreground="{StaticResource lightFontColor}" Content="All Patients" Width="95"/>
             <!--<Button Style="{StaticResource tabButton}" Content="Archived"/>-->
         </StackPanel>
 
@@ -80,7 +81,7 @@ Visibility="{Binding ElementName=textBoxFilter, Converter={StaticResource BoolTo
         <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="patientsDataGrid" Style="{DynamicResource DataGridStyle1}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" Binding="{Binding PatientID}"/>
-                <DataGridTextColumn Header="Name" Binding="{Binding Name}" IsReadOnly="True" Width="*"/>
+                <DataGridTextColumn Header="Name" Binding="{Binding FirstName}" IsReadOnly="True" Width="*"/>
                 <DataGridTextColumn Header="Address" Binding="{Binding Address}" IsReadOnly="True" Width="*"/>
                 <DataGridTextColumn Header="Age" Binding="{Binding Age}" IsReadOnly="True" Width="*"/>
                 <DataGridTextColumn Header="Phone Number" Binding="{Binding PhoneNumber}" IsReadOnly="True" Width="*"/>
@@ -128,5 +129,5 @@ Visibility="{Binding ElementName=textBoxFilter, Converter={StaticResource BoolTo
 
     </Grid>
 
-
+    </Border>
 </Page>

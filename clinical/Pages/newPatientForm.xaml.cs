@@ -28,7 +28,7 @@ namespace clinical.Pages
             {
                 window.Height = 621;
                 formTitle.Content = "New Patient";
-                mainFrame.Navigate(new newPatientPage(null));
+                mainFrame.Navigate(new newPatientPage());
             }
             else if(type == 1) {
                 window.Height = 421;

@@ -36,8 +36,8 @@
                             <ColumnDefinition Width="90*"/>
                             <ColumnDefinition Width="25*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="Scanned physical records" FontSize="24" FontWeight="Bold" VerticalAlignment="Center" Foreground="{StaticResource darkerColor}" Margin="20 10" Grid.Column="0"/>
-                        <Icon:PackIconMaterial MouseDown="newXRAY" Name="uploadNewRecord" Kind="GoogleLens" Foreground="{StaticResource darkerColor}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 20 0" Width="25" Height="25"/>
+                        <TextBlock Text="Scanned physical records" FontSize="24" FontWeight="Bold" VerticalAlignment="Center" Foreground="{StaticResource lightFontColor}" Margin="20 10" Grid.Column="0"/>
+                        <Icon:PackIconMaterial MouseDown="newXRAY" Name="uploadNewRecord" Kind="GoogleLens" Foreground="{StaticResource lightFontColor}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 20 0" Width="25" Height="25"/>
                     </Grid>
 
                     <Border Grid.Column="1" CornerRadius="10" Background="{StaticResource lighterColor}" Grid.Row="1" Margin="10 0 10 10">
@@ -73,9 +73,9 @@
                                 <ColumnDefinition Width="90*"/>
                                 <ColumnDefinition Width="15*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="Physician Notes" FontSize="25" FontWeight="Bold" VerticalAlignment="Center" Foreground="{StaticResource darkerColor}" Margin="20 10" Grid.Column="0"/>
-                            <Icon:PackIconMaterial Kind="ClipboardEdit" Foreground="{StaticResource darkerColor}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 20 0" Width="25" Height="25"/>
-                            <Icon:PackIconMaterial Name="uploadNewPhysicianNotes" MouseDown="newPhysician" Kind="GoogleLens" Foreground="{StaticResource darkerColor}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 60 0" Width="25" Height="25"/>
+                            <TextBlock Text="Physician Notes" FontSize="25" FontWeight="Bold" VerticalAlignment="Center" Foreground="{StaticResource lightFontColor}" Margin="20 10" Grid.Column="0"/>
+                            <Icon:PackIconMaterial Kind="ClipboardEdit" Foreground="{StaticResource lightFontColor}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 20 0" Width="25" Height="25"/>
+                            <Icon:PackIconMaterial Name="uploadNewPhysicianNotes" MouseDown="newPhysician" Kind="GoogleLens" Foreground="{StaticResource lightFontColor}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 60 0" Width="25" Height="25"/>
 
                         </Grid>
 
@@ -101,11 +101,11 @@
                                 <ColumnDefinition Width="15*"/>
                             </Grid.ColumnDefinitions>
                            
-                                <TextBlock Text="Report" FontSize="25" FontWeight="Bold"  VerticalAlignment="Center" Foreground="{StaticResource darkerColor}" Margin="20 10" Grid.Column="0"/>
+                                <TextBlock Text="Report" FontSize="25" FontWeight="Bold"  VerticalAlignment="Center" Foreground="{StaticResource lightFontColor}" Margin="20 10" Grid.Column="0"/>
                            
-                            <Icon:PackIconMaterial MouseDown="newReport" Name="uploadNewReport" Kind="GoogleLens" Foreground="{StaticResource darkerColor}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 60 0" Width="25" Height="25"/>
+                            <Icon:PackIconMaterial MouseDown="newReport" Name="uploadNewReport" Kind="GoogleLens" Foreground="{StaticResource lightFontColor}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 60 0" Width="25" Height="25"/>
 
-                            <Icon:PackIconMaterial Kind="ClipboardEdit" Foreground="{StaticResource darkerColor}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 20 0" Width="25" Height="25"/>
+                            <Icon:PackIconMaterial Kind="ClipboardEdit" Foreground="{StaticResource lightFontColor}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 20 0" Width="25" Height="25"/>
                         </Grid>
 
                         <Border Grid.Column="1" Background="{StaticResource lighterColor}" Grid.Row="1" Margin="10 0 10 10">

@@ -29,7 +29,7 @@
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="80"/>
                 </Grid.RowDefinitions>
-                <Image Source="@\..\images\topRosheta.jpg" Stretch="Fill" />
+                <Image Source="C:\Users\TOP\Desktop\clinicalK\clinical\images\topRosheta.jpg" Stretch="Fill" />
                 <Grid Margin="10" Grid.Row="1">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="10*"/>
@@ -115,7 +115,7 @@
                     </Border>
                 </Grid>
 
-                <Image Grid.Row="2" Source="@\..\images\bottomRosheta.jpg" Stretch="Fill" />
+                <Image Grid.Row="2" Source="C:\Users\TOP\Desktop\clinicalK\clinical\images\bottomRosheta.jpg" Stretch="Fill" />
 
             </Grid>
 

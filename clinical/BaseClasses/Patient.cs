@@ -19,11 +19,13 @@ namespace clinical.BaseClasses
         public List<int> ChronicDiseasesIDs { get; set; }
         public List<int> PreviousInjuriesIDs { get; set; }
         public bool Referred { get; set; }
-        public User Physician { get; set; }
+        public int PhysicianID { get; set; }
         public bool PreviouslyTreated { get; set; }
         public double Height { get; set; }
         public double Weight { get; set; }
         public double DueAmount { get; set; }
+        public string referringName { get; set; }
+        public string referringPN { get; set; }
 
         // Constructor
         public Patient(int patientID, string firstName, string lastname, 
@@ -31,9 +33,9 @@ namespace clinical.BaseClasses
             string email, string address, 
             List<int> chronicDiseasesIDs, 
             List<int> previousInjuriesIDs, 
-            User physician,
+            int physicianId,
             bool referred, bool previouslyTreated, double height, 
-            double weight, double dueAmount)
+            double weight, double dueAmount, string refN,string refPN)
         {
             PatientID = patientID;
             FirstName = firstName;
@@ -45,12 +47,14 @@ namespace clinical.BaseClasses
             Address = address;
             ChronicDiseasesIDs = chronicDiseasesIDs;
             PreviousInjuriesIDs = previousInjuriesIDs;
-            Physician = physician;
+            PhysicianID = physicianId;
             Referred = referred;
             PreviouslyTreated = previouslyTreated;
             Height = height;
             Weight = weight;
             DueAmount = dueAmount;
+            referringName = refN;
+            referringPN=refPN;
         }
 
         // Method to calculate age based on birthdate
@@ -63,6 +67,28 @@ namespace clinical.BaseClasses
                 age--;
             }
             return age;
+        }
+
+        public string chronics()
+        {
+            string s="";
+            foreach(int i in ChronicDiseasesIDs)
+            {
+                s += i.ToString();
+                s += ", ";
+            }
+            return s;
+        }
+
+        public string injuries()
+        {
+            string s = "";
+            foreach (int i in PreviousInjuriesIDs)
+            {
+                s += i.ToString();
+                s += ", ";
+            }
+            return s;
         }
     }
 }

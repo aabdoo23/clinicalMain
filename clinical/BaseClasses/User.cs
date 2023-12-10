@@ -8,7 +8,7 @@ namespace clinical.BaseClasses
 {
     public class User
     {
-        public string UserID { get; set; }
+        public int UserID { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Gender { get; set; }
@@ -19,7 +19,7 @@ namespace clinical.BaseClasses
         public string Email { get; set; }
         public string NationalID { get; set; }
 
-        public User(string userID, string firstName, string lastName, string gender, DateTime hireDate, DateTime birthdate, string address, string phoneNumber, string email, string nationalID)
+        public User(int userID, string firstName, string lastName, string gender, DateTime hireDate, DateTime birthdate, string address, string phoneNumber, string email, string nationalID)
         {
             UserID = userID;
             FirstName = firstName;
@@ -32,7 +32,10 @@ namespace clinical.BaseClasses
             Email = email;
             NationalID = nationalID;
         }
-
+        override public string ToString()
+        {
+            return UserID.ToString() + " " + FirstName;
+        }
 
 
     }

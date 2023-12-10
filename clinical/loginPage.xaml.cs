@@ -23,8 +23,9 @@ namespace clinical
             new globals();
             InitializeComponent();
             new DB();
-            new patientView(new Patient(globals.generateNewPatientID(), "Abdelrahman", "Saleh", DateTime.Now, "Male", "0100100100", "email.com", "zccddreesss", new List<int>(), new List<int>(), DB.GetUserById("PAb1141"), true, false, 178, 66, 128.5)).Show();
-            //DB.InsertUser(new User("A123", "Abdelrahman", "Saleh", "Male", DateTime.Now, DateTime.MinValue, "address", "0100010100", "emaily", "NID"));
+            //DB.InsertUser(new User(globals.generateNewPhysicianID("Abdelrahman", "30303030303030"), "Abdelrahman", "Saleh", "Male", DateTime.Now, DateTime.Now, "address", "01000101010", "emaily", "30303030303030"));
+
+            //DB.InsertPatient(new Patient(globals.generateNewPatientID(), "Ahmed", "Kamal", DateTime.Now, "Male", "1010101010", "enail", "address", new List<int>(), new List<int>(), 13030, true, true, 123.3, 122.3, 123113.3));
 
         }
         private void Border_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -75,13 +76,13 @@ namespace clinical
         private void logInBTN_Click(object sender, RoutedEventArgs e)
         {
 
-            User user=DB.GetUserById(txtEmail.Text.Trim());
+            User user=DB.GetUserById(Convert.ToInt32(txtEmail.Text));
             if (user != null)
             {
                 //MessageBox.Show("Successfully Signed In"+user.HireDate.ToString());
                 int s;
-                if (txtEmail.Text.StartsWith("A")) s = 1;
-                else if (txtEmail.Text.StartsWith("P")) s = 2;
+                if (txtEmail.Text.ToString().StartsWith("1")) s = 1;
+                else if (txtEmail.Text.ToString().StartsWith("2")) s = 2;
                 else s = 3;
                 MainWindow mainWindow = new MainWindow(s,user);
                 mainWindow.Show();

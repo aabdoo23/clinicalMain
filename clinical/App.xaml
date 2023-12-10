@@ -133,7 +133,7 @@
 
 
         <Style x:Key="addButton" TargetType="Button">
-            <Setter Property="Background" Value="{StaticResource darkerColor}" />
+            <Setter Property="Background" Value="{StaticResource selectedColor}" />
             <Setter Property="Foreground" Value="{StaticResource lightFontColor}" />
             <Setter Property="FocusVisualStyle" Value="{x:Null}" />
             <Setter Property="Height" Value="35" />
