@@ -39,26 +39,6 @@ namespace clinical
             Application.Current.Shutdown();
         }
 
-        //private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
-        //{
-        //    if (!string.IsNullOrEmpty(passwordBox.Password) && passwordBox.Password.Length > 0)
-        //        textPassword.Visibility = Visibility.Collapsed;
-        //    else
-        //        textPassword.Visibility = Visibility.Visible;
-        //}
-
-        //private void textPassword_MouseDown(object sender, MouseButtonEventArgs e)
-        //{
-        //    passwordBox.Focus();
-        //}
-
-        //private void Button_Click(object sender, RoutedEventArgs e)
-        //{
-        //    if (!string.IsNullOrEmpty(txtEmail.Text) && !string.IsNullOrEmpty(passwordBox.Password))
-        //    {
-        //        MessageBox.Show("Successfully Signed In");
-        //    }
-        //}
 
         private void txtEmail_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
         {

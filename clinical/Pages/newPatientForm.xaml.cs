@@ -1,18 +1,6 @@
 ﻿using clinical.BaseClasses;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace clinical.Pages
 {
@@ -30,20 +18,21 @@ namespace clinical.Pages
                 formTitle.Content = "New Patient";
                 mainFrame.Navigate(new newPatientPage());
             }
-            else if(type == 1) {
+            else if (type == 1)
+            {
                 window.Height = 421;
 
                 formTitle.Content = "New Physio Therapist";
                 mainFrame.Navigate(new newPhysioTherapistPage());
             }
-            else if(type==2)
+            else if (type == 2)
             {
                 window.Height = 421;
 
                 formTitle.Content = "New Employee";
                 mainFrame.Navigate(new newEmployeePage());
             }
-            
+
         }
 
         public newPatientForm(Patient editable)
@@ -69,7 +58,7 @@ namespace clinical.Pages
         {
             if (e.ChangedButton == MouseButton.Left)
             {
-                this.DragMove();
+                Window.GetWindow(this).DragMove();
             }
         }
     }

@@ -12,7 +12,6 @@ namespace clinical
         static MySqlConnection connection;
         public DB()
         {
-            //string connectionString = "server=localhost;database=clinical;user=root;password=root;";
             string connectionString = "server=localhost;database=clinical;user=root;password=root;";
 
             // Create MySqlConnection
@@ -24,6 +23,7 @@ namespace clinical
                 }
                 catch (Exception ex)
                 {
+                    MessageBox.Show(ex.Message);
 
                 }
             }
@@ -134,8 +134,6 @@ namespace clinical
                                 MessageBox.Show(reader["userID"].ToString());
 
                                 user = MapUser(reader);
-
-
                             }
                         }
                     }
@@ -198,9 +196,6 @@ namespace clinical
                 }
                 catch (Exception e) { }
             }
-
-
-
             return physiotherapists;
         }
 
@@ -346,7 +341,7 @@ namespace clinical
                             {
                                 Patient patient = MapPatient(reader);
                                 patients.Add(patient);
-                                MessageBox.Show("done");
+                                //MessageBox.Show("done");
 
                             }
                         }
@@ -421,8 +416,8 @@ namespace clinical
                 {
                     connection.Open();
                     using (MySqlCommand cmd = new MySqlCommand(
-                        "INSERT INTO Patient (patientID, firstName, lastName, birthdate, gender, phoneNumber, email, address, chronicDiseasesIDs, previousInjuriesIDs, referred, previouslyTreated, height, weight, dueAmount, physicianID, referringName, referringPN ) " +
-                        "VALUES (@patientID, @firstName, @lastName, @birthdate, @gender, @phoneNumber, @email, @address, @chronicDiseasesIDs, @previousInjuriesIDs, @referred, @previouslyTreated, @height, @weight, @dueAmount, @physicianID, @referringName, @referringPN ) ", connection))
+                        "INSERT INTO Patient (patientID, firstName, lastName, birthdate, gender, phoneNumber, email, address, chronicDiseasesIDs, previousInjuriesIDs, referred, previouslyTreated, height, weight, dueAmount, physicianID, referringName, referringPN)" +
+                        "VALUES (@patientID, @firstName, @lastName, @birthdate, @gender, @phoneNumber, @email, @address, @chronicDiseasesIDs, @previousInjuriesIDs, @referred, @previouslyTreated, @height, @weight, @dueAmount, @physicianID, @referringName, @referringPN)", connection))
                     {
                         cmd.Parameters.AddWithValue("@patientID",           patient.PatientID);
                         cmd.Parameters.AddWithValue("@firstName",           patient.FirstName);
@@ -435,13 +430,13 @@ namespace clinical
                         cmd.Parameters.AddWithValue("@chronicDiseasesIDs",  patient.chronics());
                         cmd.Parameters.AddWithValue("@previousInjuriesIDs", patient.injuries());
                         cmd.Parameters.AddWithValue("@physicianID",         patient.PhysicianID);
-                        cmd.Parameters.AddWithValue("@referred",            patient.Referred);
-                        cmd.Parameters.AddWithValue("@previouslyTreated",   patient.PreviouslyTreated);
+                        cmd.Parameters.AddWithValue("@referred",            patient.Referred==true);
+                        cmd.Parameters.AddWithValue("@previouslyTreated",   patient.PreviouslyTreated==true);
                         cmd.Parameters.AddWithValue("@height",              patient.Height);
                         cmd.Parameters.AddWithValue("@weight",              patient.Weight);
                         cmd.Parameters.AddWithValue("@dueAmount",           patient.DueAmount);
                         cmd.Parameters.AddWithValue("@referringName",       patient.referringName);
-                        cmd.Parameters.AddWithValue("@referringPN ",        patient.referringPN);
+                        cmd.Parameters.AddWithValue("@referringPN",         patient.referringPN);
 
 
                         cmd.ExecuteNonQuery();
@@ -450,8 +445,7 @@ namespace clinical
                 catch (Exception ex)
                 {
                     // Handle exception (log, throw, etc.)
-                    Console.WriteLine(ex.Message);
-                    MessageBox.Show("Not inserted");
+                    MessageBox.Show(ex.Message);
                 }
             }
         }

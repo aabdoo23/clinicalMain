@@ -40,6 +40,8 @@ namespace clinical.Pages
         {
             InitializeComponent();
             assignedPhys.ItemsSource = DB.GetAllPhysiotherapists();
+            assignedPhys.SelectedIndex = 0;
+            
         }
 
         private void save(object sender, MouseButtonEventArgs e)
@@ -59,9 +61,11 @@ namespace clinical.Pages
             User phys = (User)(assignedPhys.SelectedItem);
             bool isRef = (bool)referredCB.IsChecked;
             bool prevSessions = (bool)prevSessionsCB.IsChecked;
+            
+            int id = globals.generateNewPatientID();
 
             Patient newPatient = new Patient(
-                globals.generateNewPatientID(),
+                id,
                 fn,
                 ln,
                 bd,
@@ -80,6 +84,10 @@ namespace clinical.Pages
                 referringTextBox.Text,
                 referringPNTextBox.Text);
             DB.InsertPatient(newPatient);
+            MessageBox.Show("New patient added, ID: " +id.ToString());
+            Window.GetWindow(this).Close() ;
+
+
         }
 
         private void addChronic(object sender, MouseButtonEventArgs e)
