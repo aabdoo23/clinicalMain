@@ -12,7 +12,6 @@ namespace clinical.BaseClasses
         public string RoomNumber { get; set; }
         public List<int> EquipmentIDs { get; set; }
 
-        // Constructor
         public Room(int roomID, string roomNumber, List<int> equipmentIDs)
         {
             RoomID = roomID;

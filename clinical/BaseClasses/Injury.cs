@@ -12,16 +12,13 @@ namespace clinical.BaseClasses
         public string InjuryName { get; set; }
         public string InjuryLocation { get; set; }
         public int Severity { get; set; }
-        public int TreatmentPlanID { get; set; }
 
-        // Constructor
-        public Injury(int injuryID, string injuryName, string injuryLocation, int severity, int treatmentPlanID)
+        public Injury(int injuryID, string injuryName, string injuryLocation, int severity)
         {
             InjuryID = injuryID;
             InjuryName = injuryName;
             InjuryLocation = injuryLocation;
             Severity = severity;
-            TreatmentPlanID = treatmentPlanID;
         }
     }
 }

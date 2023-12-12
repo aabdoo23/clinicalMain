@@ -13,14 +13,16 @@ namespace clinical.BaseClasses
         public int PlanTimeInWeeks { get; set; }
         public double Price { get; set; }
         public string Notes { get; set; }
+        public int injuryID { get;set; }
 
-        public TreatmentPlan(int planID, string planName, int planTimeInWeeks, double price, string notes)
+        public TreatmentPlan(int planID, string planName, int planTimeInWeeks, double price, string notes, int injuryID)
         {
             PlanID = planID;
             PlanName = planName;
             PlanTimeInWeeks = planTimeInWeeks;
             Price = price;
             Notes = notes;
+            this.injuryID = injuryID;
         }
     }
 }

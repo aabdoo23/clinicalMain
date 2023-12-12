@@ -13,15 +13,17 @@ namespace clinical.BaseClasses
         public string Function { get; set; }
         public DateTime LatestMaintenanceDate { get; set; }
         public bool ToCheck { get; set; }
+        public int RoomID { get; set; }
 
         // Constructor
-        public Equipment(int equipmentID, string equipmentName, string function, DateTime latestMaintenanceDate, bool toCheck)
+        public Equipment(int equipmentID, string equipmentName, string function, DateTime latestMaintenanceDate, bool toCheck, int roomID)
         {
             EquipmentID = equipmentID;
             EquipmentName = equipmentName;
             Function = function;
             LatestMaintenanceDate = latestMaintenanceDate;
             ToCheck = toCheck;
+            this.RoomID = roomID;
         }
     }
 }

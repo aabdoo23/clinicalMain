@@ -10,9 +10,9 @@ namespace clinical.BaseClasses
     {
         public int RecordID { get; set; }
         public DateTime TimeStamp { get; set; }
-        public string UserID { get; set; }
+        public int UserID { get; set; }
         public bool IsPresent { get; set; }
-        public AttendanceRecord(int recordID, DateTime timeStamp, string userID, bool isPresent)
+        public AttendanceRecord(int recordID, DateTime timeStamp, int userID, bool isPresent)
         {
             RecordID = recordID;
             TimeStamp = timeStamp;

@@ -3,6 +3,7 @@ using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Windows;
 
 namespace clinical
@@ -601,7 +602,7 @@ namespace clinical
                 catch (Exception ex)
                 {
                     // Handle exception (log, throw, etc.)
-                    Console.WriteLine(ex.Message);
+                    MessageBox.Show(ex.Message);
                 }
             }
 
@@ -631,7 +632,7 @@ namespace clinical
                 catch (Exception ex)
                 {
                     // Handle exception (log, throw, etc.)
-                    Console.WriteLine(ex.Message);
+                    MessageBox.Show(ex.Message);
                 }
             }
 
@@ -654,7 +655,7 @@ namespace clinical
                 catch (Exception ex)
                 {
                     // Handle exception (log, throw, etc.)
-                    Console.WriteLine(ex.Message);
+                    MessageBox.Show(ex.Message);
                 }
             }
         }
@@ -682,7 +683,7 @@ namespace clinical
                 catch (Exception ex)
                 {
                     // Handle exception (log, throw, etc.)
-                    Console.WriteLine(ex.Message);
+                    MessageBox.Show(ex.Message);
                 }
             }
         }
@@ -702,51 +703,163 @@ namespace clinical
         ///
 
 
-        public static TreatmentPlan GetTreatmentPlanById(int planID)
+        public void InsertTreatmentPlan(TreatmentPlan treatmentPlan)
         {
             using (connection)
             {
                 try
                 {
                     connection.Open();
-                    using (MySqlCommand cmd = new MySqlCommand("SELECT * FROM TreatmentPlan WHERE planID = @planID", connection))
-                    {
-                        cmd.Parameters.AddWithValue("@planID", planID);
 
-                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                    string query = "INSERT INTO TreatmentPlan (planID, planName, planTime, injuryID, price, notes) " +
+                                   "VALUES (@planID, @planName, @planTime, @injuryID, @price, @notes)";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@planID", treatmentPlan.PlanID);
+                        command.Parameters.AddWithValue("@planName", treatmentPlan.PlanName);
+                        command.Parameters.AddWithValue("@planTime", treatmentPlan.PlanTimeInWeeks);
+                        command.Parameters.AddWithValue("@injuryID", treatmentPlan.injuryID);
+                        command.Parameters.AddWithValue("@price", treatmentPlan.Price);
+                        command.Parameters.AddWithValue("@notes", treatmentPlan.Notes);
+
+                        command.ExecuteNonQuery();
+
+                        MessageBox.Show("TreatmentPlan inserted successfully.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+        }
+
+        public void UpdateTreatmentPlan(TreatmentPlan treatmentPlan)
+        {
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "UPDATE TreatmentPlan SET planName = @planName, planTime = @planTime, " +
+                                   "injuryID = @injuryID, price = @price, notes = @notes " +
+                                   "WHERE planID = @planID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@planID", treatmentPlan.PlanID);
+                        command.Parameters.AddWithValue("@planName", treatmentPlan.PlanName);
+                        command.Parameters.AddWithValue("@planTime", treatmentPlan.PlanTimeInWeeks);
+                        command.Parameters.AddWithValue("@injuryID", treatmentPlan.injuryID);
+                        command.Parameters.AddWithValue("@price", treatmentPlan.Price);
+                        command.Parameters.AddWithValue("@notes", treatmentPlan.Notes);
+
+                        command.ExecuteNonQuery();
+
+                        MessageBox.Show("TreatmentPlan updated successfully.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+        }
+
+        public void DeleteTreatmentPlan(int planID)
+        {
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "DELETE FROM TreatmentPlan WHERE planID = @planID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@planID", planID);
+
+                        command.ExecuteNonQuery();
+
+                        MessageBox.Show("TreatmentPlan deleted successfully.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+        }
+
+        public TreatmentPlan GetTreatmentPlanByID(int planID)
+        {
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "SELECT * FROM TreatmentPlan WHERE planID = @planID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@planID", planID);
+
+                        using (MySqlDataReader reader = command.ExecuteReader())
                         {
                             if (reader.Read())
                             {
-                                return MapTreatmentPlan(reader);
+                                return new TreatmentPlan(
+                                    Convert.ToInt32(reader["planID"]),
+                                    reader["planName"].ToString(),
+                                    Convert.ToInt32(reader["planTime"]),
+                                    Convert.ToDouble(reader["price"]),
+                                    reader["notes"].ToString(),
+                                    Convert.ToInt32(reader["injuryID"])
+                                );
                             }
                         }
                     }
                 }
                 catch (Exception ex)
                 {
-                    // Handle exception (log, throw, etc.)
-                    Console.WriteLine(ex.Message);
+                    MessageBox.Show($"Error: {ex.Message}");
                 }
-            }
 
-            return null;
+                return null;
+            }
         }
 
-        public static List<TreatmentPlan> GetAllTreatmentPlans()
+        public List<TreatmentPlan> GetAllTreatmentPlans()
         {
             List<TreatmentPlan> treatmentPlans = new List<TreatmentPlan>();
+
             using (connection)
             {
                 try
                 {
                     connection.Open();
-                    using (MySqlCommand cmd = new MySqlCommand("SELECT * FROM TreatmentPlan", connection))
+
+                    string query = "SELECT * FROM TreatmentPlan";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
-                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        using (MySqlDataReader reader = command.ExecuteReader())
                         {
                             while (reader.Read())
                             {
-                                TreatmentPlan treatmentPlan = MapTreatmentPlan(reader);
+                                TreatmentPlan treatmentPlan = new TreatmentPlan(
+                                    Convert.ToInt32(reader["planID"]),
+                                    reader["planName"].ToString(),
+                                    Convert.ToInt32(reader["planTime"]),
+                                    Convert.ToDouble(reader["price"]),
+                                    reader["notes"].ToString(),
+                                    Convert.ToInt32(reader["injuryID"])
+                                );
+
                                 treatmentPlans.Add(treatmentPlan);
                             }
                         }
@@ -754,73 +867,11 @@ namespace clinical
                 }
                 catch (Exception ex)
                 {
-                    // Handle exception (log, throw, etc.)
-                    Console.WriteLine(ex.Message);
+                    MessageBox.Show($"Error: {ex.Message}");
                 }
+
+                return treatmentPlans;
             }
-
-            return treatmentPlans;
-        }
-
-        public static void DeleteTreatmentPlan(int planID)
-        {
-            using (connection)
-            {
-                try
-                {
-                    connection.Open();
-                    using (MySqlCommand cmd = new MySqlCommand("DELETE FROM TreatmentPlan WHERE planID = @planID", connection))
-                    {
-                        cmd.Parameters.AddWithValue("@planID", planID);
-                        cmd.ExecuteNonQuery();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    // Handle exception (log, throw, etc.)
-                    Console.WriteLine(ex.Message);
-                }
-            }
-        }
-
-        public static void InsertTreatmentPlan(TreatmentPlan treatmentPlan)
-        {
-            using (connection)
-            {
-                try
-                {
-                    connection.Open();
-                    using (MySqlCommand cmd = new MySqlCommand(
-                        "INSERT INTO TreatmentPlan (planID, planName, planTime, price, notes) " +
-                        "VALUES (@planID, @planName, @planTime, @price, @notes)",
-                        connection))
-                    {
-                        cmd.Parameters.AddWithValue("@planID", treatmentPlan.PlanID);
-                        cmd.Parameters.AddWithValue("@planName", treatmentPlan.PlanName);
-                        cmd.Parameters.AddWithValue("@planTime", treatmentPlan.PlanTimeInWeeks);
-                        cmd.Parameters.AddWithValue("@price", treatmentPlan.Price);
-                        cmd.Parameters.AddWithValue("@notes", treatmentPlan.Notes);
-
-                        cmd.ExecuteNonQuery();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    // Handle exception (log, throw, etc.)
-                    Console.WriteLine(ex.Message);
-                }
-            }
-        }
-
-        private static TreatmentPlan MapTreatmentPlan(MySqlDataReader reader)
-        {
-            return new TreatmentPlan(
-                reader.GetInt32("planID"),
-                reader.GetString("planName"),
-                reader.GetInt32("planTime"),
-                reader.IsDBNull("price") ? 0 : reader.GetDouble("price"),
-                reader.IsDBNull("notes") ? null : reader.GetString("notes")
-            );
         }
 
 
@@ -999,7 +1050,2667 @@ namespace clinical
             }
         }
 
+        /// chatMessage
+        ////////////////////////////////////////////////////////////////
+        ///
+
+        public static void InsertChatMessage(ChatMessage chatMessage)
+        {
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "INSERT INTO ChatMessage (messageID, senderID, chatRoomID, messageContent, timeStamp) " +
+                                   "VALUES (@messageID, @senderID, @chatRoomID, @messageContent, @timeStamp)";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@messageID", chatMessage.MessageID);
+                        command.Parameters.AddWithValue("@senderID", chatMessage.SenderID);
+                        command.Parameters.AddWithValue("@chatRoomID", chatMessage.ChatRoomID);
+                        command.Parameters.AddWithValue("@messageContent", chatMessage.MessageContent);
+                        command.Parameters.AddWithValue("@timeStamp", chatMessage.TimeStamp);
+
+                        command.ExecuteNonQuery();
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+        }
+
+        public static void DeleteChatMessage(int messageID)
+        {
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "DELETE FROM ChatMessage WHERE messageID = @messageID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@messageID", messageID);
+
+                        command.ExecuteNonQuery();
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+        }
+
+        public static ChatMessage GetChatMessageByID(int messageID)
+        {
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "SELECT * FROM ChatMessage WHERE messageID = @messageID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@messageID", messageID);
+
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                return new ChatMessage(
+                                    Convert.ToInt32(reader["messageID"]),
+                                    Convert.ToInt32(reader["senderID"]),
+                                    Convert.ToInt32(reader["chatRoomID"]),
+                                    reader["messageContent"].ToString(),
+                                    Convert.ToDateTime(reader["timeStamp"])
+                                );
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+
+                return null;
+            }
+        }
+
+        public static List<ChatMessage> GetAllChatMessages()
+        {
+            List<ChatMessage> chatMessages = new List<ChatMessage>();
+
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "SELECT * FROM ChatMessage";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                ChatMessage chatMessage = new ChatMessage(
+                                    Convert.ToInt32(reader["messageID"]),
+                                    Convert.ToInt32(reader["senderID"]),
+                                    Convert.ToInt32(reader["chatRoomID"]),
+                                    reader["messageContent"].ToString(),
+                                    Convert.ToDateTime(reader["timeStamp"])
+                                );
+
+                                chatMessages.Add(chatMessage);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+
+                return chatMessages;
+            }
+        }
+
+        public static List<ChatMessage> GetAllChatMessagesByRoomID(int chatRoomID)
+        {
+            List<ChatMessage> chatMessages = new List<ChatMessage>();
+
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "SELECT * FROM ChatMessage WHERE chatRoomID = @chatRoomID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@chatRoomID", chatRoomID);
+
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                ChatMessage chatMessage = new ChatMessage(
+                                    Convert.ToInt32(reader["messageID"]),
+                                    Convert.ToInt32(reader["senderID"]),
+                                    Convert.ToInt32(reader["chatRoomID"]),
+                                    reader["messageContent"].ToString(),
+                                    Convert.ToDateTime(reader["timeStamp"])
+                                );
+
+                                chatMessages.Add(chatMessage);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+
+                return chatMessages;
+            }
+        }
+
+        /// chatGroup
+        ////////////////////////////////////////////////////////////////////
+        ///
+
+        public static void InsertChatGroup(ChatGroup chatGroup)
+        {
+            using ( connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "INSERT INTO ChatGroup (chatGroupID, usersIDs, chatGroupName) " +
+                                   "VALUES (@chatGroupID, @usersIDs, @chatGroupName)";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@chatGroupID", chatGroup.ChatGroupID);
+                        command.Parameters.AddWithValue("@usersIDs", string.Join(",", chatGroup.UsersIDs));
+                        command.Parameters.AddWithValue("@chatGroupName", chatGroup.ChatGroupName);
+
+                        command.ExecuteNonQuery();
+
+                        MessageBox.Show("ChatGroup inserted successfully.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+        }
+
+        public static void DeleteChatGroup(int chatGroupID)
+        {
+            using ( connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "DELETE FROM ChatGroup WHERE chatGroupID = @chatGroupID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@chatGroupID", chatGroupID);
+
+                        command.ExecuteNonQuery();
+
+                        MessageBox.Show("ChatGroup deleted successfully.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+        }
+
+        public static ChatGroup GetChatGroupByID(int chatGroupID)
+        {
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "SELECT * FROM ChatGroup WHERE chatGroupID = @chatGroupID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@chatGroupID", chatGroupID);
+
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                List<int> usersIDs = reader["usersIDs"].ToString().Split(',').Select(int.Parse).ToList();
+
+                                return new ChatGroup(
+                                    Convert.ToInt32(reader["chatGroupID"]),
+                                    usersIDs,
+                                    reader["chatGroupName"].ToString()
+                                );
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+
+                return null;
+            }
+        }
+
+        public static List<ChatGroup> GetAllChatGroups()
+        {
+            List<ChatGroup> chatGroups = new List<ChatGroup>();
+
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "SELECT * FROM ChatGroup";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                List<int> usersIDs = reader["usersIDs"].ToString().Split(',').Select(int.Parse).ToList();
+
+                                ChatGroup chatGroup = new ChatGroup(
+                                    Convert.ToInt32(reader["chatGroupID"]),
+                                    usersIDs,
+                                    reader["chatGroupName"].ToString()
+                                );
+
+                                chatGroups.Add(chatGroup);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+
+                return chatGroups;
+            }
+        }
+
+        public List<ChatGroup> GetChatGroupsByUserID(int userID)
+        {
+            List<ChatGroup> chatGroups = new List<ChatGroup>();
+
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "SELECT c.* FROM ChatGroup c " +
+                                   "JOIN ChatGroupRelation cr ON c.chatGroupID = cr.chatGroupID " +
+                                   "WHERE cr.userID = @userID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@userID", userID);
+
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                List<int> usersIDs = reader["usersIDs"].ToString().Split(',').Select(int.Parse).ToList();
+
+                                ChatGroup chatGroup = new ChatGroup(
+                                    Convert.ToInt32(reader["chatGroupID"]),
+                                    usersIDs,
+                                    reader["chatGroupName"].ToString()
+                                );
+
+                                chatGroups.Add(chatGroup);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+
+                return chatGroups;
+            }
+        }
+
+
+        /// drug
+        /////////////////////////////////////////////////////////////////////////
+        ///
+        public static void InsertDrug(Drug drug)
+        {
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "INSERT INTO Drug (drugName, normalDosage, notes) " +
+                                   "VALUES (@drugName, @normalDosage, @notes)";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@drugName", drug.DrugName);
+                        command.Parameters.AddWithValue("@normalDosage", drug.NormalDosage);
+                        command.Parameters.AddWithValue("@notes", drug.Notes);
+
+                        command.ExecuteNonQuery();
+
+                        MessageBox.Show("Drug inserted successfully.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+        }
+
+        public static void UpdateDrug(Drug drug)
+        {
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "UPDATE Drug SET drugName = @drugName, normalDosage = @normalDosage, notes = @notes " +
+                                   "WHERE drugID = @drugID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@drugID", drug.DrugID);
+                        command.Parameters.AddWithValue("@drugName", drug.DrugName);
+                        command.Parameters.AddWithValue("@normalDosage", drug.NormalDosage);
+                        command.Parameters.AddWithValue("@notes", drug.Notes);
+
+                        command.ExecuteNonQuery();
+
+                        MessageBox.Show("Drug updated successfully.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+        }
+
+        public static void DeleteDrug(int drugID)
+        {
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "DELETE FROM Drug WHERE drugID = @drugID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@drugID", drugID);
+
+                        command.ExecuteNonQuery();
+
+                        MessageBox.Show("Drug deleted successfully.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+        }
+
+        public static Drug GetDrugByID(int drugID)
+        {
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "SELECT * FROM Drug WHERE drugID = @drugID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@drugID", drugID);
+
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                return new Drug(
+                                    Convert.ToInt32(reader["drugID"]),
+                                    reader["drugName"].ToString(),
+                                    reader["normalDosage"].ToString(),
+                                    reader["notes"].ToString()
+                                );
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+
+                return null;
+            }
+        }
+
+        public static List<Drug> GetAllDrugs()
+        {
+            List<Drug> drugs = new List<Drug>();
+
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "SELECT * FROM Drug";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                Drug drug = new Drug(
+                                    Convert.ToInt32(reader["drugID"]),
+                                    reader["drugName"].ToString(),
+                                    reader["normalDosage"].ToString(),
+                                    reader["notes"].ToString()
+                                );
+
+                                drugs.Add(drug);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+
+                return drugs;
+            }
+        }
+
+        /// injury
+        /////////////////////////////////////////////////////////////////////////
+        ///
+        public static void InsertInjury(Injury injury)
+        {
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "INSERT INTO Injury (injuryID, injuryName, injuryLocation, severity) " +
+                                   "VALUES (@injuryID, @injuryName, @injuryLocation, @severity)";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@injuryID", injury.InjuryID);
+                        command.Parameters.AddWithValue("@injuryName", injury.InjuryName);
+                        command.Parameters.AddWithValue("@injuryLocation", injury.InjuryLocation);
+                        command.Parameters.AddWithValue("@severity", injury.Severity);
+
+                        command.ExecuteNonQuery();
+
+                        MessageBox.Show("Injury inserted successfully.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+        }
+
+        public static void UpdateInjury(Injury injury)
+        {
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "UPDATE Injury SET injuryName = @injuryName, " +
+                                   "injuryLocation = @injuryLocation, severity = @severity " +
+                                   "WHERE injuryID = @injuryID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@injuryID", injury.InjuryID);
+                        command.Parameters.AddWithValue("@injuryName", injury.InjuryName);
+                        command.Parameters.AddWithValue("@injuryLocation", injury.InjuryLocation);
+                        command.Parameters.AddWithValue("@severity", injury.Severity);
+
+                        command.ExecuteNonQuery();
+
+                        MessageBox.Show("Injury updated successfully.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+        }
+
+        public static void DeleteInjury(int injuryID)
+        {
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "DELETE FROM Injury WHERE injuryID = @injuryID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@injuryID", injuryID);
+
+                        command.ExecuteNonQuery();
+
+                        MessageBox.Show("Injury deleted successfully.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+        }
+
+        public static Injury GetInjuryByID(int injuryID)
+        {
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "SELECT * FROM Injury WHERE injuryID = @injuryID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@injuryID", injuryID);
+
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                return new Injury(
+                                    Convert.ToInt32(reader["injuryID"]),
+                                    reader["injuryName"].ToString(),
+                                    reader["injuryLocation"].ToString(),
+                                    Convert.ToInt32(reader["severity"])
+                                );
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+
+                return null;
+            }
+        }
+
+        public static List<Injury> GetAllInjuries()
+        {
+            List<Injury> injuries = new List<Injury>();
+
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "SELECT * FROM Injury";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                Injury injury = new Injury(
+                                    Convert.ToInt32(reader["injuryID"]),
+                                    reader["injuryName"].ToString(),
+                                    reader["injuryLocation"].ToString(),
+                                    Convert.ToInt32(reader["severity"])
+                                );
+
+                                injuries.Add(injury);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+
+                return injuries;
+            }
+        }
+
+
+        ///equipment
+        ////////////////////////////////////////////////////////////////////////////
+        ///
+        public static void InsertEquipment(Equipment equipment)
+        {
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "INSERT INTO Equipment (equipmentID, equipmentName, equipmentFunction, latestMaintenanceDate, toCheck, roomID) " +
+                                   "VALUES (@equipmentID, @equipmentName, @equipmentFunction, @latestMaintenanceDate, @toCheck, @roomID)";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@equipmentID", equipment.EquipmentID);
+                        command.Parameters.AddWithValue("@equipmentName", equipment.EquipmentName);
+                        command.Parameters.AddWithValue("@equipmentFunction", equipment.Function);
+                        command.Parameters.AddWithValue("@latestMaintenanceDate", equipment.LatestMaintenanceDate);
+                        command.Parameters.AddWithValue("@toCheck", equipment.ToCheck);
+                        command.Parameters.AddWithValue("@roomID", equipment.RoomID);
+
+                        command.ExecuteNonQuery();
+
+                        MessageBox.Show("Equipment inserted successfully.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+        }
+
+        public static void UpdateEquipment(Equipment equipment)
+        {
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "UPDATE Equipment SET equipmentName = @equipmentName, equipmentFunction = @equipmentFunction, " +
+                                   "latestMaintenanceDate = @latestMaintenanceDate, toCheck = @toCheck, roomID = @roomID " +
+                                   "WHERE equipmentID = @equipmentID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@equipmentID", equipment.EquipmentID);
+                        command.Parameters.AddWithValue("@equipmentName", equipment.EquipmentName);
+                        command.Parameters.AddWithValue("@equipmentFunction", equipment.Function);
+                        command.Parameters.AddWithValue("@latestMaintenanceDate", equipment.LatestMaintenanceDate);
+                        command.Parameters.AddWithValue("@toCheck", equipment.ToCheck);
+                        command.Parameters.AddWithValue("@roomID", equipment.RoomID);
+
+                        command.ExecuteNonQuery();
+
+                        MessageBox.Show("Equipment updated successfully.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+        }
+
+        public static void DeleteEquipment(int equipmentID)
+        {
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "DELETE FROM Equipment WHERE equipmentID = @equipmentID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@equipmentID", equipmentID);
+
+                        command.ExecuteNonQuery();
+
+                        MessageBox.Show("Equipment deleted successfully.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+        }
+
+        public static Equipment GetEquipmentByID(int equipmentID)
+        {
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "SELECT * FROM Equipment WHERE equipmentID = @equipmentID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@equipmentID", equipmentID);
+
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                return new Equipment(
+                                    Convert.ToInt32(reader["equipmentID"]),
+                                    reader["equipmentName"].ToString(),
+                                    reader["equipmentFunction"].ToString(),
+                                    Convert.ToDateTime(reader["latestMaintenanceDate"]),
+                                    Convert.ToBoolean(reader["toCheck"]),
+                                    Convert.ToInt32(reader["roomID"])
+                                );
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+
+                return null;
+            }
+        }
+
+        public static List<Equipment> GetAllEquipment()
+        {
+            List<Equipment> equipmentList = new List<Equipment>();
+
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "SELECT * FROM Equipment";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                Equipment equipment = new Equipment(
+                                    Convert.ToInt32(reader["equipmentID"]),
+                                    reader["equipmentName"].ToString(),
+                                    reader["equipmentFunction"].ToString(),
+                                    Convert.ToDateTime(reader["latestMaintenanceDate"]),
+                                    Convert.ToBoolean(reader["toCheck"]),
+                                    Convert.ToInt32(reader["roomID"])
+                                );
+
+                                equipmentList.Add(equipment);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+
+                return equipmentList;
+            }
+        }
+
+
+        /// room 
+        /////////////////////////////////////////////////////////////////////
+        ///
+        public static void InsertRoom(Room room)
+        {
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "INSERT INTO Room (roomID, roomNumber) VALUES (@roomID, @roomNumber)";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@roomID", room.RoomID);
+                        command.Parameters.AddWithValue("@roomNumber", room.RoomNumber);
+
+                        command.ExecuteNonQuery();
+
+                        MessageBox.Show("Room inserted successfully.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+        }
+
+        public static void UpdateRoom(Room room)
+        {
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "UPDATE Room SET roomNumber = @roomNumber WHERE roomID = @roomID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@roomID", room.RoomID);
+                        command.Parameters.AddWithValue("@roomNumber", room.RoomNumber);
+
+                        command.ExecuteNonQuery();
+
+                        MessageBox.Show("Room updated successfully.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+        }
+
+        public static void DeleteRoom(int roomID)
+        {
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "DELETE FROM Room WHERE roomID = @roomID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@roomID", roomID);
+
+                        command.ExecuteNonQuery();
+
+                        MessageBox.Show("Room deleted successfully.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+        }
+
+        public static Room GetRoomByID(int roomID)
+        {
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "SELECT * FROM Room WHERE roomID = @roomID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@roomID", roomID);
+
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                return new Room(
+                                    Convert.ToInt32(reader["roomID"]),
+                                    reader["roomNumber"].ToString(),
+                                    new List<int>() // You may populate this list if you store equipment IDs in the Room table
+                                );
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+
+                return null;
+            }
+        }
+
+        public static List<Room> GetAllRooms()
+        {
+            List<Room> roomList = new List<Room>();
+
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "SELECT * FROM Room";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                Room room = new Room(
+                                    Convert.ToInt32(reader["roomID"]),
+                                    reader["roomNumber"].ToString(),
+                                    new List<int>() // You may populate this list if you store equipment IDs in the Room table
+                                );
+
+                                roomList.Add(room);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+
+                return roomList;
+            }
+        }
+        public static List<Equipment> GetEquipmentByRoomID(int roomID)
+        {
+            List<Equipment> equipmentList = new List<Equipment>();
+
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "SELECT * FROM Equipment WHERE roomID = @roomID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@roomID", roomID);
+
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                Equipment equipment = new Equipment(
+                                    Convert.ToInt32(reader["equipmentID"]),
+                                    reader["equipmentName"].ToString(),
+                                    reader["equipmentFunction"].ToString(),
+                                    Convert.ToDateTime(reader["latestMaintenanceDate"]),
+                                    Convert.ToBoolean(reader["toCheck"]),
+                                    Convert.ToInt32(reader["roomID"])
+                                );
+
+                                equipmentList.Add(equipment);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+
+            return equipmentList;
+        }
+
+        /// attendanceRecord
+        /////////////////////////////////////////////////////////////////////
+        ///
+        public static void InsertAttendanceRecord(AttendanceRecord attendanceRecord)
+        {
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "INSERT INTO AttendanceRecord (recordID, timeStamp, userID, present) " +
+                                   "VALUES (@recordID, @timeStamp, @userID, @isPresent)";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@recordID", attendanceRecord.RecordID);
+                        command.Parameters.AddWithValue("@timeStamp", attendanceRecord.TimeStamp);
+                        command.Parameters.AddWithValue("@userID", attendanceRecord.UserID);
+                        command.Parameters.AddWithValue("@isPresent", attendanceRecord.IsPresent);
+
+                        command.ExecuteNonQuery();
+
+                        MessageBox.Show("Attendance record inserted successfully.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+        }
+
+        public static void UpdateAttendanceRecord(AttendanceRecord attendanceRecord)
+        {
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "UPDATE AttendanceRecord SET timeStamp = @timeStamp, " +
+                                   "userID = @userID, present = @isPresent WHERE recordID = @recordID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@recordID", attendanceRecord.RecordID);
+                        command.Parameters.AddWithValue("@timeStamp", attendanceRecord.TimeStamp);
+                        command.Parameters.AddWithValue("@userID", attendanceRecord.UserID);
+                        command.Parameters.AddWithValue("@isPresent", attendanceRecord.IsPresent);
+
+                        command.ExecuteNonQuery();
+
+                        MessageBox.Show("Attendance record updated successfully.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+        }
+
+        public static void DeleteAttendanceRecord(int recordID)
+        {
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "DELETE FROM AttendanceRecord WHERE recordID = @recordID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@recordID", recordID);
+
+                        command.ExecuteNonQuery();
+
+                        MessageBox.Show("Attendance record deleted successfully.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+        }
+
+        public static AttendanceRecord GetAttendanceRecordByID(int recordID)
+        {
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "SELECT * FROM AttendanceRecord WHERE recordID = @recordID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@recordID", recordID);
+
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                return new AttendanceRecord(
+                                    Convert.ToInt32(reader["recordID"]),
+                                    Convert.ToDateTime(reader["timeStamp"]),
+                                    Convert.ToInt32(reader["userID"]),
+                                    Convert.ToBoolean(reader["present"])
+                                );
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+
+                return null;
+            }
+        }
+
+        public static List<AttendanceRecord> GetAllAttendanceRecords()
+        {
+            List<AttendanceRecord> attendanceRecords = new List<AttendanceRecord>();
+
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "SELECT * FROM AttendanceRecord";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                AttendanceRecord attendanceRecord = new AttendanceRecord(
+                                    Convert.ToInt32(reader["recordID"]),
+                                    Convert.ToDateTime(reader["timeStamp"]),
+                                    Convert.ToInt32(reader["userID"]),
+                                    Convert.ToBoolean(reader["present"])
+                                );
+
+                                attendanceRecords.Add(attendanceRecord);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+
+                return attendanceRecords;
+            }
+        }
+
+        ///visit
+        /////////////////////////////////////////////////////////////////////
+        ///
+        public static void InsertVisit(Visit visit)
+        {
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "INSERT INTO Visit (visitID, userID, patientID, packageID, timeStamp, roomID, type, therapistNotes) " +
+                                   "VALUES (@visitID, @userID, @patientID, @packageID, @timeStamp, @roomID, @type, @therapistNotes)";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@visitID", visit.VisitID);
+                        command.Parameters.AddWithValue("@userID", visit.PhysiotherapistID);
+                        command.Parameters.AddWithValue("@patientID", visit.PatientID);
+                        command.Parameters.AddWithValue("@packageID", visit.PackageID);
+                        command.Parameters.AddWithValue("@timeStamp", visit.TimeStamp);
+                        command.Parameters.AddWithValue("@roomID", visit.RoomID);
+                        command.Parameters.AddWithValue("@type", visit.Type);
+                        command.Parameters.AddWithValue("@therapistNotes", visit.TherapistNotes);
+
+                        command.ExecuteNonQuery();
+
+                        MessageBox.Show("Visit record inserted successfully.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+        }
+
+        public static void UpdateVisit(Visit visit)
+        {
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "UPDATE Visit SET userID = @userID, patientID = @patientID, " +
+                                   "packageID = @packageID, timeStamp = @timeStamp, roomID = @roomID, " +
+                                   "type = @type, therapistNotes = @therapistNotes WHERE visitID = @visitID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@visitID", visit.VisitID);
+                        command.Parameters.AddWithValue("@userID", visit.PhysiotherapistID);
+                        command.Parameters.AddWithValue("@patientID", visit.PatientID);
+                        command.Parameters.AddWithValue("@packageID", visit.PackageID);
+                        command.Parameters.AddWithValue("@timeStamp", visit.TimeStamp);
+                        command.Parameters.AddWithValue("@roomID", visit.RoomID);
+                        command.Parameters.AddWithValue("@type", visit.Type);
+                        command.Parameters.AddWithValue("@therapistNotes", visit.TherapistNotes);
+
+                        command.ExecuteNonQuery();
+
+                        MessageBox.Show("Visit record updated successfully.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+        }
+
+        public static void DeleteVisit(int visitID)
+        {
+            using (connection )
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "DELETE FROM Visit WHERE visitID = @visitID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@visitID", visitID);
+
+                        command.ExecuteNonQuery();
+
+                        MessageBox.Show("Visit record deleted successfully.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+        }
+
+        public static Visit GetVisitByID(int visitID)
+        {
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "SELECT * FROM Visit WHERE visitID = @visitID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@visitID", visitID);
+
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                return new Visit(
+                                    Convert.ToInt32(reader["visitID"]),
+                                    Convert.ToInt32(reader["userID"]),
+                                    Convert.ToInt32(reader["patientID"]),
+                                    Convert.ToInt32(reader["packageID"]),
+                                    Convert.ToDateTime(reader["timeStamp"]),
+                                    Convert.ToInt32(reader["roomID"]),
+                                    reader["type"].ToString(),
+                                    reader["therapistNotes"].ToString()
+                                );
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+
+                return null;
+            }
+        }
+
+        public static List<Visit> GetAllVisits()
+        {
+            List<Visit> visitList = new List<Visit>();
+
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "SELECT * FROM Visit";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                Visit visit = new Visit(
+                                    Convert.ToInt32(reader["visitID"]),
+                                    Convert.ToInt32(reader["userID"]),
+                                    Convert.ToInt32(reader["patientID"]),
+                                    Convert.ToInt32(reader["packageID"]),
+                                    Convert.ToDateTime(reader["timeStamp"]),
+                                    Convert.ToInt32(reader["roomID"]),
+                                    reader["type"].ToString(),
+                                    reader["therapistNotes"].ToString()
+                                );
+
+                                visitList.Add(visit);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+
+                return visitList;
+            }
+        }
+
+        public static List<Visit> GetAllVisitsByPhysicianID(int physicianID)
+        {
+            List<Visit> visitsForPhysician = new List<Visit>();
+
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "SELECT v.* FROM Visit v " +
+                                   "INNER JOIN User u ON v.userID = u.userID " +
+                                   "WHERE u.userID = @physicianID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@physicianID", physicianID);
+
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                Visit visit = new Visit(
+                                    Convert.ToInt32(reader["visitID"]),
+                                    Convert.ToInt32(reader["userID"]),
+                                    Convert.ToInt32(reader["patientID"]),
+                                    Convert.ToInt32(reader["packageID"]),
+                                    Convert.ToDateTime(reader["timeStamp"]),
+                                    Convert.ToInt32(reader["roomID"]),
+                                    reader["type"].ToString(),
+                                    reader["therapistNotes"].ToString()
+                                );
+
+                                visitsForPhysician.Add(visit);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+
+            return visitsForPhysician;
+        }
+
+        public static List<Visit> GetTodayVisits()
+        {
+            List<Visit> todayVisits = new List<Visit>();
+
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "SELECT * FROM Visit WHERE DATE(timeStamp) = CURDATE()";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                Visit visit = new Visit(
+                                    Convert.ToInt32(reader["visitID"]),
+                                    Convert.ToInt32(reader["userID"]),
+                                    Convert.ToInt32(reader["patientID"]),
+                                    Convert.ToInt32(reader["packageID"]),
+                                    Convert.ToDateTime(reader["timeStamp"]),
+                                    Convert.ToInt32(reader["roomID"]),
+                                    reader["type"].ToString(),
+                                    reader["therapistNotes"].ToString()
+                                );
+
+                                todayVisits.Add(visit);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+
+            return todayVisits;
+        }
+
+        public static List<Visit> GetTodayPhysicianVisits(int physicianID)
+        {
+            List<Visit> todayPhysicianVisits = new List<Visit>();
+
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "SELECT v.* FROM Visit v " +
+                                   "INNER JOIN User u ON v.userID = u.userID " +
+                                   "WHERE u.userID = @physicianID AND DATE(v.timeStamp) = CURDATE()";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@physicianID", physicianID);
+
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                Visit visit = new Visit(
+                                    Convert.ToInt32(reader["visitID"]),
+                                    Convert.ToInt32(reader["userID"]),
+                                    Convert.ToInt32(reader["patientID"]),
+                                    Convert.ToInt32(reader["packageID"]),
+                                    Convert.ToDateTime(reader["timeStamp"]),
+                                    Convert.ToInt32(reader["roomID"]),
+                                    reader["type"].ToString(),
+                                    reader["therapistNotes"].ToString()
+                                );
+
+                                todayPhysicianVisits.Add(visit);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+
+            return todayPhysicianVisits;
+        }
+
+        public static List<Visit> GetPhysicianVisitsOnDate(int physicianID, DateTime date)
+        {
+            List<Visit> physicianVisitsOnDate = new List<Visit>();
+
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "SELECT v.* FROM Visit v " +
+                                   "INNER JOIN User u ON v.userID = u.userID " +
+                                   "WHERE u.userID = @physicianID AND DATE(v.timeStamp) = @visitDate";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@physicianID", physicianID);
+                        command.Parameters.AddWithValue("@visitDate", date.ToString("yyyy-MM-dd"));
+
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                Visit visit = new Visit(
+                                    Convert.ToInt32(reader["visitID"]),
+                                    Convert.ToInt32(reader["userID"]),
+                                    Convert.ToInt32(reader["patientID"]),
+                                    Convert.ToInt32(reader["packageID"]),
+                                    Convert.ToDateTime(reader["timeStamp"]),
+                                    Convert.ToInt32(reader["roomID"]),
+                                    reader["type"].ToString(),
+                                    reader["therapistNotes"].ToString()
+                                );
+
+                                physicianVisitsOnDate.Add(visit);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+
+            return physicianVisitsOnDate;
+        }
+
+        ///prescription
+        ////////////////////////////////////////////////////////////////
+        ///
+        public void InsertPrescription(Prescription prescription)
+        {
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "INSERT INTO Prescription (prescriptionID, timeStamp, patientID, userID, visitID) " +
+                                   "VALUES (@prescriptionID, @timeStamp, @patientID, @userID, @visitID)";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@prescriptionID", prescription.PrescriptionID);
+                        command.Parameters.AddWithValue("@timeStamp", prescription.TimeStamp);
+                        command.Parameters.AddWithValue("@patientID", prescription.PatientID);
+                        command.Parameters.AddWithValue("@userID", prescription.UserID);
+                        command.Parameters.AddWithValue("@visitID", prescription.VisitID);
+
+                        command.ExecuteNonQuery();
+
+                        MessageBox.Show("Prescription record inserted successfully.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+        }
+
+        public void UpdatePrescription(Prescription prescription)
+        {
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "UPDATE Prescription SET timeStamp = @timeStamp, " +
+                                   "patientID = @patientID, userID = @userID, visitID = @visitID " +
+                                   "WHERE prescriptionID = @prescriptionID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@prescriptionID", prescription.PrescriptionID);
+                        command.Parameters.AddWithValue("@timeStamp", prescription.TimeStamp);
+                        command.Parameters.AddWithValue("@patientID", prescription.PatientID);
+                        command.Parameters.AddWithValue("@userID", prescription.UserID);
+                        command.Parameters.AddWithValue("@visitID", prescription.VisitID);
+
+                        command.ExecuteNonQuery();
+
+                        MessageBox.Show("Prescription record updated successfully.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+        }
+
+        public void DeletePrescription(int prescriptionID)
+        {
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "DELETE FROM Prescription WHERE prescriptionID = @prescriptionID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@prescriptionID", prescriptionID);
+
+                        command.ExecuteNonQuery();
+
+                        MessageBox.Show("Prescription record deleted successfully.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+        }
+
+        public Prescription GetPrescriptionByID(int prescriptionID)
+        {
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "SELECT * FROM Prescription WHERE prescriptionID = @prescriptionID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@prescriptionID", prescriptionID);
+
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                return new Prescription(
+                                    Convert.ToInt32(reader["prescriptionID"]),
+                                    Convert.ToDateTime(reader["timeStamp"]),
+                                    Convert.ToInt32(reader["patientID"]),
+                                    Convert.ToInt32(reader["userID"]),
+                                    Convert.ToInt32(reader["visitID"]),
+                                     GetIssuedDrugsByPrescriptionID(Convert.ToInt32(reader["prescriptionID"])),
+                                    GetIssuedExercisesByPrescriptionID(Convert.ToInt32(reader["prescriptionID"]))
+
+
+                                );
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+
+                return null;
+            }
+        }
+
+        public List<Prescription> GetAllPrescriptions()
+        {
+            List<Prescription> prescriptionList = new List<Prescription>();
+
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "SELECT * FROM Prescription";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                Prescription prescription = new Prescription(
+                                    Convert.ToInt32(reader["prescriptionID"]),
+                                    Convert.ToDateTime(reader["timeStamp"]),
+                                    Convert.ToInt32(reader["patientID"]),
+                                    Convert.ToInt32(reader["userID"]),
+                                    Convert.ToInt32(reader["visitID"]),
+                                    GetIssuedDrugsByPrescriptionID(Convert.ToInt32(reader["prescriptionID"])),
+                                    GetIssuedExercisesByPrescriptionID(Convert.ToInt32(reader["prescriptionID"]))
+                                );
+
+                                prescriptionList.Add(prescription);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+
+                return prescriptionList;
+            }
+        }
+
+        public List<Prescription> GetAllPrescriptionsByPatientID(int patientID)
+        {
+            List<Prescription> prescriptionList = new List<Prescription>();
+
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "SELECT * FROM Prescription WHERE patientID=@patientID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@patientID", patientID);
+
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                Prescription prescription = new Prescription(
+                                    Convert.ToInt32(reader["prescriptionID"]),
+                                    Convert.ToDateTime(reader["timeStamp"]),
+                                    Convert.ToInt32(reader["patientID"]),
+                                    Convert.ToInt32(reader["userID"]),
+                                    Convert.ToInt32(reader["visitID"]),
+                                    GetIssuedDrugsByPrescriptionID(Convert.ToInt32(reader["prescriptionID"])),
+                                    GetIssuedExercisesByPrescriptionID(Convert.ToInt32(reader["prescriptionID"]))
+                                );
+
+                                prescriptionList.Add(prescription);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+
+                return prescriptionList;
+            }
+        }
+
+
+
+        ///medicalRecord
+        ////////////////////////////////////////////////////////////////////////
+        ///
+        public static void InsertMedicalRecord(MedicalRecord medicalRecord)
+        {
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "INSERT INTO MedicalRecord (recordID, type, timeStamp, report, images, visitID, patientID, physicianNotes) " +
+                                   "VALUES (@recordID, @type, @timeStamp, @report, @images, @visitID, @patientID, @physicianNotes)";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@recordID", medicalRecord.RecordID);
+                        command.Parameters.AddWithValue("@type", medicalRecord.Type);
+                        command.Parameters.AddWithValue("@timeStamp", medicalRecord.TimeStamp);
+                        command.Parameters.AddWithValue("@report", medicalRecord.Report);
+                        command.Parameters.AddWithValue("@images", string.Join(",", medicalRecord.Images));
+                        command.Parameters.AddWithValue("@visitID", medicalRecord.VisitID);
+                        command.Parameters.AddWithValue("@patientID", medicalRecord.PatientID);
+                        command.Parameters.AddWithValue("@physicianNotes", medicalRecord.PhysicianNotes);
+
+                        command.ExecuteNonQuery();
+
+                        MessageBox.Show("Medical record inserted successfully.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+        }
+
+        public static void UpdateMedicalRecord(MedicalRecord medicalRecord)
+        {
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "UPDATE MedicalRecord SET type = @type, " +
+                                   "timeStamp = @timeStamp, report = @report, images = @images, " +
+                                   "visitID = @visitID, patientID = @patientID, physicianNotes = @physicianNotes " +
+                                   "WHERE recordID = @recordID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@recordID", medicalRecord.RecordID);
+                        command.Parameters.AddWithValue("@type", medicalRecord.Type);
+                        command.Parameters.AddWithValue("@timeStamp", medicalRecord.TimeStamp);
+                        command.Parameters.AddWithValue("@report", medicalRecord.Report);
+                        command.Parameters.AddWithValue("@images", string.Join(",", medicalRecord.Images));
+                        command.Parameters.AddWithValue("@visitID", medicalRecord.VisitID);
+                        command.Parameters.AddWithValue("@patientID", medicalRecord.PatientID);
+                        command.Parameters.AddWithValue("@physicianNotes", medicalRecord.PhysicianNotes);
+
+                        command.ExecuteNonQuery();
+
+                        MessageBox.Show("Medical record updated successfully.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+        }
+
+        public static void DeleteMedicalRecord(int recordID)
+        {
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "DELETE FROM MedicalRecord WHERE recordID = @recordID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@recordID", recordID);
+
+                        command.ExecuteNonQuery();
+
+                        MessageBox.Show("Medical record deleted successfully.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+        }
+
+        public static MedicalRecord GetMedicalRecordByID(int recordID)
+        {
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "SELECT * FROM MedicalRecord WHERE recordID = @recordID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@recordID", recordID);
+
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                return new MedicalRecord(
+                                    Convert.ToInt32(reader["recordID"]),
+                                    reader["type"].ToString(),
+                                    Convert.ToDateTime(reader["timeStamp"]),
+                                    reader["report"].ToString(),
+                                    new List<string>(reader["images"].ToString().Split(',')),
+                                    Convert.ToInt32(reader["visitID"]),
+                                    Convert.ToInt32(reader["patientID"]),
+                                    reader["physicianNotes"].ToString()
+                                );
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+
+                return null;
+            }
+        }
+
+        public static List<MedicalRecord> GetAllMedicalRecords()
+        {
+            List<MedicalRecord> medicalRecordList = new List<MedicalRecord>();
+
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "SELECT * FROM MedicalRecord";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                MedicalRecord medicalRecord = new MedicalRecord(
+                                    Convert.ToInt32(reader["recordID"]),
+                                    reader["type"].ToString(),
+                                    Convert.ToDateTime(reader["timeStamp"]),
+                                    reader["report"].ToString(),
+                                    new List<string>(reader["images"].ToString().Split(',')),
+                                    Convert.ToInt32(reader["visitID"]),
+                                    Convert.ToInt32(reader["patientID"]),
+                                    reader["physicianNotes"].ToString()
+                                );
+
+                                medicalRecordList.Add(medicalRecord);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+
+                return medicalRecordList;
+            }
+        }
+
+        public static List<MedicalRecord> GetAllVisitRecords(int visitID)
+        {
+            List<MedicalRecord> visitMedicalRecords = new List<MedicalRecord>();
+
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "SELECT * FROM MedicalRecord WHERE visitID = @visitID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@visitID", visitID);
+
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                MedicalRecord medicalRecord = new MedicalRecord(
+                                    Convert.ToInt32(reader["recordID"]),
+                                    reader["type"].ToString(),
+                                    Convert.ToDateTime(reader["timeStamp"]),
+                                    reader["report"].ToString(),
+                                    new List<string>(reader["images"].ToString().Split(',')),
+                                    Convert.ToInt32(reader["visitID"]),
+                                    Convert.ToInt32(reader["patientID"]),
+                                    reader["physicianNotes"].ToString()
+                                );
+
+                                visitMedicalRecords.Add(medicalRecord);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+
+                return visitMedicalRecords;
+            }
+        }
+
+        public static List<MedicalRecord> GetAllPatientRecords(int patientID)
+        {
+            List<MedicalRecord> patientMedicalRecords = new List<MedicalRecord>();
+
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "SELECT * FROM MedicalRecord WHERE patientID = @patientID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@patientID", patientID);
+
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                MedicalRecord medicalRecord = new MedicalRecord(
+                                    Convert.ToInt32(reader["recordID"]),
+                                    reader["type"].ToString(),
+                                    Convert.ToDateTime(reader["timeStamp"]),
+                                    reader["report"].ToString(),
+                                    new List<string>(reader["images"].ToString().Split(',')),
+                                    Convert.ToInt32(reader["visitID"]),
+                                    Convert.ToInt32(reader["patientID"]),
+                                    reader["physicianNotes"].ToString()
+                                );
+
+                                patientMedicalRecords.Add(medicalRecord);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+
+                return patientMedicalRecords;
+            }
+        }
+
+
+        ///issueDrug
+        ///////////////////////////////////////////////////////////////////////////
+        ///
+        public static void InsertIssueDrug(IssueDrug issueDrug)
+        {
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "INSERT INTO IssueDrug (issueID, drugID, prescriptionID, patientID, frequency, notes) " +
+                                   "VALUES (@issueID, @drugID, @prescriptionID, @patientID, @frequency, @notes)";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@issueID", issueDrug.IssueID);
+                        command.Parameters.AddWithValue("@drugID", issueDrug.DrugID);
+                        command.Parameters.AddWithValue("@prescriptionID", issueDrug.PrescriptionID);
+                        command.Parameters.AddWithValue("@patientID", issueDrug.PatientID);
+                        command.Parameters.AddWithValue("@frequency", issueDrug.Frequency);
+                        command.Parameters.AddWithValue("@notes", issueDrug.Notes);
+
+                        command.ExecuteNonQuery();
+
+                        MessageBox.Show("Issue drug record inserted successfully.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+        }
+
+        public static void UpdateIssueDrug(IssueDrug issueDrug)
+        {
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "UPDATE IssueDrug SET drugID = @drugID, " +
+                                   "prescriptionID = @prescriptionID, patientID = @patientID, " +
+                                   "frequency = @frequency, notes = @notes " +
+                                   "WHERE issueID = @issueID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@issueID", issueDrug.IssueID);
+                        command.Parameters.AddWithValue("@drugID", issueDrug.DrugID);
+                        command.Parameters.AddWithValue("@prescriptionID", issueDrug.PrescriptionID);
+                        command.Parameters.AddWithValue("@patientID", issueDrug.PatientID);
+                        command.Parameters.AddWithValue("@frequency", issueDrug.Frequency);
+                        command.Parameters.AddWithValue("@notes", issueDrug.Notes);
+
+                        command.ExecuteNonQuery();
+
+                        MessageBox.Show("Issue drug record updated successfully.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+        }
+
+        public static void DeleteIssueDrug(int issueID)
+        {
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "DELETE FROM IssueDrug WHERE issueID = @issueID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@issueID", issueID);
+
+                        command.ExecuteNonQuery();
+
+                        MessageBox.Show("Issue drug record deleted successfully.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+        }
+
+        public static IssueDrug GetIssueDrugByID(int issueID)
+        {
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "SELECT * FROM IssueDrug WHERE issueID = @issueID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@issueID", issueID);
+
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                return new IssueDrug(
+                                    Convert.ToInt32(reader["issueID"]),
+                                    Convert.ToInt32(reader["drugID"]),
+                                    Convert.ToInt32(reader["prescriptionID"]),
+                                    Convert.ToInt32(reader["patientID"]),
+                                    reader["frequency"].ToString(),
+                                    reader["notes"].ToString()
+                                );
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+
+                return null;
+            }
+        }
+
+        public static List<IssueDrug> GetAllIssueDrugs()
+        {
+            List<IssueDrug> issueDrugList = new List<IssueDrug>();
+
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "SELECT * FROM IssueDrug";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                IssueDrug issueDrug = new IssueDrug(
+                                    Convert.ToInt32(reader["issueID"]),
+                                    Convert.ToInt32(reader["drugID"]),
+                                    Convert.ToInt32(reader["prescriptionID"]),
+                                    Convert.ToInt32(reader["patientID"]),
+                                    reader["frequency"].ToString(),
+                                    reader["notes"].ToString()
+                                );
+
+                                issueDrugList.Add(issueDrug);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+
+                return issueDrugList;
+            }
+        }
+
+        public static List<IssueDrug> GetIssuedDrugsByPrescriptionID(int prescriptionID)
+        {
+            List<IssueDrug> issuedDrugsByPrescriptionID = new List<IssueDrug>();
+
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "SELECT * FROM IssueDrug WHERE prescriptionID = @prescriptionID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@prescriptionID", prescriptionID);
+
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                IssueDrug issueDrug = new IssueDrug(
+                                    Convert.ToInt32(reader["issueID"]),
+                                    Convert.ToInt32(reader["drugID"]),
+                                    Convert.ToInt32(reader["prescriptionID"]),
+                                    Convert.ToInt32(reader["patientID"]),
+                                    reader["frequency"].ToString(),
+                                    reader["notes"].ToString()
+                                );
+
+                                issuedDrugsByPrescriptionID.Add(issueDrug);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+
+                return issuedDrugsByPrescriptionID;
+            }
+        }
+
+        public static List<IssueDrug> GetIssuedDrugsByPatientID(int patientID)
+        {
+            List<IssueDrug> issuedDrugsByPatientID = new List<IssueDrug>();
+
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "SELECT * FROM IssueDrug WHERE patientID = @patientID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@patientID", patientID);
+
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                IssueDrug issueDrug = new IssueDrug(
+                                    Convert.ToInt32(reader["issueID"]),
+                                    Convert.ToInt32(reader["drugID"]),
+                                    Convert.ToInt32(reader["prescriptionID"]),
+                                    Convert.ToInt32(reader["patientID"]),
+                                    reader["frequency"].ToString(),
+                                    reader["notes"].ToString()
+                                );
+
+                                issuedDrugsByPatientID.Add(issueDrug);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+
+                return issuedDrugsByPatientID;
+            }
+        }
+
+        public static List<IssueDrug> GetAllIssuesOfDrug(int drugID)
+        {
+            List<IssueDrug> allIssuesOfDrug = new List<IssueDrug>();
+
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "SELECT * FROM IssueDrug WHERE drugID = @drugID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@drugID", drugID);
+
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                IssueDrug issueDrug = new IssueDrug(
+                                    Convert.ToInt32(reader["issueID"]),
+                                    Convert.ToInt32(reader["drugID"]),
+                                    Convert.ToInt32(reader["prescriptionID"]),
+                                    Convert.ToInt32(reader["patientID"]),
+                                    reader["frequency"].ToString(),
+                                    reader["notes"].ToString()
+                                );
+
+                                allIssuesOfDrug.Add(issueDrug);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+
+                return allIssuesOfDrug;
+            }
+        }
+
+
+        ///issueExercise
+        /////////////////////////////////////////////////////////////////////////
+        ///
+        public static void InsertIssueExercise(IssueExercise issueExercise)
+        {
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "INSERT INTO IssueExercise (issueID, exerciseID, patientID, prescriptionID, frequency, notes) " +
+                                   "VALUES (@issueID, @exerciseID, @patientID, @prescriptionID, @frequency, @notes)";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@issueID", issueExercise.IssueID);
+                        command.Parameters.AddWithValue("@exerciseID", issueExercise.ExerciseID);
+                        command.Parameters.AddWithValue("@patientID", issueExercise.PatientID);
+                        command.Parameters.AddWithValue("@prescriptionID", issueExercise.PrescriptionID);
+                        command.Parameters.AddWithValue("@frequency", issueExercise.Frequency);
+                        command.Parameters.AddWithValue("@notes", issueExercise.Notes);
+
+                        command.ExecuteNonQuery();
+
+                        MessageBox.Show("Issue exercise record inserted successfully.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+        }
+
+        public static void UpdateIssueExercise(IssueExercise issueExercise)
+        {
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "UPDATE IssueExercise SET exerciseID = @exerciseID, " +
+                                   "patientID = @patientID, prescriptionID = @prescriptionID, " +
+                                   "frequency = @frequency, notes = @notes " +
+                                   "WHERE issueID = @issueID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@issueID", issueExercise.IssueID);
+                        command.Parameters.AddWithValue("@exerciseID", issueExercise.ExerciseID);
+                        command.Parameters.AddWithValue("@patientID", issueExercise.PatientID);
+                        command.Parameters.AddWithValue("@prescriptionID", issueExercise.PrescriptionID);
+                        command.Parameters.AddWithValue("@frequency", issueExercise.Frequency);
+                        command.Parameters.AddWithValue("@notes", issueExercise.Notes);
+
+                        command.ExecuteNonQuery();
+
+                        MessageBox.Show("Issue exercise record updated successfully.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+        }
+
+        public static void DeleteIssueExercise(int issueID)
+        {
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "DELETE FROM IssueExercise WHERE issueID = @issueID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@issueID", issueID);
+
+                        command.ExecuteNonQuery();
+
+                        MessageBox.Show("Issue exercise record deleted successfully.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+        }
+
+        public static IssueExercise GetIssueExerciseByID(int issueID)
+        {
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "SELECT * FROM IssueExercise WHERE issueID = @issueID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@issueID", issueID);
+
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                return new IssueExercise(
+                                    Convert.ToInt32(reader["issueID"]),
+                                    Convert.ToInt32(reader["exerciseID"]),
+                                    Convert.ToInt32(reader["patientID"]),
+                                    Convert.ToInt32(reader["prescriptionID"]),
+                                    reader["frequency"].ToString(),
+                                    reader["notes"].ToString()
+                                );
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+
+                return null;
+            }
+        }
+
+        public static List<IssueExercise> GetIssuedExercisesByPrescriptionID(int prescriptionID)
+        {
+            List<IssueExercise> issuedExercises = new List<IssueExercise>();
+
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "SELECT * FROM IssueExercise WHERE prescriptionID = @prescriptionID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@prescriptionID", prescriptionID);
+
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                IssueExercise issueExercise = new IssueExercise(
+                                    Convert.ToInt32(reader["issueID"]),
+                                    Convert.ToInt32(reader["exerciseID"]),
+                                    Convert.ToInt32(reader["patientID"]),
+                                    Convert.ToInt32(reader["prescriptionID"]),
+                                    reader["frequency"].ToString(),
+                                    reader["notes"].ToString()
+                                );
+
+                                issuedExercises.Add(issueExercise);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+
+                return issuedExercises;
+            }
+        }
+
+        public static List<IssueExercise> GetIssuedExercisesByPatientID(int patientID)
+        {
+            List<IssueExercise> issuedExercises = new List<IssueExercise>();
+
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "SELECT * FROM IssueExercise WHERE patientID = @patientID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@patientID", patientID);
+
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                IssueExercise issueExercise = new IssueExercise(
+                                    Convert.ToInt32(reader["issueID"]),
+                                    Convert.ToInt32(reader["exerciseID"]),
+                                    Convert.ToInt32(reader["patientID"]),
+                                    Convert.ToInt32(reader["prescriptionID"]),
+                                    reader["frequency"].ToString(),
+                                    reader["notes"].ToString()
+                                );
+
+                                issuedExercises.Add(issueExercise);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+
+                return issuedExercises;
+            }
+        }
+
+        public static List<IssueExercise> GetAllIssuesOfExercise(int exerciseID)
+        {
+            List<IssueExercise> allIssuesOfExercise = new List<IssueExercise>();
+
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "SELECT * FROM IssueExercise WHERE exerciseID = @exerciseID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@exerciseID", exerciseID);
+
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                IssueExercise issueExercise = new IssueExercise(
+                                    Convert.ToInt32(reader["issueID"]),
+                                    Convert.ToInt32(reader["exerciseID"]),
+                                    Convert.ToInt32(reader["patientID"]),
+                                    Convert.ToInt32(reader["prescriptionID"]),
+                                    reader["frequency"].ToString(),
+                                    reader["notes"].ToString()
+                                );
+
+                                allIssuesOfExercise.Add(issueExercise);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+
+                return allIssuesOfExercise;
+            } 
+        }
     }
-
-
 }
