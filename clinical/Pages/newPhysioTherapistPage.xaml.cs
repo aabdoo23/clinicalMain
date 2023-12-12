@@ -41,7 +41,7 @@ namespace clinical.Pages
             string nid = NIDTextBox.Text;
             string email = emailTextBox.Text;
 
-            User user = new User(globals.generateNewPhysicianID(fn, nid), fn.Trim(), ln.Trim(), gender.Trim(), hd, bd, address.Trim(), phone.Trim(), email.Trim(), nid.Trim());
+            User user = new User(globals.generateNewPhysicianID(nid), fn.Trim(), ln.Trim(), gender.Trim(), hd, bd, address.Trim(), phone.Trim(), email.Trim(), nid.Trim());
             DB.InsertUser(user);
 
             MessageBox.Show("Successfully added new Physiotherapist, ID: "+user.UserID,"Success");

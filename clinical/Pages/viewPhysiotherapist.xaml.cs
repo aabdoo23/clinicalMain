@@ -33,6 +33,14 @@ namespace clinical.Pages
                 emailTextBox.Text= user.Email;
                 NIDTextBox.Text = user.NationalID;
                 phoneTextBox.Text = user.PhoneNumber;
+
+                firstNameTextBox.IsEnabled = false;
+                lastNameTextBox.IsEnabled = false;
+                addressTextBox.IsEnabled = false;
+                genderTextBox.IsEnabled = false;
+                emailTextBox.IsEnabled = false;
+                NIDTextBox.IsEnabled = false;
+                phoneTextBox.IsEnabled = false;
             }
         }
 

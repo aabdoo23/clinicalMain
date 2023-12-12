@@ -58,7 +58,7 @@ namespace clinical
         }
         private void chatBtn_Click(object sender, RoutedEventArgs e)
         {
-            mainFrame.Navigate(new ChatPage());
+            mainFrame.Navigate(new ChatPage(loggedIn));
 
         }
 

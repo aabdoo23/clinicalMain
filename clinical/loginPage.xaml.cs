@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Intrinsics.X86;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -23,10 +24,19 @@ namespace clinical
             new globals();
             InitializeComponent();
             new DB();
-            //DB.InsertUser(new User(globals.generateNewPhysicianID("Abdelrahman", "30303030303030"), "Abdelrahman", "Saleh", "Male", DateTime.Now, DateTime.Now, "address", "01000101010", "emaily", "30303030303030"));
+            List<User> users = DB.GetAllUsers();
+            
+            foreach(User user1 in users)
+            {
+                foreach(User user2 in users)
+                {
+                    if (user1.UserID == user2.UserID) { continue; }
+                    DB.InsertChatRoom(new ChatRoom(globals.generateNewChatRoomID(user1.UserID, user2.UserID), user1.UserID, user2.UserID, user2.FirstName));
 
-            //DB.InsertPatient(new Patient(globals.generateNewPatientID(), "Ahmed", "Kamal", DateTime.Now, "Male", "1010101010", "enail", "address", new List<int>(), new List<int>(), 13030, true, true, 123.3, 122.3, 123113.3));
+                }
+            }
 
+            
         }
         private void Border_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {

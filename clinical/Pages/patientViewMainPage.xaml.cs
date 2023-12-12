@@ -32,7 +32,7 @@ namespace clinical.Pages
             patientNameTxt.Text = patient.FirstName + " " + patient.LastName;
             ageTxt.Text = patient.Age().ToString();
             contactInfoTxt.Text = patient.PhoneNumber;
-
+            referringTxt.Text = patient.referringName;
             medicalRecords = new ObservableCollection<MedicalRecord>
             {
                 //new MedicalRecord(1,patient.PatientID,new DateTime(2023,2,23),"good","Lab Results"),

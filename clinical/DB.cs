@@ -23,7 +23,7 @@ namespace clinical
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message);
+                    MessageBox.Show("Connection Message: " +ex.Message);
 
                 }
             }
@@ -140,7 +140,7 @@ namespace clinical
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Error: {ex.Message}");
+                    MessageBox.Show($"Error: {ex.Message}");
                 }
 
                 return user;
@@ -149,7 +149,7 @@ namespace clinical
 
         }
 
-        public static List<User> GetAllEmployees()
+        public static List<User> GetAllEmployees()  
         {
             List<User> employees = new List<User>();
             using (connection)
@@ -169,7 +169,7 @@ namespace clinical
                         }
                     }
                 }
-                catch (Exception ex) { Console.WriteLine(ex.ToString()); }
+                catch (Exception ex) { MessageBox.Show(ex.ToString()); }
             }
             return employees;
         }
@@ -243,7 +243,7 @@ namespace clinical
 
 
         ///<Patient>
-        /////////////////////////not complete////////////////////////////////
+        /////////////////////////complete?////////////////////////////////
         ///</Patient>
 
         public static Patient MapPatient(MySqlDataReader reader)
@@ -318,7 +318,7 @@ namespace clinical
                 catch (Exception ex)
                 {
                     // Handle exception (log, throw, etc.)
-                    Console.WriteLine(ex.Message);
+                    MessageBox.Show(ex.Message);
                 }
             }
 
@@ -357,7 +357,7 @@ namespace clinical
 
             return patients;
         }
-        public static List<Patient> GetAllPatientsByPhysicianID(int physicianID)
+        public static List<Patient> GetAllPatientsByPhysicianID(int physicianID)    
         {
             List<Patient> patients = new List<Patient>();
             using (connection)
@@ -382,7 +382,7 @@ namespace clinical
                 catch (Exception ex)
                 {
                     // Handle exception (log, throw, etc.)
-                    Console.WriteLine(ex.Message);
+                    MessageBox.Show(ex.Message);
                 }
             }
 
@@ -404,7 +404,7 @@ namespace clinical
                 catch (Exception ex)
                 {
                     // Handle exception (log, throw, etc.)
-                    Console.WriteLine(ex.Message);
+                    MessageBox.Show(ex.Message);
                 }
             }
         }
@@ -478,7 +478,7 @@ namespace clinical
                 catch (Exception ex)
                 {
                     // Handle exception (log, throw, etc.)
-                    Console.WriteLine(ex.Message);
+                    MessageBox.Show(ex.Message);
                 }
             }
 
@@ -508,7 +508,7 @@ namespace clinical
                 catch (Exception ex)
                 {
                     // Handle exception (log, throw, etc.)
-                    Console.WriteLine(ex.Message);
+                    MessageBox.Show(ex.Message);
                 }
             }
 
@@ -531,7 +531,7 @@ namespace clinical
                 catch (Exception ex)
                 {
                     // Handle exception (log, throw, etc.)
-                    Console.WriteLine(ex.Message);
+                    MessageBox.Show(ex.Message);
                 }
             }
         }
@@ -558,7 +558,7 @@ namespace clinical
                 catch (Exception ex)
                 {
                     // Handle exception (log, throw, etc.)
-                    Console.WriteLine(ex.Message);
+                    MessageBox.Show(ex.Message);
                 }
             }
         }
@@ -824,7 +824,180 @@ namespace clinical
         }
 
 
+        /// chatRoom
+        ////////////////////////////////////////////////////////////////
+        ///
+        public static void InsertChatRoom(ChatRoom chatRoom)
+        {
+            using (connection)
+            {
+                try
+                {
+                    if (GetChatRoomByID(chatRoom.ChatRoomID) != null) { return; }
+                    connection.Open();
 
+                    string query = "INSERT INTO ChatRoom (chatRoomID, firstUserID, secondUserID, chatRoomName) " +
+                                   "VALUES (@chatRoomID, @firstUserID, @secondUserID, @chatRoomName)";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@chatRoomID", chatRoom.ChatRoomID);
+                        command.Parameters.AddWithValue("@firstUserID", chatRoom.FirstUserID);
+                        command.Parameters.AddWithValue("@secondUserID", chatRoom.SecondUserID);
+                        command.Parameters.AddWithValue("@chatRoomName", chatRoom.ChatRoomName);
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Insertion error, " + ex.Message);
+                }
+            }
+        }
+
+        public static void DeleteChatRoom(int chatRoomID)
+        {
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "DELETE FROM ChatRoom WHERE chatRoomID = @chatRoomID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@chatRoomID", chatRoomID);
+
+                        command.ExecuteNonQuery();
+
+                        MessageBox.Show("ChatRoom deleted successfully.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+        }
+
+        public static ChatRoom GetChatRoomByID(int chatRoomID)
+        {
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "SELECT * FROM ChatRoom WHERE chatRoomID = @chatRoomID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@chatRoomID", chatRoomID);
+
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                return new ChatRoom(
+                                    Convert.ToInt32(reader["chatRoomID"]),
+                                    Convert.ToInt32(reader["firstUserID"]),
+                                    Convert.ToInt32(reader["secondUserID"]),
+                                    reader["chatRoomName"].ToString()
+                                );
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+
+                return null;
+            }
+        }
+
+        public static List<ChatRoom> GetAllChatRooms()
+        {
+            List<ChatRoom> chatRooms = new List<ChatRoom>();
+
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "SELECT * FROM ChatRoom";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                ChatRoom chatRoom = new ChatRoom(
+                                    Convert.ToInt32(reader["chatRoomID"]),
+                                    Convert.ToInt32(reader["firstUserID"]),
+                                    Convert.ToInt32(reader["secondUserID"]),
+                                    reader["chatRoomName"].ToString()
+                                );
+
+                                chatRooms.Add(chatRoom);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+
+                return chatRooms;
+            }
+        }
+
+        public static List<ChatRoom> GetChatRoomsByUserID(int userID)
+        {
+            List<ChatRoom> chatRooms = new List<ChatRoom>();
+
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+
+                    string query = "SELECT * FROM ChatRoom WHERE firstUserID = @userID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@userID", userID);
+
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                ChatRoom chatRoom = new ChatRoom(
+                                    Convert.ToInt32(reader["chatRoomID"]),
+                                    Convert.ToInt32(reader["firstUserID"]),
+                                    Convert.ToInt32(reader["secondUserID"]),
+                                    reader["chatRoomName"].ToString()
+                                );
+
+                                chatRooms.Add(chatRoom);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+
+                return chatRooms;
+            }
+        }
 
     }
 

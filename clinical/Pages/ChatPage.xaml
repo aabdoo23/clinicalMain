@@ -7,8 +7,8 @@
         xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
         Background="Transparent"
         mc:Ignorable="d"
-        MinHeight="668"
-        MinWidth="960">
+        MinHeight="468"
+        MinWidth="760">
 
     <Page.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisConverter" />
@@ -91,62 +91,49 @@
         <Border Grid.Column="0"
                 Grid.Row="1">
             <Grid>
-                <!--Seprator-->
-                <StackPanel Orientation="Horizontal"
-                            Margin="30 0 0 30">
-                    <Rectangle VerticalAlignment="Stretch"
-                               Width="0.8"
-                               Stroke="#dadada" />
-                </StackPanel>
 
                 <!--Groups Items-->
-                <StackPanel Margin="0 0 15 0">
-                    <TextBlock Text="Announcements Channel"
+                <StackPanel>
+                    <StackPanel Margin="0 0 15 0">
+                        <TextBlock Text="Announcements Channel"
                                Style="{StaticResource textTitle}"
                                Margin="25 0 0 5" />
 
-                    <uc:chatItem Title="Announcements"
+                        <uc:chatItem Title="Announcements"
                              Message="Okay, Cool!"
                              Color="#73AFFF"
                              TagName="A"
-                             MessageCount="2" /> 
-                    <TextBlock Text="Groups"
+                             MessageCount="2" />
+                    </StackPanel>
+                    <StackPanel>
+                        <TextBlock Text="Groups"
                                Style="{StaticResource textTitle}"
                                Margin="25 0 0 5" />
 
-                    <uc:chatItem Title="Doctors only"
+                        <uc:chatItem Title="Doctors only"
                              Message="Okay, Cool!"
                              Color="#73AFFF"
                              TagName="D"
                              MessageCount="2" />
+                    </StackPanel>
 
                     <TextBlock Text="Chats"
                                Style="{StaticResource textTitle}"
                                Margin="25 15 0 5" />
 
                     <!--Person Items-->
-                    <uc:chatItem Title="Dr. Mohamed Magdy"
-                             Image="/images/afsha.png"
-                             Message="Okay, Nice work"
-                             Color="#73AFFF"
-                             MessageCount="2" />
+                    <ScrollViewer VerticalScrollBarVisibility="Visible" MinHeight="200">
+                        <StackPanel Name="chatStack">
 
-                    <uc:chatItem Title="Dr. Mohamed Salah"
-                             Image="/images/salah.png"
-                             Message="Plz share those recap to me"
-                             Visible="Collapsed" />
 
-                    <uc:chatItem Title="Dr. Akram Tawfik"
-                             Image="/images/akram tawfik.png"
-                             Message="You can check it now"
-                             Visible="Collapsed" />
-
-                    <uc:chatItem Title="el Campeon del Mundo"
+                            <uc:chatItem Title="el Campeon del Mundo"
                              Image="/images/messi.png"
                              Message="Soy mejor grande del mundo"
                              Color="#5AC795"
                              TagName="BM"
                              MessageCount="3" />
+                        </StackPanel>
+                    </ScrollViewer>
                 </StackPanel>
             </Grid>
         </Border>
@@ -173,7 +160,7 @@
                     <TextBlock Text="Announcements"
                                FontSize="16"
                                Margin="20 15"
-                               HorizontalAlignment="Left" />
+                               HorizontalAlignment="Left" Name="roomName" />
 
                     <StackPanel Orientation="Horizontal"
                                 Margin="0 0 10 0"
@@ -196,7 +183,7 @@
 
                 <!--Chats-->
                 <StackPanel Grid.Row="1"
-                            Margin="20 10 20 20">
+                            Margin="20 10 20 20" Name="texts">
                     <!--Messages-->
                     <uc:chatSeperator Title="Yesterday" />
 

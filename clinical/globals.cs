@@ -31,12 +31,10 @@ namespace clinical
             return int.Parse(s);
             
         }
-        public static int generateNewPhysicianID(string fn,string nid )
+        public static int generateNewPhysicianID(string nid )
         {
             DateTime dateTime = DateTime.Now;
             string s = "2";
-            //s += fn[0];
-            //s += fn[1];
             s += nid[10];
             s += nid[11];
             s += nid[12];
@@ -44,12 +42,10 @@ namespace clinical
             return Convert.ToInt32(s);
             
         }
-        public static int generateNewEmployeeID(string fn, string nid)
+        public static int generateNewEmployeeID(string nid)
         {
             DateTime dateTime = DateTime.Now;
             string s = "3";
-            //s += fn[0];
-            //s += fn[1];
             s += nid[10];
             s += nid[11];
             s += nid[12];
@@ -57,13 +53,21 @@ namespace clinical
             return Convert.ToInt32(s);
             
         }
-        public static string generateNewAdminID(string fn)
+        public static string generateNewAdminID()
         {
             string s = "1";
-            s += fn[0];
-            s += fn[1];
+            Random rand = new Random();
+            s+=rand.Next(100).ToString();
             return s;
 
         }
+        public static int generateNewChatRoomID(int fID,int sID)
+        {
+
+            string s = fID.ToString().Substring(0, 3) + sID.ToString().Substring(0, 3);
+            return Convert.ToInt32(s);
+        }
+
+       
     }
 }

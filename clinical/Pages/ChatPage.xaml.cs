@@ -1,4 +1,6 @@
-﻿using System;
+﻿using clinical.BaseClasses;
+using clinical.userControls;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +22,30 @@ namespace clinical.Pages
     /// </summary>
     public partial class ChatPage : Page
     {
-        public ChatPage()
+        ChatRoom selectedRoom=null;
+        User loggedIn = null;
+        public ChatPage(User user)
         {
             InitializeComponent();
+            loggedIn = user;
+            List<ChatRoom> chatRooms=DB.GetChatRoomsByUserID(user.UserID);
+            //<uc:chatItem Title="Dr. Mohamed Magdy"
+            //Image = "/images/afsha.png"
+            //                 Message = "Okay, Nice work"
+            //                 Color = "#73AFFF"
+            //                 MessageCount = "2" />
+            foreach (ChatRoom chatRoom in chatRooms)
+            {
+                chatItem item = new chatItem();
+                item.Title = chatRoom.ChatRoomName;
+                chatStack.MouseDown += chatRoom_MouseDown;
+                chatStack.Children.Add(item);
+            }
+        }
+
+        private void chatRoom_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+
         }
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)
         {

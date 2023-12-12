@@ -24,7 +24,9 @@ namespace clinical.Pages
         public ReceptionistDashboard(User employee)
         {
             InitializeComponent();
-            //patientsDataGrid.ItemsSource = DB.GetAllPatients();
+            patientsDataGrid.ItemsSource = DB.GetAllPatients();
+            physiciansDataGrid.ItemsSource = DB.GetAllPhysiotherapists();
+
 
         }
 

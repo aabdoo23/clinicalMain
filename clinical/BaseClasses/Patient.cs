@@ -26,6 +26,7 @@ namespace clinical.BaseClasses
         public double DueAmount { get; set; }
         public string referringName { get; set; }
         public string referringPN { get; set; }
+        public int age { get; set; }
 
         // Constructor
         public Patient(int patientID, string firstName, string lastname, 
@@ -55,6 +56,7 @@ namespace clinical.BaseClasses
             DueAmount = dueAmount;
             referringName = refN;
             referringPN=refPN;
+            this.age = Age();
         }
 
         // Method to calculate age based on birthdate
@@ -66,6 +68,7 @@ namespace clinical.BaseClasses
             {
                 age--;
             }
+            this.age = age;
             return age;
         }
 

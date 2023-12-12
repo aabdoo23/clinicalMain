@@ -83,7 +83,7 @@ Visibility="{Binding ElementName=textBoxFilter, Converter={StaticResource BoolTo
                 <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" Binding="{Binding PatientID}"/>
                 <DataGridTextColumn Header="Name" Binding="{Binding FirstName}" IsReadOnly="True" Width="*"/>
                 <DataGridTextColumn Header="Address" Binding="{Binding Address}" IsReadOnly="True" Width="*"/>
-                <DataGridTextColumn Header="Age" Binding="{Binding Age}" IsReadOnly="True" Width="*"/>
+                <DataGridTextColumn Header="Age" Binding="{Binding age}" IsReadOnly="True" Width="*"/>
                 <DataGridTextColumn Header="Phone Number" Binding="{Binding PhoneNumber}" IsReadOnly="True" Width="*"/>
                 <DataGridTemplateColumn Header="Details" IsReadOnly="True" Width="auto">
                     <DataGridTemplateColumn.CellTemplate>
