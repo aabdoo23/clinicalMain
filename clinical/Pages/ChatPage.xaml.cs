@@ -38,14 +38,14 @@ namespace clinical.Pages
             {
                 chatItem item = new chatItem();
                 item.Title = chatRoom.ChatRoomName;
-                chatStack.MouseDown += chatRoom_MouseDown;
+                item.MouseDown += chatRoom_MouseDown;
                 chatStack.Children.Add(item);
             }
         }
 
         private void chatRoom_MouseDown(object sender, MouseButtonEventArgs e)
         {
-
+            
         }
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)
         {

@@ -33,6 +33,13 @@ namespace clinical.Pages
             ageTxt.Text = patient.Age().ToString();
             contactInfoTxt.Text = patient.PhoneNumber;
             referringTxt.Text = patient.referringName;
+
+
+
+            previousVisitsDataGrid.ItemsSource = DB.GetPatientVisits(patient.PatientID);
+
+
+
             medicalRecords = new ObservableCollection<MedicalRecord>
             {
                 //new MedicalRecord(1,patient.PatientID,new DateTime(2023,2,23),"good","Lab Results"),

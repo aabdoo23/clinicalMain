@@ -20,6 +20,7 @@ namespace clinical.BaseClasses
         public List<int> PreviousInjuriesIDs { get; set; }
         public bool Referred { get; set; }
         public int PhysicianID { get; set; }
+        public string PhysicianName { get; set; }
         public bool PreviouslyTreated { get; set; }
         public double Height { get; set; }
         public double Weight { get; set; }
@@ -59,7 +60,7 @@ namespace clinical.BaseClasses
             this.age = Age();
         }
 
-        // Method to calculate age based on birthdate
+        // calculate age based on birthdate
         public int Age()
         {
             DateTime currentDate = DateTime.Now;
@@ -71,6 +72,7 @@ namespace clinical.BaseClasses
             this.age = age;
             return age;
         }
+        
 
         public string chronics()
         {

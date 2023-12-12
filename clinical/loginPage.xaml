@@ -45,7 +45,7 @@
            Width="15"
            Foreground="{StaticResource darkerColor}" HorizontalAlignment="Center" VerticalAlignment="Center" />
                         <TextBlock x:Name="textEmailHint" MouseDown="textEmail_MouseDown" Text="ID" Style="{StaticResource textHint}" />
-                        <TextBox Name="txtEmail" TextChanged="txtEmail_TextChanged" Style="{StaticResource textBox}" />
+                        <TextBox Name="txtEmail" TextChanged="txtEmail_TextChanged" KeyDown="enter" Style="{StaticResource textBox}" />
                     </Grid>
                 </Border>
 

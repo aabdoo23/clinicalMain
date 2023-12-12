@@ -22,8 +22,7 @@ namespace clinical.Pages
         {
             physiciansDataGrid.ItemsSource = DB.GetAllPhysiotherapists();
             employeesDataGrid.ItemsSource= DB.GetAllEmployees();
-            
-
+            todayAppointmentsDataGrid.ItemsSource = DB.GetTodayVisits();
         }
         private void view_Click(object sender, RoutedEventArgs e)
         {

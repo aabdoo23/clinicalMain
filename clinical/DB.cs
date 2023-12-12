@@ -20,7 +20,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
                 }
                 catch (Exception ex)
                 {
@@ -40,7 +40,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     using (MySqlCommand cmd = new MySqlCommand("INSERT INTO User (userID, firstName, lastName, gender, hireDate, birthdate, address, phoneNumber, email, nationalID) VALUES (@userID, @firstName, @lastName, @gender, @hireDate, @birthdate, @address, @phoneNumber, @email, @nationalID)", connection))
                     {
@@ -69,7 +69,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
                     using (MySqlCommand cmd = new MySqlCommand("DELETE FROM User WHERE userID = @userID", connection))
                     {
                         cmd.Parameters.AddWithValue("@userID", userID);
@@ -88,7 +88,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
                     using (MySqlCommand cmd = new MySqlCommand("SELECT * FROM User", connection))
                     {
                         using (MySqlDataReader reader = cmd.ExecuteReader())
@@ -117,7 +117,7 @@ namespace clinical
                 User user = null;
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "SELECT * FROM User WHERE userID = @userID";
 
@@ -132,8 +132,6 @@ namespace clinical
 
                             if (reader.Read())
                             {
-                                MessageBox.Show(reader["userID"].ToString());
-
                                 user = MapUser(reader);
                             }
                         }
@@ -157,7 +155,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
                     using (MySqlCommand cmd = new MySqlCommand("SELECT * FROM User WHERE SUBSTRING(userID, 1, 1) = '3'", connection))
                     {
                         using (MySqlDataReader reader = cmd.ExecuteReader())
@@ -182,7 +180,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
                     using (MySqlCommand cmd = new MySqlCommand("SELECT * FROM User WHERE SUBSTRING(userID, 1, 1) = '2'", connection))
                     {
                         using (MySqlDataReader reader = cmd.ExecuteReader())
@@ -207,7 +205,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
                     using (MySqlCommand cmd = new MySqlCommand("SELECT * FROM User WHERE SUBSTRING(userID, 1, 1) = '2'", connection))
                     {
                         using (MySqlDataReader reader = cmd.ExecuteReader())
@@ -260,6 +258,7 @@ namespace clinical
             //}
 
             List<int> injuries = new List<int>();
+            
             //string iIds = reader.GetString("previousInjuriesIDs");
             //string[] si = (cIds.Split(", "));
             //foreach (string i in si)
@@ -272,7 +271,7 @@ namespace clinical
 
 
 
-            return new Patient(
+            Patient p=new Patient(
                 Convert.ToInt32(reader["patientID"]),
                 reader["firstName"].ToString(),
                 reader["lastName"].ToString(),
@@ -293,15 +292,15 @@ namespace clinical
                 reader["referringPN"].ToString()
 
             );
-
-        }
+            return p;
+        } ///not done yet
         public static Patient GetPatientById(int patientID)
         {
             using (connection)
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
                     using (MySqlCommand cmd = new MySqlCommand("SELECT * FROM Patient WHERE patientID = @patientID", connection))
                     {
                         cmd.Parameters.AddWithValue("@patientID", patientID);
@@ -332,7 +331,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     using (MySqlCommand cmd = new MySqlCommand("SELECT * FROM patient", connection))
                     {
@@ -358,14 +357,14 @@ namespace clinical
 
             return patients;
         }
-        public static List<Patient> GetAllPatientsByPhysicianID(int physicianID)    
+        public static List<Patient> GetAllPatientsByPhysicianID(int physicianID)
         {
             List<Patient> patients = new List<Patient>();
             using (connection)
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
                     using (MySqlCommand cmd = new MySqlCommand("SELECT * FROM Patient WHERE userID = @physicianID", connection))
                     {
                         cmd.Parameters.AddWithValue("@physicianID", physicianID);
@@ -395,7 +394,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
                     using (MySqlCommand cmd = new MySqlCommand("DELETE FROM Patient WHERE patientID = @patientID", connection))
                     {
                         cmd.Parameters.AddWithValue("@patientID", patientID);
@@ -415,7 +414,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
                     using (MySqlCommand cmd = new MySqlCommand(
                         "INSERT INTO Patient (patientID, firstName, lastName, birthdate, gender, phoneNumber, email, address, chronicDiseasesIDs, previousInjuriesIDs, referred, previouslyTreated, height, weight, dueAmount, physicianID, referringName, referringPN)" +
                         "VALUES (@patientID, @firstName, @lastName, @birthdate, @gender, @phoneNumber, @email, @address, @chronicDiseasesIDs, @previousInjuriesIDs, @referred, @previouslyTreated, @height, @weight, @dueAmount, @physicianID, @referringName, @referringPN)", connection))
@@ -450,6 +449,37 @@ namespace clinical
                 }
             }
         }
+        public static List<Patient> GetAllPatientsToday()
+        {
+            List<Patient> patientsToday = new List<Patient>();
+
+            using (connection)
+            {
+                try
+                {
+                    if (connection.State == ConnectionState.Closed) connection.Open();
+
+                    string query = "SELECT DISTINCT PatientID FROM Visit WHERE DATE(TimeStamp) = CURDATE()";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                patientsToday.Add(GetPatientById(Convert.ToInt32(reader["PatientID"])));
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+
+            return patientsToday;
+        }
 
 
         ///ChronicDisease
@@ -462,7 +492,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
                     using (MySqlCommand cmd = new MySqlCommand("SELECT * FROM ChronicDisease WHERE chronicDiseaseID = @chronicDiseaseID", connection))
                     {
                         cmd.Parameters.AddWithValue("@chronicDiseaseID", chronicDiseaseID);
@@ -493,7 +523,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
                     using (MySqlCommand cmd = new MySqlCommand("SELECT * FROM ChronicDisease", connection))
                     {
                         using (MySqlDataReader reader = cmd.ExecuteReader())
@@ -515,14 +545,48 @@ namespace clinical
 
             return chronicDiseases;
         }
+        public static List<ChronicDisease> GetAllChronicDiseasesByPatientID(int patientID)
+        {
+            List<ChronicDisease> chronicDiseases = new List<ChronicDisease>();
 
+            using (connection)
+            {
+                try
+                {
+                    if (connection.State == ConnectionState.Closed) connection.Open();
+
+                    string query = "SELECT * FROM ChronicDisease WHERE patientID = @patientID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@patientID", patientID);
+
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                ChronicDisease chronicDisease = MapChronicDisease(reader);
+
+                                chronicDiseases.Add(chronicDisease);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+
+            return chronicDiseases;
+        }
         public static void DeleteChronicDisease(int chronicDiseaseID)
         {
             using (connection)
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
                     using (MySqlCommand cmd = new MySqlCommand("DELETE FROM ChronicDisease WHERE chronicDiseaseID = @chronicDiseaseID", connection))
                     {
                         cmd.Parameters.AddWithValue("@chronicDiseaseID", chronicDiseaseID);
@@ -543,7 +607,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
                     using (MySqlCommand cmd = new MySqlCommand(
                         "INSERT INTO ChronicDisease (chronicDiseaseID, chronicDiseaseName, description) " +
                         "VALUES (@chronicDiseaseID, @chronicDiseaseName, @description)",
@@ -585,7 +649,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
                     using (MySqlCommand cmd = new MySqlCommand("SELECT * FROM Exercise WHERE exerciseID = @exerciseID", connection))
                     {
                         cmd.Parameters.AddWithValue("@exerciseID", exerciseID);
@@ -616,7 +680,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
                     using (MySqlCommand cmd = new MySqlCommand("SELECT * FROM Exercise", connection))
                     {
                         using (MySqlDataReader reader = cmd.ExecuteReader())
@@ -645,7 +709,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
                     using (MySqlCommand cmd = new MySqlCommand("DELETE FROM Exercise WHERE exerciseID = @exerciseID", connection))
                     {
                         cmd.Parameters.AddWithValue("@exerciseID", exerciseID);
@@ -666,7 +730,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
                     using (MySqlCommand cmd = new MySqlCommand(
                         "INSERT INTO Exercise (exerciseID, exerciseName, explanationLink, notes) " +
                         "VALUES (@exerciseID, @exerciseName, @explanationLink, @notes)",
@@ -703,13 +767,13 @@ namespace clinical
         ///
 
 
-        public void InsertTreatmentPlan(TreatmentPlan treatmentPlan)
+        public static void InsertTreatmentPlan(TreatmentPlan treatmentPlan)
         {
             using (connection)
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "INSERT INTO TreatmentPlan (planID, planName, planTime, injuryID, price, notes) " +
                                    "VALUES (@planID, @planName, @planTime, @injuryID, @price, @notes)";
@@ -735,13 +799,13 @@ namespace clinical
             }
         }
 
-        public void UpdateTreatmentPlan(TreatmentPlan treatmentPlan)
+        public static void UpdateTreatmentPlan(TreatmentPlan treatmentPlan)
         {
             using (connection)
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "UPDATE TreatmentPlan SET planName = @planName, planTime = @planTime, " +
                                    "injuryID = @injuryID, price = @price, notes = @notes " +
@@ -768,13 +832,13 @@ namespace clinical
             }
         }
 
-        public void DeleteTreatmentPlan(int planID)
+        public static void DeleteTreatmentPlan(int planID)
         {
             using (connection)
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "DELETE FROM TreatmentPlan WHERE planID = @planID";
 
@@ -794,13 +858,13 @@ namespace clinical
             }
         }
 
-        public TreatmentPlan GetTreatmentPlanByID(int planID)
+        public static TreatmentPlan GetTreatmentPlanByID(int planID)
         {
             using (connection)
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "SELECT * FROM TreatmentPlan WHERE planID = @planID";
 
@@ -833,7 +897,7 @@ namespace clinical
             }
         }
 
-        public List<TreatmentPlan> GetAllTreatmentPlans()
+        public static List<TreatmentPlan> GetAllTreatmentPlans()
         {
             List<TreatmentPlan> treatmentPlans = new List<TreatmentPlan>();
 
@@ -841,7 +905,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "SELECT * FROM TreatmentPlan";
 
@@ -885,7 +949,7 @@ namespace clinical
                 try
                 {
                     if (GetChatRoomByID(chatRoom.ChatRoomID) != null) { return; }
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "INSERT INTO ChatRoom (chatRoomID, firstUserID, secondUserID, chatRoomName) " +
                                    "VALUES (@chatRoomID, @firstUserID, @secondUserID, @chatRoomName)";
@@ -913,7 +977,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "DELETE FROM ChatRoom WHERE chatRoomID = @chatRoomID";
 
@@ -939,7 +1003,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "SELECT * FROM ChatRoom WHERE chatRoomID = @chatRoomID";
 
@@ -978,7 +1042,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "SELECT * FROM ChatRoom";
 
@@ -1017,7 +1081,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "SELECT * FROM ChatRoom WHERE firstUserID = @userID";
 
@@ -1060,7 +1124,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "INSERT INTO ChatMessage (messageID, senderID, chatRoomID, messageContent, timeStamp) " +
                                    "VALUES (@messageID, @senderID, @chatRoomID, @messageContent, @timeStamp)";
@@ -1090,7 +1154,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "DELETE FROM ChatMessage WHERE messageID = @messageID";
 
@@ -1115,7 +1179,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "SELECT * FROM ChatMessage WHERE messageID = @messageID";
 
@@ -1155,7 +1219,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "SELECT * FROM ChatMessage";
 
@@ -1195,7 +1259,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "SELECT * FROM ChatMessage WHERE chatRoomID = @chatRoomID";
 
@@ -1239,7 +1303,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "INSERT INTO ChatGroup (chatGroupID, usersIDs, chatGroupName) " +
                                    "VALUES (@chatGroupID, @usersIDs, @chatGroupName)";
@@ -1268,7 +1332,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "DELETE FROM ChatGroup WHERE chatGroupID = @chatGroupID";
 
@@ -1294,7 +1358,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "SELECT * FROM ChatGroup WHERE chatGroupID = @chatGroupID";
 
@@ -1334,7 +1398,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "SELECT * FROM ChatGroup";
 
@@ -1374,7 +1438,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "SELECT c.* FROM ChatGroup c " +
                                    "JOIN ChatGroupRelation cr ON c.chatGroupID = cr.chatGroupID " +
@@ -1420,7 +1484,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "INSERT INTO Drug (drugName, normalDosage, notes) " +
                                    "VALUES (@drugName, @normalDosage, @notes)";
@@ -1449,7 +1513,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "UPDATE Drug SET drugName = @drugName, normalDosage = @normalDosage, notes = @notes " +
                                    "WHERE drugID = @drugID";
@@ -1479,7 +1543,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "DELETE FROM Drug WHERE drugID = @drugID";
 
@@ -1505,7 +1569,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "SELECT * FROM Drug WHERE drugID = @drugID";
 
@@ -1544,7 +1608,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "SELECT * FROM Drug";
 
@@ -1584,7 +1648,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "INSERT INTO Injury (injuryID, injuryName, injuryLocation, severity) " +
                                    "VALUES (@injuryID, @injuryName, @injuryLocation, @severity)";
@@ -1614,7 +1678,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "UPDATE Injury SET injuryName = @injuryName, " +
                                    "injuryLocation = @injuryLocation, severity = @severity " +
@@ -1645,7 +1709,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "DELETE FROM Injury WHERE injuryID = @injuryID";
 
@@ -1671,7 +1735,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "SELECT * FROM Injury WHERE injuryID = @injuryID";
 
@@ -1710,7 +1774,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "SELECT * FROM Injury";
 
@@ -1751,7 +1815,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "INSERT INTO Equipment (equipmentID, equipmentName, equipmentFunction, latestMaintenanceDate, toCheck, roomID) " +
                                    "VALUES (@equipmentID, @equipmentName, @equipmentFunction, @latestMaintenanceDate, @toCheck, @roomID)";
@@ -1783,7 +1847,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "UPDATE Equipment SET equipmentName = @equipmentName, equipmentFunction = @equipmentFunction, " +
                                    "latestMaintenanceDate = @latestMaintenanceDate, toCheck = @toCheck, roomID = @roomID " +
@@ -1816,7 +1880,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "DELETE FROM Equipment WHERE equipmentID = @equipmentID";
 
@@ -1842,7 +1906,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "SELECT * FROM Equipment WHERE equipmentID = @equipmentID";
 
@@ -1883,7 +1947,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "SELECT * FROM Equipment";
 
@@ -1926,7 +1990,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "INSERT INTO Room (roomID, roomNumber) VALUES (@roomID, @roomNumber)";
 
@@ -1953,7 +2017,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "UPDATE Room SET roomNumber = @roomNumber WHERE roomID = @roomID";
 
@@ -1980,7 +2044,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "DELETE FROM Room WHERE roomID = @roomID";
 
@@ -2006,7 +2070,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "SELECT * FROM Room WHERE roomID = @roomID";
 
@@ -2044,7 +2108,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "SELECT * FROM Room";
 
@@ -2081,7 +2145,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "SELECT * FROM Equipment WHERE roomID = @roomID";
 
@@ -2125,7 +2189,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "INSERT INTO AttendanceRecord (recordID, timeStamp, userID, present) " +
                                    "VALUES (@recordID, @timeStamp, @userID, @isPresent)";
@@ -2155,7 +2219,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "UPDATE AttendanceRecord SET timeStamp = @timeStamp, " +
                                    "userID = @userID, present = @isPresent WHERE recordID = @recordID";
@@ -2185,7 +2249,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "DELETE FROM AttendanceRecord WHERE recordID = @recordID";
 
@@ -2211,7 +2275,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "SELECT * FROM AttendanceRecord WHERE recordID = @recordID";
 
@@ -2250,7 +2314,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "SELECT * FROM AttendanceRecord";
 
@@ -2290,7 +2354,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "INSERT INTO Visit (visitID, userID, patientID, packageID, timeStamp, roomID, type, therapistNotes) " +
                                    "VALUES (@visitID, @userID, @patientID, @packageID, @timeStamp, @roomID, @type, @therapistNotes)";
@@ -2324,7 +2388,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "UPDATE Visit SET userID = @userID, patientID = @patientID, " +
                                    "packageID = @packageID, timeStamp = @timeStamp, roomID = @roomID, " +
@@ -2359,7 +2423,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "DELETE FROM Visit WHERE visitID = @visitID";
 
@@ -2385,7 +2449,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "SELECT * FROM Visit WHERE visitID = @visitID";
 
@@ -2428,7 +2492,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "SELECT * FROM Visit";
 
@@ -2462,6 +2526,51 @@ namespace clinical
                 return visitList;
             }
         }
+        public static List<Visit> GetPatientVisits(int patientID)
+        {
+            List<Visit> visitList = new List<Visit>();
+
+            using (connection)
+            {
+                try
+                {
+                    if (connection.State == ConnectionState.Closed) connection.Open();
+
+                    string query = "SELECT * FROM Visit WHERE patientID=@patientID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@patientID", patientID);
+
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                Visit visit = new Visit(
+                                    Convert.ToInt32(reader["visitID"]),
+                                    Convert.ToInt32(reader["userID"]),
+                                    Convert.ToInt32(reader["patientID"]),
+                                    Convert.ToInt32(reader["packageID"]),
+                                    Convert.ToDateTime(reader["timeStamp"]),
+                                    Convert.ToInt32(reader["roomID"]),
+                                    reader["type"].ToString(),
+                                    reader["therapistNotes"].ToString()
+                                );
+
+                                visitList.Add(visit);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+
+                return visitList;
+            }
+        }
+
 
         public static List<Visit> GetAllVisitsByPhysicianID(int physicianID)
         {
@@ -2471,7 +2580,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "SELECT v.* FROM Visit v " +
                                    "INNER JOIN User u ON v.userID = u.userID " +
@@ -2518,7 +2627,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "SELECT * FROM Visit WHERE DATE(timeStamp) = CURDATE()";
 
@@ -2561,7 +2670,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "SELECT v.* FROM Visit v " +
                                    "INNER JOIN User u ON v.userID = u.userID " +
@@ -2608,7 +2717,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "SELECT v.* FROM Visit v " +
                                    "INNER JOIN User u ON v.userID = u.userID " +
@@ -2657,7 +2766,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "INSERT INTO Prescription (prescriptionID, timeStamp, patientID, userID, visitID) " +
                                    "VALUES (@prescriptionID, @timeStamp, @patientID, @userID, @visitID)";
@@ -2688,7 +2797,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "UPDATE Prescription SET timeStamp = @timeStamp, " +
                                    "patientID = @patientID, userID = @userID, visitID = @visitID " +
@@ -2720,7 +2829,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "DELETE FROM Prescription WHERE prescriptionID = @prescriptionID";
 
@@ -2746,7 +2855,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "SELECT * FROM Prescription WHERE prescriptionID = @prescriptionID";
 
@@ -2790,7 +2899,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "SELECT * FROM Prescription";
 
@@ -2832,7 +2941,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "SELECT * FROM Prescription WHERE patientID=@patientID";
 
@@ -2880,7 +2989,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "INSERT INTO MedicalRecord (recordID, type, timeStamp, report, images, visitID, patientID, physicianNotes) " +
                                    "VALUES (@recordID, @type, @timeStamp, @report, @images, @visitID, @patientID, @physicianNotes)";
@@ -2914,7 +3023,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "UPDATE MedicalRecord SET type = @type, " +
                                    "timeStamp = @timeStamp, report = @report, images = @images, " +
@@ -2950,7 +3059,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "DELETE FROM MedicalRecord WHERE recordID = @recordID";
 
@@ -2976,7 +3085,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "SELECT * FROM MedicalRecord WHERE recordID = @recordID";
 
@@ -3019,7 +3128,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "SELECT * FROM MedicalRecord";
 
@@ -3062,7 +3171,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "SELECT * FROM MedicalRecord WHERE visitID = @visitID";
 
@@ -3107,7 +3216,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "SELECT * FROM MedicalRecord WHERE patientID = @patientID";
 
@@ -3154,7 +3263,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "INSERT INTO IssueDrug (issueID, drugID, prescriptionID, patientID, frequency, notes) " +
                                    "VALUES (@issueID, @drugID, @prescriptionID, @patientID, @frequency, @notes)";
@@ -3186,7 +3295,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "UPDATE IssueDrug SET drugID = @drugID, " +
                                    "prescriptionID = @prescriptionID, patientID = @patientID, " +
@@ -3220,7 +3329,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "DELETE FROM IssueDrug WHERE issueID = @issueID";
 
@@ -3246,7 +3355,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "SELECT * FROM IssueDrug WHERE issueID = @issueID";
 
@@ -3287,7 +3396,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "SELECT * FROM IssueDrug";
 
@@ -3328,7 +3437,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "SELECT * FROM IssueDrug WHERE prescriptionID = @prescriptionID";
 
@@ -3371,7 +3480,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "SELECT * FROM IssueDrug WHERE patientID = @patientID";
 
@@ -3414,7 +3523,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "SELECT * FROM IssueDrug WHERE drugID = @drugID";
 
@@ -3459,7 +3568,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "INSERT INTO IssueExercise (issueID, exerciseID, patientID, prescriptionID, frequency, notes) " +
                                    "VALUES (@issueID, @exerciseID, @patientID, @prescriptionID, @frequency, @notes)";
@@ -3491,7 +3600,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "UPDATE IssueExercise SET exerciseID = @exerciseID, " +
                                    "patientID = @patientID, prescriptionID = @prescriptionID, " +
@@ -3525,7 +3634,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "DELETE FROM IssueExercise WHERE issueID = @issueID";
 
@@ -3551,7 +3660,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "SELECT * FROM IssueExercise WHERE issueID = @issueID";
 
@@ -3592,7 +3701,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "SELECT * FROM IssueExercise WHERE prescriptionID = @prescriptionID";
 
@@ -3635,7 +3744,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "SELECT * FROM IssueExercise WHERE patientID = @patientID";
 
@@ -3678,7 +3787,7 @@ namespace clinical
             {
                 try
                 {
-                    connection.Open();
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "SELECT * FROM IssueExercise WHERE exerciseID = @exerciseID";
 

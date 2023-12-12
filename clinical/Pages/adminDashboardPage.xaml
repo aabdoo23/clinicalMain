@@ -135,7 +135,7 @@
                 </Grid.RowDefinitions>
                 <TextBlock Text="Financial summary" Margin="5" VerticalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource lightFontColor}" FontSize="25"/>
 
-                <DataGrid Grid.Row="1" Margin="10" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="ActiveAppointmentsDataGrid" Style="{DynamicResource DataGridStyle1}">
+                <DataGrid Grid.Row="1" Margin="10" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="financialDataGrid" Style="{DynamicResource DataGridStyle1}">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" Binding="{Binding VisitID}"/>
                         <DataGridTextColumn Header="Record Name" Binding="{Binding PatientName}" IsReadOnly="True" Width="*"/>

@@ -24,6 +24,7 @@ namespace clinical
             new globals();
             InitializeComponent();
             new DB();
+            txtEmail.Focus();
             List<User> users = DB.GetAllUsers();
             
             foreach(User user1 in users)
@@ -65,26 +66,34 @@ namespace clinical
 
         private void logInBTN_Click(object sender, RoutedEventArgs e)
         {
+            login();
+        }
 
-            User user=DB.GetUserById(Convert.ToInt32(txtEmail.Text));
+        private void enter(object sender, KeyEventArgs e)
+        {
+            if (e.Key==Key.Enter) { login(); }
+        }
+
+        void login()
+        {
+            User user = DB.GetUserById(Convert.ToInt32(txtEmail.Text));
             if (user != null)
             {
-                //MessageBox.Show("Successfully Signed In"+user.HireDate.ToString());
+                MessageBox.Show("Welcome, " + (user.UserID.ToString()[0]!='3'?"Dr. ":"") + user.FirstName);
                 int s;
                 if (txtEmail.Text.ToString().StartsWith("1")) s = 1;
                 else if (txtEmail.Text.ToString().StartsWith("2")) s = 2;
                 else s = 3;
-                MainWindow mainWindow = new MainWindow(s,user);
+                MainWindow mainWindow = new MainWindow(s, user);
                 mainWindow.Show();
                 this.Close();
 
 
             }
-            else if (user==null) { 
+            else if (user == null)
+            {
                 MessageBox.Show("Invalid ID");
             }
-            
-
         }
     }
 
