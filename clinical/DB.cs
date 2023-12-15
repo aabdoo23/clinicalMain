@@ -24,7 +24,7 @@ namespace clinical
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Connection Message: " +ex.Message);
+                    MessageBox.Show("Connection Message: " + ex.Message);
 
                 }
             }
@@ -148,7 +148,7 @@ namespace clinical
 
         }
 
-        public static List<User> GetAllEmployees()  
+        public static List<User> GetAllEmployees()
         {
             List<User> employees = new List<User>();
             using (connection)
@@ -258,7 +258,7 @@ namespace clinical
             //}
 
             List<int> injuries = new List<int>();
-            
+
             //string iIds = reader.GetString("previousInjuriesIDs");
             //string[] si = (cIds.Split(", "));
             //foreach (string i in si)
@@ -271,7 +271,7 @@ namespace clinical
 
 
 
-            Patient p=new Patient(
+            Patient p = new Patient(
                 Convert.ToInt32(reader["patientID"]),
                 reader["firstName"].ToString(),
                 reader["lastName"].ToString(),
@@ -419,24 +419,24 @@ namespace clinical
                         "INSERT INTO Patient (patientID, firstName, lastName, birthdate, gender, phoneNumber, email, address, chronicDiseasesIDs, previousInjuriesIDs, referred, previouslyTreated, height, weight, dueAmount, physicianID, referringName, referringPN)" +
                         "VALUES (@patientID, @firstName, @lastName, @birthdate, @gender, @phoneNumber, @email, @address, @chronicDiseasesIDs, @previousInjuriesIDs, @referred, @previouslyTreated, @height, @weight, @dueAmount, @physicianID, @referringName, @referringPN)", connection))
                     {
-                        cmd.Parameters.AddWithValue("@patientID",           patient.PatientID);
-                        cmd.Parameters.AddWithValue("@firstName",           patient.FirstName);
-                        cmd.Parameters.AddWithValue("@lastName",            patient.LastName);
-                        cmd.Parameters.AddWithValue("@birthdate",           patient.Birthdate);
-                        cmd.Parameters.AddWithValue("@gender",              patient.Gender=="Male");
-                        cmd.Parameters.AddWithValue("@phoneNumber",         patient.PhoneNumber);
-                        cmd.Parameters.AddWithValue("@email",               patient.Email);
-                        cmd.Parameters.AddWithValue("@address",             patient.Address);
-                        cmd.Parameters.AddWithValue("@chronicDiseasesIDs",  patient.chronics());
+                        cmd.Parameters.AddWithValue("@patientID", patient.PatientID);
+                        cmd.Parameters.AddWithValue("@firstName", patient.FirstName);
+                        cmd.Parameters.AddWithValue("@lastName", patient.LastName);
+                        cmd.Parameters.AddWithValue("@birthdate", patient.Birthdate);
+                        cmd.Parameters.AddWithValue("@gender", patient.Gender == "Male");
+                        cmd.Parameters.AddWithValue("@phoneNumber", patient.PhoneNumber);
+                        cmd.Parameters.AddWithValue("@email", patient.Email);
+                        cmd.Parameters.AddWithValue("@address", patient.Address);
+                        cmd.Parameters.AddWithValue("@chronicDiseasesIDs", patient.chronics());
                         cmd.Parameters.AddWithValue("@previousInjuriesIDs", patient.injuries());
-                        cmd.Parameters.AddWithValue("@physicianID",         patient.PhysicianID);
-                        cmd.Parameters.AddWithValue("@referred",            patient.Referred==true);
-                        cmd.Parameters.AddWithValue("@previouslyTreated",   patient.PreviouslyTreated==true);
-                        cmd.Parameters.AddWithValue("@height",              patient.Height);
-                        cmd.Parameters.AddWithValue("@weight",              patient.Weight);
-                        cmd.Parameters.AddWithValue("@dueAmount",           patient.DueAmount);
-                        cmd.Parameters.AddWithValue("@referringName",       patient.referringName);
-                        cmd.Parameters.AddWithValue("@referringPN",         patient.referringPN);
+                        cmd.Parameters.AddWithValue("@physicianID", patient.PhysicianID);
+                        cmd.Parameters.AddWithValue("@referred", patient.Referred == true);
+                        cmd.Parameters.AddWithValue("@previouslyTreated", patient.PreviouslyTreated == true);
+                        cmd.Parameters.AddWithValue("@height", patient.Height);
+                        cmd.Parameters.AddWithValue("@weight", patient.Weight);
+                        cmd.Parameters.AddWithValue("@dueAmount", patient.DueAmount);
+                        cmd.Parameters.AddWithValue("@referringName", patient.referringName);
+                        cmd.Parameters.AddWithValue("@referringPN", patient.referringPN);
 
 
                         cmd.ExecuteNonQuery();
@@ -1299,7 +1299,7 @@ namespace clinical
 
         public static void InsertChatGroup(ChatGroup chatGroup)
         {
-            using ( connection)
+            using (connection)
             {
                 try
                 {
@@ -1328,7 +1328,7 @@ namespace clinical
 
         public static void DeleteChatGroup(int chatGroupID)
         {
-            using ( connection)
+            using (connection)
             {
                 try
                 {
@@ -2419,7 +2419,7 @@ namespace clinical
 
         public static void DeleteVisit(int visitID)
         {
-            using (connection )
+            using (connection)
             {
                 try
                 {
@@ -2970,7 +2970,7 @@ namespace clinical
                 }
                 catch (Exception ex)
                 {
-                    
+
                     MessageBox.Show($"Error: {ex.Message}");
                 }
 
@@ -2991,8 +2991,8 @@ namespace clinical
                 {
                     if (connection.State == ConnectionState.Closed) connection.Open();
 
-                    string query = "INSERT INTO MedicalRecord (recordID, type, timeStamp, report, images, visitID, patientID, physicianNotes) " +
-                                   "VALUES (@recordID, @type, @timeStamp, @report, @images, @visitID, @patientID, @physicianNotes)";
+                    string query = "INSERT INTO MedicalRecord (recordID, type, timeStamp, report, images, patientID, physicianNotes) " +
+                                   "VALUES (@recordID, @type, @timeStamp, @report, @images, @patientID, @physicianNotes)";
 
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
@@ -3001,7 +3001,6 @@ namespace clinical
                         command.Parameters.AddWithValue("@timeStamp", medicalRecord.TimeStamp);
                         command.Parameters.AddWithValue("@report", medicalRecord.Report);
                         command.Parameters.AddWithValue("@images", string.Join(",", medicalRecord.Images));
-                        command.Parameters.AddWithValue("@visitID", medicalRecord.VisitID);
                         command.Parameters.AddWithValue("@patientID", medicalRecord.PatientID);
                         command.Parameters.AddWithValue("@physicianNotes", medicalRecord.PhysicianNotes);
 
@@ -3027,7 +3026,7 @@ namespace clinical
 
                     string query = "UPDATE MedicalRecord SET type = @type, " +
                                    "timeStamp = @timeStamp, report = @report, images = @images, " +
-                                   "visitID = @visitID, patientID = @patientID, physicianNotes = @physicianNotes " +
+                                   "patientID = @patientID, physicianNotes = @physicianNotes " +
                                    "WHERE recordID = @recordID";
 
                     using (MySqlCommand command = new MySqlCommand(query, connection))
@@ -3037,7 +3036,6 @@ namespace clinical
                         command.Parameters.AddWithValue("@timeStamp", medicalRecord.TimeStamp);
                         command.Parameters.AddWithValue("@report", medicalRecord.Report);
                         command.Parameters.AddWithValue("@images", string.Join(",", medicalRecord.Images));
-                        command.Parameters.AddWithValue("@visitID", medicalRecord.VisitID);
                         command.Parameters.AddWithValue("@patientID", medicalRecord.PatientID);
                         command.Parameters.AddWithValue("@physicianNotes", medicalRecord.PhysicianNotes);
 
@@ -3103,7 +3101,6 @@ namespace clinical
                                     Convert.ToDateTime(reader["timeStamp"]),
                                     reader["report"].ToString(),
                                     new List<string>(reader["images"].ToString().Split(',')),
-                                    Convert.ToInt32(reader["visitID"]),
                                     Convert.ToInt32(reader["patientID"]),
                                     reader["physicianNotes"].ToString()
                                 );
@@ -3144,7 +3141,6 @@ namespace clinical
                                     Convert.ToDateTime(reader["timeStamp"]),
                                     reader["report"].ToString(),
                                     new List<string>(reader["images"].ToString().Split(',')),
-                                    Convert.ToInt32(reader["visitID"]),
                                     Convert.ToInt32(reader["patientID"]),
                                     reader["physicianNotes"].ToString()
                                 );
@@ -3163,50 +3159,7 @@ namespace clinical
             }
         }
 
-        public static List<MedicalRecord> GetAllVisitRecords(int visitID)
-        {
-            List<MedicalRecord> visitMedicalRecords = new List<MedicalRecord>();
-
-            using (connection)
-            {
-                try
-                {
-                    if (connection.State == ConnectionState.Closed) connection.Open();
-
-                    string query = "SELECT * FROM MedicalRecord WHERE visitID = @visitID";
-
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@visitID", visitID);
-
-                        using (MySqlDataReader reader = command.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                MedicalRecord medicalRecord = new MedicalRecord(
-                                    Convert.ToInt32(reader["recordID"]),
-                                    reader["type"].ToString(),
-                                    Convert.ToDateTime(reader["timeStamp"]),
-                                    reader["report"].ToString(),
-                                    new List<string>(reader["images"].ToString().Split(',')),
-                                    Convert.ToInt32(reader["visitID"]),
-                                    Convert.ToInt32(reader["patientID"]),
-                                    reader["physicianNotes"].ToString()
-                                );
-
-                                visitMedicalRecords.Add(medicalRecord);
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error: {ex.Message}");
-                }
-
-                return visitMedicalRecords;
-            }
-        }
+        
 
         public static List<MedicalRecord> GetAllPatientRecords(int patientID)
         {
@@ -3234,7 +3187,6 @@ namespace clinical
                                     Convert.ToDateTime(reader["timeStamp"]),
                                     reader["report"].ToString(),
                                     new List<string>(reader["images"].ToString().Split(',')),
-                                    Convert.ToInt32(reader["visitID"]),
                                     Convert.ToInt32(reader["patientID"]),
                                     reader["physicianNotes"].ToString()
                                 );
@@ -3819,7 +3771,7 @@ namespace clinical
                 }
 
                 return allIssuesOfExercise;
-            } 
+            }
         }
     }
 }

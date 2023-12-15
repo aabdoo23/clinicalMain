@@ -19,6 +19,17 @@ namespace clinical
 
             return birthdate;
         }
+
+        public static int generateNewRecordID(int patientID)
+        {
+            DateTime dateTime = DateTime.Now;
+            string s="";
+            s += patientID.ToString().Substring(0,4);
+            s += dateTime.DayOfYear.ToString();
+            
+            return int.Parse(s);
+
+        }
         public static int generateNewPatientID()
         {
             DateTime dateTime = DateTime.Now;

@@ -1,19 +1,9 @@
 ﻿using clinical.BaseClasses;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace clinical.Pages
 {
@@ -23,12 +13,13 @@ namespace clinical.Pages
     public partial class patientViewMainPage : Page
     {
         private ObservableCollection<MedicalRecord> medicalRecords;
-
+        Patient currPatient;
         public patientViewMainPage(Patient patient)
         {
             InitializeComponent();
+            this.currPatient = patient;
             patientIDTxt.Text = patient.PatientID.ToString();
-            patientNameMainTxt.Text = patient.FirstName+" "+patient.LastName;
+            patientNameMainTxt.Text = patient.FirstName + " " + patient.LastName;
             patientNameTxt.Text = patient.FirstName + " " + patient.LastName;
             ageTxt.Text = patient.Age().ToString();
             contactInfoTxt.Text = patient.PhoneNumber;
@@ -38,20 +29,13 @@ namespace clinical.Pages
 
             previousVisitsDataGrid.ItemsSource = DB.GetPatientVisits(patient.PatientID);
 
-
-
-            medicalRecords = new ObservableCollection<MedicalRecord>
-            {
-                //new MedicalRecord(1,patient.PatientID,new DateTime(2023,2,23),"good","Lab Results"),
-                //new MedicalRecord(2,patient.PatientID,new DateTime(2023,2,23),"good","Screen Results")
-            };
-
-            medicalRecordsDataGrid.ItemsSource = medicalRecords;
+            medicalRecordsDataGrid.ItemsSource = DB.GetAllPatientRecords(patient.PatientID);
         }
 
         private void viewRecord_Click(object sender, RoutedEventArgs e)
         {
-            NavigationService.Navigate(new recordPage());
+            MedicalRecord record = (MedicalRecord)medicalRecordsDataGrid.SelectedItem;
+            NavigationService.Navigate(new newRecordPage(record));
         }
 
         private void viewVisitClick(object sender, RoutedEventArgs e)
@@ -61,13 +45,13 @@ namespace clinical.Pages
 
         private void newMedicalRecord(object sender, MouseButtonEventArgs e)
         {
-            NavigationService.Navigate(new newRecordPage());
+            NavigationService.Navigate(new newRecordPage(currPatient));
 
         }
 
         private void enableNotes(object sender, MouseButtonEventArgs e)
         {
-            noteTXT.IsEnabled=!noteTXT.IsEnabled;
+            noteTXT.IsEnabled = !noteTXT.IsEnabled;
         }
 
         private void editPersonalInfo(object sender, MouseButtonEventArgs e)

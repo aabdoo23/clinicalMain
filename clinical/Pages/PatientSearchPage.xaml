@@ -25,14 +25,14 @@
         <!--Search Textbox-->
         
 
-        <!--Top Buttons-->
+        <!--Top Buttons--><!--
         <Button Style="{StaticResource topButton}" Margin="0 0 20 0" Background="#dcdcdc">
             <Icon:PackIconMaterial Kind="Cog"/>
         </Button>
 
         <Button Style="{StaticResource topButton}" Margin="0 0 55 0">
             <Icon:PackIconMaterial Kind="Bell"/>
-        </Button>
+        </Button>-->
 
         <!--Page Title-->
         <TextBlock Grid.Row="1" FontSize="32" FontWeight="SemiBold" Margin="0 20 0 0" Foreground="{StaticResource lightFontColor}" HorizontalAlignment="Left" Text="Patients"/>
@@ -58,14 +58,10 @@
         <!--Counter Title-->
         <TextBlock Text="Today's Patients" Grid.Row="4" FontSize="18" FontWeight="SemiBold" Foreground="{StaticResource lightFontColor}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
 
-        <TextBlock Text="Filter by" Grid.Row="4" FontSize="13" FontWeight="SemiBold" Margin="0 0 215 0" Foreground="{StaticResource lightFontColor}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+        <TextBlock Text="Search for patient: " Grid.Row="4" FontSize="16" FontWeight="SemiBold" Margin="0 0 315 0" Foreground="{StaticResource lightFontColor}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
 
         <!--Filter Textbox-->
-            <Grid Width="300" HorizontalAlignment="Right" Grid.Row="4">
-                <TextBlock Margin="20 0" VerticalAlignment="Center" Foreground="#B0B9C6" IsHitTestVisible="False"
- Panel.ZIndex="1" Text="Search here ..."
- Visibility="{Binding ElementName=textBoxSearch, Converter={StaticResource BoolToVis}}" />
-
+            <Grid Width="300" HorizontalAlignment="Right" Grid.Row="4" Margin="5">
                 <TextBox Name="textBoxFilter" Style="{StaticResource searchTextbox}"/>
 
                 <Icon:PackIconMaterial Kind="Magnify" Width="15" Height="15" VerticalAlignment="Center" Margin="0 0 15 0" Foreground="{StaticResource lightFontColor}" HorizontalAlignment="Right" />

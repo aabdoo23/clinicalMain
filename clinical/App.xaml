@@ -71,7 +71,7 @@
 
         <Style x:Key="theBorder" TargetType="Border">
             <Setter Property="Background" Value="{StaticResource darkerColor}"/>
-            <Setter Property="CornerRadius" Value="20"/>
+            <Setter Property="CornerRadius" Value="10"/>
             <Setter Property="Margin" Value="10 0 10 10"/>
         </Style>
 

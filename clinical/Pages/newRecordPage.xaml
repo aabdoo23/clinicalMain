@@ -6,29 +6,49 @@
       xmlns:uc="clr-namespace:clinical.userControls"
       xmlns:av="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      mc:Ignorable="av" Height="668" Width="1260">
+      mc:Ignorable="av" MinHeight="568" MinWidth="860">
 
     <Border CornerRadius="20">
         <Border.Background>
             <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                <GradientStop Color="#fefefe" Offset="0"/>
-                <GradientStop Color="#fefefe" Offset="1"/>
+                <GradientStop Color="#FFD7E2D0" Offset="1"/>
             </LinearGradientBrush>
         </Border.Background>
 
         <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="80"/>
+                <RowDefinition Height="80*"/>
+            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="35*"/>
                 <ColumnDefinition Width="65*"/>
             </Grid.ColumnDefinitions>
 
-          
+            <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Background="{StaticResource darkerColor}" Margin="10,10,10,0" CornerRadius="10">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="5*"/>
+                        <ColumnDefinition Width="90*"/>
+                        <ColumnDefinition Width="5*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Icon:PackIconMaterial Kind="ArrowLeftBox" Margin="10 0 " Width="40" Height="40" Foreground="{StaticResource lightFontColor}" HorizontalAlignment="Center" VerticalAlignment="Center" MouseDown="goBackPage"/>
+                    <StackPanel Margin="7 10 0 10" Grid.Column="1">
+                        <TextBlock Text="New Record" Foreground="{StaticResource lightFontColor}" FontSize="14"/>
+                        <TextBlock x:Name="patientNameMainTxt" Text="3alolo" Foreground="{StaticResource lightFontColor}" FontSize="24" FontWeight="Bold" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <!-- User Image -->
+                    
+                </Grid>
+            </Border>
+
 
             <!-- Side Panel -->
-            <Border Style="{StaticResource theBorder}" Grid.Column="0" Grid.Row="0" Margin="10">
+            <Border Style="{StaticResource theBorder}" Grid.Column="0" Grid.Row="1" Margin="10">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="65"/>
+                        <RowDefinition Height="55"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <Grid Grid.Row="0">
@@ -36,13 +56,13 @@
                             <ColumnDefinition Width="90*"/>
                             <ColumnDefinition Width="25*"/>
                         </Grid.ColumnDefinitions>
-                        <TextBlock Text="Scanned physical records" FontSize="24" FontWeight="Bold" VerticalAlignment="Center" Foreground="{StaticResource lightFontColor}" Margin="20 10" Grid.Column="0"/>
+                        <TextBlock Text="Scanned records" FontSize="24" FontWeight="Bold" VerticalAlignment="Center" Foreground="{StaticResource lightFontColor}" Margin="20 10" Grid.Column="0"/>
                         <Icon:PackIconMaterial MouseDown="newXRAY" Name="uploadNewRecord" Kind="GoogleLens" Foreground="{StaticResource lightFontColor}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 20 0" Width="25" Height="25"/>
                     </Grid>
 
                     <Border Grid.Column="1" CornerRadius="10" Background="{StaticResource lighterColor}" Grid.Row="1" Margin="10 0 10 10">
-                        <ScrollViewer>
-                            <StackPanel Name="scannedScansStackPanel"  Background="Transparent" Margin="10"/>
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <StackPanel Name="scannedScansStackPanel"  Background="Transparent"/>
                         </ScrollViewer>
                     </Border>
                     <!--<uc:medicalRecordObject/>-->
@@ -55,6 +75,7 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="50*"/>
                     <RowDefinition Height="50*"/>
+                    <RowDefinition Height="60"/>
                 </Grid.RowDefinitions>
 
                 <Grid.ColumnDefinitions>
@@ -65,24 +86,24 @@
                 <Border Style="{StaticResource theBorder}" Grid.Column="0" Grid.Row="0">
                     <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="15*"/>
+                            <RowDefinition Height="50"/>
                             <RowDefinition Height="80*"/>
                         </Grid.RowDefinitions>
                         <Grid Grid.Row="0">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="90*"/>
+                                <ColumnDefinition Width="50*"/>
                                 <ColumnDefinition Width="15*"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock Text="Physician Notes" FontSize="25" FontWeight="Bold" VerticalAlignment="Center" Foreground="{StaticResource lightFontColor}" Margin="20 10" Grid.Column="0"/>
-                            <Icon:PackIconMaterial Kind="ClipboardEdit" Foreground="{StaticResource lightFontColor}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 20 0" Width="25" Height="25"/>
-                            <Icon:PackIconMaterial Name="uploadNewPhysicianNotes" MouseDown="newPhysician" Kind="GoogleLens" Foreground="{StaticResource lightFontColor}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 60 0" Width="25" Height="25"/>
+                            <Icon:PackIconMaterial MouseDown="editPhysicianNotes" Kind="ClipboardEdit" Foreground="{StaticResource lightFontColor}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 20 0" Width="25" Height="25"/>
+                            <Icon:PackIconMaterial Name="uploadNewPhysicianNotes" MouseDown="scanPhysicianNotes" Kind="CreditCardScan" Foreground="{StaticResource lightFontColor}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 60 0" Width="35" Height="35"/>
 
                         </Grid>
 
-                        
+
                         <Border Grid.Column="1" Background="{StaticResource lighterColor}" Grid.Row="1" Margin="10 0 10 10">
-                            <ScrollViewer>
-                            <TextBlock Name="physicianNotesTXT" Background="{StaticResource darkerColor}" Padding="5" Margin="5" FontSize="24" TextWrapping="WrapWithOverflow" Foreground="{StaticResource lightFontColor}" />
+                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                <TextBlock Name="physicianNotesTXT" Background="{StaticResource darkerColor}" Padding="5" Margin="5" FontSize="24" TextWrapping="WrapWithOverflow" Foreground="{StaticResource lightFontColor}" />
                             </ScrollViewer>
                         </Border>
                         <!--<uc:medicalRecordObject/>-->
@@ -92,25 +113,25 @@
                 <Border Style="{StaticResource theBorder}" Grid.Column="0" Grid.Row="1">
                     <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="15*"/>
+                            <RowDefinition Height="50"/>
                             <RowDefinition Height="80*"/>
                         </Grid.RowDefinitions>
                         <Grid Grid.Row="0">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="90*"/>
+                                <ColumnDefinition Width="40*"/>
                                 <ColumnDefinition Width="15*"/>
                             </Grid.ColumnDefinitions>
-                           
-                                <TextBlock Text="Report" FontSize="25" FontWeight="Bold"  VerticalAlignment="Center" Foreground="{StaticResource lightFontColor}" Margin="20 10" Grid.Column="0"/>
-                           
-                            <Icon:PackIconMaterial MouseDown="newReport" Name="uploadNewReport" Kind="GoogleLens" Foreground="{StaticResource lightFontColor}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 60 0" Width="25" Height="25"/>
 
-                            <Icon:PackIconMaterial Kind="ClipboardEdit" Foreground="{StaticResource lightFontColor}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 20 0" Width="25" Height="25"/>
+                            <TextBlock Text="Report" FontSize="25" FontWeight="Bold"  VerticalAlignment="Center" Foreground="{StaticResource lightFontColor}" Margin="20 10" Grid.Column="0"/>
+
+                            <Icon:PackIconMaterial MouseDown="newReport" Name="uploadNewReport" Kind="CreditCardScan" Foreground="{StaticResource lightFontColor}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 60 0" Width="35" Height="35"/>
+
+                            <Icon:PackIconMaterial Kind="ClipboardEdit" MouseDown="editReportTXT" Foreground="{StaticResource lightFontColor}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 20 0" Width="25" Height="25"/>
                         </Grid>
 
                         <Border Grid.Column="1" Background="{StaticResource lighterColor}" Grid.Row="1" Margin="10 0 10 10">
-                            <ScrollViewer>
-                            <TextBlock Name="reportTXT" Background="{StaticResource darkerColor}" Padding="5" Margin="5" FontSize="20" TextWrapping="WrapWithOverflow" Foreground="{StaticResource lightFontColor}" />
+                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                <TextBox Name="reportTXT" Background="{StaticResource darkerColor}" Padding="5" Margin="5" FontSize="20" TextWrapping="WrapWithOverflow" Foreground="{StaticResource lightFontColor}" />
                             </ScrollViewer>
                         </Border>
                         <!--<uc:medicalRecordObject/>-->
@@ -118,7 +139,9 @@
                     </Grid>
                 </Border>
 
-
+                <Border Name="saveBTN" Style="{StaticResource theBorder}" BorderBrush="{StaticResource lightFontColor}" BorderThickness="2" HorizontalAlignment="Right" Width="100" Grid.Row="2" MouseDown="save">
+                    <Label Content="Save" Foreground="{StaticResource lightFontColor}" HorizontalAlignment="Center" FontSize="20" VerticalAlignment="Center" FontWeight="Bold" Margin="0,-2,0,0"/>
+                </Border>
             </Grid>
         </Grid>
     </Border>
