@@ -85,6 +85,7 @@ namespace clinical
                 else if (txtEmail.Text.ToString().StartsWith("2")) s = 2;
                 else s = 3;
                 MainWindow mainWindow = new MainWindow(s, user);
+                globals.signedIn = user;
                 mainWindow.Show();
                 this.Close();
 

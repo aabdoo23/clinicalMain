@@ -34,5 +34,15 @@ namespace clinical.Pages
         {
 
         }
+
+        private void removeLastTest(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
+        private void addTest(object sender, MouseButtonEventArgs e)
+        {
+
+        }
     }
 }

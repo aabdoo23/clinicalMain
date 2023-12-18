@@ -45,7 +45,7 @@
                     </StackPanel>
                     <!--User Image-->
                     <Icon:PackIconMaterial Kind="FaceManOutline" Width="45" Height="45" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Center" Grid.Column="2"/>
-                    
+
                 </Grid>
             </Border>
             <!--Side Panel-->
@@ -57,7 +57,7 @@
 
 
                 <Border Style="{StaticResource theBorder}" Grid.RowSpan="2">
-                    
+
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="90*"/>
@@ -143,7 +143,7 @@
 
                 <!--Cheif complaint-->
 
-                <Border Style="{StaticResource theBorder}" Grid.Column="2" Grid.RowSpan="2" Grid.Row="0" >
+                <Border Style="{StaticResource theBorder}" Grid.Column="2"  Grid.Row="0" >
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="60"/>
@@ -171,6 +171,114 @@
                 </Border>
 
                 <!--Treatment plan-->
+                <Border Style="{StaticResource theBorder}" Grid.Column="2"  Grid.Row="1" >
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="60"/>
+                            <RowDefinition Height="80*"/>
+                        </Grid.RowDefinitions>
+                        <Grid Grid.Row="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="90*"/>
+                                <ColumnDefinition Width="15*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Session Feedback" FontSize="25" FontWeight="Bold" VerticalAlignment="Center" Foreground="{StaticResource lightFontColor}" Margin="20 10" Grid.Column="0"/>
+                        </Grid>
+
+                        <Border Grid.Column="1" Background="{StaticResource lighterColor}" Grid.Row="1" CornerRadius="10" Margin="10 0 10 10">
+                            <StackPanel Name="feedbackStackPane" Orientation="Vertical" Grid.Row="2" Background="Transparent" Margin="7" >
+                                <Border Background="{StaticResource lightFontColor}" CornerRadius="10" Margin="5 10 5 0" Height="160">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="1*"/>
+                                            <RowDefinition Height="1*"/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="100"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="Test" FontSize="25" FontWeight="Bold" VerticalAlignment="Center" Foreground="{StaticResource darkerColor}" Margin="10" Grid.Column="0"/>
+                                        <TextBlock Text="Score" FontSize="25" FontWeight="Bold" VerticalAlignment="Center" Foreground="{StaticResource darkerColor}" Margin="10" Grid.Row="1"/>
+                                        <ComboBox Name="testCB" Margin="90,20,20,20" Grid.ColumnSpan="2"/>
+                                        <Grid Grid.Row="1" Grid.Column="1" Margin="5">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="*"/>
+                                                <RowDefinition Height="*"/>
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Viewbox Grid.Column="0" >
+                                                <RadioButton Name="rb1" GroupName="feedBack"/>
+                                            </Viewbox>
+                                            <Viewbox Grid.Column="1" >
+                                                <RadioButton Name="rb2" GroupName="feedBack"/>
+                                            </Viewbox>
+                                            <Viewbox Grid.Column="2" >
+                                                <RadioButton Name="rb3" GroupName="feedBack"/>
+                                            </Viewbox>
+                                            <Viewbox Grid.Column="3" >
+                                                <RadioButton Name="rb4" GroupName="feedBack"/>
+                                            </Viewbox>
+                                            <Viewbox Grid.Column="4" >
+                                                <RadioButton Name="rb5" GroupName="feedBack"/>
+                                            </Viewbox>
+                                            <Viewbox Grid.Column="5" >
+                                                <RadioButton Name="rb6" GroupName="feedBack"/>
+                                            </Viewbox>
+                                            <Viewbox Grid.Column="6" >
+                                                <RadioButton Name="rb7" GroupName="feedBack"/>
+                                            </Viewbox>
+                                            <Viewbox Grid.Column="7" >
+                                                <RadioButton Name="rb8" GroupName="feedBack"/>
+                                            </Viewbox>
+                                            <Viewbox Grid.Column="8" >
+                                                <RadioButton Name="rb9" GroupName="feedBack"/>
+                                            </Viewbox>
+                                            <Viewbox Grid.Column="9" >
+                                                <RadioButton Name="rb10" GroupName="feedBack"/>
+                                            </Viewbox>
+
+                                            <TextBlock Grid.Row="1" Grid.Column="0" Text="1" Width="34" TextAlignment="Center"  FontSize="24"/>
+                                            <TextBlock Grid.Row="1" Grid.Column="1" Text="2" Width="34" TextAlignment="Center"  FontSize="24"/>
+                                            <TextBlock Grid.Row="1" Grid.Column="2" Text="3" Width="34" TextAlignment="Center"  FontSize="24"/>
+                                            <TextBlock Grid.Row="1" Grid.Column="3" Text="4" Width="34" TextAlignment="Center"  FontSize="24"/>
+                                            <TextBlock Grid.Row="1" Grid.Column="4" Text="5" Width="34" TextAlignment="Center"  FontSize="24"/>
+                                            <TextBlock Grid.Row="1" Grid.Column="5" Text="6" Width="34" TextAlignment="Center"  FontSize="24"/>
+                                            <TextBlock Grid.Row="1" Grid.Column="6" Text="7" Width="34" TextAlignment="Center"  FontSize="24"/>
+                                            <TextBlock Grid.Row="1" Grid.Column="7" Text="8" Width="34" TextAlignment="Center"  FontSize="24"/>
+                                            <TextBlock Grid.Row="1" Grid.Column="8" Text="9" Width="34" TextAlignment="Center"  FontSize="24"/>
+                                            <TextBlock Grid.Row="1" Grid.Column="9" Text="10" Width="34" TextAlignment="Center"  FontSize="24"/>
+                                        </Grid>
+
+                                    </Grid>
+                                </Border>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Icon:PackIconMaterial MouseDown="removeLastTest" Kind="MinusBox" Foreground="{StaticResource lightFontColor}" Grid.Column="0" Margin="10" VerticalAlignment="Center" HorizontalAlignment="Right" Width="40" Height="40"/>
+                                    <Icon:PackIconMaterial MouseDown="addTest" Kind="PlusBox" Foreground="{StaticResource lightFontColor}" Grid.Column="1" Margin="10" VerticalAlignment="Center" HorizontalAlignment="Left" Width="40" Height="40"/>
+
+                                </Grid>
+                            </StackPanel>
+                            
+
+                        </Border>
+                        <!--<uc:medicalRecordObject/>-->
+
+                    </Grid>
+                </Border>
 
                 <!--Prescription-->
                 <Border Grid.Column="0" Grid.Row="1"  Grid.ColumnSpan="2" Style="{StaticResource theBorder}">
@@ -212,9 +320,9 @@
 
                     </Grid>
                 </Border>
-                
+
                 <!--radiology-->
-                
+
             </Grid>
 
 

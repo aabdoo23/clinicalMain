@@ -11,7 +11,13 @@
         <SolidColorBrush x:Key="lighterColor" Color="#708d81"/>
         <SolidColorBrush x:Key="selectedColor" Color="#354f52"/>
         <SolidColorBrush x:Key="lightFontColor" Color="#FFD7E2D0"/>
+
         
+        <Color x:Key="darkerCol">#2f3e46</Color>
+        <Color x:Key="lighterCol">#708d81</Color>
+        <Color x:Key="selectedCol">#354f52</Color>
+        <Color x:Key="lightFontCol">#FFD7E2D0</Color>
+
 
         <Style x:Key="menuButton" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
@@ -617,6 +623,9 @@
             <Setter Property="FontSize" Value="18" />
         </Style>
 
+        <Style x:Key="calendarButtonMonthBig" TargetType="Button" BasedOn="{StaticResource calendarButtonMonth}">
+            <Setter Property="Foreground" Value="{StaticResource selectedColor}" />
+        </Style>
 
         <Style x:Key="calendarTextHint" TargetType="TextBlock">
             <Setter Property="FontSize" Value="14" />

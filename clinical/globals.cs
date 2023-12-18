@@ -9,6 +9,7 @@ namespace clinical
         {
         }
 
+        public static User signedIn=null;
         public static DateTime CalculateBirthdate(int age)
         {
             DateTime currentDate = DateTime.Now;

@@ -69,7 +69,7 @@
                                 <TextBlock Text="Name:" Foreground="{StaticResource darkerColor}" TextWrapping="Wrap" FontSize="20" Grid.Row="1" Margin="5" FontWeight="Bold"/>
                                 <TextBlock Name="patientNameTxt" Grid.Column="1" Text="Ali M'l" Foreground="{StaticResource darkerColor}" FontSize="24" Grid.Row="1" Margin="2" TextWrapping="Wrap"/>
 
-                                <TextBlock Text="Contact info:" Foreground="{StaticResource darkerColor}" TextWrapping="Wrap" FontSize="20" Grid.Row="2" Margin="1" FontWeight="Bold"/>
+                                <TextBlock Text="Contact info:" Foreground="{StaticResource darkerColor}" TextWrapping="Wrap" FontSize="17" Grid.Row="2" Margin="1" FontWeight="Bold"/>
                                 <TextBlock Name="contactInfoTxt" Grid.Column="1" Text="+201007123123" Foreground="{StaticResource darkerColor}" FontSize="20" Grid.Row="2" Margin="2" TextWrapping="Wrap"/>
 
                                 <TextBlock Text="Referring:" Foreground="{StaticResource darkerColor}" TextWrapping="WrapWithOverflow" FontSize="19" Grid.Row="4" Margin="5" FontWeight="Bold"/>
@@ -255,7 +255,7 @@
 
                             <Border Grid.Column="1" Background="{StaticResource lighterColor}" Grid.Row="1" CornerRadius="10" Margin="10 0 10 10">
                                 <ScrollViewer VerticalScrollBarVisibility="Auto" >
-                                <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="medicalRecordsDataGrid" Style="{DynamicResource DataGridStyle1}">
+                                <DataGrid Margin="5" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="medicalRecordsDataGrid" Style="{DynamicResource DataGridStyle1}">
                                     <DataGrid.Columns>
                                         <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="15*" Binding="{Binding RecordID}"/>
                                         <DataGridTextColumn Header="Type" Binding="{Binding Type}" IsReadOnly="True" Width="25*"/>
@@ -326,7 +326,9 @@
                             </Grid>
 
                             <Border Grid.Column="1" Background="{StaticResource lighterColor}" Grid.Row="1" CornerRadius="10" Margin="10 0 10 10">
-                                <TextBox Name="noteTXT" Margin="5" BorderThickness="0" IsEnabled="False" Background="Transparent" Foreground="{StaticResource lightFontColor}"></TextBox>
+                                <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="5">
+                                    <TextBox Name="noteTXT" BorderThickness="0" IsEnabled="False" Background="Transparent" Foreground="{StaticResource lightFontColor}"></TextBox>
+                                </ScrollViewer>
                             </Border>
                         </Grid>
                     </Border>
