@@ -1,5 +1,8 @@
-﻿using System;
+﻿using clinical.BaseClasses;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,9 +22,29 @@ namespace clinical
     /// </summary>
     public partial class newAppointmentWindow : Window
     {
+        private ICollectionView dataView;
+        Patient selectedPatient = null;
+        DateTime selectedDateTime = DateTime.Now;
+        List<string> items = new List<string> { "06:00", "07:00", "08:00" };
+
         public newAppointmentWindow()
         {
             InitializeComponent();
+
+            List<Patient> list = DB.GetAllPatients();
+            foreach (Patient pat in list)
+            {
+                User phys = DB.GetUserById(pat.PhysicianID);
+                pat.PhysicianName = phys.FirstName + " " + phys.LastName;
+            }
+            allPatientsDataGrid.ItemsSource = list;
+            dataView = CollectionViewSource.GetDefaultView(allPatientsDataGrid.ItemsSource);
+            textBoxFilter.TextChanged += textBoxFilter_TextChanged;
+
+            datePicker.SelectedDate=DateTime.Now;
+
+            timePicker.ItemsSource = items;
+            timePicker.SelectedIndex = 0;
         }
 
         private void PackIconMaterial_MouseDown(object sender, MouseButtonEventArgs e)
@@ -47,7 +70,68 @@ namespace clinical
      
         private void view(object sender, RoutedEventArgs e)
         {
+            selectedPatient = (Patient)allPatientsDataGrid.SelectedItem;
+            patientName.Text = selectedPatient.FirstName + " " + selectedPatient.LastName;
 
+        }
+
+        private void textBoxFilter_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            dataView.Filter = item => FilterItem(item, textBoxFilter.Text);
+
+        }
+
+        private bool FilterItem(object item, string filterText)
+        {
+            if (string.IsNullOrWhiteSpace(filterText))
+            {
+                return true; // No filter, show all items
+            }
+
+            foreach (var property in item.GetType().GetProperties())
+            {
+                var cellValue = property.GetValue(item);
+                if (cellValue != null && cellValue.ToString().Contains(filterText, StringComparison.OrdinalIgnoreCase))
+                {
+                    return true; // Found a match in any column
+                }
+            }
+
+            return false; // No match found
+        }
+
+        private void saveClicked(object sender, MouseButtonEventArgs e)
+        {
+            if(selectedPatient == null) { }
+            MessageBoxResult result = MessageBox.Show("Book "+selectedPatient.FirstName+" a reservation on "+ selectedDateTime.Month+", "
+                + selectedDateTime.Day+", "+selectedDateTime.Hour+", "+selectedDateTime.Minute, "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            // Check the user's response
+            if (result == MessageBoxResult.Yes)
+            {
+                int id = globals.generateNewVisitID(selectedPatient.PatientID, selectedDateTime);
+                Visit visit = new Visit(id, selectedPatient.PhysicianID, selectedPatient.PatientID, 1, selectedDateTime, 1, "Follow up", "");
+                DB.InsertVisit(visit);
+                MessageBox.Show("Visit registered, visit id: "+id.ToString());
+            }
+            
+        }
+
+        private void dateChanged(object sender, SelectionChangedEventArgs e)
+        {
+            selectedDateTime = (DateTime)datePicker.SelectedDate;
+        }
+
+        private void timeChanged(object sender, SelectionChangedEventArgs e)
+        {
+            string s= (string)timePicker.SelectedItem;
+            string hr = "",min="";
+            hr+= s[0];
+            hr+= s[1];
+            min += s[3];
+            min += s[4];
+
+            selectedDateTime = new DateTime(selectedDateTime.Year, selectedDateTime.Month, selectedDateTime.Day, int.Parse(hr), int.Parse(min), 0);
         }
     }
 }

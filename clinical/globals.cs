@@ -1,5 +1,6 @@
 ﻿using clinical.BaseClasses;
 using System;
+using System.Security.Cryptography;
 
 namespace clinical
 {
@@ -72,6 +73,11 @@ namespace clinical
             s+=rand.Next(100).ToString();
             return s;
 
+        }
+
+        public static int generateNewVisitID(int patID, DateTime time) {
+            string s = patID.ToString().Substring(0, 3) + time.Month+time.Day;
+            return Convert.ToInt32(s);
         }
         public static int generateNewChatRoomID(int fID,int sID)
         {

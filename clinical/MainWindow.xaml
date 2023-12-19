@@ -27,7 +27,7 @@
                 <Grid>
 
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="130"/>
+                        <ColumnDefinition Width="110"/>
                         <ColumnDefinition/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
@@ -40,7 +40,7 @@
                     <Frame Grid.Column="1" x:Name="mainFrame" NavigationUIVisibility="Hidden"/>
 
                     <!--Side panel-->
-                    <Border CornerRadius="30" Background="{StaticResource lighterColor}" Margin="20,20,20,20">
+                    <Border CornerRadius="20" Background="{StaticResource lighterColor}" Margin="10">
                         <Grid>
                             <StackPanel VerticalAlignment="Top">
 
@@ -52,7 +52,7 @@
                                 <Separator Background="{StaticResource lighterColor}" Margin="20 0 20 10" Height="0.8"/>
 
 
-                                <Button Style="{StaticResource menuButton}" Name="homeBTN" Click="homeBTN_Click">
+                                <Button Style="{StaticResource menuButton}"  Name="homeBTN" Click="homeBTN_Click">
                                     <Icon:PackIconMaterial Kind="HomeVariant" Style="{StaticResource menuButtonIcon}"/>
                                 </Button>
 

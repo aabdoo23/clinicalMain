@@ -201,12 +201,12 @@
                         <TextBlock Text="Previous visits" FontSize="20" Foreground="{StaticResource lightFontColor}" FontWeight="Bold" Margin="20 10" Grid.Row="0" Grid.Column="0"/>
 
                         <Border Grid.Column="1" Background="{StaticResource lighterColor}" Grid.Row="1" CornerRadius="10" Margin="10 0 10 10">
-                            <DataGrid RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="previousVisitsDataGrid" Style="{DynamicResource DataGridStyle1}">
+                            <DataGrid Margin="5" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="previousVisitsDataGrid" Style="{DynamicResource DataGridStyle1}">
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="15*" Binding="{Binding RecordID}"/>
-                                    <DataGridTextColumn Header="Date" Binding="{Binding Date}" IsReadOnly="True" Width="25*"/>
-                                    <DataGridTextColumn Header="Reason" Binding="{Binding Reason}" IsReadOnly="True" Width="30*"/>
-                                    <DataGridTextColumn Header="Description" Binding="{Binding DoctorNotes}" IsReadOnly="True" Width="40*"/>
+                                    <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="15*" Binding="{Binding VisitID}"/>
+                                    <DataGridTextColumn Header="Date" Binding="{Binding TimeStamp}" IsReadOnly="True" Width="25*"/>
+                                    <DataGridTextColumn Header="Type" Binding="{Binding Type}" IsReadOnly="True" Width="30*"/>
+                                    <DataGridTextColumn Header="Description" Binding="{Binding TherapistNotes}" IsReadOnly="True" Width="40*"/>
                                     <DataGridTemplateColumn Header="" IsReadOnly="True" Width="auto">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
@@ -327,7 +327,7 @@
 
                             <Border Grid.Column="1" Background="{StaticResource lighterColor}" Grid.Row="1" CornerRadius="10" Margin="10 0 10 10">
                                 <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="5">
-                                    <TextBox Name="noteTXT" BorderThickness="0" IsEnabled="False" Background="Transparent" Foreground="{StaticResource lightFontColor}"></TextBox>
+                                    <TextBox Name="noteTXT" TextChanged="notesUpdated" BorderThickness="0" FontSize="20" IsEnabled="False" Background="Transparent" Foreground="{StaticResource lightFontColor}"/>
                                 </ScrollViewer>
                             </Border>
                         </Grid>

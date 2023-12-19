@@ -38,14 +38,20 @@
         <TextBlock Grid.Row="1" FontSize="32" FontWeight="SemiBold" Margin="0 20 0 0" Foreground="{StaticResource lightFontColor}" HorizontalAlignment="Left" Text="Patients"/>
 
         <!--Add Button-->
-            <Button Style="{StaticResource addButton}" Click="addNewPatient">
+        <Button Style="{StaticResource addButton}" Click="addNewPatient">
             <StackPanel Orientation="Horizontal">
                 <Icon:PackIconMaterial Kind="Plus" VerticalAlignment="Center" Margin="0 1 8 0" Width="11" Height="11"/>
                 <TextBlock Text="Add New Patient"/>
             </StackPanel>
         </Button>
+        <Button Style="{StaticResource addButton}" Click="newAppointment" Margin="0,0,155,0" Grid.Row="1">
+                <StackPanel Orientation="Horizontal">
+                    <Icon:PackIconMaterial Kind="Plus" VerticalAlignment="Center" Margin="0 1 8 0" Width="11" Height="11"/>
+                    <TextBlock Text="Add new visit"/>
+                </StackPanel>
+            </Button>
 
-        <!--Seprator-->
+            <!--Seprator-->
         <Separator Height="1" Grid.Row="3" Background="#DAE2EA" Margin="0 -1 0 10"/>
 
         <!--Tab buttons-->

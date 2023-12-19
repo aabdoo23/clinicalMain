@@ -16,7 +16,8 @@ namespace clinical.BaseClasses
         public int RoomID { get; set; }
         public string Type { get; set; }
         public string TherapistNotes { get; set; }
-
+        public string PatientName { get; set; }
+        public string PhysioTherapistName { get; set; }
         // Constructor
         public Visit(int visitID, int physiotherapistID, int patientID, int packageID, DateTime timeStamp, int roomID, string type, string therapistNotes)
         {

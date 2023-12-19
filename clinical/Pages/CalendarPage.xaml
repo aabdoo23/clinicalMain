@@ -8,16 +8,16 @@
       d:DesignHeight="760" d:DesignWidth="1150"
       Title="CalendarPage">
 
-    <Grid Grid.Column="1" Margin="0 15 15 15" x:Name="calendarGrid">
+    <Grid Grid.Column="1" Margin="10" x:Name="calendarGrid">
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1.2*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <Border CornerRadius="30 0 0 30" Background="#FEFEFE"/>
+            <Border CornerRadius="20 0 0 20" Background="#FEFEFE"/>
 
-            <Border CornerRadius="0 40 40 0"  Grid.Column="1" Background="{StaticResource lighterColor}"/>
+            <Border CornerRadius="0 20 20 0"  Grid.Column="1" Background="{StaticResource lighterColor}"/>
         </Grid>
 
         <!--Grid Controls-->
@@ -78,7 +78,7 @@
                     </Button>
                 </StackPanel>
 
-                <TextBlock Text="5 tasks- 2 dates left" Foreground="#FFEBEBEB" FontSize="16" Margin="35 0 20 0"/>
+                <TextBlock Name="todayTaskCnt" Text="5 tasks- 2 dates left" Foreground="#FFEBEBEB" FontSize="16" Margin="35 0 20 0"/>
 
                 <!--Add Notes-->
                 <Border Background="{StaticResource lighterColor}" CornerRadius="10" HorizontalAlignment="Center" Width="355" Margin="0 30 0 20" Padding="17 15 5 15">
@@ -121,10 +121,10 @@
                     </Grid>
                 </Border>
 
+                <StackPanel Name="visitsStackPanel"/>
+
                 <!--Notes-->
                 <uc:Item Title="Post on social networks" Time="09:45 - 10:30" Color="{StaticResource lightFontColor}" Icon="CheckCircle" IconBell="BellSlash"/>
-                <uc:Item Title="Review the app design" Time="11:30 - 12:00" Color="{StaticResource lightFontColor}" Icon="CheckCircle" IconBell="BellSlash"/>
-                <uc:Item Title="Build a demo of the app" Time="14:00 - 15:30" Color="{StaticResource lightFontColor}" Icon="CircleThin" IconBell="Bell"/>
                 
 
             </StackPanel>

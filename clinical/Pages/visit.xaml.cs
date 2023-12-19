@@ -1,4 +1,5 @@
-﻿using System;
+﻿using clinical.BaseClasses;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,14 +21,11 @@ namespace clinical.Pages
     /// </summary>
     public partial class visit : Page
     {
-        public visit()
+        Visit currVisit;
+        public visit(Visit selectedVisit )
         {
             InitializeComponent();
-        }
-
-        private void newAppointment(object sender, MouseButtonEventArgs e)
-        {
-
+            currVisit=selectedVisit;
         }
 
         private void view_Click(object sender, RoutedEventArgs e)
@@ -41,6 +39,16 @@ namespace clinical.Pages
         }
 
         private void addTest(object sender, MouseButtonEventArgs e)
+        {
+
+        }
+
+        private void navigateBack(object sender, MouseButtonEventArgs e)
+        {
+            NavigationService.GoBack();
+        }
+
+        private void newPrescription(object sender, MouseButtonEventArgs e)
         {
 
         }

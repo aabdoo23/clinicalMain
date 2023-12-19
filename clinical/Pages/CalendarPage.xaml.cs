@@ -96,14 +96,22 @@ namespace clinical.Pages
             monthTB.Text = months[selectedDay.Month - 1];
             dayOfTheWeekTB.Text = selectedDay.DayOfWeek.ToString();
             calendar.DisplayDate = selectedDay;
+            
+            
+            DateTime dateTime = new DateTime(selectedDay.Year, selectedDay.Month, selectedDay.Day);
+            List<Visit> todayVisits = DB.GetPhysicianVisitsOnDate(globals.signedIn.UserID, dateTime);
+            
+            todayTaskCnt.Text = todayVisits.Count.ToString()+" tasks- n dates left";
 
-
-            foreach (Visit visit1 in DB.GetAllVisitsByPhysicianID(globals.signedIn.UserID))
+           
+            visitsStackPanel.Children.Clear();
+            foreach (Visit visit1 in todayVisits)
             {
                 Item itemControl = new Item();
                 itemControl.Title = visit1.VisitID.ToString();
-                itemControl.Time = "09:45 - 10:30";
+                itemControl.Time = visit1.TimeStamp.Hour.ToString()+" : "+ visit1.TimeStamp.Minute.ToString();
                 itemControl.Color = (SolidColorBrush)FindResource("lightFontColor");
+                visitsStackPanel.Children.Add(itemControl);
             }
             
 

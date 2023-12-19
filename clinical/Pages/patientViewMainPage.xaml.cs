@@ -24,6 +24,7 @@ namespace clinical.Pages
             ageTxt.Text = patient.Age().ToString();
             contactInfoTxt.Text = patient.PhoneNumber;
             referringTxt.Text = patient.referringName;
+            noteTXT.Text = patient.Email;
 
 
 
@@ -57,6 +58,11 @@ namespace clinical.Pages
         private void editPersonalInfo(object sender, MouseButtonEventArgs e)
         {
 
+        }
+
+        private void notesUpdated(object sender, TextChangedEventArgs e)
+        {
+            currPatient.Email = noteTXT.Text;
         }
     }
 }

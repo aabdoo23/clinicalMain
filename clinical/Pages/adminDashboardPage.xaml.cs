@@ -4,6 +4,7 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Collections.Generic;
 
 namespace clinical.Pages
 {
@@ -22,19 +23,29 @@ namespace clinical.Pages
         {
             physiciansDataGrid.ItemsSource = DB.GetAllPhysiotherapists();
             employeesDataGrid.ItemsSource= DB.GetAllEmployees();
-            todayAppointmentsDataGrid.ItemsSource = DB.GetTodayVisits();
+            List<Visit> todayVisits = DB.GetTodayVisits();
+
+            foreach (Visit v in todayVisits)
+            {
+                Patient patient = DB.GetPatientById(v.PatientID);
+                if (patient != null)
+                {
+                    v.PatientName = patient.FirstName + " " + patient.LastName;
+                }
+                User pt = DB.GetUserById(v.PhysiotherapistID);
+                if (pt != null)
+                {
+                    v.PhysioTherapistName = pt.FirstName + " " + pt.LastName;
+                }
+            }
+            todayAppointmentsDataGrid.ItemsSource = todayVisits;
+
         }
         private void view_Click(object sender, RoutedEventArgs e)
         {
 
         }
 
-        private void newAppointment(object sender, MouseButtonEventArgs e)
-        {
-            newAppointmentWindow window = new newAppointmentWindow();
-            window.Show();
-
-        }
 
         private void newEmployee(object sender, MouseButtonEventArgs e)
         {
@@ -56,6 +67,23 @@ namespace clinical.Pages
         private void viewPhysician(object sender, RoutedEventArgs e)
         {
             
+        }
+
+        private void startVisitClick(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void deleteVisitClick(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void viewVisitClick(object sender, RoutedEventArgs e)
+        {
+            Visit selectedVisit = (Visit)todayAppointmentsDataGrid.SelectedItem;
+            visit window = new visit(selectedVisit);
+            NavigationService.Navigate(window);
         }
     }
 }

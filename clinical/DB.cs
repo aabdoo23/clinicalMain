@@ -2570,8 +2570,6 @@ namespace clinical
                 return visitList;
             }
         }
-
-
         public static List<Visit> GetAllVisitsByPhysicianID(int physicianID)
         {
             List<Visit> visitsForPhysician = new List<Visit>();
@@ -2618,7 +2616,6 @@ namespace clinical
 
             return visitsForPhysician;
         }
-
         public static List<Visit> GetTodayVisits()
         {
             List<Visit> todayVisits = new List<Visit>();
@@ -2661,7 +2658,6 @@ namespace clinical
 
             return todayVisits;
         }
-
         public static List<Visit> GetTodayPhysicianVisits(int physicianID)
         {
             List<Visit> todayPhysicianVisits = new List<Visit>();
@@ -2708,7 +2704,6 @@ namespace clinical
 
             return todayPhysicianVisits;
         }
-
         public static List<Visit> GetPhysicianVisitsOnDate(int physicianID, DateTime date)
         {
             List<Visit> physicianVisitsOnDate = new List<Visit>();

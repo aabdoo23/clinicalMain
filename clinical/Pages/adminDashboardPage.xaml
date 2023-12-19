@@ -12,8 +12,8 @@
     </Page.Resources>
     <Grid Margin="10">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="55*"/>
             <ColumnDefinition Width="45*"/>
+            <ColumnDefinition Width="55*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="50*"/>
@@ -100,21 +100,21 @@
 
                 <DataGrid Grid.Row="1" Margin="10" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="todayAppointmentsDataGrid" Style="{DynamicResource DataGridStyle1}">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" Binding="{Binding VisitID}"/>
+                        <DataGridTextColumn Header="#" IsReadOnly="True" Width="*" Binding="{Binding VisitID}"/>
                         <DataGridTextColumn Header="Patient Name" Binding="{Binding PatientName}" IsReadOnly="True" Width="*"/>
-                        <DataGridTextColumn Header="Date" Binding="{Binding Date}" IsReadOnly="True" Width="auto"/>
-                        <DataGridTextColumn Header="Physiotherapist" Binding="{Binding PhysioTherapistName}" IsReadOnly="True" Width="auto"/>
+                        <DataGridTextColumn Header="Type" Binding="{Binding Type}" IsReadOnly="True" Width="*"/>
+                        <DataGridTextColumn Header="Physiotherapist" Binding="{Binding PhysioTherapistName}" IsReadOnly="True" Width="*"/>
                         <DataGridTemplateColumn Header="Details" IsReadOnly="True" Width="auto">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
-                                        <Button Name="view" Style="{StaticResource gridEditButton}" Click="view_Click">
+                                        <Button Name="view" Margin="3 0" Style="{StaticResource gridEditButton}" Click="viewVisitClick">
                                             <Icon:PackIconMaterial Kind="EyeCircleOutline" Style="{StaticResource gridButtonIcon}"/>
                                         </Button>
-                                        <Button Name="start" Style="{StaticResource gridEditButton}" Foreground="Green" Click="view_Click">
+                                        <Button Name="start" Margin="3 0" Style="{StaticResource gridEditButton}" Foreground="Green" Click="startVisitClick">
                                             <Icon:PackIconMaterial Kind="PlayBox" Style="{StaticResource gridButtonIcon}"/>
                                         </Button>
-                                        <Button Name="delete"  Margin="5 0 0 0" Style="{StaticResource gridRemoveButton}">
+                                        <Button Name="delete" Margin="3 0" Style="{StaticResource gridRemoveButton}" Click="deleteVisitClick">
                                             <Icon:PackIconMaterial Kind="DeleteOutline" Style="{StaticResource gridButtonIcon}"/>
                                         </Button>
                                     </StackPanel>

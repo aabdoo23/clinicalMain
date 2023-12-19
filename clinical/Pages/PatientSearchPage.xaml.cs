@@ -6,6 +6,7 @@ using System.Data;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
 
 namespace clinical.Pages
 {
@@ -61,6 +62,14 @@ namespace clinical.Pages
                 detailsWindow.Show();
             }
         }
+
+        private void newAppointment(object sender, RoutedEventArgs e)
+        {
+            newAppointmentWindow window = new newAppointmentWindow();
+            window.Show();
+
+        }
+
 
         private void addNewPatient(object sender, RoutedEventArgs e)
         {
