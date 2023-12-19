@@ -166,12 +166,6 @@
                                 Margin="0 0 10 0"
                                 HorizontalAlignment="Right">
 
-                        <uc:ImageLogo Image="/images/afsha.png" Margin="0 0 -15 0"/>
-                        <uc:ImageLogo Image="/images/afsha.png" Margin="0 0 -15 0"/>
-                        <uc:ImageLogo Image="/images/afsha.png"/>
-
-                        <TextBlock Text="and 3 others" VerticalAlignment="Center" Margin="7 0 7 0" Foreground="#8B8A8F" FontSize="11"/>
-
                         <Button Style="{StaticResource textBoxButton}">
                             <icon:PackIconMaterial Kind="DotsVertical"
                                                    Width="14" Height="14"
@@ -182,8 +176,9 @@
                 </Grid>
 
                 <!--Chats-->
-                <StackPanel Grid.Row="1"
-                            Margin="20 10 20 20" Name="texts">
+                <ScrollViewer Grid.Row="1"
+                            Margin="20 10 20 20" VerticalScrollBarVisibility="Auto">
+                <StackPanel Name="texts">
                     <!--Messages-->
                     <uc:chatSeperator Title="Yesterday" />
 
@@ -214,7 +209,7 @@
                     <TextBlock Text="3:26 PM"
                                Style="{StaticResource timeTextRight}" />
                 </StackPanel>
-
+                </ScrollViewer>
                 <!--Message Bottom Section-->
                 <Grid Grid.Row="2"
                       Margin="10 0 10 0">
@@ -233,7 +228,7 @@
                                    Text="Type yout message ..."
                                    Visibility="{Binding ElementName=textBoxMessage, Path=Text, Converter={StaticResource BoolToVisConverter}}" />
                         <TextBox Name="textBoxMessage"
-                                 Style="{StaticResource messageTextbox}" />
+                                 Style="{StaticResource messageTextbox}" KeyDown="enter" />
 
                         <!--Buttons-->
                         <StackPanel Orientation="Horizontal"
@@ -266,11 +261,13 @@
                     <!--Send Button-->
                     <Button Grid.Column="1"
                             Margin="5 0 0 0"
-                            Style="{StaticResource textBoxButton}">
+                            Style="{StaticResource textBoxButton}"
+                            Click="sendMessage">
                         <icon:PackIconMaterial Kind="Send"
                                                Margin="3 0 0 2"
                                                Width="16"
-                                               Foreground="{StaticResource darkerColor}">
+                                               Foreground="{StaticResource darkerColor}"
+                                               >
                             <icon:PackIconMaterial.LayoutTransform>
                                 <RotateTransform Angle="-45" />
                             </icon:PackIconMaterial.LayoutTransform>

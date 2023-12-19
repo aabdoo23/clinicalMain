@@ -86,6 +86,14 @@ namespace clinical
             return Convert.ToInt32(s);
         }
 
-       
+        public static int generateNewChatMessageID(int senderID)
+        {
+
+            string s = senderID.ToString().Substring(0, 1) + DateTime.Now.Second.ToString()+ DateTime.Now.Millisecond.ToString();
+            return Convert.ToInt32(s);
+        }
+
+
+
     }
 }

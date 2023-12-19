@@ -1211,45 +1211,45 @@ namespace clinical
             }
         }
 
-        public static List<ChatMessage> GetAllChatMessages()
-        {
-            List<ChatMessage> chatMessages = new List<ChatMessage>();
+        //public static List<ChatMessage> GetAllChatMessages()
+        //{
+        //    List<ChatMessage> chatMessages = new List<ChatMessage>();
 
-            using (connection)
-            {
-                try
-                {
-                    if (connection.State == ConnectionState.Closed) connection.Open();
+        //    using (connection)
+        //    {
+        //        try
+        //        {
+        //            if (connection.State == ConnectionState.Closed) connection.Open();
 
-                    string query = "SELECT * FROM ChatMessage";
+        //            string query = "SELECT * FROM ChatMessage";
 
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
-                    {
-                        using (MySqlDataReader reader = command.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                ChatMessage chatMessage = new ChatMessage(
-                                    Convert.ToInt32(reader["messageID"]),
-                                    Convert.ToInt32(reader["senderID"]),
-                                    Convert.ToInt32(reader["chatRoomID"]),
-                                    reader["messageContent"].ToString(),
-                                    Convert.ToDateTime(reader["timeStamp"])
-                                );
+        //            using (MySqlCommand command = new MySqlCommand(query, connection))
+        //            {
+        //                using (MySqlDataReader reader = command.ExecuteReader())
+        //                {
+        //                    while (reader.Read())
+        //                    {
+        //                        ChatMessage chatMessage = new ChatMessage(
+        //                            Convert.ToInt32(reader["messageID"]),
+        //                            Convert.ToInt32(reader["senderID"]),
+        //                            Convert.ToInt32(reader["chatRoomID"]),
+        //                            reader["messageContent"].ToString(),
+        //                            Convert.ToDateTime(reader["timeStamp"])
+        //                        );
 
-                                chatMessages.Add(chatMessage);
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error: {ex.Message}");
-                }
+        //                        chatMessages.Add(chatMessage);
+        //                    }
+        //                }
+        //            }
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            MessageBox.Show($"Error: {ex.Message}");
+        //        }
 
-                return chatMessages;
-            }
-        }
+        //        return chatMessages;
+        //    }
+        //}
 
         public static List<ChatMessage> GetAllChatMessagesByRoomID(int chatRoomID)
         {
@@ -1261,7 +1261,7 @@ namespace clinical
                 {
                     if (connection.State == ConnectionState.Closed) connection.Open();
 
-                    string query = "SELECT * FROM ChatMessage WHERE chatRoomID = @chatRoomID";
+                    string query = "SELECT * FROM ChatMessage WHERE chatRoomID = @chatRoomID ORDER BY timeStamp ASC;";
 
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
