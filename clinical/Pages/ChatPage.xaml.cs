@@ -14,14 +14,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace clinical.Pages
 {
     /// <summary>
     /// Interaction logic for ChatPage.xaml
     /// </summary>
+    
     public partial class ChatPage : Page
     {
+        DispatcherTimer timer = new DispatcherTimer();
         User loggedIn = null;
         ChatRoom selectedChatRoom=null;
         public ChatPage(User user)
@@ -45,7 +48,17 @@ namespace clinical.Pages
             selectedChatRoom = chatRooms[0];
             Refresh();
             textBoxMessage.Focus();
+
+            timer = new DispatcherTimer();
+            timer.Interval = TimeSpan.FromSeconds(1);
+            timer.Tick += Timer_Tick;
         }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            inRefresh();
+        }
+
         void Refresh()
         {
             roomName.Text = selectedChatRoom.ChatRoomName;
@@ -82,10 +95,54 @@ namespace clinical.Pages
 
             }
         }
+
+        void inRefresh()
+        {
+            foreach (ChatMessage ch in DB.GetAllUnreadMessagesByRoomID(selectedChatRoom.ChatRoomID))
+            {
+                //if my message -> 
+                if (ch.SenderID == loggedIn.UserID)
+                {
+                    MyMessageChat ms = new MyMessageChat();
+                    ms.Message = ch.MessageContent;
+                    TextBlock myTime = new TextBlock();
+                    myTime.Text = ch.TimeStamp.Hour.ToString() + ":" + ch.TimeStamp.Minute.ToString();
+                    myTime.Style = FindResource("timeTextRight") as Style;
+
+                    texts.Children.Add(ms);
+                    texts.Children.Add(myTime);
+
+                }
+                else
+                {
+                    MessageChat ms = new MessageChat();
+                    ms.Message = ch.MessageContent;
+                    ms.Color = (Brush)FindResource("darkerColor");
+                    TextBlock myTime = new TextBlock();
+                    myTime.Text = ch.TimeStamp.Hour.ToString() + ":" + ch.TimeStamp.Minute.ToString();
+                    myTime.Style = FindResource("timeText") as Style;
+
+                    texts.Children.Add(ms);
+                    texts.Children.Add(myTime);
+                }
+
+
+
+            }
+            scrollViewer.ScrollToVerticalOffset(scrollViewer.ScrollableHeight);
+
+            DB.UpdateLastVisitChatRoom(selectedChatRoom.ChatRoomID);
+
+        }
         private void chatRoom_MouseDown(object sender, MouseButtonEventArgs e,ChatRoom chatRoom)
         {
+            timer.Stop();
+            if (selectedChatRoom!=null) DB.UpdateLastVisitChatRoom(selectedChatRoom.ChatRoomID);
+            
             selectedChatRoom = chatRoom;
             Refresh();
+
+            timer.Start();
         }
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -121,7 +178,6 @@ namespace clinical.Pages
             DB.InsertChatMessage(message);
             DB.InsertChatMessage(message2);
             textBoxMessage.Text = "";
-            Refresh();
         }
 
         private void enter(object sender, KeyEventArgs e)

@@ -951,8 +951,8 @@ namespace clinical
                     if (GetChatRoomByID(chatRoom.ChatRoomID) != null) { return; }
                     if (connection.State == ConnectionState.Closed) connection.Open();
 
-                    string query = "INSERT INTO ChatRoom (chatRoomID, firstUserID, secondUserID, chatRoomName) " +
-                                   "VALUES (@chatRoomID, @firstUserID, @secondUserID, @chatRoomName)";
+                    string query = "INSERT INTO ChatRoom (chatRoomID, firstUserID, secondUserID, chatRoomName,LastVisit) " +
+                                   "VALUES (@chatRoomID, @firstUserID, @secondUserID, @chatRoomName,@lastvisit)";
 
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
@@ -960,6 +960,7 @@ namespace clinical
                         command.Parameters.AddWithValue("@firstUserID", chatRoom.FirstUserID);
                         command.Parameters.AddWithValue("@secondUserID", chatRoom.SecondUserID);
                         command.Parameters.AddWithValue("@chatRoomName", chatRoom.ChatRoomName);
+                        command.Parameters.AddWithValue("@lastvisit", chatRoom.LastVisit);
 
                         command.ExecuteNonQuery();
                     }
@@ -997,6 +998,34 @@ namespace clinical
             }
         }
 
+        public static void UpdateLastVisitChatRoom(int chatRoomID)
+        {
+            using (connection)
+            {
+                try
+                {
+                    if (connection.State == ConnectionState.Closed) connection.Open();
+
+                    string query = "UPDATE chatRoom SET LastVisit = @LastVisit WHERE chatRoomID = @chatRoomID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@chatRoomID", chatRoomID);
+                        command.Parameters.AddWithValue("@LastVisit", DateTime.Now);
+
+                        command.ExecuteNonQuery();
+
+                        //MessageBox.Show("ChatRoom deleted successfully.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+        }
+
+
         public static ChatRoom GetChatRoomByID(int chatRoomID)
         {
             using (connection)
@@ -1019,7 +1048,9 @@ namespace clinical
                                     Convert.ToInt32(reader["chatRoomID"]),
                                     Convert.ToInt32(reader["firstUserID"]),
                                     Convert.ToInt32(reader["secondUserID"]),
-                                    reader["chatRoomName"].ToString()
+                                    reader["chatRoomName"].ToString(),
+                                    Convert.ToDateTime(reader["LastVisit"])
+
                                 );
                             }
                         }
@@ -1056,7 +1087,9 @@ namespace clinical
                                     Convert.ToInt32(reader["chatRoomID"]),
                                     Convert.ToInt32(reader["firstUserID"]),
                                     Convert.ToInt32(reader["secondUserID"]),
-                                    reader["chatRoomName"].ToString()
+                                    reader["chatRoomName"].ToString(),
+                                    Convert.ToDateTime(reader["LastVisit"])
+
                                 );
 
                                 chatRooms.Add(chatRoom);
@@ -1097,7 +1130,9 @@ namespace clinical
                                     Convert.ToInt32(reader["chatRoomID"]),
                                     Convert.ToInt32(reader["firstUserID"]),
                                     Convert.ToInt32(reader["secondUserID"]),
-                                    reader["chatRoomName"].ToString()
+                                    reader["chatRoomName"].ToString(),
+                                    Convert.ToDateTime(reader["LastVisit"])
+
                                 );
 
                                 chatRooms.Add(chatRoom);
@@ -1292,6 +1327,50 @@ namespace clinical
                 return chatMessages;
             }
         }
+
+        public static List<ChatMessage> GetAllUnreadMessagesByRoomID(int chatRoomID)
+        {
+            List<ChatMessage> chatMessages = new List<ChatMessage>();
+
+            using (connection)
+            {
+                try
+                {
+                    if (connection.State == ConnectionState.Closed) connection.Open();
+
+                    //string query = "SELECT * FROM ChatMessage WHERE chatRoomID = @chatRoomID ORDER BY timeStamp ASC;";
+                    //string query = "SELECT cm.* FROM ChatMessage cm JOIN chatRoom cr ON cm.chatroomID = cr.chatroomID WHERE cm.timeStamp > cr.lastVisit AND cr.chatroomID = @chatRoomID ORDER BY timeStamp ASC;";
+                    string query = "SELECT cm.* FROM ChatMessage cm JOIN chatRoom cr ON cm.chatroomID = cr.chatroomID WHERE cm.timeStamp >= NOW() - INTERVAL 0.7 SECOND AND cr.chatroomID = @chatRoomID ORDER BY timeStamp ASC;";
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@chatRoomID", chatRoomID);
+
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                ChatMessage chatMessage = new ChatMessage(
+                                    Convert.ToInt32(reader["messageID"]),
+                                    Convert.ToInt32(reader["senderID"]),
+                                    Convert.ToInt32(reader["chatRoomID"]),
+                                    reader["messageContent"].ToString(),
+                                    Convert.ToDateTime(reader["timeStamp"])
+                                );
+
+                                chatMessages.Add(chatMessage);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+
+                return chatMessages;
+            }
+        }
+
 
         /// chatGroup
         ////////////////////////////////////////////////////////////////////

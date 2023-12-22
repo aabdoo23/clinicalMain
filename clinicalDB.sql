@@ -16,18 +16,20 @@ CREATE TABLE User (
 );
 CREATE TABLE Room (
     roomID INT NOT NULL,
-    roomNumber INT NOT NULL,
-    equipmentIDs TEXT,
+    roomNumber VARCHAR(50) NOT NULL,
     PRIMARY KEY (roomID)
 );
 
 CREATE TABLE AttendanceRecord (
-	recordID varchar(30) NOT NULL PRIMARY KEY,
+	recordID int NOT NULL PRIMARY KEY,
 	timeStamp DATE,
 	userID int,
 	present BOOLEAN,
     FOREIGN KEY (userID) REFERENCES User(userID)
 );
+
+
+
 CREATE TABLE ChatGroup (
     chatGroupID INT NOT NULL ,
     usersIDs TEXT NOT NULL,
@@ -47,9 +49,11 @@ CREATE TABLE Equipment (
     equipmentID INT NOT NULL,
     equipmentName VARCHAR(100) NOT NULL,
     equipmentFunction TEXT,
+    roomID int,
     latestMaintenanceDate DATE,
     toCheck BOOLEAN,
-    PRIMARY KEY (equipmentID)
+    PRIMARY KEY (equipmentID),
+    FOREIGN KEY (roomID) REFERENCES Room(roomID)
 );
 
 CREATE TABLE ChatRoom (
@@ -57,9 +61,11 @@ CREATE TABLE ChatRoom (
     firstUserID int NOT NULL,
     secondUserID int NOT NULL,
     chatRoomName VARCHAR(100),
+    LastVisit datetime,
     PRIMARY KEY (chatRoomID),
     FOREIGN KEY (firstUserID) REFERENCES User(userID),
-    FOREIGN KEY (secondUserID) REFERENCES User(userID));
+    FOREIGN KEY (secondUserID) REFERENCES User(userID)
+    );
     
     CREATE TABLE ChatMessage (
     messageID INT NOT NULL,
@@ -70,7 +76,7 @@ CREATE TABLE ChatRoom (
     PRIMARY KEY (messageID),
     FOREIGN KEY (senderID) REFERENCES User(userID),
     FOREIGN KEY (chatRoomID) REFERENCES ChatRoom(chatRoomID)
-);
+	);
 
 CREATE TABLE Patient (
     patientID INT NOT NULL,
@@ -89,6 +95,8 @@ CREATE TABLE Patient (
     weight DECIMAL(5,2),
     dueAmount DECIMAL(10,2),
     physicianID int,
+    referringName TEXT,
+    referringPN TEXT,
 	FOREIGN KEY (physicianID) REFERENCES User(userID),
 
     PRIMARY KEY (patientID)
@@ -124,7 +132,6 @@ CREATE TABLE Injury (
     injuryName TEXT NOT NULL,
     injuryLocation TEXT NOT NULL,
     severity INT,
-    treatmentPlanID INT,
     PRIMARY KEY (injuryID)
 );
 
@@ -164,8 +171,6 @@ CREATE TABLE Visit (
     FOREIGN KEY (packageID) REFERENCES TreatmentPlan(planID),
     FOREIGN KEY (roomID) REFERENCES Room(roomID)
 );
-
-
 
 CREATE TABLE Prescription (
     prescriptionID INT NOT NULL,
@@ -207,45 +212,16 @@ CREATE TABLE IssueExercise (
 
 
 
-CREATE TABLE IssuedDrugRelation (
-    issueDrugRelationID INT NOT NULL,
-    prescriptionID INT NOT NULL,
-    drugID INT NOT NULL,
-    PRIMARY KEY (issueDrugRelationID),
-    FOREIGN KEY (prescriptionID) REFERENCES Prescription(prescriptionID),
-    FOREIGN KEY (drugID) REFERENCES Drug(drugID)
-);
-
-CREATE TABLE IssuedExerciseRelation (
-    prescriptionID INT NOT NULL,
-    IssuedExerciseRelationID INT NOT NULL,
-    exerciseID INT NOT NULL,
-    PRIMARY KEY (IssuedExerciseRelationID),
-    FOREIGN KEY (prescriptionID) REFERENCES Prescription(prescriptionID),
-    FOREIGN KEY (exerciseID) REFERENCES Exercise(exerciseID)
-);
 
 CREATE TABLE MedicalRecord (
     recordID INT NOT NULL,
     type TEXT,
     timeStamp DATETIME,
     report TEXT,
-    images INT, 					#	##########BYSHOF 
-    visitID INT,
+    images text, 				
     patientID INT,
     physicianNotes TEXT,
     PRIMARY KEY (recordID),
-    FOREIGN KEY (visitID) REFERENCES Visit(visitID),
     FOREIGN KEY (patientID) REFERENCES Patient(patientID)
 );
 
-
-CREATE TABLE BillingRecord (
-    billingID INT NOT NULL,
-    billingAmount DECIMAL(10,2) NOT NULL,
-    treatmentPlanID INT,
-    patientID INT NOT NULL,
-    PRIMARY KEY (billingID),
-    FOREIGN KEY (treatmentPlanID) REFERENCES TreatmentPlan(planID),
-    FOREIGN KEY (patientID) REFERENCES Patient(patientID)
-);
