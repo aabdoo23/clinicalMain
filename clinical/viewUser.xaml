@@ -10,7 +10,8 @@ mc:Ignorable="av"
   Name="window"
   Height="700" Width="1060"
   AllowsTransparency="True" WindowStyle="None" WindowStartupLocation="CenterScreen" Background="Transparent">
-    <Grid Background="{StaticResource darkerColor}">
+    <Border CornerRadius="10" Background="{StaticResource darkerColor}">
+    <Grid >
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
             <RowDefinition Height="1*"/>
@@ -26,5 +27,5 @@ mc:Ignorable="av"
         </Border>
 
     </Grid>
-
+    </Border>
 </Window>

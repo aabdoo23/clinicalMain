@@ -25,7 +25,7 @@
             <Border CornerRadius="0 0 10 10" Background="{StaticResource darkerColor}" Grid.Row="1">
                 <Grid>
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="140"/>
+                        <RowDefinition Height="180"/>
                         <RowDefinition/>
                         <RowDefinition Height="65"/>
                     </Grid.RowDefinitions>
@@ -38,13 +38,26 @@
                             <TextBlock Text="Available times:" FontWeight="Bold" VerticalAlignment="Center" FontSize="16" Foreground="{StaticResource lightFontColor}" Margin="0 10 10 10"/>
                             <ComboBox Name="timePicker" VerticalAlignment="Center" Width="100" SelectionChanged="timeChanged"/>
                         </StackPanel>
-                        <StackPanel Orientation="Horizontal" Margin="10">
+                        
+                        <CheckBox Content="Select first available time" Foreground="{StaticResource lightFontColor}" Checked="first_avail" Unchecked="not_first_avail" VerticalAlignment="Center" FontSize="16" Margin="20 5 0 0" FontWeight="Bold"/>
+                        
+                        <Line Height="4" Margin="10 7 10 3" Stroke="{StaticResource lighterColor}" StrokeThickness="10" X1="1" X2="1020" Y1="1" Y2="1" />
+
+                        <StackPanel Orientation="Horizontal" Margin="10 3">
                             <TextBlock Text="Patient: " FontWeight="Bold" VerticalAlignment="Center" FontSize="20" Margin="10 0 0 0" Foreground="{StaticResource lightFontColor}"/>
                             <TextBlock Name="patientName" Text="Not selected"  VerticalAlignment="Center" FontSize="20" Foreground="{StaticResource lightFontColor}"/>
 
+                            <Line Width="3" Margin="10 3" Stroke="{StaticResource lighterColor}" StrokeThickness="10" X1="1" X2="1" Y1="1" Y2="35" />
+
+                            <TextBlock Text="Physician: " FontWeight="Bold" VerticalAlignment="Center" FontSize="20"  Foreground="{StaticResource lightFontColor}"/>
+                            <TextBlock Name="physicianName" Text="Not selected"  VerticalAlignment="Center" FontSize="20" Foreground="{StaticResource lightFontColor}"/>
+
                         </StackPanel>
 
-                        <CheckBox Content="Select first available time" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Center" FontSize="16" Margin="20 10 0 0" FontWeight="Bold"/>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Assign to different physician: " FontWeight="SemiBold" VerticalAlignment="Center" FontSize="20" Margin="20 0"  Foreground="{StaticResource lightFontColor}"/>
+                            <ComboBox Name="physicianPicker" VerticalAlignment="Center" Height="30" Width="200" SelectionChanged="physicianChanged"/>
+                        </StackPanel>
 
                     </StackPanel>
                     <StackPanel Grid.Row="1" >

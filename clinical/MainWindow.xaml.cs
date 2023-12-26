@@ -19,11 +19,8 @@ namespace clinical
             state = stat;
             InitializeComponent();
             homeBTN.Focus();
-            if(state==1)
-                mainFrame.Navigate(new adminDashboardPage(user));
-            else if(state==2)
-                mainFrame.Navigate(new PhysioTherapistDashboard(user));
-            else mainFrame.Navigate(new ReceptionistDashboard(user));
+            settingsBtn.Visibility=Visibility.Hidden;
+            which();
         }
 
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)
@@ -33,15 +30,22 @@ namespace clinical
                 this.DragMove();
             }
         }
-
-        private void homeBTN_Click(object sender, RoutedEventArgs e)
+        void which()
         {
-
             if (state == 1)
+            {
                 mainFrame.Navigate(new adminDashboardPage(loggedIn));
+                settingsBtn.Visibility = Visibility.Visible;
+            }
+            
             else if (state == 2)
                 mainFrame.Navigate(new PhysioTherapistDashboard(loggedIn));
             else mainFrame.Navigate(new ReceptionistDashboard(loggedIn));
+        }
+        private void homeBTN_Click(object sender, RoutedEventArgs e)
+        {
+
+            which();
 
         }
 
@@ -95,6 +99,12 @@ namespace clinical
         private void PackIconMaterial_MouseDown_1(object sender, MouseButtonEventArgs e)
         {
             Window.GetWindow(this).WindowState = WindowState.Minimized;
+
+        }
+
+        private void settingsBtn_Click(object sender, RoutedEventArgs e)
+        {
+            mainFrame.Navigate(new adminSettingsPage());
 
         }
     }

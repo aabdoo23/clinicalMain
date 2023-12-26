@@ -28,6 +28,7 @@ namespace clinical.BaseClasses
         public string referringName { get; set; }
         public string referringPN { get; set; }
         public int age { get; set; }
+        public int ActivePackageID {  get; set; }
 
         // Constructor
         public Patient(int patientID, string firstName, string lastname, 
@@ -37,7 +38,7 @@ namespace clinical.BaseClasses
             List<int> previousInjuriesIDs, 
             int physicianId,
             bool referred, bool previouslyTreated, double height, 
-            double weight, double dueAmount, string refN,string refPN)
+            double weight, double dueAmount, string refN,string refPN, int activePackageID)
         {
             PatientID = patientID;
             FirstName = firstName;
@@ -57,6 +58,7 @@ namespace clinical.BaseClasses
             DueAmount = dueAmount;
             referringName = refN;
             referringPN=refPN;
+            ActivePackageID = activePackageID;
             this.age = Age();
         }
 

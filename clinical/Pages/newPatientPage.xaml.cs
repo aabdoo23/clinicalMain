@@ -1,9 +1,6 @@
 ﻿using clinical.BaseClasses;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -44,6 +41,7 @@ namespace clinical.Pages
             assignedPhys.ItemsSource = DB.GetAllPhysiotherapists();
             allChronicsDataGrid.ItemsSource = DB.GetAllChronicDiseases();
             allInjuriesDataGrid.ItemsSource = DB.GetAllInjuries();
+            packagesCB.ItemsSource = DB.GetAllPackages();
             assignedPhys.SelectedIndex = 0;
             referredCB.Checked += CheckBox_Checked;
             referredCB.Unchecked += CheckBox_Unchecked;
@@ -54,7 +52,7 @@ namespace clinical.Pages
         void refresh()
         {
             selectedChronicsDataGrid.ItemsSource = selectedChronics;
-            selectedInjuriesDataGrid.ItemsSource=selectedInjuries;
+            selectedInjuriesDataGrid.ItemsSource = selectedInjuries;
         }
 
 
@@ -86,7 +84,7 @@ namespace clinical.Pages
             User phys = (User)(assignedPhys.SelectedItem);
             bool isRef = (bool)referredCB.IsChecked;
             bool prevSessions = (bool)prevSessionsCB.IsChecked;
-            string refName="",refPN="";
+            string refName = "", refPN = "";
             if (isRef)
             {
                 refName = referringTextBox.Text;
@@ -94,17 +92,20 @@ namespace clinical.Pages
 
             }
             int id = globals.generateNewPatientID();
-            List<int>chronicsIDs=new List<int>();   
-            foreach(ChronicDisease chronic in selectedChronics)
+            List<int> chronicsIDs = new List<int>();
+            foreach (ChronicDisease chronic in selectedChronics)
             {
                 chronicsIDs.Add(chronic.ChronicDiseaseID);
             }
-            List<int>injuriesIDs=new List<int>();   
-            foreach(Injury chronic in selectedInjuries)
+            List<int> injuriesIDs = new List<int>();
+            foreach (Injury chronic in selectedInjuries)
             {
                 injuriesIDs.Add(chronic.InjuryID);
             }
-            Patient newPatient = new Patient(
+
+            Package selectedPackage = (Package)packagesCB.SelectedItem;
+
+            Patient newPatient = new(
                 id,
                 fn,
                 ln,
@@ -122,7 +123,8 @@ namespace clinical.Pages
                 Convert.ToDouble(weightTextBox.Text),
                 0,
                 refName,
-                refPN);
+                refPN,
+                selectedPackage.PackageID);
             DB.InsertPatient(newPatient);
             MessageBox.Show("New patient added, ID: " + id.ToString());
             Window.GetWindow(this).Close();
@@ -130,9 +132,9 @@ namespace clinical.Pages
 
         }
 
-      
-        
-        
+
+
+
 
         private void addInjury(object sender, RoutedEventArgs e)
         {

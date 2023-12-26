@@ -24,8 +24,11 @@ namespace clinical
     {
         private ICollectionView dataView;
         Patient selectedPatient = null;
+        User selectedPhysician = null;
         DateTime selectedDateTime = DateTime.Now;
-        List<string> items = new List<string> { "06:00", "07:00", "08:00" };
+        DateTime lastSelectedDT = DateTime.Now;
+
+        List<string> times = new List<string> { "16:00", "17:00", "18:00" };
 
         public newAppointmentWindow()
         {
@@ -43,19 +46,22 @@ namespace clinical
 
             datePicker.SelectedDate=DateTime.Now;
 
-            timePicker.ItemsSource = items;
+            timePicker.ItemsSource = times;
             timePicker.SelectedIndex = 0;
+
+            physicianPicker.ItemsSource = DB.GetAllPhysiotherapists();
+
         }
 
         private void PackIconMaterial_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            Window.GetWindow(this).Close();
+            GetWindow(this).Close();
 
         }
 
         private void PackIconMaterial_MouseDown_1(object sender, MouseButtonEventArgs e)
         {
-            Window.GetWindow(this).WindowState = WindowState.Minimized;
+            GetWindow(this).WindowState = WindowState.Minimized;
 
         }
 
@@ -72,6 +78,9 @@ namespace clinical
         {
             selectedPatient = (Patient)allPatientsDataGrid.SelectedItem;
             patientName.Text = selectedPatient.FirstName + " " + selectedPatient.LastName;
+            physicianName.Text = selectedPatient.PhysicianName;
+            selectedPhysician= DB.GetUserById(selectedPatient.PhysicianID);
+
 
         }
 
@@ -110,7 +119,7 @@ namespace clinical
             if (result == MessageBoxResult.Yes)
             {
                 int id = globals.generateNewVisitID(selectedPatient.PatientID, selectedDateTime);
-                Visit visit = new Visit(id, selectedPatient.PhysicianID, selectedPatient.PatientID, 1, selectedDateTime, 1, "Follow up", "");
+                Visit visit = new Visit(id, selectedPhysician.UserID, selectedPatient.PatientID, 1, selectedDateTime, 1, "Follow up", "");
                 DB.InsertVisit(visit);
                 MessageBox.Show("Visit registered, visit id: "+id.ToString());
             }
@@ -119,6 +128,7 @@ namespace clinical
 
         private void dateChanged(object sender, SelectionChangedEventArgs e)
         {
+            lastSelectedDT = selectedDateTime;
             selectedDateTime = (DateTime)datePicker.SelectedDate;
         }
 
@@ -131,7 +141,31 @@ namespace clinical
             min += s[3];
             min += s[4];
 
+            lastSelectedDT = selectedDateTime;
             selectedDateTime = new DateTime(selectedDateTime.Year, selectedDateTime.Month, selectedDateTime.Day, int.Parse(hr), int.Parse(min), 0);
+
+        }
+        private void first_avail(object sender, RoutedEventArgs e)
+        {
+            datePicker.IsEnabled = false;
+            timePicker.IsEnabled = false;
+
+            
+
+
+        }
+
+        private void not_first_avail(object sender, RoutedEventArgs e)
+        {
+            selectedDateTime = lastSelectedDT;
+            datePicker.IsEnabled = true;
+            timePicker.IsEnabled = true;
+        }
+
+        private void physicianChanged(object sender, SelectionChangedEventArgs e)
+        {
+            selectedPhysician= (User)(physicianPicker.SelectedItem);
+            physicianName.Text="Dr. "+selectedPhysician.FirstName+" "+selectedPhysician.LastName;
         }
     }
 }

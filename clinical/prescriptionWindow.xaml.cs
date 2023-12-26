@@ -1,4 +1,5 @@
-﻿using System;
+﻿using clinical.BaseClasses;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,6 +21,10 @@ namespace clinical
     public partial class prescriptionWindow : Window
     {
         public prescriptionWindow()
+        {
+            InitializeComponent();
+        }
+        public prescriptionWindow(Prescription prescription)
         {
             InitializeComponent();
         }

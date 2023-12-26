@@ -146,8 +146,14 @@
                 </Grid>
             </Border>
 
+
+            <Border Grid.Column="3" Grid.Row="3" Style="{StaticResource theBorder}" Grid.ColumnSpan="3" Margin="10 0" CornerRadius="5"/>
+            <TextBlock TextWrapping="Wrap" Grid.Row="3" Grid.Column="3" Text="Package:" Grid.ColumnSpan="1" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="18,0,0,0" Foreground="{StaticResource lightFontColor}" FontSize="15" FontWeight="Bold"/>
+
+            <ComboBox Name="packagesCB" Grid.Row="3" Grid.Column="4" Margin="10,10,20,10" Grid.ColumnSpan="2" FontSize="12" HorizontalContentAlignment="Left"></ComboBox>
+
             <!--prev injuries-->
-            <Border Style="{StaticResource theBorder}"  BorderBrush="{StaticResource darkerColor}" BorderThickness="2" CornerRadius="5" Margin="10" Grid.Row="3" Grid.ColumnSpan="3" Grid.RowSpan="9" Grid.Column="3">
+            <Border Style="{StaticResource theBorder}"  BorderBrush="{StaticResource darkerColor}" BorderThickness="2" CornerRadius="5" Margin="10" Grid.Row="4" Grid.ColumnSpan="3" Grid.RowSpan="8" Grid.Column="3">
                 <Grid Margin="5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="3*"/>
@@ -159,14 +165,14 @@
                         <RowDefinition Height="1*"/>
                         <RowDefinition Height="1*"/>
                         <RowDefinition Height="1*"/>
-                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="30"/>
                         <RowDefinition Height="1*"/>
                         <RowDefinition Height="1*"/>
                         <RowDefinition Height="1*"/>
                         <RowDefinition Height="1*"/>
                     </Grid.RowDefinitions>
                     <Label Content="Previous Injuries" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="15" FontWeight="Bold" Margin="0,-2,0,0"/>
-                    <Label Content="Selected Injuries" Grid.Row="6" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="15" FontWeight="Bold" Margin="0,8,0,0"/>
+                    <Label Content="Selected Injuries" Grid.Row="6" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="15" FontWeight="Bold"/>
                     <TextBox Name="searchInjuriesTXTBOX" Foreground="{StaticResource darkerColor}" TextAlignment="Center" Grid.Column="0" Grid.Row="1" Margin="5" Background="{StaticResource lightFontColor}" />
                     
                     <Border Style="{StaticResource theBorder}"  BorderBrush="{StaticResource lighterColor}" BorderThickness="2" CornerRadius="5" Margin="3" Grid.Row="2" Grid.ColumnSpan="3" Grid.RowSpan="4" Grid.Column="0">
@@ -217,7 +223,9 @@
             <Border Grid.Column="3" Grid.Row="12" Style="{StaticResource theBorder}" Grid.ColumnSpan="3" Margin="10 0" CornerRadius="5"/>
             <TextBlock TextWrapping="Wrap" Grid.Row="12" Grid.Column="3" Text="Assign to:" Grid.ColumnSpan="1" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="18,0,0,0" Foreground="{StaticResource lightFontColor}" FontSize="15" FontWeight="Bold"/>
 
-            <ComboBox Name="assignedPhys" Grid.Row="12" Grid.Column="4" Margin="10,15,20,15" Grid.ColumnSpan="2" FontSize="12" HorizontalContentAlignment="Left"></ComboBox>
+            <ComboBox Name="assignedPhys" Grid.Row="12" Grid.Column="4" Margin="10,10,20,10" Grid.ColumnSpan="2" FontSize="12" HorizontalContentAlignment="Left"></ComboBox>
+            
+            
             <Viewbox Grid.Row="13" Grid.Column="3" Grid.ColumnSpan="2" Margin="10 0 0 0" HorizontalAlignment="Left">
 
                 <CheckBox Name="prevSessionsCB" Content="Previous PhysioTherapy sessions" VerticalAlignment="Center" Foreground="{StaticResource darkerColor}" FontWeight="Bold" FontSize="14"/>

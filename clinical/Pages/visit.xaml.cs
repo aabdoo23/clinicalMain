@@ -22,10 +22,21 @@ namespace clinical.Pages
     public partial class visit : Page
     {
         Visit currVisit;
+        Patient patient;
         public visit(Visit selectedVisit )
         {
             InitializeComponent();
             currVisit=selectedVisit;
+            patient = DB.GetPatientById(selectedVisit.PatientID);
+
+            patientNameMainTxt.Text = patient.FirstName+" "+patient.LastName;
+            patientNameText.Text = patient.FirstName + " " + patient.LastName;
+            visitIdText.Text = currVisit.VisitID.ToString();
+            visitDate.Text=currVisit.TimeStamp.DayOfWeek.ToString();
+            physicianName.Text=patient.PhysicianName;
+
+            noteTXT.Text=currVisit.TherapistNotes;
+            prescriptionsDataGrid.ItemsSource = DB.GetAllPrescriptionsByVisitID(currVisit.VisitID);
         }
 
         private void view_Click(object sender, RoutedEventArgs e)
@@ -50,7 +61,13 @@ namespace clinical.Pages
 
         private void newPrescription(object sender, MouseButtonEventArgs e)
         {
+            prescriptionWindow window=new prescriptionWindow();
+            window.Show();
+        }
 
+        private void notes_enable(object sender, MouseButtonEventArgs e)
+        {
+            noteTXT.IsEnabled = !noteTXT.IsEnabled;
         }
     }
 }

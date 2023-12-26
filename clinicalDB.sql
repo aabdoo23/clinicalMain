@@ -14,6 +14,16 @@ CREATE TABLE User (
     email varchar(100),
     nationalID varchar(30)    
 );
+
+CREATE TABLE Package (
+    PackageID INT PRIMARY KEY,
+    PackageName VARCHAR(255) NOT NULL,
+    NumberOfSessions INT NOT NULL,
+    Price DOUBLE NOT NULL,
+    Description TEXT
+);
+
+
 CREATE TABLE Room (
     roomID INT NOT NULL,
     roomNumber VARCHAR(50) NOT NULL,
@@ -97,6 +107,9 @@ CREATE TABLE Patient (
     physicianID int,
     referringName TEXT,
     referringPN TEXT,
+    activePackageID int,
+    
+	FOREIGN KEY (activePackageID) REFERENCES Package(PackageID),
 	FOREIGN KEY (physicianID) REFERENCES User(userID),
 
     PRIMARY KEY (patientID)
@@ -132,6 +145,7 @@ CREATE TABLE Injury (
     injuryName TEXT NOT NULL,
     injuryLocation TEXT NOT NULL,
     severity INT,
+    description text,
     PRIMARY KEY (injuryID)
 );
 

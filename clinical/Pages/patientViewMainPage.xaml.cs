@@ -28,7 +28,8 @@ namespace clinical.Pages
 
 
 
-            previousVisitsDataGrid.ItemsSource = DB.GetPatientVisits(patient.PatientID);
+            previousVisitsDataGrid.ItemsSource = DB.GetPatientPrevVisits(patient.PatientID);
+            currVisitsDataGrid.ItemsSource = DB.GetPatientTodayVisits(patient.PatientID);
 
             medicalRecordsDataGrid.ItemsSource = DB.GetAllPatientRecords(patient.PatientID);
         }
@@ -41,6 +42,8 @@ namespace clinical.Pages
 
         private void viewVisitClick(object sender, RoutedEventArgs e)
         {
+            Visit vis = (Visit)previousVisitsDataGrid.SelectedItem;
+            NavigationService.Navigate(new visit(vis));
 
         }
 

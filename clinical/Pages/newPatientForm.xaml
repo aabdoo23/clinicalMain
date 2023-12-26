@@ -8,7 +8,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       mc:Ignorable="av" Height="421" Width="600" 
         Name="window"
-        MinHeight="400" MinWidth="600"
+        MinHeight="200" MinWidth="300"
         AllowsTransparency="True" WindowStyle="None" WindowStartupLocation="CenterScreen" Background="Transparent">
 
 
