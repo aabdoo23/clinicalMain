@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:clinical.Pages" xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks" xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
       mc:Ignorable="d" 
-      d:DesignHeight="768" d:DesignWidth="1360"
+      d:DesignHeight="708" d:DesignWidth="1160"
       Title="patientViewMainPage">
     <Border CornerRadius="0 0 10 10 " Grid.Row="1" Background="{StaticResource lightFontColor}">
 
@@ -46,7 +46,7 @@
                                 <ColumnDefinition Width="90*"/>
                                 <ColumnDefinition Width="15*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="Personal Information" FontSize="22" FontWeight="Bold" Foreground="{StaticResource lightFontColor}"  Grid.Column="0"/>
+                            <TextBlock Text="Personal Information" FontSize="18" FontWeight="Bold" Foreground="{StaticResource lightFontColor}"  Grid.Column="0"/>
                             <Icon:PackIconMaterial Kind="AccountEdit" Foreground="{StaticResource lightFontColor}" Grid.Column="1" HorizontalAlignment="Center" Width="25" Height="26" Margin="0,4,0,0" MouseDown="editPersonalInfo"/>
                         </Grid>
                         <Border Background="{StaticResource lightFontColor}" CornerRadius="5" Grid.Row="1">
@@ -62,18 +62,18 @@
                                     <ColumnDefinition Width="100"/>
                                     <ColumnDefinition Width="1*"/>
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Text="ID:" Foreground="{StaticResource darkerColor}" FontSize="20" Grid.Row="0" Margin="5" FontWeight="Bold"/>
-                                <TextBlock Name="patientIDTxt" Text="123ID" Grid.Column="1" Foreground="{StaticResource darkerColor}" FontSize="20" Grid.Row="0" Margin="2" TextWrapping="Wrap"/>
-                                <TextBlock Text="Age:" Foreground="{StaticResource darkerColor}" FontSize="20" Grid.Row="3" Margin="5" FontWeight="Bold"/>
-                                <TextBlock Name="ageTxt" Text="25" Foreground="{StaticResource darkerColor}" FontSize="25" Grid.Row="3" Grid.Column="1" Margin="2" TextWrapping="Wrap"/>
-                                <TextBlock Text="Name:" Foreground="{StaticResource darkerColor}" TextWrapping="Wrap" FontSize="20" Grid.Row="1" Margin="5" FontWeight="Bold"/>
-                                <TextBlock Name="patientNameTxt" Grid.Column="1" Text="Ali M'l" Foreground="{StaticResource darkerColor}" FontSize="24" Grid.Row="1" Margin="2" TextWrapping="Wrap"/>
+                                <TextBlock Text="ID:" Foreground="{StaticResource darkerColor}" FontSize="18" Grid.Row="0" Margin="5" FontWeight="Bold"/>
+                                <TextBlock Name="patientIDTxt" Text="123ID" Grid.Column="1" Foreground="{StaticResource darkerColor}" FontSize="18" Grid.Row="0" Margin="2" TextWrapping="Wrap"/>
+                                <TextBlock Text="Age:" Foreground="{StaticResource darkerColor}" FontSize="18" Grid.Row="3" Margin="5" FontWeight="Bold"/>
+                                <TextBlock Name="ageTxt" Text="25" Foreground="{StaticResource darkerColor}" FontSize="22" Grid.Row="3" Grid.Column="1" Margin="2" TextWrapping="Wrap"/>
+                                <TextBlock Text="Name:" Foreground="{StaticResource darkerColor}" TextWrapping="Wrap" FontSize="18" Grid.Row="1" Margin="5" FontWeight="Bold"/>
+                                <TextBlock Name="patientNameTxt" Grid.Column="1" Text="Ali M'l" Foreground="{StaticResource darkerColor}" FontSize="22" Grid.Row="1" Margin="2" TextWrapping="Wrap"/>
 
-                                <TextBlock Text="Contact info:" Foreground="{StaticResource darkerColor}" TextWrapping="Wrap" FontSize="17" Grid.Row="2" Margin="1" FontWeight="Bold"/>
-                                <TextBlock Name="contactInfoTxt" Grid.Column="1" Text="+201007123123" Foreground="{StaticResource darkerColor}" FontSize="20" Grid.Row="2" Margin="2" TextWrapping="Wrap"/>
+                                <TextBlock Text="Contact info:" TextAlignment="Center"  VerticalAlignment="Center" Foreground="{StaticResource darkerColor}" TextWrapping="Wrap" FontSize="16" Grid.Row="2" Margin="1" FontWeight="Bold"/>
+                                <TextBlock Name="contactInfoTxt" Grid.Column="1" Text="+181007123123" Foreground="{StaticResource darkerColor}" FontSize="18" Grid.Row="2" Margin="2" TextWrapping="Wrap"/>
 
                                 <TextBlock Text="Referring:" Foreground="{StaticResource darkerColor}" TextWrapping="WrapWithOverflow" FontSize="19" Grid.Row="4" Margin="5" FontWeight="Bold"/>
-                                <TextBlock Name="referringTxt" Grid.Column="1" Text="Dr. Ibrahim" Foreground="{StaticResource darkerColor}" FontSize="20" Grid.Row="4" Margin="5" TextWrapping="Wrap"/>
+                                <TextBlock Name="referringTxt" Grid.Column="1" Text="Dr. Ibrahim" Foreground="{StaticResource darkerColor}" FontSize="18" Grid.Row="4" Margin="5" TextWrapping="Wrap"/>
 
                             </Grid>
                         </Border>
@@ -97,11 +97,11 @@
                         </Grid>
                         <Border Background="{StaticResource lightFontColor}" CornerRadius="5" Grid.Row="1">
                             <WrapPanel Margin="5">
-                                <Border Background="Chocolate" MinWidth="100" MinHeight="50" CornerRadius="5" Margin="10 10 0 0">
+                                <Border Background="Chocolate" MinWidth="80" MinHeight="50" CornerRadius="5" Margin="10 10 0 0">
                                     <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="Diabetes" Style="{StaticResource titleText}"/>
 
                                 </Border>
-                                <Border Background="FloralWhite"  MinWidth="120" MinHeight="50" CornerRadius="5" Margin="10 10 0 0">
+                                <Border Background="FloralWhite"  MinWidth="118" MinHeight="50" CornerRadius="5" Margin="10 10 0 0">
                                     <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="notDiabetes" Style="{StaticResource titleText}"/>
 
                                 </Border>
@@ -132,11 +132,11 @@
 
                         <Border Background="{StaticResource lightFontColor}" CornerRadius="5" Grid.Row="1">
                             <WrapPanel Margin="5">
-                                <Border Background="LightPink"  MinWidth="100" MinHeight="50" CornerRadius="5" Margin="10 10 0 0">
+                                <Border Background="LightPink"  MinWidth="80" MinHeight="50" CornerRadius="5" Margin="10 10 0 0">
                                     <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="Ankle" Style="{StaticResource titleText}"/>
 
                                 </Border>
-                                <Border Background="FloralWhite"  MinWidth="120" MinHeight="50" CornerRadius="5" Margin="10 10 0 0">
+                                <Border Background="FloralWhite"  MinWidth="118" MinHeight="50" CornerRadius="5" Margin="10 10 0 0">
                                     <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="ACL" Style="{StaticResource titleText}"/>
 
                                 </Border>
@@ -152,7 +152,7 @@
             </Grid>
 
             <!--Main Section-->
-            <Grid Grid.Column="1" Margin="5,20,0,0" Name="mainGrid">
+            <Grid Grid.Column="1" Margin="5,18,0,0" Name="mainGrid">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="45*"/>
@@ -199,7 +199,7 @@
                             <RowDefinition Height="50"/>
                             <RowDefinition Height="90*"/>
                         </Grid.RowDefinitions>
-                        <TextBlock Text="Previous visits" FontSize="20" Foreground="{StaticResource lightFontColor}" FontWeight="Bold" Margin="16,10,24,10" Grid.Row="0" Grid.Column="0"/>
+                        <TextBlock Text="Previous visits" FontSize="18" Foreground="{StaticResource lightFontColor}" FontWeight="Bold" Margin="16,10,24,10" Grid.Row="0" Grid.Column="0"/>
 
                         <Border Grid.Column="1" Background="{StaticResource lighterColor}" Grid.Row="1" CornerRadius="10" Margin="10 0 10 10">
                             <ScrollViewer VerticalScrollBarVisibility="Hidden">
@@ -240,7 +240,7 @@
                             <RowDefinition Height="45"/>
                             <RowDefinition Height="90*"/>
                         </Grid.RowDefinitions>
-                        <TextBlock Text="Active visit" FontSize="20" Foreground="{StaticResource lightFontColor}" FontWeight="Bold" Margin="14,10,26,10" Grid.Row="0" Grid.Column="0"/>
+                        <TextBlock Text="Active visit" FontSize="18" Foreground="{StaticResource lightFontColor}" FontWeight="Bold" Margin="14,10,26,10" Grid.Row="0" Grid.Column="0"/>
 
                         <Border Grid.Column="1" Background="{StaticResource lighterColor}" Grid.Row="1" CornerRadius="10" Margin="10 0 10 10">
                             <DataGrid Margin="5" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="currVisitsDataGrid" Style="{DynamicResource DataGridStyle1}">
@@ -291,7 +291,7 @@
                                     <ColumnDefinition Width="90*"/>
                                     <ColumnDefinition Width="15*"/>
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Text="Medical records" FontSize="20" FontWeight="Bold" Foreground="{StaticResource lightFontColor}" Margin="20 10" Grid.Column="0"/>
+                                <TextBlock Text="Medical records" FontSize="18" FontWeight="Bold" Foreground="{StaticResource lightFontColor}" Margin="18 10" Grid.Column="0"/>
                                 <Icon:PackIconMaterial MouseDown="newMedicalRecord" Kind="PlusBox" Foreground="{StaticResource lightFontColor}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Width="25" Height="25"/>
                             </Grid>
 
@@ -338,7 +338,7 @@
                                     <ColumnDefinition Width="90*"/>
                                     <ColumnDefinition Width="15*"/>
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Text="Active treatment plan" FontSize="20" Foreground="{StaticResource lightFontColor}" FontWeight="Bold" Margin="20 10" Grid.Column="0"/>
+                                <TextBlock Text="Active treatment plan" FontSize="19" Foreground="{StaticResource lightFontColor}" FontWeight="Bold" Margin="18 10" Grid.Column="0"/>
                                 <Icon:PackIconMaterial Kind="ClipboardEdit" Foreground="{StaticResource lightFontColor}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Width="25" Height="25"/>
                             </Grid>
 
@@ -363,13 +363,13 @@
                                     <ColumnDefinition Width="90*"/>
                                     <ColumnDefinition Width="15*"/>
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Text="Notes" FontSize="20" Foreground="{StaticResource lightFontColor}" FontWeight="Bold" Margin="20 10" Grid.Column="0"/>
+                                <TextBlock Text="Notes" FontSize="18" Foreground="{StaticResource lightFontColor}" FontWeight="Bold" Margin="18 10" Grid.Column="0"/>
                                 <Icon:PackIconMaterial Kind="ClipboardEdit" Foreground="{StaticResource lightFontColor}" Grid.Column="1" VerticalAlignment="Center" Width="25" MouseDown="enableNotes" Height="25" Margin="5,0,0,0"/>
                             </Grid>
 
                             <Border Grid.Column="1" Background="{StaticResource lighterColor}" Grid.Row="1" CornerRadius="10" Margin="10 0 10 10">
                                 <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="5">
-                                    <TextBox Name="noteTXT" TextChanged="notesUpdated" BorderThickness="0" FontSize="20" IsEnabled="False" Background="Transparent" Foreground="{StaticResource lightFontColor}"/>
+                                    <TextBox Name="noteTXT" TextChanged="notesUpdated" BorderThickness="0" FontSize="18" IsEnabled="False" Background="Transparent" Foreground="{StaticResource lightFontColor}"/>
                                 </ScrollViewer>
                             </Border>
                         </Grid>
@@ -381,7 +381,7 @@
 
 
                 <!--Main Middle Chart Section-->
-                <Border Grid.ColumnSpan="1" Grid.RowSpan="2" CornerRadius="20" Margin="10,0,10,10" Grid.Row="1" Background="{StaticResource lighterColor}">
+                <Border Grid.ColumnSpan="1" Grid.RowSpan="2" CornerRadius="18" Margin="10,0,10,10" Grid.Row="1" Background="{StaticResource lighterColor}">
 
                     <Grid>
                         <Grid.RowDefinitions>
@@ -390,7 +390,7 @@
                         </Grid.RowDefinitions>
 
                         <Border Background="{StaticResource darkerColor}" BorderThickness="2" BorderBrush="{StaticResource selectedColor}"
-                    CornerRadius="20" Margin="0 0 0 -10"/>
+                    CornerRadius="18" Margin="0 0 0 -10"/>
 
 
                         <!--Titles-->
@@ -423,7 +423,7 @@
                             </lvc:CartesianChart.AxisY>
 
                             <lvc:CartesianChart.Series>
-                                <lvc:LineSeries Fill="{StaticResource lighterColor}" StrokeThickness="4" PointGeometrySize="0" Values="10,15,100,10,100,10,50,30,110,20,70,10">
+                                <lvc:LineSeries Fill="{StaticResource lighterColor}" StrokeThickness="4" PointGeometrySize="0" Values="10,15,100,10,100,10,50,30,110,18,70,10">
                                     <lvc:LineSeries.Stroke>
                                         <LinearGradientBrush>
                                             <GradientStop Color="Transparent" Offset="0"/>
@@ -436,7 +436,7 @@
 
 
                         </lvc:CartesianChart>
-                        <Grid Grid.Row="1" Margin="10 20 10 15">
+                        <Grid Grid.Row="1" Margin="10 18 10 15">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="*"/>
@@ -446,7 +446,7 @@
                             <!--Text Info Cards-->
                             <!--uc:TextInfo TextTop="Total Time" TextMiddle="748 Hr" TextBottom="April" IsActive="False"/-->
                             <!--uc:TextInfo TextTop="Total Steps" TextMiddle="9.178 St" TextBottom="April" IsActive="True" Grid.Column="1"/-->
-                            <!--uc:TextInfo TextTop="Target" TextMiddle="9200 St" TextBottom="April" IsActive="False" Grid.Column="2"/-->
+                            <!--uc:TextInfo TextTop="Target" TextMiddle="9180 St" TextBottom="April" IsActive="False" Grid.Column="2"/-->
                         </Grid>
 
 

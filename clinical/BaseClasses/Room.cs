@@ -10,13 +10,15 @@ namespace clinical.BaseClasses
     {
         public int RoomID { get; set; }
         public string RoomNumber { get; set; }
-        public List<int> EquipmentIDs { get; set; }
 
-        public Room(int roomID, string roomNumber, List<int> equipmentIDs)
+        public Room(int roomID, string roomNumber)
         {
             RoomID = roomID;
             RoomNumber = roomNumber;
-            EquipmentIDs = equipmentIDs;
+        }
+        override public string ToString()
+        {
+            return "ID: " + RoomID.ToString() + ", " + RoomNumber;
         }
     }
 }

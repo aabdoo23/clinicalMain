@@ -21,5 +21,10 @@ namespace clinical.BaseClasses
             Severity = severity;
             Description = description;
         }
+        override public string ToString()
+        {
+            return "ID: "+InjuryID.ToString() + ", " + InjuryName;
+        }
+
     }
 }

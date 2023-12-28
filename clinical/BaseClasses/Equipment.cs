@@ -23,7 +23,7 @@ namespace clinical.BaseClasses
             Function = function;
             LatestMaintenanceDate = latestMaintenanceDate;
             ToCheck = toCheck;
-            this.RoomID = roomID;
+            RoomID = roomID;
         }
     }
 }

@@ -629,6 +629,31 @@ namespace clinical
                 }
             }
         }
+        internal static void updateChronicDisease(ChronicDisease ch)
+        {
+            using (connection)
+            {
+                try
+                {
+                    if (connection.State == ConnectionState.Closed) connection.Open();
+                    using (MySqlCommand cmd = new MySqlCommand(
+                        "UPDATE ChronicDisease SET chronicDiseaseName= @chronicDiseaseName, description=@description WHERE chronicDiseaseID=@chronicDiseaseID",
+                    connection))
+                    {
+                        cmd.Parameters.AddWithValue("@chronicDiseaseID", ch.ChronicDiseaseID);
+                        cmd.Parameters.AddWithValue("@chronicDiseaseName", ch.ChronicDiseaseName);
+                        cmd.Parameters.AddWithValue("@description", ch.Description);
+
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Handle exception (log, throw, etc.)
+                    MessageBox.Show(ex.Message);
+                }
+            }
+        }
 
         private static ChronicDisease MapChronicDisease(MySqlDataReader reader)
         {
@@ -754,6 +779,33 @@ namespace clinical
             }
         }
 
+
+        public static void UpdateExercise(Exercise exercise)
+        {
+            using (connection)
+            {
+                try
+                {
+                    if (connection.State == ConnectionState.Closed) connection.Open();
+                    using (MySqlCommand cmd = new MySqlCommand(
+                        "UPDATE Exercise SET exerciseName=@exerciseName, explanationLink = @explanationLink, notes=@notes WHERE exerciseID=@exerciseID " ,connection))
+                    {
+                        cmd.Parameters.AddWithValue("@exerciseID", exercise.ExerciseID);
+                        cmd.Parameters.AddWithValue("@exerciseName", exercise.ExerciseName);
+                        cmd.Parameters.AddWithValue("@explanationLink", exercise.ExplanationLink);
+                        cmd.Parameters.AddWithValue("@notes", exercise.Notes);
+
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Handle exception (log, throw, etc.)
+                    MessageBox.Show(ex.Message);
+                }
+            }
+        }
+
         private static Exercise MapExercise(MySqlDataReader reader)
         {
             return new Exercise(
@@ -785,7 +837,7 @@ namespace clinical
                         command.Parameters.AddWithValue("@planID", treatmentPlan.PlanID);
                         command.Parameters.AddWithValue("@planName", treatmentPlan.PlanName);
                         command.Parameters.AddWithValue("@planTime", treatmentPlan.PlanTimeInWeeks);
-                        command.Parameters.AddWithValue("@injuryID", treatmentPlan.injuryID);
+                        command.Parameters.AddWithValue("@injuryID", treatmentPlan.InjuryID);
                         command.Parameters.AddWithValue("@price", treatmentPlan.Price);
                         command.Parameters.AddWithValue("@notes", treatmentPlan.Notes);
 
@@ -818,7 +870,7 @@ namespace clinical
                         command.Parameters.AddWithValue("@planID", treatmentPlan.PlanID);
                         command.Parameters.AddWithValue("@planName", treatmentPlan.PlanName);
                         command.Parameters.AddWithValue("@planTime", treatmentPlan.PlanTimeInWeeks);
-                        command.Parameters.AddWithValue("@injuryID", treatmentPlan.injuryID);
+                        command.Parameters.AddWithValue("@injuryID", treatmentPlan.InjuryID);
                         command.Parameters.AddWithValue("@price", treatmentPlan.Price);
                         command.Parameters.AddWithValue("@notes", treatmentPlan.Notes);
 
@@ -1645,6 +1697,28 @@ namespace clinical
             }
         }
 
+        public static void UpdatePackage(BaseClasses.Package package)
+        {
+            using (connection)
+            {
+                connection.Open();
+
+                string query = "UPDATE Package SET PackageName=@PackageName,NumberOfSessions=@NumberOfSessions,Price=@Price, Description=@Description  WHERE PackageID=@PackageID ";
+
+                using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                {
+                    cmd.Parameters.AddWithValue("@PackageID", package.PackageID);
+                    cmd.Parameters.AddWithValue("@PackageName", package.PackageName);
+                    cmd.Parameters.AddWithValue("@NumberOfSessions", package.NumberOfSessions);
+                    cmd.Parameters.AddWithValue("@Price", package.Price);
+                    cmd.Parameters.AddWithValue("@Description", package.Description);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+
         public static void DeletePackage(int packageId)
         {
             using (connection)
@@ -2275,9 +2349,7 @@ namespace clinical
                             {
                                 return new Room(
                                     Convert.ToInt32(reader["roomID"]),
-                                    reader["roomNumber"].ToString(),
-                                    new List<int>() // You may populate this list if you store equipment IDs in the Room table
-                                );
+                                    reader["roomNumber"].ToString());
                             }
                         }
                     }
@@ -2311,8 +2383,7 @@ namespace clinical
                             {
                                 Room room = new Room(
                                     Convert.ToInt32(reader["roomID"]),
-                                    reader["roomNumber"].ToString(),
-                                    new List<int>() // You may populate this list if you store equipment IDs in the Room table
+                                    reader["roomNumber"].ToString()
                                 );
 
                                 roomList.Add(room);
@@ -3117,6 +3188,277 @@ namespace clinical
             return physicianVisitsOnDate;
         }
 
+
+        /// evaluationTest
+        ///////////////////////////////////////////////////////////////////
+        ///
+        public static List<EvaluationTest> GetAllTests()
+        {
+            List<EvaluationTest> tests = new List<EvaluationTest>();
+
+            using (connection)
+            {
+                connection.Open();
+
+                string query = "SELECT * FROM evaluationTest";
+
+                using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                {
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            EvaluationTest test = new EvaluationTest(
+                                Convert.ToInt32(reader["testID"]),
+                                Convert.ToString(reader["testName"]),
+                                Convert.ToString(reader["testDescription"])
+                            
+                                );
+
+                            tests.Add(test);
+                        }
+                    }
+                }
+            }
+
+            return tests;
+        }
+
+        public static EvaluationTest GetTestById(int testId)
+        {
+            using (connection)
+            {
+                connection.Open();
+
+                string query = "SELECT * FROM evaluationTest WHERE testID = @TestID";
+
+                using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                {
+                    cmd.Parameters.AddWithValue("@TestID", testId);
+
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            return new EvaluationTest(
+                                Convert.ToInt32(reader["testID"]),
+                                Convert.ToString(reader["testName"]),
+                                Convert.ToString(reader["testDescription"])
+                            );
+                        }
+                    }
+                }
+            }
+
+            return null; // Test not found
+        }
+
+        public static void InsertTest(EvaluationTest test)
+        {
+            using (connection)
+            {
+                connection.Open();
+
+                string query = "INSERT INTO evaluationTest (testID, testName, testDescription) " +
+                               "VALUES (@TestID, @TestName, @TestDescription)";
+
+                using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                {
+                    cmd.Parameters.AddWithValue("@TestID", test.TestID);
+                    cmd.Parameters.AddWithValue("@TestName", test.TestName);
+                    cmd.Parameters.AddWithValue("@TestDescription", test.TestDescription);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+        public static void UpdateTest(EvaluationTest test)
+        {
+            using (connection)
+            {
+                connection.Open();
+
+                string query = "UPDATE evaluationTest SET testName=@TestName, testDescription=@TestDescription WHERE testID=@TestID ";
+
+                using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                {
+                    cmd.Parameters.AddWithValue("@TestID", test.TestID);
+                    cmd.Parameters.AddWithValue("@TestName", test.TestName);
+                    cmd.Parameters.AddWithValue("@TestDescription", test.TestDescription);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+
+        public static void DeleteTest(int testId)
+        {
+            using (connection)
+            {
+                connection.Open();
+
+                string query = "DELETE FROM evaluationTest WHERE testID = @TestID";
+
+                using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                {
+                    cmd.Parameters.AddWithValue("@TestID", testId);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+
+
+        ///Test feedback
+        /////////////////////////////////////////////////////////////////
+        ///
+        public static void InsertFeedback(EvaluationTestFeedBack feedback)
+        {
+            using (connection)
+            {
+                connection.Open();
+
+                string query = "INSERT INTO testFeedBack (testFeedBackID, severity, visitID, patientID, testID) " +
+                               "VALUES (@TestFeedbackID, @Severity, @VisitID, @PatientID, @TestID)";
+
+                using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                {
+                    cmd.Parameters.AddWithValue("@TestFeedbackID", feedback.TestFeedBackID);
+                    cmd.Parameters.AddWithValue("@Severity", feedback.Severity);
+                    cmd.Parameters.AddWithValue("@VisitID", feedback.VisitID);
+                    cmd.Parameters.AddWithValue("@PatientID", feedback.PatientID);
+                    cmd.Parameters.AddWithValue("@TestID", feedback.TestID);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public static List<EvaluationTestFeedBack> GetAllFeedback()
+        {
+            List<EvaluationTestFeedBack> visitFeedbackList = new List<EvaluationTestFeedBack>();
+
+            using (connection)
+            {
+                connection.Open();
+
+                string query = "SELECT * FROM testFeedBack";
+
+                using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                {
+
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            EvaluationTestFeedBack feedback = new EvaluationTestFeedBack(
+                                Convert.ToInt32(reader["testFeedBackID"]),
+                                Convert.ToInt32(reader["severity"]),
+                                Convert.ToInt32(reader["visitID"]),
+                                Convert.ToInt32(reader["patientID"]),
+                                Convert.ToInt32(reader["testID"])
+                            );
+
+                            visitFeedbackList.Add(feedback);
+                        }
+                    }
+                }
+            }
+
+            return visitFeedbackList;
+        }
+
+        public static List<EvaluationTestFeedBack> GetFeedbackByPatient(int patientId)
+        {
+            List<EvaluationTestFeedBack> visitFeedbackList = new List<EvaluationTestFeedBack>();
+
+            using (connection)
+            {
+                connection.Open();
+
+                string query = "SELECT * FROM testFeedBack WHERE patientID = @VisitID";
+
+                using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                {
+                    cmd.Parameters.AddWithValue("@VisitID", patientId);
+
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            EvaluationTestFeedBack feedback = new EvaluationTestFeedBack(
+                                Convert.ToInt32(reader["testFeedBackID"]),
+                                Convert.ToInt32(reader["severity"]),
+                                Convert.ToInt32(reader["visitID"]),
+                                Convert.ToInt32(reader["patientID"]),
+                                Convert.ToInt32(reader["testID"])
+                            );
+
+                            visitFeedbackList.Add(feedback);
+                        }
+                    }
+                }
+            }
+
+            return visitFeedbackList;
+        }
+
+        public static List<EvaluationTestFeedBack> GetFeedbackByVisit(int visitId)
+        {
+            List<EvaluationTestFeedBack> visitFeedbackList = new List<EvaluationTestFeedBack>();
+
+            using (connection)
+            {
+                connection.Open();
+
+                string query = "SELECT * FROM testFeedBack WHERE visitID = @VisitID";
+
+                using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                {
+                    cmd.Parameters.AddWithValue("@VisitID", visitId);
+
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            EvaluationTestFeedBack feedback = new EvaluationTestFeedBack(
+                                Convert.ToInt32(reader["testFeedBackID"]),
+                                Convert.ToInt32(reader["severity"]),
+                                Convert.ToInt32(reader["visitID"]),
+                                Convert.ToInt32(reader["patientID"]),
+                                Convert.ToInt32(reader["testID"])
+                            );
+
+                            visitFeedbackList.Add(feedback);
+                        }
+                    }
+                }
+            }
+
+            return visitFeedbackList;
+        }
+
+
+        public static void DeleteFeedback(int feedbackId)
+        {
+            using (connection)
+            {
+                connection.Open();
+
+                string query = "DELETE FROM testFeedBack WHERE testFeedBackID = @TestFeedbackID";
+
+                using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                {
+                    cmd.Parameters.AddWithValue("@TestFeedbackID", feedbackId);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+
         ///prescription
         ////////////////////////////////////////////////////////////////
         ///
@@ -3213,6 +3555,8 @@ namespace clinical
         {
             using (connection)
             {
+                Prescription toReturn=new Prescription();
+
                 try
                 {
                     if (connection.State == ConnectionState.Closed) connection.Open();
@@ -3222,25 +3566,23 @@ namespace clinical
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
                         command.Parameters.AddWithValue("@prescriptionID", prescriptionID);
-
                         using (MySqlDataReader reader = command.ExecuteReader())
                         {
                             if (reader.Read())
                             {
-                                return new Prescription(
+                                toReturn=new Prescription(
                                     Convert.ToInt32(reader["prescriptionID"]),
                                     Convert.ToDateTime(reader["timeStamp"]),
                                     Convert.ToInt32(reader["patientID"]),
                                     Convert.ToInt32(reader["userID"]),
-                                    Convert.ToInt32(reader["visitID"]),
-                                     GetIssuedDrugsByPrescriptionID(Convert.ToInt32(reader["prescriptionID"])),
-                                    GetIssuedExercisesByPrescriptionID(Convert.ToInt32(reader["prescriptionID"]))
-
+                                    Convert.ToInt32(reader["visitID"])
 
                                 );
                             }
                         }
                     }
+                    toReturn.IssuedExercisesIDs = GetIssuedExercisesByPrescriptionID(prescriptionID);
+
                 }
                 catch (Exception ex)
                 {
@@ -3274,9 +3616,7 @@ namespace clinical
                                     Convert.ToDateTime(reader["timeStamp"]),
                                     Convert.ToInt32(reader["patientID"]),
                                     Convert.ToInt32(reader["userID"]),
-                                    Convert.ToInt32(reader["visitID"]),
-                                    GetIssuedDrugsByPrescriptionID(Convert.ToInt32(reader["prescriptionID"])),
-                                    GetIssuedExercisesByPrescriptionID(Convert.ToInt32(reader["prescriptionID"]))
+                                    Convert.ToInt32(reader["visitID"])
                                 );
 
                                 prescriptionList.Add(prescription);
@@ -3318,15 +3658,18 @@ namespace clinical
                                     Convert.ToDateTime(reader["timeStamp"]),
                                     Convert.ToInt32(reader["patientID"]),
                                     Convert.ToInt32(reader["userID"]),
-                                    Convert.ToInt32(reader["visitID"]),
-                                    GetIssuedDrugsByPrescriptionID(Convert.ToInt32(reader["prescriptionID"])),
-                                    GetIssuedExercisesByPrescriptionID(Convert.ToInt32(reader["prescriptionID"]))
+                                    Convert.ToInt32(reader["visitID"])
                                 );
 
                                 prescriptionList.Add(prescription);
                             }
                         }
                     }
+                    foreach(Prescription p in prescriptionList)
+                    {
+                        p.IssuedDrugsIDs = GetIssuedDrugsByPrescriptionID(p.PrescriptionID);
+                    }
+
                 }
                 catch (Exception ex)
                 {
@@ -3362,16 +3705,19 @@ namespace clinical
                                     Convert.ToDateTime(reader["timeStamp"]),
                                     Convert.ToInt32(reader["patientID"]),
                                     Convert.ToInt32(reader["userID"]),
-                                    Convert.ToInt32(reader["visitID"]),
-                                    GetIssuedDrugsByPrescriptionID(Convert.ToInt32(reader["prescriptionID"])),
-                                    GetIssuedExercisesByPrescriptionID(Convert.ToInt32(reader["prescriptionID"]))
+                                    Convert.ToInt32(reader["visitID"])
                                 );
 
                                 prescriptionList.Add(prescription);
                             }
                         }
                     }
+                    foreach (Prescription p in prescriptionList)
+                    {
+                        p.IssuedDrugsIDs = GetIssuedDrugsByPrescriptionID(p.PrescriptionID);
+                    }
                 }
+
                 catch (Exception ex)
                 {
 
@@ -4177,5 +4523,7 @@ namespace clinical
                 return allIssuesOfExercise;
             }
         }
+
+        
     }
 }

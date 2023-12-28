@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -16,16 +17,20 @@ namespace clinical.BaseClasses
         public List<IssueDrug> IssuedDrugsIDs { get; set; }
         public List<IssueExercise> IssuedExercisesIDs { get; set; }
 
-        // Constructor
-        public Prescription(int prescriptionID, DateTime timeStamp, int patientID, int physiotherapistID, int visitID, List<IssueDrug> issuedDrugsIDs, List<IssueExercise> issuedExercisesIDs)
+
+        public Prescription() { }
+        public Prescription(int prescriptionID, DateTime timeStamp, int patientID, int physiotherapistID, int visitID)
         {
             PrescriptionID = prescriptionID;
             TimeStamp = timeStamp;
             PatientID = patientID;
             UserID = physiotherapistID;
             VisitID = visitID;
-            IssuedDrugsIDs = issuedDrugsIDs;
-            IssuedExercisesIDs = issuedExercisesIDs;
+            
+        }
+        override public string ToString()
+        {
+            return "ID: " + PrescriptionID.ToString() + ", Patient: " + DB.GetPatientById(PatientID).FirstName;
         }
     }
 }

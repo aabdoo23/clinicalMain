@@ -39,9 +39,10 @@ namespace clinical.Pages
             prescriptionsDataGrid.ItemsSource = DB.GetAllPrescriptionsByVisitID(currVisit.VisitID);
         }
 
-        private void view_Click(object sender, RoutedEventArgs e)
+        private void viewPrescription(object sender, RoutedEventArgs e)
         {
-
+            Prescription prescription = (Prescription)prescriptionsDataGrid.SelectedItem;
+            new prescriptionWindow(prescription).Show();
         }
 
         private void removeLastTest(object sender, MouseButtonEventArgs e)
@@ -61,7 +62,7 @@ namespace clinical.Pages
 
         private void newPrescription(object sender, MouseButtonEventArgs e)
         {
-            prescriptionWindow window=new prescriptionWindow();
+            prescriptionWindow window=new prescriptionWindow(currVisit,patient);
             window.Show();
         }
 

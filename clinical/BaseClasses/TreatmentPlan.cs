@@ -13,7 +13,7 @@ namespace clinical.BaseClasses
         public int PlanTimeInWeeks { get; set; }
         public double Price { get; set; }
         public string Notes { get; set; }
-        public int injuryID { get;set; }
+        public int InjuryID { get;set; }
 
         public TreatmentPlan(int planID, string planName, int planTimeInWeeks, double price, string notes, int injuryID)
         {
@@ -22,7 +22,12 @@ namespace clinical.BaseClasses
             PlanTimeInWeeks = planTimeInWeeks;
             Price = price;
             Notes = notes;
-            this.injuryID = injuryID;
+            InjuryID = injuryID;
         }
+        override public string ToString()
+        {
+            return "ID: " + PlanID.ToString() + ", " + PlanName;
+        }
+
     }
 }

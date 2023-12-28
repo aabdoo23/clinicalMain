@@ -21,11 +21,24 @@ namespace clinical.Pages.adminSettingsNewPages
     /// </summary>
     public partial class newPackage : Page
     {
-        static int cntID = 1;
         public newPackage()
         {
             InitializeComponent();
-            packageIDTextBox.Text= cntID.ToString();
+            packageIDTextBox.Text= new Random().Next().ToString();
+        }
+
+        bool viewing = false;
+        public newPackage(Package pack)
+        {
+            InitializeComponent();
+            viewing = true;
+            packageIDTextBox.Text = pack.PackageID.ToString();
+            packageIDTextBox.IsEnabled = false;
+            priceTextBox.Text = pack.Price.ToString();
+            numberOfSessionsTextBox.Text= pack.NumberOfSessions.ToString();
+            descriptionTextBox.Text=pack.Description.ToString();
+            packageNameTextBox.Text= pack.PackageName.ToString();
+
         }
 
 
@@ -38,10 +51,20 @@ namespace clinical.Pages.adminSettingsNewPages
             string packageName=packageNameTextBox.Text;
 
             Package package=new Package(id,packageName,numberOfSessions,price,description);
-            DB.InsertPackage(package);
-            cntID++;
 
-            MessageBox.Show("New Package added, ID: " + id.ToString());
+
+            if (viewing)
+            {
+                DB.UpdatePackage(package);
+                MessageBox.Show("Package updated, ID: " + id.ToString());
+
+            }
+            else
+            {
+                DB.InsertPackage(package);
+                MessageBox.Show("New Package added, ID: " + id.ToString());
+            }
+            
             Window.GetWindow(this).Close();
         }
     }

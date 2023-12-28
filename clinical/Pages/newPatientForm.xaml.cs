@@ -35,7 +35,7 @@ namespace clinical.Pages
             }
             else if (type == 3) //new package
             {
-                window.Height = 251;
+                window.Height = 291;
                 window.Width= 500;
 
                 formTitle.Content = "New Package";
@@ -51,7 +51,7 @@ namespace clinical.Pages
             }
             else if (type == 5) //new room
             {
-                window.Height = 321;
+                window.Height = 481;
                 window.Width = 500;
 
                 formTitle.Content = "New Room";
@@ -67,7 +67,7 @@ namespace clinical.Pages
             }
             else if( type == 7) //new equipment
             {
-                window.Height = 321;
+                window.Height = 391;
                 window.Width = 500;
 
                 formTitle.Content = "New Equipment Device";
@@ -75,15 +75,15 @@ namespace clinical.Pages
             }
             else if(type == 8) //new chronic
             {
-                window.Height = 321;
-                window.Width = 500;
+                window.Height = 271;
+                window.Width = 400;
 
                 formTitle.Content = "New Chronic Disease";
                 mainFrame.Navigate(new newChronic());
             }
             else if (type == 9)//new exercise
             {
-                window.Height = 321;
+                window.Height = 251;
                 window.Width = 500;
 
                 formTitle.Content = "New Exercise";
@@ -98,14 +98,111 @@ namespace clinical.Pages
                 mainFrame.Navigate(new accessRequestPage());
             }
 
-        }
+            else if (type == 11)
+            {
+                window.Height = 282;
+                window.Width = 480;
 
+                formTitle.Content = "New Patient Eval Test";
+                mainFrame.Navigate(new newEvaluationTestPage());
+            }
+
+        }
+        //view patient
         public newPatientForm(Patient editable)
         {
             InitializeComponent();
             window.Height = 621;
             formTitle.Content = "Edit Patient";
             mainFrame.Navigate(new newPatientPage(editable));
+        }
+        //view room
+        public newPatientForm(Room toView)
+        {
+            InitializeComponent();
+            window.Height = 481;
+            window.Width = 500;
+            formTitle.Content = "View Room";
+            mainFrame.Navigate(new newRoom(toView));
+        }
+
+        //view equipment
+        public newPatientForm(Equipment toView)
+        {
+            InitializeComponent();
+            window.Height = 391;
+            window.Width = 500;
+            formTitle.Content = "View Equipment";
+            mainFrame.Navigate(new newEquipment(toView));
+        }
+
+        //view exercise
+        public newPatientForm(Exercise toView)
+        {
+            InitializeComponent();
+            window.Height = 251;
+            window.Width = 500;
+            formTitle.Content = "View Exercise";
+            mainFrame.Navigate(new newExercise(toView));
+        }
+
+        public newPatientForm(Exercise toView,int x)
+        {
+            InitializeComponent();
+            window.Height = 251;
+            window.Width = 500;
+            formTitle.Content = "Add Exercise";
+            mainFrame.Navigate(new newExercise(toView,1));
+        }
+
+        //view Chronic
+        public newPatientForm(ChronicDisease toView)
+        {
+            InitializeComponent();
+            window.Height = 301;
+            window.Width = 400;
+            formTitle.Content = "View Chronic Disease";
+            mainFrame.Navigate(new newChronic(toView));
+        }
+
+        //view treatment plan
+        public newPatientForm(TreatmentPlan toView)
+        {
+            InitializeComponent();
+            window.Height = 321;
+            window.Width = 500;
+            formTitle.Content = "View Treatment Plan";
+            mainFrame.Navigate(new newTreatmentPlan(toView));
+        }
+
+        //view package
+        public newPatientForm(Package toView)
+        {
+            InitializeComponent();
+            window.Height = 291;
+            window.Width = 500;
+            formTitle.Content = "View Package";
+            mainFrame.Navigate(new newPackage(toView));
+        }
+
+        //view injury
+        public newPatientForm(Injury toView)
+        {
+            InitializeComponent();
+            window.Height = 321;
+            window.Width = 500;
+            formTitle.Content = "View Injury";
+            mainFrame.Navigate(new newInjury(toView));
+        }
+
+        //view test
+        public newPatientForm(EvaluationTest toView)
+        {
+            InitializeComponent();
+            window.Height = 282;
+            window.Width = 480;
+            formTitle.Content = "View Test";
+            mainFrame.Navigate(new newEvaluationTestPage(toView));
         }
 
         private void closeBTN(object sender, MouseButtonEventArgs e)

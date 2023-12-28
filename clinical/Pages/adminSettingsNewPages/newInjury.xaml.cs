@@ -21,7 +21,6 @@ namespace clinical.Pages.adminSettingsNewPages
     /// </summary>
     public partial class newInjury : Page
     {
-        static int cntId = 1;
 
         int[] sev = {1,2,3,4,5};
         string[] injuryLoc = { 
@@ -47,7 +46,23 @@ namespace clinical.Pages.adminSettingsNewPages
             InitializeComponent();
             injuryLocationCB.ItemsSource = injuryLoc; injuryLocationCB.SelectedIndex= 0;
             severityCB.ItemsSource = sev; severityCB.SelectedIndex = 0;
-            packageIDTextBox.Text = cntId.ToString();
+            packageIDTextBox.Text = new Random().Next().ToString();
+        }
+
+        //view and edit
+        bool viewing = false;
+        public newInjury(Injury injury)
+        {
+            viewing = true;
+            InitializeComponent();
+            injuryLocationCB.ItemsSource = injuryLoc;
+            severityCB.ItemsSource = sev;
+            packageIDTextBox.Text = injury.InjuryID.ToString();
+            packageIDTextBox.IsEnabled = false;
+            packageNameTextBox.Text = injury.InjuryName;
+            descriptionTextBox.Text = injury.Description;
+            injuryLocationCB.SelectedItem= injury.InjuryLocation;
+            severityCB.SelectedIndex = injury.Severity-1;
         }
 
         private void save(object sender, MouseButtonEventArgs e)
@@ -59,9 +74,18 @@ namespace clinical.Pages.adminSettingsNewPages
             string des = descriptionTextBox.Text;
 
             Injury injury=new Injury(id,name,loc,seve,des);
-            DB.InsertInjury(injury);
-            cntId++;
-            MessageBox.Show("New injury added, ID: " + id.ToString());
+            if (viewing)
+            {
+                DB.UpdateInjury(injury);
+                MessageBox.Show("Injury updated, ID: " + id.ToString());
+
+            }
+            else
+            {
+                DB.InsertInjury(injury);
+                MessageBox.Show("New injury added, ID: " + id.ToString());
+            }
+           
             Window.GetWindow(this).Close();
         }
 

@@ -12,17 +12,21 @@
         AllowsTransparency="True" WindowStyle="None" WindowStartupLocation="CenterScreen" Background="Transparent">
 
 
-    <Border Style="{StaticResource theBorder}" MouseDown="Border_MouseDown" BorderBrush="{StaticResource darkerColor}" BorderThickness="4">
+    <Border Style="{StaticResource theBorder}" BorderBrush="{StaticResource darkerColor}" BorderThickness="4">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="50"/>
                 <RowDefinition Height="110*"/>
 
             </Grid.RowDefinitions>
+            <Border MouseDown="Border_MouseDown">
+                <Grid>
+                    <Label Name="formTitle" Content="Registration Form" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{StaticResource lightFontColor}" FontSize="22" Margin="11,0,0,0"/>
+                    <Icon:PackIconMaterial Kind="CloseBox" Width="30" Height="50" Margin="0 0 10 0" Foreground="{StaticResource lightFontColor}" HorizontalAlignment="Right" VerticalAlignment="Center" MouseDown="closeBTN"/>
+                    <Icon:PackIconMaterial Kind="WindowMinimize" Width="25" Height="15" Margin="0 0 45 6" Foreground="{StaticResource lightFontColor}" HorizontalAlignment="Right" VerticalAlignment="Bottom" MouseDown="minimizeBTN"/>
 
-            <Label Name="formTitle" Content="Registration Form" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{StaticResource lightFontColor}" FontSize="22" Margin="11,0,0,0"/>
-            <Icon:PackIconMaterial Kind="CloseBox" Width="30" Height="50" Margin="0 0 10 0" Foreground="{StaticResource lightFontColor}" HorizontalAlignment="Right" VerticalAlignment="Center" MouseDown="closeBTN"/>
-            <Icon:PackIconMaterial Kind="WindowMinimize" Width="25" Height="15" Margin="0 0 45 6" Foreground="{StaticResource lightFontColor}" HorizontalAlignment="Right" VerticalAlignment="Bottom" MouseDown="minimizeBTN"/>
+                </Grid>
+            </Border>
             <Frame Name="mainFrame" Grid.Row="1" NavigationUIVisibility="Hidden"/>
 
 

@@ -15,13 +15,17 @@
             <ColumnDefinition Width="45*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="2*"/>
             <RowDefinition Height="1*"/>
             <RowDefinition Height="1*"/>
+            <RowDefinition Height="1.2*"/>
             <RowDefinition Height="60"/>
         </Grid.RowDefinitions>
-            
-        
-        
+
+        <Icon:PackIconMaterial Kind="RefreshCircle" Foreground="{StaticResource darkerColor}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Width="50" Height="50" Margin="0 0 10 0" MouseDown="Refresh"/>
+
+
         <!--Exercises-->
         <Border Grid.Row="1" Margin="5" Grid.RowSpan="1" Style="{StaticResource theBorder}">
             <Grid Margin="5">
@@ -59,7 +63,7 @@
         </Border>
 
         <!--Treatment Plans-->
-        <Border Margin="5 0 5 5" Grid.Column="1" Style="{StaticResource theBorder}">
+        <Border Margin="5 5 5 5" Grid.Column="1" Grid.Row="3" Grid.RowSpan="2" Style="{StaticResource theBorder}">
             <Grid Margin="5">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="50"/>
@@ -96,7 +100,7 @@
         </Border>
 
         <!--Injuries-->
-        <Border Grid.Column="0" Grid.Row="0" Margin="5" Style="{StaticResource theBorder}">
+        <Border Grid.Column="0" Grid.Row="2" Grid.RowSpan="2" Margin="5" Style="{StaticResource theBorder}">
             <Grid Margin="5">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="50"/>
@@ -131,7 +135,7 @@
         </Border>
        
         <!--Chronics-->
-        <Border Grid.Column="1" Grid.Row="1" Style="{StaticResource theBorder}" Margin="5" >
+        <Border Grid.Column="1" Grid.RowSpan="2" Grid.Row="1" Style="{StaticResource theBorder}" Margin="5" >
             <Grid Margin="5">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="50"/>
@@ -162,11 +166,50 @@
                 </ScrollViewer>
             </Grid>
         </Border>
+        
+        <!--Tests-->
+        <Border Grid.Row="4" Margin="5" Grid.RowSpan="2" Style="{StaticResource theBorder}">
+            <Grid Margin="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="87*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="Patient Evaluation Tests" Margin="5" VerticalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource lightFontColor}" FontSize="25"/>
+                <Icon:PackIconMaterial Kind="PlusBox" Foreground="{StaticResource lightFontColor}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Width="30" Height="30" Margin="0 0 10 0" MouseDown="newTest"/>
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Hidden">
+                    <DataGrid Grid.Row="1" Margin="5" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="testsDataGrid" Style="{DynamicResource DataGridStyle1}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" Binding="{Binding TestID}"/>
+                            <DataGridTextColumn Header="Name" Binding="{Binding TestName}" IsReadOnly="True" Width="*"/>
+                            <DataGridTextColumn Header="Description" Binding="{Binding TestDescription}" IsReadOnly="True" Width="*"/>
+                            <DataGridTemplateColumn Header="" IsReadOnly="True" Width="auto">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Button Name="view" Style="{StaticResource gridEditButton}" Click="viewTest">
+                                                <Icon:PackIconMaterial Kind="EyeCircleOutline" Style="{StaticResource gridButtonIcon}"/>
+                                            </Button>
+                                            <Button Margin="5 0 0 0" Style="{StaticResource gridRemoveButton}">
+                                                <Icon:PackIconMaterial Kind="DeleteOutline" Style="{StaticResource gridButtonIcon}"/>
+                                            </Button>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </ScrollViewer>
+            </Grid>
+        </Border>
+
 
         <!--Pagingation Section-->
-        <Border Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right" BorderBrush="#DEE4EC" BorderThickness="1" CornerRadius="5" Padding="5" Background="{StaticResource lightFontColor}" Margin="0 10 10 10">
+        <Border Grid.Row="5" Grid.Column="1" HorizontalAlignment="Right" BorderBrush="{StaticResource darkerColor}" BorderThickness="1" CornerRadius="5" Padding="5" Background="{StaticResource lightFontColor}" Margin="0 10 10 10">
             <StackPanel Orientation="Horizontal">
                 
+                <Button Style="{StaticResource pagingButton}" >
+                    <Icon:PackIconMaterial Kind="ChevronLeft" Style="{StaticResource pagingButtonIcon}"/>
+                </Button>
                 <Rectangle Width="1" Fill="#DEE4EC" Margin="3 7"/>
 
                 <Button Style="{StaticResource pagingButton}" Content="1" Background="{StaticResource selectedColor}" Foreground="LightGray"/>

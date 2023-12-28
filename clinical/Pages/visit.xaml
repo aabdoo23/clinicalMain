@@ -8,7 +8,7 @@
         xmlns:av="http://schemas.microsoft.com/expression/blend/2008" 
 		 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
 		 xmlns:fa="http://schemas.fontawesome.io/icons/" 
-      mc:Ignorable="av" d:DesignHeight="768" d:DesignWidth="1160">
+      mc:Ignorable="av" d:DesignHeight="668" d:DesignWidth="1060">
 
 
     <Border CornerRadius="20">
@@ -40,8 +40,8 @@
 
                     <Icon:PackIconMaterial Kind="ArrowLeftBox" MouseDown="navigateBack" Width="35" Height="35" Foreground="{StaticResource lightFontColor}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     <StackPanel Margin="7 10 0 10" Grid.Column="1">
-                        <TextBlock Text="Visit" Foreground="{StaticResource lightFontColor}" FontSize="13"/>
-                        <TextBlock Name="patientNameMainTxt" Text="3alolo" Foreground="{StaticResource lightFontColor}" FontSize="24" FontWeight="Bold" VerticalAlignment="Center"/>
+                        <TextBlock Text="Visit" Foreground="{StaticResource lightFontColor}" FontSize="12"/>
+                        <TextBlock Name="patientNameMainTxt" Text="3alolo" Foreground="{StaticResource lightFontColor}" FontSize="20" FontWeight="Bold" VerticalAlignment="Center"/>
                     </StackPanel>
                     <!--User Image-->
                     <Icon:PackIconMaterial Kind="Account" Width="30" Height="30" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Center" Grid.Column="2"/>
@@ -67,8 +67,8 @@
                             <RowDefinition Height="50"/>
                             <RowDefinition Height="80*"/>
                         </Grid.RowDefinitions>
-                        <TextBlock Text="Patient Info" FontSize="25" FontWeight="Bold" VerticalAlignment="Center" Foreground="{StaticResource lightFontColor}" Margin="20 10" Grid.Column="0"/>
-                        <Icon:PackIconMaterial MouseDown="navigateBack" Kind="Eye" Foreground="{StaticResource lightFontColor}" Grid.Column="1" VerticalAlignment="Center" Width="25" Height="25" Margin="1,0,0,0"/>
+                        <TextBlock Text="Patient Info" FontSize="20" FontWeight="Bold" VerticalAlignment="Center" Foreground="{StaticResource lightFontColor}" Margin="20 10" Grid.Column="0"/>
+                        <Icon:PackIconMaterial MouseDown="navigateBack" Kind="Eye" Foreground="{StaticResource lightFontColor}" Grid.Column="1" VerticalAlignment="Center" Width="20" Height="20" Margin="1,0,0,0"/>
 
                         <Border Grid.Row="1" Grid.ColumnSpan="2" Background="{StaticResource lighterColor}" CornerRadius="10" Margin="10 0 10 10" Grid.RowSpan="1">
                             <Grid>
@@ -81,10 +81,10 @@
 
                                 </Grid.RowDefinitions>
 
-                                <TextBlock Name="patientNameText" Text="3alolo" FontWeight="Bold" Grid.Row="0" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Center" Margin="10" FontSize="30"/>
-                                <TextBlock Name="visitIdText" Text="1232" Grid.Row="1" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Center" Margin="10" FontSize="22"/>
-                                <TextBlock Name="visitDate" Text="Monday, 6/10/2020" Grid.Row="2" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Center" Margin="10" FontSize="22"/>
-                                <TextBlock x:Name="physicianName" Text="Dr. Yasser Batawy" Grid.Row="3" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Center" Margin="10" FontSize="22"/>
+                                <TextBlock Name="patientNameText" Text="3alolo" FontWeight="Bold" Grid.Row="0" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Center" Margin="10" FontSize="22"/>
+                                <TextBlock Name="visitIdText" Text="1232" Grid.Row="1" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Center" Margin="10" FontSize="18"/>
+                                <TextBlock Name="visitDate" Text="Monday, 6/10/2020" Grid.Row="2" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Center" Margin="10" FontSize="18"/>
+                                <TextBlock x:Name="physicianName" Text="Dr. Yasser Batawy" Grid.Row="3" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Center" Margin="10" FontSize="18"/>
                                 <!--<TextBlock Text="Monday, 6/10/2020" Grid.Row="4" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Center" Margin="10" FontSize="30"/>
                             <TextBlock Text="Monday, 6/10/2020" Grid.Row="5" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Center" Margin="10" FontSize="30"/>-->
 
@@ -104,8 +104,8 @@
                                 <ColumnDefinition Width="90*"/>
                                 <ColumnDefinition Width="15*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="Cheif Complaint" FontSize="25" FontWeight="Bold" VerticalAlignment="Center" Foreground="{StaticResource lightFontColor}" Margin="20 10" Grid.Column="0"/>
-                            <Icon:PackIconMaterial Kind="ClipboardEdit" Foreground="{StaticResource lightFontColor}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Width="25" Height="25"/>
+                            <TextBlock Text="Cheif Complaint" FontSize="20" FontWeight="Bold" VerticalAlignment="Center" Foreground="{StaticResource lightFontColor}" Margin="20 10" Grid.Column="0"/>
+                            <Icon:PackIconMaterial Kind="ClipboardEdit" Foreground="{StaticResource lightFontColor}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Width="20" Height="20"/>
                         </Grid>
 
                         <Border Grid.Column="1" Background="{StaticResource lighterColor}" Grid.Row="1" CornerRadius="10" Margin="10 0 10 10">
@@ -132,7 +132,7 @@
                 </Grid.RowDefinitions>
 
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="30*"/>
+                    <ColumnDefinition Width="40*"/>
                     <ColumnDefinition Width="5*"/>
                     <ColumnDefinition Width="40*"/>
                     <!--<ColumnDefinition Width="*"/>-->
@@ -150,8 +150,8 @@
                                 <ColumnDefinition Width="90*"/>
                                 <ColumnDefinition Width="15*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="Notes" FontSize="25" FontWeight="Bold" VerticalAlignment="Center" Foreground="{StaticResource lightFontColor}" Margin="20 10" Grid.Column="0"/>
-                            <Icon:PackIconMaterial MouseDown="notes_enable" Kind="ClipboardEdit" Foreground="{StaticResource lightFontColor}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Width="25" Height="25"/>
+                            <TextBlock Text="Notes" FontSize="20" FontWeight="Bold" VerticalAlignment="Center" Foreground="{StaticResource lightFontColor}" Margin="20 10" Grid.Column="0"/>
+                            <Icon:PackIconMaterial MouseDown="notes_enable" Kind="ClipboardEdit" Foreground="{StaticResource lightFontColor}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Width="20" Height="20"/>
                         </Grid>
 
                         <Border Grid.Column="1" Background="{StaticResource lighterColor}" Grid.Row="1" Margin="10 0 10 10">
@@ -179,7 +179,7 @@
                                 <ColumnDefinition Width="90*"/>
                                 <ColumnDefinition Width="15*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="Session Feedback" FontSize="25" FontWeight="Bold" VerticalAlignment="Center" Foreground="{StaticResource lightFontColor}" Margin="20 10" Grid.Column="0"/>
+                            <TextBlock Text="Session Feedback" FontSize="20" FontWeight="Bold" VerticalAlignment="Center" Foreground="{StaticResource lightFontColor}" Margin="20 10" Grid.Column="0"/>
                         </Grid>
 
                         <Border Grid.Column="1" Background="{StaticResource lighterColor}" Grid.Row="1" CornerRadius="10" Margin="10 0 10 10">
@@ -196,8 +196,8 @@
                                             <ColumnDefinition Width="90"/>
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
-                                        <TextBlock Text="Test" FontSize="25" FontWeight="Bold" VerticalAlignment="Center" Foreground="{StaticResource darkerColor}" Margin="10" Grid.Column="0"/>
-                                        <TextBlock Text="Score" FontSize="25" FontWeight="Bold" VerticalAlignment="Center" Foreground="{StaticResource darkerColor}" Margin="10" Grid.Row="1"/>
+                                        <TextBlock Text="Test" FontSize="20" FontWeight="Bold" VerticalAlignment="Center" Foreground="{StaticResource darkerColor}" Margin="10" Grid.Column="0"/>
+                                        <TextBlock Text="Score" FontSize="20" FontWeight="Bold" VerticalAlignment="Center" Foreground="{StaticResource darkerColor}" Margin="10" Grid.Row="1"/>
                                         <ComboBox Name="testCB" Margin="90,20,20,20" Grid.ColumnSpan="2"/>
                                         <Grid Grid.Row="1" Grid.Column="1" Margin="2 2 6 0">
                                             <Grid.RowDefinitions>
@@ -247,16 +247,16 @@
                                                 <RadioButton Name="rb10" GroupName="feedBack"/>
                                             </Viewbox>
 
-                                            <TextBlock Grid.Row="1" Grid.Column="0" Text="1" Width="34" TextAlignment="Center"  FontSize="22"/>
-                                            <TextBlock Grid.Row="1" Grid.Column="1" Text="2" Width="34" TextAlignment="Center"  FontSize="22"/>
-                                            <TextBlock Grid.Row="1" Grid.Column="2" Text="3" Width="34" TextAlignment="Center"  FontSize="22"/>
-                                            <TextBlock Grid.Row="1" Grid.Column="3" Text="4" Width="34" TextAlignment="Center"  FontSize="22"/>
-                                            <TextBlock Grid.Row="1" Grid.Column="4" Text="5" Width="34" TextAlignment="Center"  FontSize="22"/>
-                                            <TextBlock Grid.Row="1" Grid.Column="5" Text="6" Width="34" TextAlignment="Center"  FontSize="22"/>
-                                            <TextBlock Grid.Row="1" Grid.Column="6" Text="7" Width="34" TextAlignment="Center"  FontSize="22"/>
-                                            <TextBlock Grid.Row="1" Grid.Column="7" Text="8" Width="34" TextAlignment="Center"  FontSize="22"/>
-                                            <TextBlock Grid.Row="1" Grid.Column="8" Text="9" Width="34" TextAlignment="Center"  FontSize="22"/>
-                                           <TextBlock Grid.Row="1" Grid.Column="9" Text="10" Width="34" TextAlignment="Center"  FontSize="22"/>
+                                            <TextBlock Grid.Row="1" Grid.Column="0" Text="1" TextAlignment="Center"  FontSize="18"/>
+                                            <TextBlock Grid.Row="1" Grid.Column="1" Text="2" TextAlignment="Center"  FontSize="18"/>
+                                            <TextBlock Grid.Row="1" Grid.Column="2" Text="3" TextAlignment="Center"  FontSize="18"/>
+                                            <TextBlock Grid.Row="1" Grid.Column="3" Text="4" TextAlignment="Center"  FontSize="18"/>
+                                            <TextBlock Grid.Row="1" Grid.Column="4" Text="5" TextAlignment="Center"  FontSize="18"/>
+                                            <TextBlock Grid.Row="1" Grid.Column="5" Text="6" TextAlignment="Center"  FontSize="18"/>
+                                            <TextBlock Grid.Row="1" Grid.Column="6" Text="7" TextAlignment="Center"  FontSize="18"/>
+                                            <TextBlock Grid.Row="1" Grid.Column="7" Text="8" TextAlignment="Center"  FontSize="18"/>
+                                            <TextBlock Grid.Row="1" Grid.Column="8" Text="9" TextAlignment="Center"  FontSize="18"/>
+                                           <TextBlock Grid.Row="1" Grid.Column="9" Text="10" TextAlignment="Center"  FontSize="18"/>
                                         </Grid>
 
                                     </Grid>
@@ -289,7 +289,7 @@
                             <RowDefinition Height="13*"/>
                             <RowDefinition Height="87*"/>
                         </Grid.RowDefinitions>
-                        <TextBlock Text="Prescription" Margin="10 5" VerticalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource lightFontColor}" FontSize="25"/>
+                        <TextBlock Text="Prescription" Margin="10 5" VerticalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource lightFontColor}" FontSize="20"/>
                         <Icon:PackIconMaterial Kind="PlusBox" Foreground="{StaticResource lightFontColor}" MouseDown="newPrescription" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Width="30" Height="30" Margin="0 0 10 0"/>
                         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
                         <DataGrid Margin="10" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="prescriptionsDataGrid" Style="{DynamicResource DataGridStyle1}">
@@ -301,7 +301,7 @@
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                             <StackPanel Orientation="Horizontal">
-                                                <Button Name="view" Style="{StaticResource gridEditButton}" Click="view_Click">
+                                                <Button Name="view" Style="{StaticResource gridEditButton}" Click="viewPrescription">
                                                     <Icon:PackIconMaterial Kind="EyeCircleOutline" Style="{StaticResource gridButtonIcon}"/>
                                                 </Button>
                                                 

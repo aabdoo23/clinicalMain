@@ -79,12 +79,32 @@ namespace clinical
             string s = patID.ToString().Substring(0, 3) + time.Month+time.Day;
             return Convert.ToInt32(s);
         }
+
+        public static int generateNewPrescriptionID(int visitID, DateTime time)
+        {
+            string s = visitID.ToString().Substring(0, 3) + time.Day+time.Second;
+            return Convert.ToInt32(s);
+        }
+
+        public static int generateNewIssueExerciseID(int prescriptionID,int patientID)
+        {
+            string s = prescriptionID.ToString().Substring(0, 2)+new Random().Next(99).ToString()+ patientID.ToString().Substring(0, 2)+ new Random().Next(99).ToString();
+            return Convert.ToInt32(s);
+        }
+
+        public static int generateNewExerciseID()
+        {
+            string s = new Random().Next(99).ToString() + new Random().Next(99).ToString()+ new Random().Next(81).ToString();
+            return Convert.ToInt32(s);
+        }
         public static int generateNewChatRoomID(int fID,int sID)
         {
 
             string s = fID.ToString().Substring(0, 3) + sID.ToString().Substring(0, 3);
             return Convert.ToInt32(s);
         }
+
+
 
         public static int generateNewChatMessageID(int senderID)
         {

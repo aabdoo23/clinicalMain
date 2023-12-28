@@ -8,14 +8,14 @@
         xmlns:uc="clr-namespace:clinical.userControls"
         xmlns:av="http://schemas.microsoft.com/expression/blend/2008" 
 		 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-		 xmlns:fa="http://schemas.fontawesome.io/icons/" mc:Ignorable="av" Height="768" Width="1360"
+		 xmlns:fa="http://schemas.fontawesome.io/icons/" mc:Ignorable="av" Height="708" Width="1180"
         MinHeight="600" MinWidth="1000"
-        WindowStyle="None" Background="Transparent" ResizeMode="CanResize" WindowStartupLocation="CenterScreen">
+        WindowStyle="None" Background="Transparent"  WindowStartupLocation="CenterScreen">
 
     <Border Background="{StaticResource lightFontColor}" CornerRadius="20" Padding="0 10 0 0" MouseDown="Border_MouseDown">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="6*"/>
+                <RowDefinition Height="40"/>
                 <RowDefinition Height="95*"/>
             </Grid.RowDefinitions>
 

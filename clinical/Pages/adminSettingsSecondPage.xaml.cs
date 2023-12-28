@@ -1,4 +1,5 @@
-﻿using System;
+﻿using clinical.BaseClasses;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -47,7 +48,9 @@ namespace clinical.Pages
         }
         private void viewRoom(object sender, RoutedEventArgs e)
         {
-
+            Room room = (Room)roomsDataGrid.SelectedItem;
+            newPatientForm form = new newPatientForm(room);
+            form.Show();
         }
 
         private void approveRequest(object sender, RoutedEventArgs e)
@@ -66,18 +69,31 @@ namespace clinical.Pages
         }
         private void viewEquipment(object sender, RoutedEventArgs e)
         {
-
+            Equipment eq = (Equipment)equipmentDataGrid.SelectedItem;
+            newPatientForm form = new newPatientForm(eq);
+            form.Show();
         }
 
         private void viewPackage(object sender, RoutedEventArgs e)
         {
-
+            Package pack = (Package)packagesDataGrid.SelectedItem;
+            newPatientForm form = new newPatientForm(pack);
+            form.Show();
         }
 
         private void goToFirstPage(object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(new adminSettingsPage());
 
+        }
+
+        private void Refresh(object sender, MouseButtonEventArgs e)
+        {
+            InitializeComponent();
+            packagesDataGrid.ItemsSource = DB.GetAllPackages();
+            roomsDataGrid.ItemsSource = DB.GetAllRooms();
+            equipmentDataGrid.ItemsSource = DB.GetAllEquipment();
+            //accessRequestsDataGrid.ItemsSource = DB.GetAllAccessRequests();
         }
     }
 }

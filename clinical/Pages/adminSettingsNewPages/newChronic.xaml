@@ -5,7 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:clinical.Pages"
       mc:Ignorable="d" 
-      d:DesignHeight="232" d:DesignWidth="476"
+      d:DesignHeight="232" d:DesignWidth="376"
       Title="newPatientPage">
 
     <Border Grid.Row="1" CornerRadius="0 0 19 19" Background="{StaticResource lighterColor}" >
@@ -21,25 +21,18 @@
                 <ColumnDefinition Width="10*"/>
                 <ColumnDefinition Width="10*"/>
                 <ColumnDefinition Width="10*"/>
-                <ColumnDefinition Width="10*"/>
             </Grid.ColumnDefinitions>
 
-            <TextBlock TextWrapping="Wrap" Grid.Row="0" Text="*Package ID:" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{StaticResource lightFontColor}" FontSize="18" FontWeight="Bold"/>
-            <TextBlock TextWrapping="Wrap" Grid.Row="0" Grid.Column="2" Text="*Package Name:" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{StaticResource lightFontColor}" FontSize="18" FontWeight="Bold"/>
-            <TextBox Name="packageIDTextBox" Grid.Column="1" Margin="0 15 10 15" Background="{StaticResource lightFontColor}" Foreground="{StaticResource darkerColor}"/>
-            <TextBox Name="packageNameTextBox" Foreground="{StaticResource darkerColor}" Grid.Column="3"  Grid.ColumnSpan="2" Margin="0 15 10 15" Background="{StaticResource lightFontColor}"/>
+            <TextBlock TextWrapping="Wrap" Grid.Row="0" Text="ID:" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{StaticResource lightFontColor}" FontSize="18" FontWeight="Bold"/>
+            <TextBlock TextWrapping="Wrap" Grid.Column="1" Text="Disease Name:" VerticalAlignment="Center"  Foreground="{StaticResource lightFontColor}" FontSize="18" FontWeight="Bold" Grid.ColumnSpan="2" Margin="33,0,59,0"/>
+            <TextBox Name="chronicIDTextBox" Margin="33,15,68,15" Background="{StaticResource lightFontColor}" Foreground="{StaticResource darkerColor}" Grid.ColumnSpan="2"/>
+            <TextBox Name="chronicNameTextBox" Foreground="{StaticResource darkerColor}" Grid.Column="2"  Grid.ColumnSpan="2" Margin="15,15,10,15" Background="{StaticResource lightFontColor}"/>
 
-            <TextBlock TextWrapping="Wrap" Grid.Row="1" Grid.Column="0"  Text="Number of Sessions:" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{StaticResource lightFontColor}" FontSize="16" FontWeight="Bold"/>
-            <TextBox Name="numberOfSessionsTextBox" Foreground="{StaticResource darkerColor}" Grid.Column="1" Grid.Row="1" Margin="0 15 10 15" Background="{StaticResource lightFontColor}"/>
-
-            <TextBlock TextWrapping="Wrap" Grid.Row="2" Grid.Column="0"  Text="Price:" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{StaticResource lightFontColor}" FontSize="18" FontWeight="Bold"/>
-            <TextBox Name="priceTextBox" Foreground="{StaticResource darkerColor}" Grid.Column="1" Grid.Row="2" Margin="-30 15 10 15" Background="{StaticResource lightFontColor}"/>
-
-            <TextBlock TextWrapping="Wrap" Grid.Row="1" Grid.Column="2"  Text="Description:" VerticalAlignment="Top" HorizontalAlignment="Left" Foreground="{StaticResource lightFontColor}" FontSize="16" FontWeight="Bold" Margin="10,2,0,0" Grid.ColumnSpan="2"/>
-            <TextBox Name="descriptionTextBox" Foreground="{StaticResource darkerColor}" Grid.Column="2" Grid.Row="1" Grid.RowSpan="2" Grid.ColumnSpan="3" Margin="10,27,10,10" Background="{StaticResource lightFontColor}"/>
+            <TextBlock TextWrapping="Wrap" Grid.Row="1" Grid.Column="0"  Text="Description:" VerticalAlignment="Top" HorizontalAlignment="Left" Foreground="{StaticResource lightFontColor}" FontSize="16" FontWeight="Bold" Margin="10,2,0,0" Grid.ColumnSpan="2"/>
+            <TextBox Name="descriptionTextBox" Foreground="{StaticResource darkerColor}" Grid.Column="0" Grid.Row="1" Grid.RowSpan="3" Grid.ColumnSpan="3" Margin="10,27,10,10" Background="{StaticResource lightFontColor}"/>
 
 
-            <Border Name="saveBTN" Style="{StaticResource theBorder}" BorderBrush="{StaticResource lightFontColor}" BorderThickness="2" CornerRadius="5" Margin="10" Grid.Row="3" Grid.Column="4" MouseDown="save">
+            <Border Name="saveBTN" Style="{StaticResource theBorder}" BorderBrush="{StaticResource lightFontColor}" BorderThickness="2" CornerRadius="5" Margin="10,10,10,10" Grid.Row="3" Grid.Column="3" MouseDown="save">
                 <Label Content="Save" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="15" FontWeight="Bold" Margin="0,-2,0,0"/>
             </Border>
         </Grid>

@@ -20,5 +20,10 @@ namespace clinical.BaseClasses
             ExplanationLink = explanationLink;
             Notes = notes;
         }
+
+        public override string ToString()
+        {
+            return ExerciseName;
+        }
     }
 }
