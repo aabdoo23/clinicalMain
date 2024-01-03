@@ -18,5 +18,10 @@ namespace clinical.BaseClasses
             TestName = testName;
             TestDescription = testDescription;
         }
+
+        public override string ToString()
+        {
+            return TestName;
+        }
     }
 }

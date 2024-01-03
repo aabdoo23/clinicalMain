@@ -119,7 +119,7 @@ namespace clinical
             if (result == MessageBoxResult.Yes)
             {
                 int id = globals.generateNewVisitID(selectedPatient.PatientID, selectedDateTime);
-                Visit visit = new Visit(id, selectedPhysician.UserID, selectedPatient.PatientID, 1, selectedDateTime, 1, "Follow up", "");
+                Visit visit = new Visit(id, selectedPhysician.UserID, selectedPatient.PatientID, 1, selectedDateTime, 1, "Follow up", "",selectedPatient.Height,selectedPatient.Weight);
                 DB.InsertVisit(visit);
                 MessageBox.Show("Visit registered, visit id: "+id.ToString());
             }

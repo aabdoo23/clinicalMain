@@ -1,0 +1,92 @@
+t3ml eh lma ts7a:
+
+billing system, finances and all managing visits, packages, patient due, kolo, rbna m3ak
+
+
+unfinished bussiness:
+
+1-add real data to all tables in db
+
+2-Al physician msh lazm y-add  
+
+3- Financial System
+
+4-Yktb al modda mn al awl w y3addel b3dha law fe progress ahsn mn al motwk3
+
+5-delete buttons in settings grids with confirmation
+
+6-al appointment tb2a detailed , hyo3d ad eh  (has type, match)
+
+7-reminder lel syana bta3t al aghza w al equipment fl clinic 
+
+8-chat bot
+
+9-ML and Desicion support
+
+10- Notes section in calendar page
+
+11- print the prescription properly
+
+12- dicom viewer
+
+13- Scheduling system
+
+14- plot height w weight of visits on patientview page
+
+
+not urgent:
+
+-when updating height and weight in a visit, only update the patient if it's the most recent visit
+
+-title windows
+
+-edit prescription
+
+-can't select same test in patient feedback in visit more than once and can't select same exercise in prescription more than once
+
+-check all data taken
+
+-border move only upper part
+
+
+
+done:
+
+=Hydrotherapy
+
+=Upon add , add allergies
+
+=Exercising chart --> drop down list lkol al standard exercises aly btet3ml lel case de w other texbox 
+
++More detailed pre
+
++test
+
++new test window
+
++testFeedBack table
+
++aktar mn view 
+
++admin by-add w delete
+
++al receptionist by-access --> medical form ymlaha awl ma yigy : etsabt abl kda w et3algt 3nd had abl kda wla eh , eh trekhk m3 al marad , *(ymlaha f awl zyara wla kol marra)*
+
++shkl al rosheta 
+#DROPDOWN LIST lel physician yktb feha al patient ksr aw shrkh w al modda estimated aly hyhtagha 3shan yt3alg mnha w kam session w lma ykhtar ytl3lo al adwya el standrad lel marad da w textbox other law 3ayz yzwd haga mn 3ndo 
+
++add mkan lel asha3a 
+
++OCR (optimal charcter recognition) --> bnrf3lo al pic w by- convert al pic l words 3shan al old prescriptions 
+
++communication
+
++comments
+
++make testFeedBack section in visit work
+
++there is an issue with saving after the first save in feedback section, look into that
+
++kont btzbt mwdoo3 elrelation chronic=patient w 3mlt table bs lsa manadethash fe ay 7ta 8er getChronicsByPatientID, kmlhaaaaaaaaaaaa
+
++shaghal al live chart 

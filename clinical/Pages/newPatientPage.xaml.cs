@@ -1,9 +1,11 @@
 ﻿using clinical.BaseClasses;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
 using System.Windows;
 using System.Windows.Controls;
-
+using System.Windows.Data;
 using System.Windows.Input;
 
 
@@ -18,6 +20,11 @@ namespace clinical.Pages
         Patient patient;
         List<ChronicDisease> selectedChronics = new List<ChronicDisease>();
         List<Injury> selectedInjuries = new List<Injury>();
+
+        private ICollectionView injuryDataView;
+        private ICollectionView chronicDataView;
+
+
         public newPatientPage(Patient toEdit)
         {
             InitializeComponent();
@@ -43,16 +50,59 @@ namespace clinical.Pages
             allInjuriesDataGrid.ItemsSource = DB.GetAllInjuries();
             packagesCB.ItemsSource = DB.GetAllPackages();
             assignedPhys.SelectedIndex = 0;
+            
             referredCB.Checked += CheckBox_Checked;
             referredCB.Unchecked += CheckBox_Unchecked;
+
+            referringTextBox.IsEnabled = false;
+            referringPNTextBox.IsEnabled = false;
+
+            packagesCB.SelectedIndex = 0;
+
+            injuryDataView = CollectionViewSource.GetDefaultView(allInjuriesDataGrid.ItemsSource);
+            searchInjuriesTXTBOX.TextChanged += SearchInjuryTextBox_TextChanged;
+
+
+            chronicDataView = CollectionViewSource.GetDefaultView(allChronicsDataGrid.ItemsSource);
+            searchChronicDiseaseTXTBOX.TextChanged += SearchChronicTextBox_TextChanged;
 
 
         }
 
+        private void SearchChronicTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            chronicDataView.Filter = item => FilterItem(item, searchChronicDiseaseTXTBOX.Text);
+
+        }
+
+        private void SearchInjuryTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            injuryDataView.Filter = item => FilterItem(item, searchInjuriesTXTBOX.Text);
+
+        }
+        
+        private bool FilterItem(object item, string filterText)
+        {
+            if (string.IsNullOrWhiteSpace(filterText))
+            {
+                return true; // No filter, show all items
+            }
+
+            foreach (var property in item.GetType().GetProperties())
+            {
+                var cellValue = property.GetValue(item);
+                if (cellValue != null && cellValue.ToString().Contains(filterText, StringComparison.OrdinalIgnoreCase))
+                {
+                    return true; // Found a match in any column
+                }
+            }
+
+            return false; // No match found
+        }
         void refresh()
         {
-            selectedChronicsDataGrid.ItemsSource = selectedChronics;
-            selectedInjuriesDataGrid.ItemsSource = selectedInjuries;
+            selectedChronicsDataGrid.Items.Refresh();
+            selectedInjuriesDataGrid.Items.Refresh();
         }
 
 
@@ -92,11 +142,7 @@ namespace clinical.Pages
 
             }
             int id = globals.generateNewPatientID();
-            List<int> chronicsIDs = new List<int>();
-            foreach (ChronicDisease chronic in selectedChronics)
-            {
-                chronicsIDs.Add(chronic.ChronicDiseaseID);
-            }
+            
             List<int> injuriesIDs = new List<int>();
             foreach (Injury chronic in selectedInjuries)
             {
@@ -114,8 +160,6 @@ namespace clinical.Pages
                 phone,
                 em,
                 address,
-                chronicsIDs,
-                injuriesIDs,
                 phys.UserID,
                 isRef,
                 prevSessions,
@@ -127,7 +171,19 @@ namespace clinical.Pages
                 selectedPackage.PackageID);
             DB.InsertPatient(newPatient);
             MessageBox.Show("New patient added, ID: " + id.ToString());
+            
+            foreach(var ch in selectedChronics)
+            {
+                DB.InsertPatientChronicDiseases(ch.ChronicDiseaseID, newPatient.PatientID);
+            }
+
+            foreach(var inj in selectedInjuries)
+            {
+                DB.InsertPatientInjuries(inj.InjuryID, newPatient.PatientID);
+            }
+
             Window.GetWindow(this).Close();
+
 
 
         }
@@ -138,7 +194,8 @@ namespace clinical.Pages
 
         private void addInjury(object sender, RoutedEventArgs e)
         {
-            selectedInjuries.Add((Injury)allInjuriesDataGrid.SelectedItem);
+            Injury selectedInjury= (Injury)allInjuriesDataGrid.SelectedItem;
+            if (!selectedInjuries.Contains(selectedInjury))selectedInjuries.Add(selectedInjury);
             refresh();
         }
 
@@ -157,7 +214,8 @@ namespace clinical.Pages
 
         private void addChronic(object sender, RoutedEventArgs e)
         {
-            selectedChronics.Add((ChronicDisease)allChronicsDataGrid.SelectedItem);
+            ChronicDisease selectedChronic = (ChronicDisease)allChronicsDataGrid.SelectedItem;
+            if (!selectedChronics.Contains(selectedChronic))selectedChronics.Add(selectedChronic);
             refresh();
         }
     }

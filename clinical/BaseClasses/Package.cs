@@ -21,5 +21,10 @@ namespace clinical.BaseClasses
             Price = price;
             Description = description;
         }
+
+        public override string ToString()
+        {
+            return PackageName;
+        }
     }
 }

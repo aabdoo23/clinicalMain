@@ -35,7 +35,7 @@ CREATE TABLE AttendanceRecord (
 	timeStamp DATE,
 	userID int,
 	present BOOLEAN,
-    FOREIGN KEY (userID) REFERENCES User(userID)
+    FOREIGN KEY (userID) REFERENCES User(userID) ON DELETE CASCADE
 );
 
 
@@ -73,8 +73,8 @@ CREATE TABLE ChatRoom (
     chatRoomName VARCHAR(100),
     LastVisit datetime,
     PRIMARY KEY (chatRoomID),
-    FOREIGN KEY (firstUserID) REFERENCES User(userID),
-    FOREIGN KEY (secondUserID) REFERENCES User(userID)
+    FOREIGN KEY (firstUserID) REFERENCES User(userID) ON DELETE CASCADE,
+    FOREIGN KEY (secondUserID) REFERENCES User(userID) ON DELETE CASCADE
     );
     
     CREATE TABLE ChatMessage (
@@ -84,8 +84,8 @@ CREATE TABLE ChatRoom (
     messageContent TEXT,
     timeStamp datetime,
     PRIMARY KEY (messageID),
-    FOREIGN KEY (senderID) REFERENCES User(userID),
-    FOREIGN KEY (chatRoomID) REFERENCES ChatRoom(chatRoomID)
+    FOREIGN KEY (senderID) REFERENCES User(userID) ON DELETE CASCADE,
+    FOREIGN KEY (chatRoomID) REFERENCES ChatRoom(chatRoomID) ON DELETE CASCADE
 	);
 
 CREATE TABLE Patient (
@@ -97,8 +97,6 @@ CREATE TABLE Patient (
     phoneNumber VARCHAR(12),
     email VARCHAR(100),
     address TEXT,
-    chronicDiseasesIDs TEXT,
-    previousInjuriesIDs TEXT,
     referred BOOLEAN,
     previouslyTreated BOOLEAN,
     height DECIMAL(5,2),
@@ -161,6 +159,7 @@ CREATE TABLE TreatmentPlan (
 );
 
 
+
 CREATE TABLE DrugRelation (
     drugRelationID INT NOT NULL,
     patientID INT NOT NULL,
@@ -175,6 +174,8 @@ CREATE TABLE Visit (
     userID int not null,
     patientID INT NOT NULL,
     packageID INT,
+    height double,
+    weight double,
     timeStamp DATETIME,
     roomID INT,
     type TEXT NOT NULL,
@@ -239,3 +240,46 @@ CREATE TABLE MedicalRecord (
     FOREIGN KEY (patientID) REFERENCES Patient(patientID)
 );
 
+CREATE TABLE evaluationTest (
+    testID INT NOT NULL,
+    testName varchar(255),
+    testDescription TEXT,
+    PRIMARY KEY (testID)
+);
+
+CREATE TABLE testFeedBack (
+    testFeedBackID INT NOT NULL,
+    severity INT NOT NULL,
+    visitID INT,
+    patientID INT,
+    testID INT,
+    notes TEXT, 
+    timeStamp DATETIME,
+    PRIMARY KEY (testFeedBackID),
+    FOREIGN KEY (patientID) REFERENCES Patient(patientID),
+    FOREIGN KEY (visitID) REFERENCES Visit(visitID),
+    FOREIGN KEY (testID) REFERENCES evaluationTest(testID)
+);
+
+
+CREATE TABLE patientChronicRelation (
+    patientID INT NOT NULL,
+    chronicID INT NOT NULL,
+    FOREIGN KEY (patientID) REFERENCES Patient(patientID),
+    FOREIGN KEY (chronicID) REFERENCES ChronicDisease(chronicDiseaseID)
+    );
+
+
+CREATE TABLE patientInjuryRelation (
+    patientID INT NOT NULL,
+    injuryID INT NOT NULL,
+    FOREIGN KEY (patientID) REFERENCES Patient(patientID),
+    FOREIGN KEY (injuryID) REFERENCES Injury(injuryID)
+    );
+    
+CREATE TABLE userWorkDayRelation (
+    userID INT NOT NULL,
+    workDay INT NOT NULL,
+    FOREIGN KEY (userID) REFERENCES user(userID) ON DELETE CASCADE
+    );
+    

@@ -46,7 +46,7 @@
                                 <ColumnDefinition Width="90*"/>
                                 <ColumnDefinition Width="15*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="Personal Information" FontSize="18" FontWeight="Bold" Foreground="{StaticResource lightFontColor}"  Grid.Column="0"/>
+                            <TextBlock Text="Personal Information" FontSize="20" FontWeight="Bold" Foreground="{StaticResource lightFontColor}"  Grid.Column="0" Grid.ColumnSpan="2" Margin="0,6,35,-6"/>
                             <Icon:PackIconMaterial Kind="AccountEdit" Foreground="{StaticResource lightFontColor}" Grid.Column="1" HorizontalAlignment="Center" Width="25" Height="26" Margin="0,4,0,0" MouseDown="editPersonalInfo"/>
                         </Grid>
                         <Border Background="{StaticResource lightFontColor}" CornerRadius="5" Grid.Row="1">
@@ -96,8 +96,9 @@
                             <Icon:PackIconMaterial MouseDown="newMedicalRecord" Kind="PlusBox" Foreground="{StaticResource lightFontColor}" Grid.Column="1" HorizontalAlignment="Center" Width="25" Height="26" Margin="0,4,0,0"/>
                         </Grid>
                         <Border Background="{StaticResource lightFontColor}" CornerRadius="5" Grid.Row="1">
-                            <WrapPanel Margin="5">
-                                <Border Background="Chocolate" MinWidth="80" MinHeight="50" CornerRadius="5" Margin="10 10 0 0">
+                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <WrapPanel Name="chronicWrapPanel" Margin="5">
+                                <!--<Border Background="Chocolate" MinWidth="80" MinHeight="50" CornerRadius="5" Margin="10 10 0 0">
                                     <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="Diabetes" Style="{StaticResource titleText}"/>
 
                                 </Border>
@@ -108,8 +109,9 @@
                                 <Border Background="Cornsilk" MinWidth="140" MinHeight="50" CornerRadius="5" Margin="10 10 0 0">
                                     <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="Blood Pressure" Style="{StaticResource titleText}"/>
 
-                                </Border>
+                                </Border>-->
                             </WrapPanel>
+                            </ScrollViewer>
                         </Border>
                     </Grid>
                 </Border>
@@ -131,8 +133,9 @@
                         </Grid>
 
                         <Border Background="{StaticResource lightFontColor}" CornerRadius="5" Grid.Row="1">
-                            <WrapPanel Margin="5">
-                                <Border Background="LightPink"  MinWidth="80" MinHeight="50" CornerRadius="5" Margin="10 10 0 0">
+                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <WrapPanel Name="injuriesWrapPanel" Margin="5">
+                                <!--<Border Background="LightPink"  MinWidth="80" MinHeight="50" CornerRadius="5" Margin="10 10 0 0">
                                     <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="Ankle" Style="{StaticResource titleText}"/>
 
                                 </Border>
@@ -143,8 +146,9 @@
                                 <Border Background="Cornsilk" MinWidth="140" MinHeight="50" CornerRadius="5" Margin="10 10 0 0">
                                     <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="Dead inside?" Style="{StaticResource titleText}"/>
 
-                                </Border>
+                                </Border>-->
                             </WrapPanel>
+                            </ScrollViewer>
                         </Border>
                     </Grid>
                 </Border>
@@ -199,32 +203,38 @@
                             <RowDefinition Height="50"/>
                             <RowDefinition Height="90*"/>
                         </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+
+                        </Grid.ColumnDefinitions>
+
+
                         <TextBlock Text="Previous visits" FontSize="18" Foreground="{StaticResource lightFontColor}" FontWeight="Bold" Margin="16,10,24,10" Grid.Row="0" Grid.Column="0"/>
 
-                        <Border Grid.Column="1" Background="{StaticResource lighterColor}" Grid.Row="1" CornerRadius="10" Margin="10 0 10 10">
+                        <Border Grid.ColumnSpan="2" Background="{StaticResource lighterColor}" Grid.Row="1" CornerRadius="10" Margin="10 0 10 10">
                             <ScrollViewer VerticalScrollBarVisibility="Hidden">
-                            <DataGrid Margin="5" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="previousVisitsDataGrid" Style="{DynamicResource DataGridStyle1}">
-                                <DataGrid.Columns>
-                                    <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="15*" Binding="{Binding VisitID}"/>
-                                    <DataGridTextColumn Header="Date" Binding="{Binding TimeStamp}" IsReadOnly="True" Width="25*"/>
-                                    <DataGridTextColumn Header="Type" Binding="{Binding Type}" IsReadOnly="True" Width="30*"/>
-                                    <DataGridTextColumn Header="Description" Binding="{Binding TherapistNotes}" IsReadOnly="True" Width="40*"/>
-                                    <DataGridTemplateColumn Header="" IsReadOnly="True" Width="auto">
-                                        <DataGridTemplateColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <StackPanel Orientation="Horizontal">
-                                                    <Button Name="view" Style="{StaticResource gridEditButton}" Click="viewVisitClick">
-                                                        <Icon:PackIconMaterial Kind="EyeCircleOutline" Style="{StaticResource gridButtonIcon}"/>
-                                                    </Button>
-                                                    <!--<Button Margin="5 0 0 0" Style="{StaticResource gridRemoveButton}">
+                                <DataGrid Margin="5" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="previousVisitsDataGrid" Style="{DynamicResource DataGridStyle1}">
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" Binding="{Binding VisitID}"/>
+                                        <DataGridTextColumn Header="Date" Binding="{Binding TimeStamp}" IsReadOnly="True" Width="25*"/>
+                                        <DataGridTextColumn Header="Type" Binding="{Binding Type}" IsReadOnly="True" Width="30*"/>
+                                        <DataGridTemplateColumn Header="" IsReadOnly="True" Width="auto">
+                                            <DataGridTemplateColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <Button Name="view" Style="{StaticResource gridEditButton}" Click="viewVisitClick">
+                                                            <Icon:PackIconMaterial Kind="EyeCircleOutline" Style="{StaticResource gridButtonIcon}"/>
+                                                        </Button>
+                                                        <!--<Button Margin="5 0 0 0" Style="{StaticResource gridRemoveButton}">
                     <Icon:PackIconMaterial Kind="DeleteOutline" Style="{StaticResource gridButtonIcon}"/>
                 </Button>-->
-                                                </StackPanel>
-                                            </DataTemplate>
-                                        </DataGridTemplateColumn.CellTemplate>
-                                    </DataGridTemplateColumn>
-                                </DataGrid.Columns>
-                            </DataGrid>
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </DataGridTemplateColumn.CellTemplate>
+                                        </DataGridTemplateColumn>
+                                    </DataGrid.Columns>
+                                </DataGrid>
                             </ScrollViewer>
 
                         </Border>
@@ -232,7 +242,7 @@
 
                     </Grid>
                 </Border>
-                
+
                 <!--Active visit-->
                 <Border Grid.Column="1" Grid.Row="2" Style="{StaticResource theBorder}" Background="{StaticResource darkerColor}" >
                     <Grid>
@@ -292,33 +302,33 @@
                                     <ColumnDefinition Width="15*"/>
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Text="Medical records" FontSize="18" FontWeight="Bold" Foreground="{StaticResource lightFontColor}" Margin="18 10" Grid.Column="0"/>
-                                <Icon:PackIconMaterial MouseDown="newMedicalRecord" Kind="PlusBox" Foreground="{StaticResource lightFontColor}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Width="25" Height="25"/>
+                                <Icon:PackIconMaterial MouseDown="newMedicalRecord" Kind="PlusBox" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Center" Width="25" Height="26" Margin="2,0,0,0" Grid.Column="1"/>
                             </Grid>
 
                             <Border Grid.Column="1" Background="{StaticResource lighterColor}" Grid.Row="1" CornerRadius="10" Margin="10 0 10 10">
                                 <ScrollViewer VerticalScrollBarVisibility="Auto" >
-                                <DataGrid Margin="5" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="medicalRecordsDataGrid" Style="{DynamicResource DataGridStyle1}">
-                                    <DataGrid.Columns>
-                                        <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="15*" Binding="{Binding RecordID}"/>
-                                        <DataGridTextColumn Header="Type" Binding="{Binding Type}" IsReadOnly="True" Width="25*"/>
-                                        <DataGridTextColumn Header="Date" Binding="{Binding TimeStamp}" IsReadOnly="True" Width="30*"/>
-                                        <!--<DataGridTextColumn Header="Description" Binding="{Binding PhysicianNotes}" IsReadOnly="True" Width="40*"/>-->
-                                        <DataGridTemplateColumn Header="" IsReadOnly="True" Width="auto">
-                                            <DataGridTemplateColumn.CellTemplate>
-                                                <DataTemplate>
-                                                    <StackPanel Orientation="Horizontal">
-                                                        <Button Name="view" Style="{StaticResource gridEditButton}" Click="viewRecord_Click">
-                                                            <Icon:PackIconMaterial Kind="EyeCircleOutline" Style="{StaticResource gridButtonIcon}"/>
-                                                        </Button>
-                                                        <!--<Button Margin="5 0 0 0" Style="{StaticResource gridRemoveButton}">
+                                    <DataGrid Margin="5" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="medicalRecordsDataGrid" Style="{DynamicResource DataGridStyle1}">
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" Binding="{Binding RecordID}"/>
+                                            <DataGridTextColumn Header="Type" Binding="{Binding Type}" IsReadOnly="True" Width="25*"/>
+                                            <DataGridTextColumn Header="Date" Binding="{Binding TimeStamp}" IsReadOnly="True" Width="30*"/>
+                                            <!--<DataGridTextColumn Header="Description" Binding="{Binding PhysicianNotes}" IsReadOnly="True" Width="40*"/>-->
+                                            <DataGridTemplateColumn Header="" IsReadOnly="True" Width="auto">
+                                                <DataGridTemplateColumn.CellTemplate>
+                                                    <DataTemplate>
+                                                        <StackPanel Orientation="Horizontal">
+                                                            <Button Name="view" Style="{StaticResource gridEditButton}" Click="viewRecord_Click">
+                                                                <Icon:PackIconMaterial Kind="EyeCircleOutline" Style="{StaticResource gridButtonIcon}"/>
+                                                            </Button>
+                                                            <!--<Button Margin="5 0 0 0" Style="{StaticResource gridRemoveButton}">
                     <Icon:PackIconMaterial Kind="DeleteOutline" Style="{StaticResource gridButtonIcon}"/>
                 </Button>-->
-                                                    </StackPanel>
-                                                </DataTemplate>
-                                            </DataGridTemplateColumn.CellTemplate>
-                                        </DataGridTemplateColumn>
-                                    </DataGrid.Columns>
-                                </DataGrid>
+                                                        </StackPanel>
+                                                    </DataTemplate>
+                                                </DataGridTemplateColumn.CellTemplate>
+                                            </DataGridTemplateColumn>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
 
                                 </ScrollViewer>
                             </Border>
@@ -364,7 +374,7 @@
                                     <ColumnDefinition Width="15*"/>
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Text="Notes" FontSize="18" Foreground="{StaticResource lightFontColor}" FontWeight="Bold" Margin="18 10" Grid.Column="0"/>
-                                <Icon:PackIconMaterial Kind="ClipboardEdit" Foreground="{StaticResource lightFontColor}" Grid.Column="1" VerticalAlignment="Center" Width="25" MouseDown="enableNotes" Height="25" Margin="5,0,0,0"/>
+                                <Icon:PackIconMaterial Kind="ClipboardEdit" Foreground="{StaticResource lightFontColor}" Grid.Column="1" VerticalAlignment="Center" Width="25" MouseDown="enableNotes" Height="26" Margin="1,0,0,0"/>
                             </Grid>
 
                             <Border Grid.Column="1" Background="{StaticResource lighterColor}" Grid.Row="1" CornerRadius="10" Margin="10 0 10 10">
@@ -381,7 +391,7 @@
 
 
                 <!--Main Middle Chart Section-->
-                <Border Grid.ColumnSpan="1" Grid.RowSpan="2" CornerRadius="18" Margin="10,0,10,10" Grid.Row="1" Background="{StaticResource lighterColor}">
+                <Border Grid.ColumnSpan="1" Grid.RowSpan="2" CornerRadius="18" Margin="10,0,10,20" Grid.Row="1" Background="{StaticResource lighterColor}">
 
                     <Grid>
                         <Grid.RowDefinitions>
@@ -395,16 +405,16 @@
 
                         <!--Titles-->
                         <TextBlock Text="Patient Progress" Foreground="{StaticResource lightFontColor}" FontSize="18" FontWeight="SemiBold" Margin="35 25 0 0"/>
-                        <TextBlock Text="Monthly" Foreground="{StaticResource lightFontColor}" FontSize="16" FontWeight="SemiBold" Margin="0 27 35 0" HorizontalAlignment="Right"/>
+                        <TextBlock Text="Monthly" Foreground="{StaticResource lightFontColor}" Name="monthlyWeeklyTB" MouseDown="monthlyWeekly" FontSize="16" FontWeight="SemiBold" Margin="0 27 35 0" HorizontalAlignment="Right"/>
 
 
                         <!--Main Chart-->
-                        <lvc:CartesianChart LegendLocation="None" Margin="10">
+                        <!--<lvc:CartesianChart LegendLocation="None" Margin="10">
                             <lvc:CartesianChart.ToolTip>
                                 <lvc:DefaultTooltip Background="{StaticResource darkerColor}" Foreground="{StaticResource lightFontColor}" BulletSize="0"/>
                             </lvc:CartesianChart.ToolTip>
 
-                            <!--X Axis-->
+                            --><!--X Axis--><!--
                             <lvc:CartesianChart.AxisX>
                                 <lvc:Axis Foreground="{StaticResource lighterColor}" FontSize="14" ShowLabels="True" Labels="Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec">
                                     <lvc:Axis.Separator>
@@ -413,11 +423,11 @@
                                 </lvc:Axis>
                             </lvc:CartesianChart.AxisX>
 
-                            <!--Y Axis-->
+                            --><!--Y Axis--><!--
                             <lvc:CartesianChart.AxisY>
-                                <lvc:Axis ShowLabels="False" MinValue="0" MaxValue="170">
+                                <lvc:Axis Title="Severity" ShowLabels="False" MinValue="0" MaxValue="50">
                                     <lvc:Axis.Separator>
-                                        <lvc:Separator StrokeThickness="0"/>
+                                        <lvc:Separator StrokeThickness="1"/>
                                     </lvc:Axis.Separator>
                                 </lvc:Axis>
                             </lvc:CartesianChart.AxisY>
@@ -435,19 +445,28 @@
                             </lvc:CartesianChart.Series>
 
 
-                        </lvc:CartesianChart>
-                        <Grid Grid.Row="1" Margin="10 18 10 15">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
+                        </lvc:CartesianChart>-->
 
-                            <!--Text Info Cards-->
-                            <!--uc:TextInfo TextTop="Total Time" TextMiddle="748 Hr" TextBottom="April" IsActive="False"/-->
-                            <!--uc:TextInfo TextTop="Total Steps" TextMiddle="9.178 St" TextBottom="April" IsActive="True" Grid.Column="1"/-->
-                            <!--uc:TextInfo TextTop="Target" TextMiddle="9180 St" TextBottom="April" IsActive="False" Grid.Column="2"/-->
-                        </Grid>
+
+                        <lvc:CartesianChart Series="{Binding SeriesCollection}" LegendLocation="Right" Margin="10 50 10 10" >
+                            <lvc:CartesianChart.ToolTip>
+                                <lvc:DefaultTooltip Background="{StaticResource darkerColor}" Foreground="{StaticResource lightFontColor}" BulletSize="0"/>
+                            </lvc:CartesianChart.ToolTip>
+                            <lvc:CartesianChart.AxisY>
+                                <lvc:Axis LabelFormatter="{Binding YFormatter}" MinValue="0" MaxValue="10">
+                                    <lvc:Axis.Separator>
+                                        <lvc:Separator IsEnabled="False" Step="1"/>
+                                    </lvc:Axis.Separator>
+                                </lvc:Axis>
+                            </lvc:CartesianChart.AxisY>
+                            <lvc:CartesianChart.AxisX>
+                                <lvc:Axis Title="Month" Labels="{Binding Labels}" LabelsRotation="135">
+                                    <lvc:Axis.Separator>
+                                        <lvc:Separator IsEnabled="False" Step="1"/>
+                                    </lvc:Axis.Separator>
+                                </lvc:Axis>
+                            </lvc:CartesianChart.AxisX>
+                        </lvc:CartesianChart>
 
 
                     </Grid>

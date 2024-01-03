@@ -122,17 +122,9 @@
                                Margin="25 15 0 5" />
 
                     <!--Person Items-->
-                    <ScrollViewer VerticalScrollBarVisibility="Visible" MinHeight="200">
-                        <StackPanel Name="chatStack">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" MinHeight="200">
+                        <StackPanel Name="chatStack"/>
 
-
-                            <uc:chatItem Title="el Campeon del Mundo"
-                             Image="/images/messi.png"
-                             Message="Soy mejor grande del mundo"
-                             Color="#5AC795"
-                             TagName="BM"
-                             MessageCount="3" />
-                        </StackPanel>
                     </ScrollViewer>
                 </StackPanel>
             </Grid>

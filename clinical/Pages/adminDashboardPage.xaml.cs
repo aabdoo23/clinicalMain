@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Collections.Generic;
+using MySqlX.XDevAPI.Common;
 
 namespace clinical.Pages
 {
@@ -23,6 +24,7 @@ namespace clinical.Pages
         {
             physiciansDataGrid.ItemsSource = DB.GetAllPhysiotherapists();
             employeesDataGrid.ItemsSource= DB.GetAllEmployees();
+            hereNowDataGrid.ItemsSource=DB.GetAllUserswRecordsByDate(DateTime.Now);
             List<Visit> todayVisits = DB.GetTodayVisits();
 
             foreach (Visit v in todayVisits)
@@ -84,6 +86,22 @@ namespace clinical.Pages
             Visit selectedVisit = (Visit)todayAppointmentsDataGrid.SelectedItem;
             visit window = new visit(selectedVisit);
             NavigationService.Navigate(window);
+        }
+
+        private void deleteUser(object sender, RoutedEventArgs e)
+        {
+            User selectedUser=(User)employeesDataGrid.SelectedItem;
+            if (selectedUser == null)
+            {
+                selectedUser = (User)physiciansDataGrid.SelectedItem;
+            }
+            MessageBoxResult result=MessageBox.Show($"Are you sure you want to delete {selectedUser.FirstName} {selectedUser.LastName} ?","Delete User",MessageBoxButton.YesNoCancel);
+            if (result == MessageBoxResult.Yes)
+            {
+                DB.DeleteUser(selectedUser.UserID);
+                MessageBox.Show($"{selectedUser.FirstName} data has been deleted successfully.");
+            }
+
         }
     }
 }

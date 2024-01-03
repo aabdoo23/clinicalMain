@@ -43,13 +43,13 @@
             <TextBlock TextWrapping="Wrap" Grid.Row="0" Grid.Column="2" Text="*Last Name:" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{StaticResource lightFontColor}" FontSize="18" FontWeight="Bold"/>
             <TextBlock TextWrapping="Wrap" Grid.Row="0" Grid.Column="4" Text="*Age:" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{StaticResource lightFontColor}" FontSize="17" FontWeight="Bold"/>
 
-            <TextBox Name="ageTextBox" Foreground="{StaticResource darkerColor}" VerticalAlignment="Center" Grid.Column="5" Grid.Row="0" Margin="-15 0 5 0" Background="{StaticResource lightFontColor}"/>
+            <TextBox Name="ageTextBox" Foreground="{StaticResource darkerColor}" VerticalAlignment="Center" Grid.Column="5" Grid.Row="0" Margin="-10 0 5 0" Background="{StaticResource lightFontColor}"/>
 
-            <TextBox Name="firstNameTextBox" Grid.Column="1" Margin="-20 15 -10 15" Background="{StaticResource lightFontColor}" Foreground="{StaticResource darkerColor}"/>
-            <TextBox Name="lastNameTextBox" Foreground="{StaticResource darkerColor}" Grid.Column="3" Margin="-10 15 -10 15" Background="{StaticResource lightFontColor}"/>
+            <TextBox Name="firstNameTextBox" Grid.Column="1" Margin="-20 10 -10 10" Background="{StaticResource lightFontColor}" Foreground="{StaticResource darkerColor}"/>
+            <TextBox Name="lastNameTextBox" Foreground="{StaticResource darkerColor}" Grid.Column="3" Margin="-10 10 -10 10" Background="{StaticResource lightFontColor}"/>
 
             <TextBlock TextWrapping="Wrap" Grid.Row="1" Grid.Column="3" Text="*Gender:" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{StaticResource lightFontColor}" FontSize="18" FontWeight="Bold"/>
-            <Viewbox Margin="15" Grid.Column="4" Grid.Row="1" >
+            <Viewbox Margin="10" Grid.Column="4" Grid.Row="1" >
                 <RadioButton Name="maleRB" Content="Male" Foreground="{StaticResource lightFontColor}" GroupName="genderGroup" IsChecked="True"/>
             </Viewbox>
             <Viewbox Margin="7" Grid.Column="5" Grid.Row="1" >
@@ -57,25 +57,25 @@
             </Viewbox>
 
             <TextBlock TextWrapping="Wrap" Grid.Row="2" Grid.Column="0"  Text="Address:" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{StaticResource lightFontColor}" FontSize="18" FontWeight="Bold"/>
-            <TextBox Name="addressTextBox" Foreground="{StaticResource darkerColor}" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" Margin="-10 15 -10 15" Background="{StaticResource lightFontColor}"/>
+            <TextBox Name="addressTextBox" Foreground="{StaticResource darkerColor}" Grid.Column="1" Grid.Row="2" Grid.ColumnSpan="2" Margin="-10 10 -10 10" Background="{StaticResource lightFontColor}"/>
 
             <TextBlock TextWrapping="Wrap" Grid.Row="2" Grid.Column="3"  Text="Email:" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{StaticResource lightFontColor}" FontSize="18" FontWeight="Bold"/>
-            <TextBox Name="emailTextBox" Foreground="{StaticResource darkerColor}" Grid.Column="4" Grid.Row="2" Grid.ColumnSpan="2" Margin="-10 15 10 15" Background="{StaticResource lightFontColor}"/>
+            <TextBox Name="emailTextBox" Foreground="{StaticResource darkerColor}" Grid.Column="4" Grid.Row="2" Grid.ColumnSpan="2" Margin="-10 10 10 10" Background="{StaticResource lightFontColor}"/>
 
-            <TextBlock TextWrapping="Wrap" Grid.Row="5" Grid.Column="0" Text="Referring Physician:" Grid.ColumnSpan="1" VerticalAlignment="Center" Margin="10 -15 -5 5" Foreground="{StaticResource lightFontColor}" FontSize="15" FontWeight="Bold"/>
-            <TextBox Name="referringTextBox" Foreground="{StaticResource darkerColor}"  Grid.Column="1" Grid.Row="5" Margin="10 0 10 15" VerticalAlignment="Center" Grid.ColumnSpan="2" Background="{StaticResource lightFontColor}" />
+            <TextBlock TextWrapping="Wrap" Grid.Row="5" Grid.Column="0" Text="Referring Physician:" Grid.ColumnSpan="1" VerticalAlignment="Center" Margin="10 -10 -5 5" Foreground="{StaticResource lightFontColor}" FontSize="15" FontWeight="Bold"/>
+            <TextBox Name="referringTextBox" Foreground="{StaticResource darkerColor}"  Grid.Column="1" Grid.Row="5" Margin="10 0 10 10" VerticalAlignment="Center" Grid.ColumnSpan="2" Background="{StaticResource lightFontColor}" />
 
-            <TextBlock TextWrapping="Wrap" Grid.Row="6" Grid.Column="0" Text="Phone Number:" Grid.ColumnSpan="1" VerticalAlignment="Center" Margin="10 -15 -5 5" Foreground="{StaticResource lightFontColor}" FontSize="15" FontWeight="Bold"/>
-            <TextBox Name="referringPNTextBox" Foreground="{StaticResource darkerColor}"  Grid.Column="1" Grid.Row="6" Margin="10 0 10 15" VerticalAlignment="Center" Grid.ColumnSpan="2" Background="{StaticResource lightFontColor}" />
+            <TextBlock TextWrapping="Wrap" Grid.Row="6" Grid.Column="0" Text="Phone Number:" Grid.ColumnSpan="1" VerticalAlignment="Center" Margin="10 -10 -5 5" Foreground="{StaticResource lightFontColor}" FontSize="15" FontWeight="Bold"/>
+            <TextBox Name="referringPNTextBox" Foreground="{StaticResource darkerColor}"  Grid.Column="1" Grid.Row="6" Margin="10 0 10 10" VerticalAlignment="Center" Grid.ColumnSpan="2" Background="{StaticResource lightFontColor}" />
 
             <TextBlock TextWrapping="Wrap" Grid.Row="1" Grid.Column="0" Text="*Phone Number:" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{StaticResource lightFontColor}" FontSize="18" FontWeight="Bold"/>
-            <TextBox Name="phoneTextBox" Foreground="{StaticResource darkerColor}" Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="1" Margin="-40 15 10 15" Background="{StaticResource lightFontColor}"/>
+            <TextBox Name="phoneTextBox" Foreground="{StaticResource darkerColor}" Grid.Column="2" Grid.Row="1" Grid.ColumnSpan="1" Margin="-40 10 10 10" Background="{StaticResource lightFontColor}"/>
 
             <TextBlock TextWrapping="Wrap" Grid.Row="3" Grid.Column="0" Text="*Height:" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{StaticResource lightFontColor}" FontSize="18" FontWeight="Bold"/>
-            <TextBox Name="heightTextBox" Foreground="{StaticResource darkerColor}" Grid.Column="0" Grid.Row="3" Margin="78,17,50,13" Background="{StaticResource lightFontColor}" Grid.ColumnSpan="2"/>
+            <TextBox Name="heightTextBox" Foreground="{StaticResource darkerColor}" Grid.Column="0" Grid.Row="3" Margin="78,10,50,10" Background="{StaticResource lightFontColor}" Grid.ColumnSpan="2"/>
 
             <TextBlock TextWrapping="Wrap" Margin="0 0 -25 0" Grid.Row="3" Grid.Column="1" Text="*Weight:" VerticalAlignment="Center" HorizontalAlignment="Right" Foreground="{StaticResource lightFontColor}" FontSize="17" FontWeight="Bold"/>
-            <TextBox Name="weightTextBox" Foreground="{StaticResource darkerColor}" Grid.Column="2" Grid.Row="3" Margin="31,17,5,13" Background="{StaticResource lightFontColor}"/>
+            <TextBox Name="weightTextBox" Foreground="{StaticResource darkerColor}" Grid.Column="2" Grid.Row="3" Margin="31,10,5,10" Background="{StaticResource lightFontColor}"/>
 
 
             <!--Chronic-->
@@ -97,49 +97,51 @@
                         <RowDefinition Height="1*"/>
                         <RowDefinition Height="1*"/>
                     </Grid.RowDefinitions>
-                    <Label Content="Chronic diseases" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="15" FontWeight="Bold" Margin="0,-2,0,0"/>
-                    <Label Content="Selected diseases" Grid.Row="6" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="15" FontWeight="Bold" Margin="0,0,0,0"/>
-                    <TextBox Name="searchChronicDiseaseTXTBOX" Foreground="{StaticResource darkerColor}" TextAlignment="Center" Grid.Column="0" Grid.Row="1" Margin="5" Background="{StaticResource lightFontColor}" />
+                    <Label Content="Chronic diseases" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="16" FontWeight="Bold" Margin="0,-2,0,0" TextBlock.FontSize="15"/>
+                    <Label Content="Selected diseases" Grid.Row="6" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="16" FontWeight="Bold" Margin="0,0,0,0" TextBlock.FontSize="15"/>
+                    <TextBox Name="searchChronicDiseaseTXTBOX" Foreground="{StaticResource darkerColor}" Grid.Column="0" Grid.Row="1" Margin="5" Background="{StaticResource lightFontColor}" />
 
                     <Border Style="{StaticResource theBorder}"  BorderBrush="{StaticResource lighterColor}" BorderThickness="2" CornerRadius="5" Margin="3" Grid.Row="2" Grid.ColumnSpan="3" Grid.RowSpan="4" Grid.Column="0">
-
-                        <DataGrid Grid.Row="2" Grid.RowSpan="6" Grid.ColumnSpan="2" Margin="10" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="allChronicsDataGrid" Style="{DynamicResource DataGridStyle1}">
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" Binding="{Binding ChronicDiseaseID}"/>
-                                <DataGridTextColumn Header="Name" Binding="{Binding ChronicDiseaseName}" IsReadOnly="True" Width="*"/>
-                                <DataGridTemplateColumn Header="Action" IsReadOnly="True" Width="auto">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <StackPanel Orientation="Horizontal">
-                                                <Button Name="view" Style="{StaticResource gridEditButton}" Click="addChronic">
-                                                    <Icon:PackIconMaterial Kind="PlusBox" Style="{StaticResource gridButtonIcon}"/>
-                                                </Button>
-                                            </StackPanel>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-                            </DataGrid.Columns>
-                        </DataGrid>
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <DataGrid Grid.Row="2" Grid.RowSpan="6" Grid.ColumnSpan="2" Margin="10" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" Name="allChronicsDataGrid" Style="{DynamicResource DataGridStyle1}">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" Binding="{Binding ChronicDiseaseID}"/>
+                                    <DataGridTextColumn Header="Name" Binding="{Binding ChronicDiseaseName}" IsReadOnly="True" Width="*"/>
+                                    <DataGridTemplateColumn Header="Action" IsReadOnly="True" Width="auto">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Button Name="view" Style="{StaticResource gridEditButton}" Click="addChronic">
+                                                        <Icon:PackIconMaterial Kind="PlusBox" Style="{StaticResource gridButtonIcon}"/>
+                                                    </Button>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </ScrollViewer>
                     </Border>
                     <Border Style="{StaticResource theBorder}"  BorderBrush="{StaticResource lighterColor}" BorderThickness="2" CornerRadius="5" Margin="3" Grid.Row="7" Grid.ColumnSpan="3" Grid.RowSpan="6" Grid.Column="0">
-
-                        <DataGrid Grid.Row="2" Grid.RowSpan="6" Grid.ColumnSpan="2" Margin="10" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="selectedChronicsDataGrid" Style="{DynamicResource DataGridStyle1}">
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" Binding="{Binding ChronicDiseaseID}"/>
-                                <DataGridTextColumn Header="Name" Binding="{Binding ChronicDiseaseName}" IsReadOnly="True" Width="*"/>
-                                <DataGridTemplateColumn Header="Action" IsReadOnly="True" Width="auto">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <StackPanel Orientation="Horizontal">
-                                                <Button Name="view" Style="{StaticResource gridRemoveButton}" Click="removeChronic">
-                                                    <Icon:PackIconMaterial Kind="MinusBox" Style="{StaticResource gridButtonIcon}"/>
-                                                </Button>
-                                            </StackPanel>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-                            </DataGrid.Columns>
-                        </DataGrid>
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <DataGrid Grid.Row="2" Grid.RowSpan="6" Grid.ColumnSpan="2" Margin="10" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" Name="selectedChronicsDataGrid" Style="{DynamicResource DataGridStyle1}">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" Binding="{Binding ChronicDiseaseID}"/>
+                                    <DataGridTextColumn Header="Name" Binding="{Binding ChronicDiseaseName}" IsReadOnly="True" Width="*"/>
+                                    <DataGridTemplateColumn Header="Action" IsReadOnly="True" Width="auto">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Button Name="view" Style="{StaticResource gridRemoveButton}" Click="removeChronic">
+                                                        <Icon:PackIconMaterial Kind="MinusBox" Style="{StaticResource gridButtonIcon}"/>
+                                                    </Button>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </ScrollViewer>
                     </Border>
 
 
@@ -148,7 +150,7 @@
 
 
             <Border Grid.Column="3" Grid.Row="3" Style="{StaticResource theBorder}" Grid.ColumnSpan="3" Margin="10 0" CornerRadius="5"/>
-            <TextBlock TextWrapping="Wrap" Grid.Row="3" Grid.Column="3" Text="Package:" Grid.ColumnSpan="1" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="18,0,0,0" Foreground="{StaticResource lightFontColor}" FontSize="15" FontWeight="Bold"/>
+            <TextBlock TextWrapping="Wrap" Grid.Row="3" Grid.Column="3" Text="Package:" Grid.ColumnSpan="1" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="18,0,0,0" Foreground="{StaticResource lightFontColor}" FontSize="16" FontWeight="Bold"/>
 
             <ComboBox Name="packagesCB" Grid.Row="3" Grid.Column="4" Margin="10,10,20,10" Grid.ColumnSpan="2" FontSize="12" HorizontalContentAlignment="Left"></ComboBox>
 
@@ -171,68 +173,70 @@
                         <RowDefinition Height="1*"/>
                         <RowDefinition Height="1*"/>
                     </Grid.RowDefinitions>
-                    <Label Content="Previous Injuries" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="15" FontWeight="Bold" Margin="0,-2,0,0"/>
-                    <Label Content="Selected Injuries" Grid.Row="6" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="15" FontWeight="Bold"/>
-                    <TextBox Name="searchInjuriesTXTBOX" Foreground="{StaticResource darkerColor}" TextAlignment="Center" Grid.Column="0" Grid.Row="1" Margin="5" Background="{StaticResource lightFontColor}" />
-                    
-                    <Border Style="{StaticResource theBorder}"  BorderBrush="{StaticResource lighterColor}" BorderThickness="2" CornerRadius="5" Margin="3" Grid.Row="2" Grid.ColumnSpan="3" Grid.RowSpan="4" Grid.Column="0">
+                    <Label Content="Previous Injuries" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="16" FontWeight="Bold" Margin="0,-2,0,0" TextBlock.FontSize="15"/>
+                    <Label Content="Selected Injuries" Grid.Row="6" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Top" HorizontalAlignment="Left" FontSize="16" FontWeight="Bold" TextBlock.FontSize="15"/>
+                    <TextBox Name="searchInjuriesTXTBOX" Foreground="{StaticResource darkerColor}" Grid.Column="0" Grid.Row="1" Margin="5" Background="{StaticResource lightFontColor}" />
 
-                        <DataGrid Grid.Row="2" Grid.RowSpan="6" Grid.ColumnSpan="2" Margin="10" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="allInjuriesDataGrid" Style="{DynamicResource DataGridStyle1}">
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" Binding="{Binding InjuryID}"/>
-                                <DataGridTextColumn Header="Name" Binding="{Binding InjuryName}" IsReadOnly="True" Width="*"/>
-                                <DataGridTemplateColumn Header="Action" IsReadOnly="True" Width="auto">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <StackPanel Orientation="Horizontal">
-                                                <Button Name="view" Style="{StaticResource gridEditButton}" Click="addInjury">
-                                                    <Icon:PackIconMaterial Kind="PlusBox" Style="{StaticResource gridButtonIcon}"/>
-                                                </Button>
-                                            </StackPanel>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-                            </DataGrid.Columns>
-                        </DataGrid>
+                    <Border Style="{StaticResource theBorder}"  BorderBrush="{StaticResource lighterColor}" BorderThickness="2" CornerRadius="5" Margin="3" Grid.Row="2" Grid.ColumnSpan="3" Grid.RowSpan="4" Grid.Column="0">
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <DataGrid Grid.Row="2" Grid.RowSpan="6" Grid.ColumnSpan="2" Margin="10" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" Name="allInjuriesDataGrid" Style="{DynamicResource DataGridStyle1}">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" Binding="{Binding InjuryID}"/>
+                                    <DataGridTextColumn Header="Name" Binding="{Binding InjuryName}" IsReadOnly="True" Width="*"/>
+                                    <DataGridTemplateColumn Header="Action" IsReadOnly="True" Width="auto">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Button Name="view" Style="{StaticResource gridEditButton}" Click="addInjury">
+                                                        <Icon:PackIconMaterial Kind="PlusBox" Style="{StaticResource gridButtonIcon}"/>
+                                                    </Button>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </ScrollViewer>
                     </Border>
                     <Border Style="{StaticResource theBorder}"  BorderBrush="{StaticResource lighterColor}" BorderThickness="2" CornerRadius="5" Margin="3" Grid.Row="7" Grid.ColumnSpan="3" Grid.RowSpan="6" Grid.Column="0">
-
-                        <DataGrid Grid.Row="2" Grid.RowSpan="6" Grid.ColumnSpan="2" Margin="10" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="selectedInjuriesDataGrid" Style="{DynamicResource DataGridStyle1}">
-                            <DataGrid.Columns>
-                                <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" Binding="{Binding InjuryID}"/>
-                                <DataGridTextColumn Header="Name" Binding="{Binding InjuryName}" IsReadOnly="True" Width="*"/>
-                                <DataGridTemplateColumn Header="Action" IsReadOnly="True" Width="auto">
-                                    <DataGridTemplateColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <StackPanel Orientation="Horizontal">
-                                                <Button Name="view" Style="{StaticResource gridRemoveButton}" Click="removeInjury">
-                                                    <Icon:PackIconMaterial Kind="MinusBox" Style="{StaticResource gridButtonIcon}"/>
-                                                </Button>
-                                            </StackPanel>
-                                        </DataTemplate>
-                                    </DataGridTemplateColumn.CellTemplate>
-                                </DataGridTemplateColumn>
-                            </DataGrid.Columns>
-                        </DataGrid>
+                        <ScrollViewer VerticalScrollBarVisibility="Auto">
+                            <DataGrid Grid.Row="2" Grid.RowSpan="6" Grid.ColumnSpan="2" Margin="10" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" Name="selectedInjuriesDataGrid" Style="{DynamicResource DataGridStyle1}">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" Binding="{Binding InjuryID}"/>
+                                    <DataGridTextColumn Header="Name" Binding="{Binding InjuryName}" IsReadOnly="True" Width="*"/>
+                                    <DataGridTemplateColumn Header="Action" IsReadOnly="True" Width="auto">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Button Name="view" Style="{StaticResource gridRemoveButton}" Click="removeInjury">
+                                                        <Icon:PackIconMaterial Kind="MinusBox" Style="{StaticResource gridButtonIcon}"/>
+                                                    </Button>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </ScrollViewer>
                     </Border>
 
 
                 </Grid>
             </Border>
-            
+
             <Border Grid.Column="3" Grid.Row="12" Style="{StaticResource theBorder}" Grid.ColumnSpan="3" Margin="10 0" CornerRadius="5"/>
             <TextBlock TextWrapping="Wrap" Grid.Row="12" Grid.Column="3" Text="Assign to:" Grid.ColumnSpan="1" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="18,0,0,0" Foreground="{StaticResource lightFontColor}" FontSize="15" FontWeight="Bold"/>
 
             <ComboBox Name="assignedPhys" Grid.Row="12" Grid.Column="4" Margin="10,10,20,10" Grid.ColumnSpan="2" FontSize="12" HorizontalContentAlignment="Left"></ComboBox>
-            
-            
+
+
             <Viewbox Grid.Row="13" Grid.Column="3" Grid.ColumnSpan="2" Margin="10 0 0 0" HorizontalAlignment="Left">
 
                 <CheckBox Name="prevSessionsCB" Content="Previous PhysioTherapy sessions" VerticalAlignment="Center" Foreground="{StaticResource darkerColor}" FontWeight="Bold" FontSize="14"/>
             </Viewbox>
-            <Viewbox Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Margin="10 10 15 15" HorizontalAlignment="Left">
+            <Viewbox Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Margin="10" HorizontalAlignment="Left">
 
-                <CheckBox Name="referredCB" Content="Referred" VerticalAlignment="Center" Foreground="{StaticResource lightFontColor}" FontWeight="Bold" FontSize="15"/>
+                <CheckBox Name="referredCB" Content="Referred" VerticalAlignment="Center" Foreground="{StaticResource lightFontColor}" FontWeight="Bold" FontSize="16"/>
             </Viewbox>
 
             <Border Name="saveBTN" Style="{StaticResource theBorder}" BorderBrush="{StaticResource lightFontColor}" BorderThickness="2" CornerRadius="5" Margin="10" Grid.Row="13" Grid.Column="5" MouseDown="save">

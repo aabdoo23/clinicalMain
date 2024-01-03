@@ -32,6 +32,17 @@ namespace clinical
             return int.Parse(s);
 
         }
+
+        public static int generateNewAttendanceRecordID(int userID)
+        {
+            DateTime dateTime = DateTime.Now;
+            string s = "";
+            s += userID.ToString().Substring(0, 4);
+            s += dateTime.DayOfYear.ToString();
+
+            return int.Parse(s);
+
+        }
         public static int generateNewPatientID()
         {
             DateTime dateTime = DateTime.Now;
@@ -82,13 +93,19 @@ namespace clinical
 
         public static int generateNewPrescriptionID(int visitID, DateTime time)
         {
-            string s = visitID.ToString().Substring(0, 3) + time.Day+time.Second;
+            string s = visitID.ToString().Substring(0, 2) + time.Day+time.Minute+time.Second;
             return Convert.ToInt32(s);
         }
 
         public static int generateNewIssueExerciseID(int prescriptionID,int patientID)
         {
             string s = prescriptionID.ToString().Substring(0, 2)+new Random().Next(99).ToString()+ patientID.ToString().Substring(0, 2)+ new Random().Next(99).ToString();
+            return Convert.ToInt32(s);
+        }
+
+        public static int generateNewTestFeedBackID(int visitID, int patientID)
+        {
+            string s = visitID.ToString().Substring(0, 2) + new Random().Next(99).ToString() + patientID.ToString().Substring(0, 2) + new Random().Next(99).ToString();
             return Convert.ToInt32(s);
         }
 

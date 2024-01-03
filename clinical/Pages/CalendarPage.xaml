@@ -124,7 +124,7 @@
                 <StackPanel Name="visitsStackPanel"/>
 
                 <!--Notes-->
-                <uc:Item Title="Post on social networks" Time="09:45 - 10:30" Color="{StaticResource lightFontColor}" Icon="CheckCircle" IconBell="BellSlash"/>
+                <!--<uc:Item Title="Post on social networks" Time="09:45 - 10:30" Color="{StaticResource lightFontColor}" Icon="CheckCircle" IconBell="BellSlash"/>-->
                 
 
             </StackPanel>

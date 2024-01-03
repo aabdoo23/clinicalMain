@@ -16,8 +16,6 @@ namespace clinical.BaseClasses
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
         public string Address { get; set; }
-        public List<int> ChronicDiseasesIDs { get; set; }
-        public List<int> PreviousInjuriesIDs { get; set; }
         public bool Referred { get; set; }
         public int PhysicianID { get; set; }
         public string PhysicianName { get; set; }
@@ -30,12 +28,9 @@ namespace clinical.BaseClasses
         public int age { get; set; }
         public int ActivePackageID {  get; set; }
 
-        // Constructor
         public Patient(int patientID, string firstName, string lastname, 
             DateTime birthdate, string gender, string phoneNumber, 
             string email, string address, 
-            List<int> chronicDiseasesIDs, 
-            List<int> previousInjuriesIDs, 
             int physicianId,
             bool referred, bool previouslyTreated, double height, 
             double weight, double dueAmount, string refN,string refPN, int activePackageID)
@@ -48,8 +43,6 @@ namespace clinical.BaseClasses
             PhoneNumber = phoneNumber;
             Email = email;
             Address = address;
-            ChronicDiseasesIDs = chronicDiseasesIDs;
-            PreviousInjuriesIDs = previousInjuriesIDs;
             PhysicianID = physicianId;
             Referred = referred;
             PreviouslyTreated = previouslyTreated;
@@ -75,27 +68,5 @@ namespace clinical.BaseClasses
             return age;
         }
         
-
-        public string chronics()
-        {
-            string s="";
-            foreach(int i in ChronicDiseasesIDs)
-            {
-                s += i.ToString();
-                s += ", ";
-            }
-            return s;
-        }
-
-        public string injuries()
-        {
-            string s = "";
-            foreach (int i in PreviousInjuriesIDs)
-            {
-                s += i.ToString();
-                s += ", ";
-            }
-            return s;
-        }
     }
 }

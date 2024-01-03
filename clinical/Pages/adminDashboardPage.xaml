@@ -4,6 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:clinical.Pages" xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
+      xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
       mc:Ignorable="d" 
       d:DesignHeight="768" d:DesignWidth="1160"
       Title="PatientSearchPage">
@@ -12,19 +13,22 @@
     </Page.Resources>
     <Grid Margin="10">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="45*"/>
+            <ColumnDefinition Width="50*"/>
             <ColumnDefinition Width="55*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="50*"/>
+            <RowDefinition Height="30*"/>
             <RowDefinition Height="10*"/>
-            <RowDefinition Height="40*"/>
+            <RowDefinition Height="10*"/>
+            <RowDefinition Height="30*"/>
+            <RowDefinition Height="10*"/>
+            <RowDefinition Height="30*"/>
         </Grid.RowDefinitions>
         <!--Physicians-->
-        <Border Style="{StaticResource theBorder}">
+        <Border Style="{StaticResource theBorder}" Grid.RowSpan="2">
             <Grid Margin="10">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="17*"/>
+                    <RowDefinition Height="45"/>
                     <RowDefinition Height="87*"/>
                 </Grid.RowDefinitions>
                 <TextBlock Text="Physicians" Margin="5" VerticalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource lightFontColor}" FontSize="25"/>
@@ -42,7 +46,7 @@
                                         <Button Name="view" Style="{StaticResource gridEditButton}" Click="viewPhysician">
                                             <Icon:PackIconMaterial Kind="EyeCircleOutline" Style="{StaticResource gridButtonIcon}"/>
                                         </Button>
-                                        <Button Margin="5 0 0 0" Style="{StaticResource gridRemoveButton}" Click="deleteClick">
+                                        <Button Margin="5 0 0 0" Style="{StaticResource gridRemoveButton}" Click="deleteUser">
                                             <Icon:PackIconMaterial Kind="DeleteOutline" Style="{StaticResource gridButtonIcon}"/>
                                         </Button>
                                     </StackPanel>
@@ -55,10 +59,10 @@
             </Grid>
         </Border>
         <!--Physicians-->
-        <Border Grid.Row="1" Margin="10" Grid.RowSpan="2" Style="{StaticResource theBorder}">
+        <Border Grid.Row="2" Margin="10" Grid.RowSpan="2" Style="{StaticResource theBorder}">
             <Grid Margin="10">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="17*"/>
+                    <RowDefinition Height="45"/>
                     <RowDefinition Height="87*"/>
                 </Grid.RowDefinitions>
                 <TextBlock Text="Employees" Margin="5" VerticalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource lightFontColor}" FontSize="25"/>
@@ -77,7 +81,7 @@
                                         <Button Name="view" Style="{StaticResource gridEditButton}" Click="view_Click">
                                             <Icon:PackIconMaterial Kind="EyeCircleOutline" Style="{StaticResource gridButtonIcon}"/>
                                         </Button>
-                                        <Button Margin="5 0 0 0" Style="{StaticResource gridRemoveButton}">
+                                        <Button Margin="5 0 0 0" Style="{StaticResource gridRemoveButton}" Click="deleteUser">
                                             <Icon:PackIconMaterial Kind="DeleteOutline" Style="{StaticResource gridButtonIcon}"/>
                                         </Button>
                                     </StackPanel>
@@ -89,11 +93,12 @@
 
             </Grid>
         </Border>
+
         <!--Today appointments-->
-        <Border Grid.Column="1" Grid.RowSpan="2" Style="{StaticResource theBorder}">
+        <Border Grid.Column="1" Grid.RowSpan="3" Style="{StaticResource theBorder}">
             <Grid Margin="10">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="13*"/>
+                    <RowDefinition Height="45"/>
                     <RowDefinition Height="87*"/>
                 </Grid.RowDefinitions>
                 <TextBlock Text="Today's Appointments" Margin="10 5" VerticalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource lightFontColor}" FontSize="25"/>
@@ -126,21 +131,56 @@
 
             </Grid>
         </Border>
-        <!--Active appointments-->
-        <Border Grid.Column="1" Grid.Row="2" Grid.RowSpan="2" Style="{StaticResource theBorder}" Margin="10" >
+        
+        <!--Financial summary-->
+        <Border Grid.Column="1" Grid.Row="3" Grid.RowSpan="3" Style="{StaticResource theBorder}" Margin="10" >
             <Grid Margin="10">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="20*"/>
+                    <RowDefinition Height="45"/>
                     <RowDefinition Height="87*"/>
                 </Grid.RowDefinitions>
                 <TextBlock Text="Financial summary" Margin="5" VerticalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource lightFontColor}" FontSize="25"/>
 
-                <DataGrid Grid.Row="1" Margin="10" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="financialDataGrid" Style="{DynamicResource DataGridStyle1}">
+                <lvc:CartesianChart Series="{Binding SeriesCollection}" Grid.Row="1" LegendLocation="Right" Margin="10" >
+                    <lvc:CartesianChart.ToolTip>
+                        <lvc:DefaultTooltip Background="{StaticResource darkerColor}" Foreground="{StaticResource lightFontColor}" BulletSize="0"/>
+                    </lvc:CartesianChart.ToolTip>
+                    <lvc:CartesianChart.AxisY>
+                        <lvc:Axis LabelFormatter="{Binding YFormatter}" MinValue="0" MaxValue="10">
+                            <lvc:Axis.Separator>
+                                <lvc:Separator IsEnabled="False" Step="1"/>
+                            </lvc:Axis.Separator>
+                        </lvc:Axis>
+                    </lvc:CartesianChart.AxisY>
+                    <lvc:CartesianChart.AxisX>
+                        <lvc:Axis Title="Month" Labels="{Binding Labels}" LabelsRotation="135">
+                            <lvc:Axis.Separator>
+                                <lvc:Separator IsEnabled="False" Step="1"/>
+                            </lvc:Axis.Separator>
+                        </lvc:Axis>
+                    </lvc:CartesianChart.AxisX>
+                </lvc:CartesianChart>
+
+
+            </Grid>
+        </Border>
+
+
+        <!--Attendance-->
+        <Border Grid.Row="4" Margin="10" Grid.RowSpan="2" Style="{StaticResource theBorder}">
+            <Grid Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="45"/>
+                    <RowDefinition Height="87*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="Users checked in today" Margin="5" VerticalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource lightFontColor}" FontSize="25"/>
+
+                <DataGrid Grid.Row="1" Margin="10" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="hereNowDataGrid" Style="{DynamicResource DataGridStyle1}">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" Binding="{Binding VisitID}"/>
-                        <DataGridTextColumn Header="Record Name" Binding="{Binding PatientName}" IsReadOnly="True" Width="*"/>
-                        <DataGridTextColumn Header="Date" Binding="{Binding Date}" IsReadOnly="True" Width="auto"/>
-                        <DataGridTextColumn Header="Physiotherapist" Binding="{Binding PhysioTherapistName}" IsReadOnly="True" Width="auto"/>
+                        <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" Binding="{Binding UserID}"/>
+                        <DataGridTextColumn Header="Name" Binding="{Binding FirstName}" IsReadOnly="True" Width="*"/>
+                        <DataGridTextColumn Header="Phone Number" Binding="{Binding PhoneNumber}" IsReadOnly="True" Width="*"/>
+                        <DataGridTextColumn Header="Role" Binding="{Binding Role}" IsReadOnly="True" Width="*"/>
                         <DataGridTemplateColumn Header="Details" IsReadOnly="True" Width="auto">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
@@ -148,9 +188,9 @@
                                         <Button Name="view" Style="{StaticResource gridEditButton}" Click="view_Click">
                                             <Icon:PackIconMaterial Kind="EyeCircleOutline" Style="{StaticResource gridButtonIcon}"/>
                                         </Button>
-                                        <!--<Button Margin="5 0 0 0" Style="{StaticResource gridRemoveButton}">
-         <Icon:PackIconMaterial Kind="DeleteOutline" Style="{StaticResource gridButtonIcon}"/>
-     </Button>-->
+                                        <Button Margin="5 0 0 0" Style="{StaticResource gridRemoveButton}" Click="deleteUser">
+                                            <Icon:PackIconMaterial Kind="DeleteOutline" Style="{StaticResource gridButtonIcon}"/>
+                                        </Button>
                                     </StackPanel>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>

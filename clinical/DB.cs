@@ -64,7 +64,7 @@ namespace clinical
 
         }
 
-        public static void DeleteUser(string userID)
+        public static void DeleteUser(int userID)
         {
             using (connection)
             {
@@ -78,10 +78,43 @@ namespace clinical
                         cmd.ExecuteNonQuery();
                     }
                 }
-                catch (Exception ex) { }
+                catch (Exception ex) {
+                    MessageBox.Show(ex.Message);
+                }
             }
         }
 
+        public static List<User> GetAllUserswRecordsByDate(DateTime date)
+        {
+            List<User> users = new List<User>();
+            using (connection)
+            {
+                try
+                {
+                    if (connection.State == ConnectionState.Closed) connection.Open();
+                    using (MySqlCommand cmd = new MySqlCommand("SELECT DISTINCT u.* FROM User u JOIN AttendanceRecord ar ON u.userID = ar.userID WHERE DATE(ar.timeStamp) = DATE(@date)", connection))
+                    {
+                        cmd.Parameters.AddWithValue("@date", date);
+
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                User user = MapUser(reader);
+
+                                users.Add(user);
+                            }
+                        }
+
+                    }
+                }
+                catch (Exception ex) {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+
+            return users;
+        }
         public static List<User> GetAllUsers()
         {
             List<User> users = new List<User>();
@@ -225,6 +258,7 @@ namespace clinical
             return admins;
         }
 
+
         private static User MapUser(MySqlDataReader reader)
         {
             return new User(
@@ -240,6 +274,105 @@ namespace clinical
                 reader["nationalID"].ToString()
             );
         }
+        
+        /// user work days
+        ///////////////////////////////////////////////////////        
+        ///
+
+        public static List<int> GetUserWorkDaysById(int userID)
+        {
+            List<int> days=new List<int>();
+            using (connection)
+            {
+                try
+                {
+                    if (connection.State == ConnectionState.Closed) connection.Open();
+
+                    string query = "SELECT workDay FROM userWorkDayRelation WHERE userID = @userID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@userID", userID);
+
+
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                int d = Convert.ToInt32(reader);
+                                days.Add(d);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+
+                return days;
+
+            }
+        }
+
+        public static void updateUserWorkDays(int userID, List<int> days)
+        {
+            DeleteUserWorkDaysById(userID);
+            foreach(int i in days)
+            {
+                InsertUserWorkDay(userID, i);
+
+            }
+        }
+
+        public static void DeleteUserWorkDaysById(int userID)
+        {
+            using (connection)
+            {
+                try
+                {
+                    if (connection.State == ConnectionState.Closed) connection.Open();
+
+                    string query = "Delete FROM userWorkDayRelation WHERE userID = @userID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@userID", userID);
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+
+
+            }
+        }
+
+        public static void InsertUserWorkDay(int userId, int day)
+        {
+            using (connection)
+            {
+                try
+                {
+                    if (connection.State == ConnectionState.Closed) connection.Open();
+
+                    using (MySqlCommand cmd = new MySqlCommand("INSERT INTO userWorkDayRelation (userID, workDay) VALUES (@userID, @day)", connection))
+                    {
+                        cmd.Parameters.AddWithValue("@userID", userId);
+                        cmd.Parameters.AddWithValue("@day", day);
+                         cmd.ExecuteNonQuery();
+                    }
+                }
+                catch (Exception e) {
+                    MessageBox.Show(e.Message);
+                }
+            }
+
+        }
+        
 
 
         ///<Patient>
@@ -248,30 +381,7 @@ namespace clinical
 
         public static Patient MapPatient(MySqlDataReader reader)
         {
-            List<int> chronicDiseases = new List<int>();
-            //string cIds = reader.GetString("chronicDiseasesIDs");
-            //string[] sc = (cIds.Split(", "));
-            //foreach (string i in sc)
-            //{
-            //    i.Trim();
-            //    chronicDiseases.Add(Convert.ToInt16(i));
-
-            //}
-
-            List<int> injuries = new List<int>();
-
-            //string iIds = reader.GetString("previousInjuriesIDs");
-            //string[] si = (cIds.Split(", "));
-            //foreach (string i in si)
-            //{
-            //    i.Trim();
-            //    chronicDiseases.Add(Convert.ToInt16(i));
-
-            //}
-
-
-
-
+      
             Patient p = new Patient(
                 Convert.ToInt32(reader["patientID"]),
                 reader["firstName"].ToString(),
@@ -281,8 +391,6 @@ namespace clinical
                 reader["phoneNumber"].ToString(),
                 reader["email"].ToString(),
                 reader["address"].ToString(),
-                chronicDiseases,
-                injuries,
                 Convert.ToInt32(reader["physicianID"]),
                 Convert.ToBoolean(reader["referred"]),
                 Convert.ToBoolean(reader["previouslyTreated"]),
@@ -295,7 +403,7 @@ namespace clinical
 
             );
             return p;
-        } ///not done yet
+        } 
         public static Patient GetPatientById(int patientID)
         {
             using (connection)
@@ -418,8 +526,8 @@ namespace clinical
                 {
                     if (connection.State == ConnectionState.Closed) connection.Open();
                     using (MySqlCommand cmd = new MySqlCommand(
-                        "INSERT INTO Patient (patientID, firstName, lastName, birthdate, gender, phoneNumber, email, address, chronicDiseasesIDs, previousInjuriesIDs, referred, previouslyTreated, height, weight, dueAmount, physicianID, referringName, referringPN)" +
-                        "VALUES (@patientID, @firstName, @lastName, @birthdate, @gender, @phoneNumber, @email, @address, @chronicDiseasesIDs, @previousInjuriesIDs, @referred, @previouslyTreated, @height, @weight, @dueAmount, @physicianID, @referringName, @referringPN)", connection))
+                        "INSERT INTO Patient (patientID, firstName, lastName, birthdate, gender, phoneNumber, email, address, referred, previouslyTreated, height, weight, dueAmount, physicianID, referringName, referringPN)" +
+                        "VALUES (@patientID, @firstName, @lastName, @birthdate, @gender, @phoneNumber, @email, @address, @referred, @previouslyTreated, @height, @weight, @dueAmount, @physicianID, @referringName, @referringPN)", connection))
                     {
                         cmd.Parameters.AddWithValue("@patientID", patient.PatientID);
                         cmd.Parameters.AddWithValue("@firstName", patient.FirstName);
@@ -429,8 +537,6 @@ namespace clinical
                         cmd.Parameters.AddWithValue("@phoneNumber", patient.PhoneNumber);
                         cmd.Parameters.AddWithValue("@email", patient.Email);
                         cmd.Parameters.AddWithValue("@address", patient.Address);
-                        cmd.Parameters.AddWithValue("@chronicDiseasesIDs", patient.chronics());
-                        cmd.Parameters.AddWithValue("@previousInjuriesIDs", patient.injuries());
                         cmd.Parameters.AddWithValue("@physicianID", patient.PhysicianID);
                         cmd.Parameters.AddWithValue("@referred", patient.Referred == true);
                         cmd.Parameters.AddWithValue("@previouslyTreated", patient.PreviouslyTreated == true);
@@ -451,6 +557,50 @@ namespace clinical
                 }
             }
         }
+
+        public static void UpdatePatient(Patient patient)
+        {
+            using (connection)
+            {
+                try
+                {
+                    if (connection.State == ConnectionState.Closed) connection.Open();
+
+                    string query = "UPDATE Patient SET firstName = @firstName, lastName = @lastName, birthdate = @birthdate, gender = @gender, phoneNumber=@phoneNumber," +
+                        " email = @email, address = @address, referred = @referred, previouslyTreated = @previouslyTreated" +
+                        ", height = @height, weight = @weight, dueAmount = @dueAmount, physicianID = @physicianID, referringName = @referringName, referringPN = @referringPN WHERE patientID = @patientID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@patientID", patient.PatientID);
+                        command.Parameters.AddWithValue("@firstName", patient.FirstName);
+                        command.Parameters.AddWithValue("@lastName", patient.LastName);
+                        command.Parameters.AddWithValue("@birthdate", patient.Birthdate);
+                        command.Parameters.AddWithValue("@gender", patient.Gender == "Male");
+                        command.Parameters.AddWithValue("@phoneNumber", patient.PhoneNumber);
+                        command.Parameters.AddWithValue("@email", patient.Email);
+                        command.Parameters.AddWithValue("@address", patient.Address);
+                        command.Parameters.AddWithValue("@physicianID", patient.PhysicianID);
+                        command.Parameters.AddWithValue("@referred", patient.Referred == true);
+                        command.Parameters.AddWithValue("@previouslyTreated", patient.PreviouslyTreated == true);
+                        command.Parameters.AddWithValue("@height", patient.Height);
+                        command.Parameters.AddWithValue("@weight", patient.Weight);
+                        command.Parameters.AddWithValue("@dueAmount", patient.DueAmount);
+                        command.Parameters.AddWithValue("@referringName", patient.referringName);
+                        command.Parameters.AddWithValue("@referringPN", patient.referringPN);
+
+                        command.ExecuteNonQuery();
+
+                        MessageBox.Show("Updated.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+        }
+
         public static List<Patient> GetAllPatientsToday()
         {
             List<Patient> patientsToday = new List<Patient>();
@@ -481,6 +631,132 @@ namespace clinical
             }
 
             return patientsToday;
+        }
+
+        public static List<Injury> GetAllInjuriesByPatientID(int patientID)
+        {
+            List<Injury> injuries = new List<Injury>();
+
+            using (connection)
+            {
+                connection.Open();
+
+                string query = "SELECT pir.patientID, pir.injuryID, i.injuryID, i.injuryName, i.injuryLocation, i.severity, i.description " +
+                               "FROM patientInjuryRelation pir " +
+                               "JOIN Injury i ON pir.injuryID = i.injuryID";
+
+                using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                {
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Injury injury = new Injury
+                            (
+                                Convert.ToInt32(reader["injuryID"]),
+                                Convert.ToString(reader["injuryName"]),
+                                Convert.ToString(reader["injuryLocation"]),
+                                Convert.ToInt32(reader["severity"]),
+                                Convert.ToString(reader["description"])
+                            );
+
+                            injuries.Add(injury);
+                        }
+                    }
+                }
+            }
+
+            return injuries;
+        
+
+    }
+        public static void InsertPatientInjuries(int injuryID, int patientID)
+        {
+            using (connection)
+            {
+                try
+                {
+                    if (connection.State == ConnectionState.Closed) connection.Open();
+                    using (MySqlCommand cmd = new MySqlCommand(
+                        "INSERT INTO patientInjuryRelation (injuryID, patientID) " +
+                        "VALUES (@chronicID, @chronicDiseaseName)",
+                        connection))
+                    {
+                        
+                           cmd.Parameters.AddWithValue("@chronicID", injuryID);
+                            cmd.Parameters.AddWithValue("@chronicDiseaseName", patientID);
+
+                            cmd.ExecuteNonQuery();
+                        
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+        }
+
+        public static List<ChronicDisease> GetAllChronicDiseasesByPatientID(int patientID)
+        {
+            List<ChronicDisease> chronicDiseases = new List<ChronicDisease>();
+
+            using (connection)
+            {
+                connection.Open();
+
+                string query = "SELECT pc.patientID, pc.chronicID, cd.chronicDiseaseID, cd.chronicDiseaseName, cd.description " +
+                               "FROM patientChronicRelation pc " +
+                               "JOIN ChronicDisease cd ON pc.chronicID = cd.chronicDiseaseID";
+
+                using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                {
+                    using (MySqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            ChronicDisease chronicDisease = new ChronicDisease(
+                                Convert.ToInt32(reader["chronicDiseaseID"]),
+                                Convert.ToString(reader["chronicDiseaseName"]),
+                                Convert.ToString(reader["description"])
+
+                            );
+
+                            chronicDiseases.Add(chronicDisease);
+                        }
+                    }
+                }
+            }
+
+            return chronicDiseases;
+        }
+        public static void InsertPatientChronicDiseases(int chronicID, int patientID)
+        {
+            using (connection)
+            {
+                try
+                {
+                    if (connection.State == ConnectionState.Closed) connection.Open();
+                    using (MySqlCommand cmd = new MySqlCommand(
+                        "INSERT INTO patientChronicRelation (chronicID, patientID) " +
+                        "VALUES (@chronicID, @chronicDiseaseName)",
+                        connection))
+                    {
+                        
+                            cmd.Parameters.AddWithValue("@chronicID", chronicID);
+                            cmd.Parameters.AddWithValue("@chronicDiseaseName", patientID);
+
+                            cmd.ExecuteNonQuery();
+                        
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
         }
 
 
@@ -547,41 +823,6 @@ namespace clinical
 
             return chronicDiseases;
         }
-        public static List<ChronicDisease> GetAllChronicDiseasesByPatientID(int patientID)
-        {
-            List<ChronicDisease> chronicDiseases = new List<ChronicDisease>();
-
-            using (connection)
-            {
-                try
-                {
-                    if (connection.State == ConnectionState.Closed) connection.Open();
-
-                    string query = "SELECT * FROM ChronicDisease WHERE patientID = @patientID";
-
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@patientID", patientID);
-
-                        using (MySqlDataReader reader = command.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                ChronicDisease chronicDisease = MapChronicDisease(reader);
-
-                                chronicDiseases.Add(chronicDisease);
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error: {ex.Message}");
-                }
-            }
-
-            return chronicDiseases;
-        }
         public static void DeleteChronicDisease(int chronicDiseaseID)
         {
             using (connection)
@@ -592,6 +833,47 @@ namespace clinical
                     using (MySqlCommand cmd = new MySqlCommand("DELETE FROM ChronicDisease WHERE chronicDiseaseID = @chronicDiseaseID", connection))
                     {
                         cmd.Parameters.AddWithValue("@chronicDiseaseID", chronicDiseaseID);
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Handle exception (log, throw, etc.)
+                    MessageBox.Show(ex.Message);
+                }
+            }
+        }
+
+        public static void DeletePatientsChronicDiseases(int patientID)
+        {
+            using (connection)
+            {
+                try
+                {
+                    if (connection.State == ConnectionState.Closed) connection.Open();
+                    using (MySqlCommand cmd = new MySqlCommand("DELETE FROM patientChronicRelation WHERE patientID = @chronicDiseaseID", connection))
+                    {
+                        cmd.Parameters.AddWithValue("@chronicDiseaseID", patientID);
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Handle exception (log, throw, etc.)
+                    MessageBox.Show(ex.Message);
+                }
+            }
+        }
+        public static void DeletePatientsInjuries(int patientID)
+        {
+            using (connection)
+            {
+                try
+                {
+                    if (connection.State == ConnectionState.Closed) connection.Open();
+                    using (MySqlCommand cmd = new MySqlCommand("DELETE FROM patientInjuryRelation WHERE patientID = @chronicDiseaseID", connection))
+                    {
+                        cmd.Parameters.AddWithValue("@chronicDiseaseID", patientID);
                         cmd.ExecuteNonQuery();
                     }
                 }
@@ -629,6 +911,9 @@ namespace clinical
                 }
             }
         }
+
+
+
         internal static void updateChronicDisease(ChronicDisease ch)
         {
             using (connection)
@@ -1392,9 +1677,7 @@ namespace clinical
                 {
                     if (connection.State == ConnectionState.Closed) connection.Open();
 
-                    //string query = "SELECT * FROM ChatMessage WHERE chatRoomID = @chatRoomID ORDER BY timeStamp ASC;";
-                    //string query = "SELECT cm.* FROM ChatMessage cm JOIN chatRoom cr ON cm.chatroomID = cr.chatroomID WHERE cm.timeStamp > cr.lastVisit AND cr.chatroomID = @chatRoomID ORDER BY timeStamp ASC;";
-                    string query = "SELECT cm.* FROM ChatMessage cm JOIN chatRoom cr ON cm.chatroomID = cr.chatroomID WHERE cm.timeStamp >= NOW() - INTERVAL 0.7 SECOND AND cr.chatroomID = @chatRoomID ORDER BY timeStamp ASC;";
+                     string query = "SELECT cm.* FROM ChatMessage cm JOIN chatRoom cr ON cm.chatroomID = cr.chatroomID WHERE cm.timeStamp >= NOW() - INTERVAL 0.7 SECOND AND cr.chatroomID = @chatRoomID ORDER BY timeStamp ASC;";
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
                         command.Parameters.AddWithValue("@chatRoomID", chatRoomID);
@@ -2465,12 +2748,10 @@ namespace clinical
 
                         command.ExecuteNonQuery();
 
-                        MessageBox.Show("Attendance record inserted successfully.");
                     }
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Error: {ex.Message}");
                 }
             }
         }
@@ -2607,6 +2888,89 @@ namespace clinical
             }
         }
 
+        public static List<AttendanceRecord> GetAttendanceRecordsByDate(DateTime date)
+        {
+            List<AttendanceRecord> attendanceRecords = new List<AttendanceRecord>();
+
+            using (connection)
+            {
+                try
+                {
+                    if (connection.State == ConnectionState.Closed) connection.Open();
+
+                    string query = "SELECT * FROM AttendanceRecord WHERE DATE(timeStamp) = DATE(@date)";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@date", date);
+
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                AttendanceRecord attendanceRecord = new AttendanceRecord(
+                                    Convert.ToInt32(reader["recordID"]),
+                                    Convert.ToDateTime(reader["timeStamp"]),
+                                    Convert.ToInt32(reader["userID"]),
+                                    Convert.ToBoolean(reader["present"])
+                                );
+
+                                attendanceRecords.Add(attendanceRecord);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+
+                return attendanceRecords;
+            }
+        }
+        public static List<AttendanceRecord> GetUserAttendanceRecords(int userID)
+        {
+            List<AttendanceRecord> attendanceRecords = new List<AttendanceRecord>();
+
+            using (connection)
+            {
+                try
+                {
+                    if (connection.State == ConnectionState.Closed) connection.Open();
+
+                    string query = "SELECT * FROM AttendanceRecord WHERE userID = @userId";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@userId", userID);
+
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                AttendanceRecord attendanceRecord = new AttendanceRecord(
+                                    Convert.ToInt32(reader["recordID"]),
+                                    Convert.ToDateTime(reader["timeStamp"]),
+                                    Convert.ToInt32(reader["userID"]),
+                                    Convert.ToBoolean(reader["present"])
+                                );
+
+                                attendanceRecords.Add(attendanceRecord);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+
+                return attendanceRecords;
+            }
+        }
+
+        
+
         ///visit
         /////////////////////////////////////////////////////////////////////
         ///
@@ -2618,8 +2982,8 @@ namespace clinical
                 {
                     if (connection.State == ConnectionState.Closed) connection.Open();
 
-                    string query = "INSERT INTO Visit (visitID, userID, patientID, packageID, timeStamp, roomID, type, therapistNotes) " +
-                                   "VALUES (@visitID, @userID, @patientID, @packageID, @timeStamp, @roomID, @type, @therapistNotes)";
+                    string query = "INSERT INTO Visit (visitID, userID, patientID, packageID, timeStamp, roomID, type, therapistNotes, height, weight) " +
+                                   "VALUES (@visitID, @userID, @patientID, @packageID, @timeStamp, @roomID, @type, @therapistNotes, @height, @weight)";
 
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
@@ -2631,7 +2995,8 @@ namespace clinical
                         command.Parameters.AddWithValue("@roomID", visit.RoomID);
                         command.Parameters.AddWithValue("@type", visit.Type);
                         command.Parameters.AddWithValue("@therapistNotes", visit.TherapistNotes);
-
+                        command.Parameters.AddWithValue("@height", visit.Height);
+                        command.Parameters.AddWithValue("@weight", visit.Weight);
                         command.ExecuteNonQuery();
 
                         MessageBox.Show("Visit record inserted successfully.");
@@ -2654,7 +3019,7 @@ namespace clinical
 
                     string query = "UPDATE Visit SET userID = @userID, patientID = @patientID, " +
                                    "packageID = @packageID, timeStamp = @timeStamp, roomID = @roomID, " +
-                                   "type = @type, therapistNotes = @therapistNotes WHERE visitID = @visitID";
+                                   "type = @type, therapistNotes = @therapistNotes, height = @height , weight = @weight WHERE visitID = @visitID";
 
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
@@ -2666,10 +3031,12 @@ namespace clinical
                         command.Parameters.AddWithValue("@roomID", visit.RoomID);
                         command.Parameters.AddWithValue("@type", visit.Type);
                         command.Parameters.AddWithValue("@therapistNotes", visit.TherapistNotes);
+                        command.Parameters.AddWithValue("@height", visit.Height);
+                        command.Parameters.AddWithValue("@weight", visit.Weight);
 
                         command.ExecuteNonQuery();
 
-                        MessageBox.Show("Visit record updated successfully.");
+                        MessageBox.Show("Updated.");
                     }
                 }
                 catch (Exception ex)
@@ -2731,7 +3098,9 @@ namespace clinical
                                     Convert.ToDateTime(reader["timeStamp"]),
                                     Convert.ToInt32(reader["roomID"]),
                                     reader["type"].ToString(),
-                                    reader["therapistNotes"].ToString()
+                                    reader["therapistNotes"].ToString(),
+                                    Convert.ToDouble(reader["height"]),
+                                    Convert.ToDouble(reader["weight"])
                                 );
                             }
                         }
@@ -2772,7 +3141,9 @@ namespace clinical
                                     Convert.ToDateTime(reader["timeStamp"]),
                                     Convert.ToInt32(reader["roomID"]),
                                     reader["type"].ToString(),
-                                    reader["therapistNotes"].ToString()
+                                    reader["therapistNotes"].ToString(),
+                                    Convert.ToDouble(reader["height"]),
+                                    Convert.ToDouble(reader["weight"])
                                 );
 
                                 visitList.Add(visit);
@@ -2814,7 +3185,9 @@ namespace clinical
                                     Convert.ToDateTime(reader["timeStamp"]),
                                     Convert.ToInt32(reader["roomID"]),
                                     reader["type"].ToString(),
-                                    reader["therapistNotes"].ToString()
+                                    reader["therapistNotes"].ToString(),
+                                    Convert.ToDouble(reader["height"]),
+                                    Convert.ToDouble(reader["weight"])
                                 );
 
                                 visitList.Add(visit);
@@ -2858,7 +3231,9 @@ namespace clinical
                                     Convert.ToDateTime(reader["timeStamp"]),
                                     Convert.ToInt32(reader["roomID"]),
                                     reader["type"].ToString(),
-                                    reader["therapistNotes"].ToString()
+                                    reader["therapistNotes"].ToString(),
+                                    Convert.ToDouble(reader["height"]),
+                                    Convert.ToDouble(reader["weight"])
                                 );
 
                                 visitList.Add(visit);
@@ -2902,7 +3277,9 @@ namespace clinical
                                     Convert.ToDateTime(reader["timeStamp"]),
                                     Convert.ToInt32(reader["roomID"]),
                                     reader["type"].ToString(),
-                                    reader["therapistNotes"].ToString()
+                                    reader["therapistNotes"].ToString(),
+                                    Convert.ToDouble(reader["height"]),
+                                    Convert.ToDouble(reader["weight"])
                                 );
 
                                 visitList.Add(visit);
@@ -2946,7 +3323,9 @@ namespace clinical
                                     Convert.ToDateTime(reader["timeStamp"]),
                                     Convert.ToInt32(reader["roomID"]),
                                     reader["type"].ToString(),
-                                    reader["therapistNotes"].ToString()
+                                    reader["therapistNotes"].ToString(),
+                                    Convert.ToDouble(reader["height"]),
+                                    Convert.ToDouble(reader["weight"])
                                 );
 
                                 visitList.Add(visit);
@@ -2992,7 +3371,9 @@ namespace clinical
                                     Convert.ToDateTime(reader["timeStamp"]),
                                     Convert.ToInt32(reader["roomID"]),
                                     reader["type"].ToString(),
-                                    reader["therapistNotes"].ToString()
+                                    reader["therapistNotes"].ToString(),
+                                    Convert.ToDouble(reader["height"]),
+                                    Convert.ToDouble(reader["weight"])
                                 );
 
                                 visitsForPhysician.Add(visit);
@@ -3034,7 +3415,9 @@ namespace clinical
                                     Convert.ToDateTime(reader["timeStamp"]),
                                     Convert.ToInt32(reader["roomID"]),
                                     reader["type"].ToString(),
-                                    reader["therapistNotes"].ToString()
+                                    reader["therapistNotes"].ToString(),
+                                    Convert.ToDouble(reader["height"]),
+                                    Convert.ToDouble(reader["weight"])
                                 );
 
                                 todayVisits.Add(visit);
@@ -3078,7 +3461,9 @@ namespace clinical
                                     Convert.ToDateTime(reader["timeStamp"]),
                                     Convert.ToInt32(reader["roomID"]),
                                     reader["type"].ToString(),
-                                    reader["therapistNotes"].ToString()
+                                    reader["therapistNotes"].ToString(),
+                                    Convert.ToDouble(reader["height"]),
+                                    Convert.ToDouble(reader["weight"])
                                 );
 
                                 todayVisits.Add(visit);
@@ -3124,7 +3509,9 @@ namespace clinical
                                     Convert.ToDateTime(reader["timeStamp"]),
                                     Convert.ToInt32(reader["roomID"]),
                                     reader["type"].ToString(),
-                                    reader["therapistNotes"].ToString()
+                                    reader["therapistNotes"].ToString(),
+                                    Convert.ToDouble(reader["height"]),
+                                    Convert.ToDouble(reader["weight"])
                                 );
 
                                 todayPhysicianVisits.Add(visit);
@@ -3171,7 +3558,9 @@ namespace clinical
                                     Convert.ToDateTime(reader["timeStamp"]),
                                     Convert.ToInt32(reader["roomID"]),
                                     reader["type"].ToString(),
-                                    reader["therapistNotes"].ToString()
+                                    reader["therapistNotes"].ToString(),
+                                    Convert.ToDouble(reader["height"]),
+                                    Convert.ToDouble(reader["weight"])
                                 );
 
                                 physicianVisitsOnDate.Add(visit);
@@ -3320,8 +3709,8 @@ namespace clinical
             {
                 connection.Open();
 
-                string query = "INSERT INTO testFeedBack (testFeedBackID, severity, visitID, patientID, testID) " +
-                               "VALUES (@TestFeedbackID, @Severity, @VisitID, @PatientID, @TestID)";
+                string query = "INSERT INTO testFeedBack (testFeedBackID, severity, visitID, patientID, testID, notes, timeStamp) " +
+                               "VALUES (@TestFeedbackID, @Severity, @VisitID, @PatientID, @TestID, @Notes, @TimeStamp)";
 
                 using (MySqlCommand cmd = new MySqlCommand(query, connection))
                 {
@@ -3330,6 +3719,8 @@ namespace clinical
                     cmd.Parameters.AddWithValue("@VisitID", feedback.VisitID);
                     cmd.Parameters.AddWithValue("@PatientID", feedback.PatientID);
                     cmd.Parameters.AddWithValue("@TestID", feedback.TestID);
+                    cmd.Parameters.AddWithValue("@Notes", feedback.Notes);
+                    cmd.Parameters.AddWithValue("@TimeStamp", feedback.TimeStamp);
 
                     cmd.ExecuteNonQuery();
                 }
@@ -3358,7 +3749,11 @@ namespace clinical
                                 Convert.ToInt32(reader["severity"]),
                                 Convert.ToInt32(reader["visitID"]),
                                 Convert.ToInt32(reader["patientID"]),
-                                Convert.ToInt32(reader["testID"])
+                                Convert.ToInt32(reader["testID"]),
+                                reader["notes"].ToString(),
+                                Convert.ToDateTime(reader["timeStamp"])
+
+
                             );
 
                             visitFeedbackList.Add(feedback);
@@ -3393,7 +3788,9 @@ namespace clinical
                                 Convert.ToInt32(reader["severity"]),
                                 Convert.ToInt32(reader["visitID"]),
                                 Convert.ToInt32(reader["patientID"]),
-                                Convert.ToInt32(reader["testID"])
+                                Convert.ToInt32(reader["testID"]),
+                                reader["notes"].ToString(),
+                                Convert.ToDateTime(reader["timeStamp"])
                             );
 
                             visitFeedbackList.Add(feedback);
@@ -3428,7 +3825,9 @@ namespace clinical
                                 Convert.ToInt32(reader["severity"]),
                                 Convert.ToInt32(reader["visitID"]),
                                 Convert.ToInt32(reader["patientID"]),
-                                Convert.ToInt32(reader["testID"])
+                                Convert.ToInt32(reader["testID"]),
+                                reader["notes"].ToString(),
+                                Convert.ToDateTime(reader["timeStamp"])
                             );
 
                             visitFeedbackList.Add(feedback);
@@ -3440,7 +3839,22 @@ namespace clinical
             return visitFeedbackList;
         }
 
+        public static void DeleteAllVisitFeedback(int visitID)
+        {
+            using (connection)
+            {
+                connection.Open();
 
+                string query = "DELETE FROM testFeedBack WHERE visitID = @TestFeedbackID";
+
+                using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                {
+                    cmd.Parameters.AddWithValue("@TestFeedbackID", visitID);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
         public static void DeleteFeedback(int feedbackId)
         {
             using (connection)

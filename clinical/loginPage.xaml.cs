@@ -87,6 +87,7 @@ namespace clinical
                 else s = 3;
                 MainWindow mainWindow = new MainWindow(s, user);
                 globals.signedIn = user;
+                DB.InsertAttendanceRecord(new AttendanceRecord(globals.generateNewAttendanceRecordID(user.UserID), DateTime.Now, user.UserID, true));
                 mainWindow.Show();
                 this.Close();
 
