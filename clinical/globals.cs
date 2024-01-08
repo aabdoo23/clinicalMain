@@ -1,6 +1,10 @@
 ﻿using clinical.BaseClasses;
+using Org.BouncyCastle.Tls;
 using System;
+using System.Collections.Generic;
 using System.Security.Cryptography;
+using System.Windows;
+using System.Windows.Documents;
 
 namespace clinical
 {
@@ -43,15 +47,12 @@ namespace clinical
             return int.Parse(s);
 
         }
-        public static int generateNewPatientID()
+        public static int generateNewPatientID(string phoneNumber)
         {
             DateTime dateTime = DateTime.Now;
-            string s = dateTime.Day.ToString();
-            s += dateTime.Month.ToString();
-            s += dateTime.Year.ToString()[2];
-            s += dateTime.Year.ToString()[3];
-            s+= dateTime.Hour.ToString();
+            string s = dateTime.DayOfYear.ToString();
             s += dateTime.Minute.ToString();
+            s += phoneNumber.Substring(3,3);
             return int.Parse(s);
             
         }
@@ -85,30 +86,30 @@ namespace clinical
             return s;
 
         }
-
         public static int generateNewVisitID(int patID, DateTime time) {
-            string s = patID.ToString().Substring(0, 3) + time.Month+time.Day;
+            string s = patID.ToString().Substring(0, 3) + time.DayOfYear+time.Hour;
             return Convert.ToInt32(s);
         }
-
+        public static int generateNewPaymentID(int patID, DateTime time)
+        {
+            string s = patID.ToString().Substring(2, 2) + new Random().Next(99).ToString() + time.DayOfYear.ToString() + time.Hour.ToString();
+            return Convert.ToInt32(s);
+        }
         public static int generateNewPrescriptionID(int visitID, DateTime time)
         {
             string s = visitID.ToString().Substring(0, 2) + time.Day+time.Minute+time.Second;
             return Convert.ToInt32(s);
         }
-
         public static int generateNewIssueExerciseID(int prescriptionID,int patientID)
         {
             string s = prescriptionID.ToString().Substring(0, 2)+new Random().Next(99).ToString()+ patientID.ToString().Substring(0, 2)+ new Random().Next(99).ToString();
             return Convert.ToInt32(s);
         }
-
         public static int generateNewTestFeedBackID(int visitID, int patientID)
         {
             string s = visitID.ToString().Substring(0, 2) + new Random().Next(99).ToString() + patientID.ToString().Substring(0, 2) + new Random().Next(99).ToString();
             return Convert.ToInt32(s);
         }
-
         public static int generateNewExerciseID()
         {
             string s = new Random().Next(99).ToString() + new Random().Next(99).ToString()+ new Random().Next(81).ToString();
@@ -120,9 +121,6 @@ namespace clinical
             string s = fID.ToString().Substring(0, 3) + sID.ToString().Substring(0, 3);
             return Convert.ToInt32(s);
         }
-
-
-
         public static int generateNewChatMessageID(int senderID)
         {
 
@@ -130,7 +128,28 @@ namespace clinical
             return Convert.ToInt32(s);
         }
 
+        public static void scheduleVisit(Visit visit)
+        {
+            if (visit == null) { return; }
 
+            int physicianID = visit.PhysiotherapistID;
+            List<Visit> futureVisits = DB.GetFuturePhysicianVisits(physicianID);
+            foreach(var i in futureVisits)
+            {
+                if (visit.TimeStamp == i.TimeStamp)
+                {
+                    visit.TimeStamp.AddHours(DB.GetDefaultAppointmentTimeInMinutes());
+                }
+            }
+            DB.InsertVisit(visit);
+            MessageBox.Show($"Visit booked on {visit.TimeStamp.DayOfWeek}, {visit.TimeStamp.Date}, {visit.TimeStamp.Hour}:{visit.TimeStamp.Minute}.");
+
+        }
+
+        public static void updateCalendarWithVisits(int physicianID)
+        {
+
+        }
 
     }
 }

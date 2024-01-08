@@ -1,15 +1,8 @@
-t3ml eh lma ts7a:
-
-billing system, finances and all managing visits, packages, patient due, kolo, rbna m3ak
-
-
 unfinished bussiness:
 
 1-add real data to all tables in db
 
 2-Al physician msh lazm y-add  
-
-3- Financial System
 
 4-Yktb al modda mn al awl w y3addel b3dha law fe progress ahsn mn al motwk3
 
@@ -33,6 +26,9 @@ unfinished bussiness:
 
 14- plot height w weight of visits on patientview page
 
+15- all plots
+
+16- salary and shit
 
 not urgent:
 
@@ -90,3 +86,17 @@ done:
 +kont btzbt mwdoo3 elrelation chronic=patient w 3mlt table bs lsa manadethash fe ay 7ta 8er getChronicsByPatientID, kmlhaaaaaaaaaaaa
 
 +shaghal al live chart 
+
++Financial System (Partially done, missing revenue calculation for physician, could do a payment class or consider all visits and patients with packages)
+
+
+
+
+////////////////////
+
+#globalVars manual
+#0-8 (8 included) times for session times in this format: "16:00"
+#9 default time for session
+#10 cost for consultation
+#11 cost for follow-up
+#12 cost for exercise session

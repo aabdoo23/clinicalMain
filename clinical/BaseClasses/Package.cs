@@ -24,7 +24,7 @@ namespace clinical.BaseClasses
 
         public override string ToString()
         {
-            return PackageName;
+            return $"{PackageName}, {NumberOfSessions} sessions, {Price}";
         }
     }
 }

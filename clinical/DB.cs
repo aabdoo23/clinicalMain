@@ -1,5 +1,6 @@
 ﻿using clinical.BaseClasses;
 using MySql.Data.MySqlClient;
+using Org.BouncyCastle.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -399,7 +400,9 @@ namespace clinical
                 Convert.ToDouble(reader["dueAmount"]),
                 reader["referringName"].ToString(),
                 reader["referringPN"].ToString(),
-                Convert.ToInt32(reader["activePackageID"])
+                Convert.ToInt32(reader["activePackageID"]),
+                Convert.ToInt32(reader["remainingSessions"])
+                
 
             );
             return p;
@@ -475,7 +478,7 @@ namespace clinical
                 try
                 {
                     if (connection.State == ConnectionState.Closed) connection.Open();
-                    using (MySqlCommand cmd = new MySqlCommand("SELECT * FROM Patient WHERE userID = @physicianID", connection))
+                    using (MySqlCommand cmd = new MySqlCommand("SELECT * FROM Patient WHERE physicianID = @physicianID", connection))
                     {
                         cmd.Parameters.AddWithValue("@physicianID", physicianID);
 
@@ -526,8 +529,8 @@ namespace clinical
                 {
                     if (connection.State == ConnectionState.Closed) connection.Open();
                     using (MySqlCommand cmd = new MySqlCommand(
-                        "INSERT INTO Patient (patientID, firstName, lastName, birthdate, gender, phoneNumber, email, address, referred, previouslyTreated, height, weight, dueAmount, physicianID, referringName, referringPN)" +
-                        "VALUES (@patientID, @firstName, @lastName, @birthdate, @gender, @phoneNumber, @email, @address, @referred, @previouslyTreated, @height, @weight, @dueAmount, @physicianID, @referringName, @referringPN)", connection))
+                        "INSERT INTO Patient (patientID, firstName, lastName, birthdate, gender, phoneNumber, email, address, referred, previouslyTreated, height, weight, dueAmount, physicianID, referringName, referringPN, activePackageID, remainingSessions)" +
+                        "VALUES (@patientID, @firstName, @lastName, @birthdate, @gender, @phoneNumber, @email, @address, @referred, @previouslyTreated, @height, @weight, @dueAmount, @physicianID, @referringName, @referringPN, @activePackageID, @remainingSessions)", connection))
                     {
                         cmd.Parameters.AddWithValue("@patientID", patient.PatientID);
                         cmd.Parameters.AddWithValue("@firstName", patient.FirstName);
@@ -545,6 +548,8 @@ namespace clinical
                         cmd.Parameters.AddWithValue("@dueAmount", patient.DueAmount);
                         cmd.Parameters.AddWithValue("@referringName", patient.referringName);
                         cmd.Parameters.AddWithValue("@referringPN", patient.referringPN);
+                        cmd.Parameters.AddWithValue("@activePackageID", patient.ActivePackageID);
+                        cmd.Parameters.AddWithValue("@remainingSessions", patient.RemainingSessions);
 
 
                         cmd.ExecuteNonQuery();
@@ -568,7 +573,7 @@ namespace clinical
 
                     string query = "UPDATE Patient SET firstName = @firstName, lastName = @lastName, birthdate = @birthdate, gender = @gender, phoneNumber=@phoneNumber," +
                         " email = @email, address = @address, referred = @referred, previouslyTreated = @previouslyTreated" +
-                        ", height = @height, weight = @weight, dueAmount = @dueAmount, physicianID = @physicianID, referringName = @referringName, referringPN = @referringPN WHERE patientID = @patientID";
+                        ", height = @height, weight = @weight, dueAmount = @dueAmount, physicianID = @physicianID, referringName = @referringName, referringPN = @referringPN, remainingSessions=@remainingSessions WHERE patientID = @patientID";
 
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
@@ -588,6 +593,7 @@ namespace clinical
                         command.Parameters.AddWithValue("@dueAmount", patient.DueAmount);
                         command.Parameters.AddWithValue("@referringName", patient.referringName);
                         command.Parameters.AddWithValue("@referringPN", patient.referringPN);
+                        command.Parameters.AddWithValue("@remainingSessions", patient.RemainingSessions);
 
                         command.ExecuteNonQuery();
 
@@ -3479,7 +3485,7 @@ namespace clinical
 
             return todayVisits;
         }
-        public static List<Visit> GetTodayPhysicianVisits(int physicianID)
+        public static List<Visit> GetFuturePhysicianVisits(int physicianID)
         {
             List<Visit> todayPhysicianVisits = new List<Visit>();
 
@@ -3491,7 +3497,7 @@ namespace clinical
 
                     string query = "SELECT v.* FROM Visit v " +
                                    "INNER JOIN User u ON v.userID = u.userID " +
-                                   "WHERE u.userID = @physicianID AND DATE(v.timeStamp) = CURDATE()";
+                                   "WHERE u.userID = @physicianID AND DATE(v.timeStamp) >= CURDATE() ORDER BY timeStamp ASC";
 
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
@@ -4938,6 +4944,327 @@ namespace clinical
             }
         }
 
-        
+        ///payment
+        //////////////////////////////////////////////////////////////////
+        ///
+        public static List<Payment> GetAllPayments()
+        {
+            List<Payment> payments = new List<Payment>();
+
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+                    string query = "SELECT * FROM payment";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    using (MySqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            Payment payment = new Payment(
+                                Convert.ToInt32(reader["paymentID"]),
+                                Convert.ToDouble(reader["amount"]),
+                                Convert.ToDateTime(reader["timestamp"]),
+                                Convert.ToInt32(reader["physicianID"]),
+                                Convert.ToInt32(reader["patientID"])
+                            );
+
+                            payments.Add(payment);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+
+            return payments;
+        }
+
+        public static List<Payment> GetPatientPayments(int patientID)
+        {
+            List<Payment> patientPayments = new List<Payment>();
+
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+                    string query = "SELECT * FROM payment WHERE patientID = @patientID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@patientID", patientID);
+
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                Payment payment = new Payment(
+                                    Convert.ToInt32(reader["paymentID"]),
+                                    Convert.ToDouble(reader["amount"]),
+                                    Convert.ToDateTime(reader["timestamp"]),
+                                    Convert.ToInt32(reader["physicianID"]),
+                                    Convert.ToInt32(reader["patientID"])
+                                );
+
+                                patientPayments.Add(payment);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+
+            return patientPayments;
+        }
+
+        public static List<Payment> GetPhysicianPayments(int physicianID)
+        {
+            List<Payment> physicianPayments = new List<Payment>();
+
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+                    string query = "SELECT * FROM payment WHERE physicianID = @physicianID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@physicianID", physicianID);
+
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                Payment payment = new Payment(
+                                    Convert.ToInt32(reader["paymentID"]),
+                                    Convert.ToDouble(reader["amount"]),
+                                    Convert.ToDateTime(reader["timestamp"]),
+                                    Convert.ToInt32(reader["physicianID"]),
+                                    Convert.ToInt32(reader["patientID"])
+                                );
+
+                                physicianPayments.Add(payment);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+
+            return physicianPayments;
+        }
+
+        public static void InsertPayment(Payment payment)
+        {
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+                    string query = "INSERT INTO payment (paymentID, amount, timestamp, physicianID, patientID) " +
+                                   "VALUES (@paymentID, @amount, @timestamp, @physicianID, @patientID)";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@paymentID", payment.PaymentID);
+                        command.Parameters.AddWithValue("@amount", payment.Amount);
+                        command.Parameters.AddWithValue("@timestamp", payment.TimeStamp);
+                        command.Parameters.AddWithValue("@physicianID", payment.PhysicianID);
+                        command.Parameters.AddWithValue("@patientID", payment.PatientID);
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+        }
+
+        public static void UpdatePayment(Payment payment)
+        {
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+                    string query = "UPDATE payment SET amount = @amount, timestamp = @timestamp, " +
+                                   "physicianID = @physicianID, patientID = @patientID " +
+                                   "WHERE paymentID = @paymentID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@amount", payment.Amount);
+                        command.Parameters.AddWithValue("@timestamp", payment.TimeStamp);
+                        command.Parameters.AddWithValue("@physicianID", payment.PhysicianID);
+                        command.Parameters.AddWithValue("@patientID", payment.PatientID);
+                        command.Parameters.AddWithValue("@paymentID", payment.PaymentID);
+
+                        command.ExecuteNonQuery();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+        }
+
+        public static void DeletePayment(int paymentID)
+        {
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+                    string query = "DELETE FROM payment WHERE paymentID = @paymentID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@paymentID", paymentID);
+                        command.ExecuteNonQuery();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+        }
+
+
+        ///globalVars
+        /////////////////////////////////////////////////////////////
+        ///
+
+        public static string GetSessionTime(int id)
+        {
+            string time="";
+
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+                    string query = "SELECT * FROM globalVars WHERE varID = @patientID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@patientID", id);
+
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                time=(reader["varValue"].ToString());
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+
+            return time;
+        }
+        public static int GetDefaultAppointmentTimeInMinutes()
+        {
+            return (int)GetIntValueByID(9);
+        }
+        public static double GetConsultationCost()
+        {
+            return GetIntValueByID(10);
+        }
+        public static double GetFollowUpCost()
+        {
+            return GetIntValueByID(11);
+        }
+        public static double GetExerciseCost()
+        {
+            return GetIntValueByID(12);
+        }
+        public static double GetIntValueByID(int id)
+        {
+            string time = "";
+
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+                    string query = "SELECT * FROM globalVars WHERE varID = @varID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@varID", id);
+
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                time = (reader["varValue"].ToString());
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+
+            return Double.Parse(time);
+        }
+
+        public static void UpdateDefaultAppointmentTimeInMinutes(string val)
+        {
+            UpdateGlobalVar(9,val);
+        }
+        public static void UpdateConsultationCost(string val)
+        {
+            UpdateGlobalVar(10,val);
+        }
+        public static void UpdateFollowUpCost(string val)
+        {
+            UpdateGlobalVar(11,val);
+        }
+        public static void UpdateExerciseCost(string val)
+        {
+            UpdateGlobalVar(12,val);
+        }
+
+
+        public static void UpdateGlobalVar(int id, string val)
+        {
+            using (connection)
+            {
+                connection.Open();
+
+                string query = "UPDATE globalVars SET varValue=@varValue, WHERE varID=@varID ";
+
+                using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                {
+                    cmd.Parameters.AddWithValue("@varID", id);
+                    cmd.Parameters.AddWithValue("@varValue", val);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
     }
 }

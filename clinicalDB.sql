@@ -106,10 +106,11 @@ CREATE TABLE Patient (
     referringName TEXT,
     referringPN TEXT,
     activePackageID int,
+    remainingSessions int Default 0,
     
 	FOREIGN KEY (activePackageID) REFERENCES Package(PackageID),
 	FOREIGN KEY (physicianID) REFERENCES User(userID),
-
+	
     PRIMARY KEY (patientID)
 );
 
@@ -183,7 +184,7 @@ CREATE TABLE Visit (
     PRIMARY KEY (visitID),
     FOREIGN KEY (UserID) REFERENCES User(userID),
     FOREIGN KEY (patientID) REFERENCES Patient(patientID),
-    FOREIGN KEY (packageID) REFERENCES TreatmentPlan(planID),
+    FOREIGN KEY (packageID) REFERENCES package(packageID),
     FOREIGN KEY (roomID) REFERENCES Room(roomID)
 );
 
@@ -265,16 +266,16 @@ CREATE TABLE testFeedBack (
 CREATE TABLE patientChronicRelation (
     patientID INT NOT NULL,
     chronicID INT NOT NULL,
-    FOREIGN KEY (patientID) REFERENCES Patient(patientID),
-    FOREIGN KEY (chronicID) REFERENCES ChronicDisease(chronicDiseaseID)
+    FOREIGN KEY (patientID) REFERENCES Patient(patientID) ON DELETE CASCADE,
+    FOREIGN KEY (chronicID) REFERENCES ChronicDisease(chronicDiseaseID) ON DELETE CASCADE
     );
 
 
 CREATE TABLE patientInjuryRelation (
     patientID INT NOT NULL,
     injuryID INT NOT NULL,
-    FOREIGN KEY (patientID) REFERENCES Patient(patientID),
-    FOREIGN KEY (injuryID) REFERENCES Injury(injuryID)
+    FOREIGN KEY (patientID) REFERENCES Patient(patientID) ON DELETE CASCADE,
+    FOREIGN KEY (injuryID) REFERENCES Injury(injuryID) ON DELETE CASCADE
     );
     
 CREATE TABLE userWorkDayRelation (
@@ -283,3 +284,27 @@ CREATE TABLE userWorkDayRelation (
     FOREIGN KEY (userID) REFERENCES user(userID) ON DELETE CASCADE
     );
     
+CREATE TABLE payment(
+	paymentID INT NOT NULL,
+    amount double,
+    patientID int,
+    physicianID int,
+    timestamp datetime,
+    PRIMARY KEY (paymentID),
+    FOREIGN KEY (physicianID) REFERENCES User(userID) ON UPDATE CASCADE ON DELETE SET NULL, 
+    FOREIGN KEY (patientID) REFERENCES Patient(patientID) ON UPDATE CASCADE ON DELETE SET NULL 
+);
+#globalVars manual
+#0-8 (8 included) times for session times in this format: "16:00"
+#9 default time for session
+#10 cost for consultation
+#11 cost for follow-up
+#12 cost for exercise session
+ 
+
+CREATE TABLE globalVars(
+	varID int,
+    varName varchar(255),
+    varValue varChar(255) null,
+    PRIMARY KEY (varID)
+);

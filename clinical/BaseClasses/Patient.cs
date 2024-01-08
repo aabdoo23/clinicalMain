@@ -27,13 +27,13 @@ namespace clinical.BaseClasses
         public string referringPN { get; set; }
         public int age { get; set; }
         public int ActivePackageID {  get; set; }
-
+        public int RemainingSessions {  get; set; }
         public Patient(int patientID, string firstName, string lastname, 
             DateTime birthdate, string gender, string phoneNumber, 
             string email, string address, 
             int physicianId,
             bool referred, bool previouslyTreated, double height, 
-            double weight, double dueAmount, string refN,string refPN, int activePackageID)
+            double weight, double dueAmount, string refN,string refPN, int activePackageID, int remainingSessions)
         {
             PatientID = patientID;
             FirstName = firstName;
@@ -52,6 +52,7 @@ namespace clinical.BaseClasses
             referringName = refN;
             referringPN=refPN;
             ActivePackageID = activePackageID;
+            RemainingSessions=remainingSessions;
             this.age = Age();
         }
 

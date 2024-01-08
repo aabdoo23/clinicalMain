@@ -46,7 +46,7 @@
                                 <ColumnDefinition Width="90*"/>
                                 <ColumnDefinition Width="15*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="Personal Information" FontSize="20" FontWeight="Bold" Foreground="{StaticResource lightFontColor}"  Grid.Column="0" Grid.ColumnSpan="2" Margin="0,6,35,-6"/>
+                            <TextBlock Text="Personal Information" FontSize="20" FontWeight="Bold" Foreground="{StaticResource lightFontColor}"  Grid.Column="0" Grid.ColumnSpan="2" Margin="0,2,35,-2"/>
                             <Icon:PackIconMaterial Kind="AccountEdit" Foreground="{StaticResource lightFontColor}" Grid.Column="1" HorizontalAlignment="Center" Width="25" Height="26" Margin="0,4,0,0" MouseDown="editPersonalInfo"/>
                         </Grid>
                         <Border Background="{StaticResource lightFontColor}" CornerRadius="5" Grid.Row="1">

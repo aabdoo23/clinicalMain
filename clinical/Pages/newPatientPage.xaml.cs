@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -19,6 +18,7 @@ namespace clinical.Pages
         bool edit = false;
         Patient patient;
         List<ChronicDisease> selectedChronics = new List<ChronicDisease>();
+        static List<Package> packages = DB.GetAllPackages();
         List<Injury> selectedInjuries = new List<Injury>();
 
         private ICollectionView injuryDataView;
@@ -45,12 +45,14 @@ namespace clinical.Pages
         public newPatientPage()
         {
             InitializeComponent();
+
             assignedPhys.ItemsSource = DB.GetAllPhysiotherapists();
             allChronicsDataGrid.ItemsSource = DB.GetAllChronicDiseases();
             allInjuriesDataGrid.ItemsSource = DB.GetAllInjuries();
-            packagesCB.ItemsSource = DB.GetAllPackages();
+            packagesCB.ItemsSource = packages;
             assignedPhys.SelectedIndex = 0;
-            
+            selectedChronicsDataGrid.ItemsSource = selectedChronics;
+            selectedInjuriesDataGrid.ItemsSource = selectedInjuries;
             referredCB.Checked += CheckBox_Checked;
             referredCB.Unchecked += CheckBox_Unchecked;
 
@@ -58,6 +60,7 @@ namespace clinical.Pages
             referringPNTextBox.IsEnabled = false;
 
             packagesCB.SelectedIndex = 0;
+            selectedPackage = (Package)packagesCB.SelectedItem;
 
             injuryDataView = CollectionViewSource.GetDefaultView(allInjuriesDataGrid.ItemsSource);
             searchInjuriesTXTBOX.TextChanged += SearchInjuryTextBox_TextChanged;
@@ -80,7 +83,7 @@ namespace clinical.Pages
             injuryDataView.Filter = item => FilterItem(item, searchInjuriesTXTBOX.Text);
 
         }
-        
+
         private bool FilterItem(object item, string filterText)
         {
             if (string.IsNullOrWhiteSpace(filterText))
@@ -117,6 +120,9 @@ namespace clinical.Pages
             referringTextBox.IsEnabled = false;
             referringPNTextBox.IsEnabled = false;
         }
+
+        Package selectedPackage = packages[0];
+
         private void save(object sender, MouseButtonEventArgs e)
         {
             string fn = firstNameTextBox.Text;
@@ -141,15 +147,17 @@ namespace clinical.Pages
                 refPN = referringPNTextBox.Text;
 
             }
-            int id = globals.generateNewPatientID();
-            
+            int id = globals.generateNewPatientID(phone);
+
             List<int> injuriesIDs = new List<int>();
             foreach (Injury chronic in selectedInjuries)
             {
                 injuriesIDs.Add(chronic.InjuryID);
             }
 
-            Package selectedPackage = (Package)packagesCB.SelectedItem;
+            selectedPackage = (Package)packagesCB.SelectedItem;
+
+            double due = Double.Parse(dueTB.Text);
 
             Patient newPatient = new(
                 id,
@@ -165,22 +173,30 @@ namespace clinical.Pages
                 prevSessions,
                 Convert.ToDouble(heightTextBox.Text),
                 Convert.ToDouble(weightTextBox.Text),
-                0,
+                due,
                 refName,
                 refPN,
-                selectedPackage.PackageID);
+                selectedPackage.PackageID,
+                selectedPackage.NumberOfSessions);
             DB.InsertPatient(newPatient);
+
+
             MessageBox.Show("New patient added, ID: " + id.ToString());
-            
-            foreach(var ch in selectedChronics)
+
+            foreach (var ch in selectedChronics)
             {
                 DB.InsertPatientChronicDiseases(ch.ChronicDiseaseID, newPatient.PatientID);
             }
 
-            foreach(var inj in selectedInjuries)
+            foreach (var inj in selectedInjuries)
             {
                 DB.InsertPatientInjuries(inj.InjuryID, newPatient.PatientID);
             }
+
+            double paid= Double.Parse(paidTB.Text);
+            Payment payment = new Payment(globals.generateNewPaymentID(id, DateTime.Now), paid, DateTime.Now, phys.UserID, id);
+            DB.InsertPayment(payment);
+
 
             Window.GetWindow(this).Close();
 
@@ -194,8 +210,8 @@ namespace clinical.Pages
 
         private void addInjury(object sender, RoutedEventArgs e)
         {
-            Injury selectedInjury= (Injury)allInjuriesDataGrid.SelectedItem;
-            if (!selectedInjuries.Contains(selectedInjury))selectedInjuries.Add(selectedInjury);
+            Injury selectedInjury = (Injury)allInjuriesDataGrid.SelectedItem;
+            if (!selectedInjuries.Contains(selectedInjury)) selectedInjuries.Add(selectedInjury);
             refresh();
         }
 
@@ -215,8 +231,24 @@ namespace clinical.Pages
         private void addChronic(object sender, RoutedEventArgs e)
         {
             ChronicDisease selectedChronic = (ChronicDisease)allChronicsDataGrid.SelectedItem;
-            if (!selectedChronics.Contains(selectedChronic))selectedChronics.Add(selectedChronic);
+            if (!selectedChronics.Contains(selectedChronic)) selectedChronics.Add(selectedChronic);
             refresh();
         }
+
+        private void paidTC(object sender, TextChangedEventArgs e)
+        {
+            if (paidTB.Text != null && paidTB.Text != "")
+                dueTB.Text = (selectedPackage.Price - Double.Parse(paidTB.Text.Trim())).ToString();
+        }
+
+        private void selectionPackageChanged(object sender, SelectionChangedEventArgs e)
+        {
+            selectedPackage = (Package)packagesCB.SelectedItem;
+            if (paidTB.Text != null && paidTB.Text != "")
+                dueTB.Text = (selectedPackage.Price - Double.Parse(paidTB.Text.Trim())).ToString();
+
+        }
+
+        
     }
 }

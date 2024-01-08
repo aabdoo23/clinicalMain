@@ -68,6 +68,7 @@ namespace clinical.Pages
         private void viewVisitClick(object sender, RoutedEventArgs e)
         {
             Visit vis = (Visit)previousVisitsDataGrid.SelectedItem;
+            if(vis==null)vis= (Visit)currVisitsDataGrid.SelectedItem;
             NavigationService.Navigate(new visit(vis));
 
         }
