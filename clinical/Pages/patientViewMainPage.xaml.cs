@@ -28,6 +28,11 @@ namespace clinical.Pages
         public patientViewMainPage(Patient patient)
         {
             InitializeComponent();
+            if (NavigationService!=null&&NavigationService.CanGoBack == false)
+            {
+                goBackIcon.Visibility = Visibility.Hidden;
+
+            }
             this.currPatient = patient;
             patientIDTxt.Text = patient.PatientID.ToString();
             patientNameMainTxt.Text = patient.FirstName + " " + patient.LastName;
@@ -280,7 +285,10 @@ namespace clinical.Pages
             currPatient.Email = noteTXT.Text;
         }
 
-        
+        private void navigateBack(object sender, MouseButtonEventArgs e)
+        {
+            NavigationService.GoBack();
+        }
     }
 
 }

@@ -259,6 +259,39 @@ namespace clinical
             return admins;
         }
 
+        public static List<User> GetPhysioTherapistsWithVisitsOnDate(DateTime specificDate)
+        {
+            List<User> patients = new List<User>();
+            using (connection)
+            {
+                try
+                {
+                    if (connection.State == ConnectionState.Closed) connection.Open();
+
+                    using (MySqlCommand cmd = new MySqlCommand("SELECT DISTINCT p.* FROM user p JOIN visit v ON p.userID = v.userID WHERE DATE(v.timeStamp) = @specificDate", connection))
+                    {
+                        cmd.Parameters.AddWithValue("@specificDate", specificDate.Date);
+
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                User patient = MapUser(reader);
+                                patients.Add(patient);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+
+            return patients;
+        }
+
+
 
         private static User MapUser(MySqlDataReader reader)
         {
@@ -470,6 +503,37 @@ namespace clinical
 
             return patients;
         }
+        public static List<Patient> GetPatientsWithVisitsOnDate(DateTime specificDate)
+        {
+            List<Patient> patients = new List<Patient>();
+            using (connection)
+            {
+                try
+                {
+                    if (connection.State == ConnectionState.Closed) connection.Open();
+
+                    using (MySqlCommand cmd = new MySqlCommand("SELECT DISTINCT p.* FROM patient p JOIN visit v ON p.patientID = v.patientID WHERE DATE(v.timeStamp) = @specificDate", connection))
+                    {
+                        cmd.Parameters.AddWithValue("@specificDate", specificDate.Date);
+
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                Patient patient = MapPatient(reader);
+                                patients.Add(patient);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+
+            return patients;
+        }
         public static List<Patient> GetAllPatientsByPhysicianID(int physicianID)
         {
             List<Patient> patients = new List<Patient>();
@@ -649,10 +713,12 @@ namespace clinical
 
                 string query = "SELECT pir.patientID, pir.injuryID, i.injuryID, i.injuryName, i.injuryLocation, i.severity, i.description " +
                                "FROM patientInjuryRelation pir " +
-                               "JOIN Injury i ON pir.injuryID = i.injuryID";
+                               "JOIN Injury i ON pir.injuryID = i.injuryID WHERE pir.patientID=@patientID";
 
                 using (MySqlCommand cmd = new MySqlCommand(query, connection))
                 {
+                    cmd.Parameters.AddWithValue("@patientID", patientID);
+
                     using (MySqlDataReader reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
@@ -714,10 +780,12 @@ namespace clinical
 
                 string query = "SELECT pc.patientID, pc.chronicID, cd.chronicDiseaseID, cd.chronicDiseaseName, cd.description " +
                                "FROM patientChronicRelation pc " +
-                               "JOIN ChronicDisease cd ON pc.chronicID = cd.chronicDiseaseID";
+                               "JOIN ChronicDisease cd ON pc.chronicID = cd.chronicDiseaseID WHERE pc.patientID=@patientID";
 
                 using (MySqlCommand cmd = new MySqlCommand(query, connection))
                 {
+                    cmd.Parameters.AddWithValue("@patientID", patientID);
+
                     using (MySqlDataReader reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
@@ -3583,6 +3651,52 @@ namespace clinical
             return physicianVisitsOnDate;
         }
 
+        public static List<Visit> GetAllVisitsOnDate(DateTime date)
+        {
+            List<Visit> physicianVisitsOnDate = new List<Visit>();
+
+            using (connection)
+            {
+                try
+                {
+                    if (connection.State == ConnectionState.Closed) connection.Open();
+
+                    string query = "SELECT * FROM Visit WHERE DATE(timeStamp) = @visitDate";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@visitDate", date.ToString("yyyy-MM-dd"));
+
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                Visit visit = new Visit(
+                                    Convert.ToInt32(reader["visitID"]),
+                                    Convert.ToInt32(reader["userID"]),
+                                    Convert.ToInt32(reader["patientID"]),
+                                    Convert.ToInt32(reader["packageID"]),
+                                    Convert.ToDateTime(reader["timeStamp"]),
+                                    Convert.ToInt32(reader["roomID"]),
+                                    reader["type"].ToString(),
+                                    reader["therapistNotes"].ToString(),
+                                    Convert.ToDouble(reader["height"]),
+                                    Convert.ToDouble(reader["weight"])
+                                );
+
+                                physicianVisitsOnDate.Add(visit);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+
+            return physicianVisitsOnDate;
+        }
 
         /// evaluationTest
         ///////////////////////////////////////////////////////////////////

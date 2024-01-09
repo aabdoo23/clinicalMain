@@ -1,3 +1,14 @@
+random thoughts:
+-who can delete what:
+--admin can delete all
+--reciptionist request access before delete?
+
+-access request:
+--delete
+--
+
+
+
 unfinished bussiness:
 
 1-add real data to all tables in db
@@ -87,7 +98,9 @@ done:
 
 +shaghal al live chart 
 
-+Financial System (Partially done, missing revenue calculation for physician, could do a payment class or consider all visits and patients with packages)
++Financial System (Partially done, missing revenue calculation for physician, could do a payment class or consider all visits and patients with packages):
+==payment class done
+==revenue calculation done
 
 
 

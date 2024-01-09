@@ -3,6 +3,7 @@ using MahApps.Metro.IconPacks;
 using Microsoft.Win32;
 using NuGet.Protocol.Plugins;
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
@@ -89,8 +90,18 @@ namespace clinical.Pages
             border.Margin = new Thickness(0);
             Grid.SetRowSpan(border, 2);
 
+
             Image image = new Image();
-            image.Source = new BitmapImage(new Uri(filePath));
+            if (Path.GetExtension(filePath)?.ToLower() == ".dcm") {
+                image.Source = new BitmapImage(new Uri("E:\\STUDY\\5th semester\\BMD302\\screenShots\\dicom.JPG"));////
+
+            }
+            else
+            {
+                image.Source = new BitmapImage(new Uri(filePath));
+
+            }
+
             image.Margin = new Thickness(10);
             Grid.SetRow(image, 1);
 
@@ -149,6 +160,7 @@ namespace clinical.Pages
 
         private void attemptOCR(object sender, MouseButtonEventArgs e,string filePath)
         {
+            if (Path.GetExtension(filePath)?.ToLower()==".dcm") { return; }
             string resultText = PerformOCR(filePath);
             resultText = resultText.Trim();
             reportTXT.Text += resultText;
@@ -158,8 +170,15 @@ namespace clinical.Pages
 
         private void Image_MouseDown(object sender, MouseButtonEventArgs e, string filePath)
         {
-            viewImage view = new viewImage(filePath);
-            view.Show();
+            if (Path.GetExtension(filePath)?.ToLower() == ".dcm") {
+                dicomViewer viewer=new dicomViewer(filePath);
+                viewer.Show();
+            }
+            else {
+                viewImage view = new viewImage(filePath);
+                view.Show(); 
+            }
+            
         }
 
         string PerformOCR(string imagePath)

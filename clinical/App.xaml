@@ -1003,14 +1003,14 @@
                                     <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="true"/>
                                     <Condition Binding="{Binding IsEditable, RelativeSource={RelativeSource AncestorType={x:Type ComboBox}}}" Value="false"/>
                                 </MultiDataTrigger.Conditions>
-                                <Setter Property="Background" TargetName="templateRoot" Value="#4f3cb0"/>
+                                <Setter Property="Background" TargetName="templateRoot" Value="{StaticResource ResourceKey=lighterColor }"/>
                             </MultiDataTrigger>
                             <MultiDataTrigger>
                                 <MultiDataTrigger.Conditions>
                                     <Condition Binding="{Binding IsMouseOver, RelativeSource={RelativeSource Self}}" Value="true"/>
                                     <Condition Binding="{Binding IsEditable, RelativeSource={RelativeSource AncestorType={x:Type ComboBox}}}" Value="true"/>
                                 </MultiDataTrigger.Conditions>
-                                <Setter Property="Background" TargetName="templateRoot" Value="#4f3cb0"/>
+                                <Setter Property="Background" TargetName="templateRoot" Value="{StaticResource ResourceKey=lighterColor }"/>
                                 <Setter Property="Background" TargetName="splitBorder" Value="{StaticResource ComboBox.MouseOver.Editable.Button.Background1}"/>
                                 <Setter Property="BorderBrush" TargetName="splitBorder" Value="{StaticResource ComboBox.MouseOver.Editable.Button.Border1}"/>
                             </MultiDataTrigger>
@@ -1029,7 +1029,7 @@
                                     <Condition Binding="{Binding IsPressed, RelativeSource={RelativeSource Self}}" Value="true"/>
                                     <Condition Binding="{Binding IsEditable, RelativeSource={RelativeSource AncestorType={x:Type ComboBox}}}" Value="true"/>
                                 </MultiDataTrigger.Conditions>
-                                <Setter Property="Background" TargetName="templateRoot" Value="#382b78"/>
+                                <Setter Property="Background" TargetName="templateRoot" Value="{StaticResource ResourceKey=darkerColor }"/>
                                 <Setter Property="Background" TargetName="splitBorder" Value="{StaticResource ComboBox.Pressed.Editable.Button.Background1}"/>
                                 <Setter Property="BorderBrush" TargetName="splitBorder" Value="{StaticResource ComboBox.Pressed.Editable.Button.Border1}"/>
                             </MultiDataTrigger>
@@ -1124,7 +1124,7 @@
 
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsHighlighted" Value="true">
-                                <Setter TargetName="Border" Property="Background" Value="#6B52EA"/>
+                                <Setter TargetName="Border" Property="Background" Value="{StaticResource ResourceKey=selectedColor }"/>
                                 <Setter Property="Foreground" Value="{StaticResource lightFontColor}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>

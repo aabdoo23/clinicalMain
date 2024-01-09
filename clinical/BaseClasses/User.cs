@@ -14,6 +14,7 @@ namespace clinical.BaseClasses
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
         public string NationalID { get; set; }
+        public string FullName { get { return FirstName + " " + LastName;}}
 
         public User(int userID, string firstName, string lastName, string gender, DateTime hireDate, DateTime birthdate, string address, string phoneNumber, string email, string nationalID)
         {

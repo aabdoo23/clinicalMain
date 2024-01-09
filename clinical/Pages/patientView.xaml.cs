@@ -32,6 +32,13 @@ namespace clinical
 
 
         }
+        public patientView(User viewPhysician)
+        {
+            InitializeComponent();
+            mainFrame.Navigate(new reciptionistViewPhysioTherapist(viewPhysician));
+
+
+        }
 
         private void PackIconMaterial_MouseDown(object sender, MouseButtonEventArgs e){
             Window.GetWindow(this).Close();

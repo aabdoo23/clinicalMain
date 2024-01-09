@@ -10,158 +10,221 @@
     <Page.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
     </Page.Resources>
-    <Grid Margin="10">
+    <Grid Margin="0 10 0 0">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="55*"/>
-            <ColumnDefinition Width="45*"/>
+            <ColumnDefinition Width="35*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="50*"/>
+            <RowDefinition Height="15*"/>
             <RowDefinition Height="10*"/>
-            <RowDefinition Height="40*"/>
+            <RowDefinition Height="20*"/>
+            <RowDefinition Height="15*"/>
+            <RowDefinition Height="35*"/>
         </Grid.RowDefinitions>
-        <!--Physicians-->
-        <Border Style="{StaticResource theBorder}">
-            <Grid Margin="10">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="17*"/>
-                    <RowDefinition Height="87*"/>
-                </Grid.RowDefinitions>
-                <TextBlock Text="Physicians" Margin="5" VerticalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource lightFontColor}" FontSize="25"/>
-                <Border Style="{StaticResource theBorder}" Grid.Row="1" CornerRadius="5"></Border>
 
-                <DataGrid Grid.Row="1" Margin="15" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="physiciansDataGrid" Style="{DynamicResource DataGridStyle1}">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" Binding="{Binding UserID}"/>
-                        <DataGridTextColumn Header="Name" Binding="{Binding FirstName}" IsReadOnly="True" Width="*"/>
-                        <DataGridTextColumn Header="Phone Number" Binding="{Binding PhoneNumber}" IsReadOnly="True" Width="*"/>
-                        <DataGridTemplateColumn Header="Details" IsReadOnly="True" Width="*">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <Button Name="view" Style="{StaticResource gridEditButton}" Click="view_Click">
-                                            <Icon:PackIconMaterial Kind="EyeCircleOutline" Style="{StaticResource gridButtonIcon}"/>
-                                        </Button>
+        <Grid Name="leftGrid" Grid.RowSpan="10">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="15*"/>
+                <RowDefinition Height="10*"/>
+                <RowDefinition Height="20*"/>
+                <RowDefinition Height="15*"/>
+                <RowDefinition Height="35*"/>
+            </Grid.RowDefinitions>
+            <!--Top Left-->
+            <Border Grid.Row="0" Grid.RowSpan="2" Style="{StaticResource theBorder}" >
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="60"/>
+                        <RowDefinition Height="*"/>
 
-                                    </StackPanel>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-                    </DataGrid.Columns>
-                </DataGrid>
+                    </Grid.RowDefinitions>
+                    <TextBlock Name="signedInTB" Text="Welcome, Mohamed" Margin="20,17,20,0" VerticalAlignment="Top"  FontWeight="Bold" Foreground="{StaticResource lightFontColor}" FontSize="28"/>
+                    <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="10 5">
+                        <Border Style="{StaticResource theBorder}" Margin="10" Background="{StaticResource lighterColor}">
+                            <StackPanel Orientation="Horizontal" Margin="5">
+                                <Icon:PackIconMaterial Kind="Calendar" Margin="10 0 0 0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="35" Height="35" Foreground="{StaticResource lightFontColor}"/>
 
-            </Grid>
-        </Border>
-        <!--Physicians-->
-        <Border Grid.Row="1" Margin="10" Grid.RowSpan="2" Style="{StaticResource theBorder}">
-            <Grid Margin="10">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="17*"/>
-                    <RowDefinition Height="87*"/>
-                </Grid.RowDefinitions>
-                <TextBlock Text="Today's Patients" Margin="5" VerticalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource lightFontColor}" FontSize="25"/>
-                <Icon:PackIconMaterial Kind="PlusBox" Foreground="{StaticResource lightFontColor}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Width="30" Height="30" Margin="0 0 10 0" MouseDown="newEmployee"/>
-                <Border Style="{StaticResource theBorder}" Grid.Row="1" CornerRadius="5"/>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Name="numberOfAppointmentsTB" Grid.Row="0" Text="66" Margin="20 5" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource lightFontColor}" FontSize="32"/>
+                                    <TextBlock Grid.Row="1" Text="Appointments" Margin="20 5" VerticalAlignment="Top"  FontWeight="SemiBold" Foreground="{StaticResource lightFontColor}" FontSize="18"/>
 
-                <DataGrid Margin="15" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="patientsDataGrid" Style="{DynamicResource DataGridStyle1}">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" Binding="{Binding PatientID}"/>
-                        <DataGridTextColumn Header="Name" Binding="{Binding FirstName}" IsReadOnly="True" Width="*"/>
-                        <DataGridTextColumn Header="Age" Binding="{Binding age}" IsReadOnly="True" Width="*"/>
-                        <DataGridTextColumn Header="Phone Number" Binding="{Binding PhoneNumber}" IsReadOnly="True" Width="*"/>
-                        <DataGridTemplateColumn Header="Details" IsReadOnly="True" Width="auto">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <Button Name="view" Style="{StaticResource gridEditButton}" Click="view_Click">
-                                            <Icon:PackIconMaterial Kind="EyeCircleOutline" Style="{StaticResource gridButtonIcon}"/>
-                                        </Button>
-                                        <!--<Button Margin="5 0 0 0" Style="{StaticResource gridRemoveButton}">
+                                </Grid>
+                            </StackPanel>
+
+
+                        </Border>
+                        <Border Style="{StaticResource theBorder}" Margin="10" Background="{StaticResource lighterColor}">
+                            <StackPanel Orientation="Horizontal" Margin="5">
+                                <Icon:PackIconMaterial Kind="Doctor" Margin="10 0 0 0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="35" Height="35" Foreground="{StaticResource lightFontColor}"/>
+
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Name="numberOfPhysiciansTB" Grid.Row="0" Text="66" Margin="20 5" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource lightFontColor}" FontSize="32"/>
+                                    <TextBlock Grid.Row="1" Text="Physicians" Margin="20 5" VerticalAlignment="Top"  FontWeight="SemiBold" Foreground="{StaticResource lightFontColor}" FontSize="18"/>
+
+                                </Grid>
+                            </StackPanel>
+
+
+                        </Border>
+                        <Border Style="{StaticResource theBorder}" Margin="10" Background="{StaticResource lighterColor}" BorderBrush="{StaticResource lightFontColor}" BorderThickness="2" MouseDown="viewReciptionistProfile">
+                            <StackPanel Orientation="Horizontal" Margin="5">
+
+                                <Grid Width="130">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Row="1" TextWrapping="Wrap" Text="View My Account" Margin="20 5" VerticalAlignment="Top"  FontWeight="Bold" Foreground="{StaticResource lightFontColor}" FontSize="22"/>
+
+                                </Grid>
+                                <Icon:PackIconMaterial Kind="AccountArrowRight" Margin="0 0 10 0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="35" Height="35" Foreground="{StaticResource lightFontColor}"/>
+
+                            </StackPanel>
+
+
+                        </Border>
+                    </StackPanel>
+                </Grid>
+            </Border>
+            <!--Physicians-->
+            <Border Style="{StaticResource theBorder}" Margin="10,10,10,10" Grid.Row="2" Grid.RowSpan="2">
+                <Grid Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="87*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Name="physiciansDGTitleTB" Text="Today's Physicians" Margin="5" VerticalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource lightFontColor}" FontSize="25"/>
+                    <Border Style="{StaticResource theBorder}" Grid.Row="1" CornerRadius="5"></Border>
+
+                    <DataGrid Grid.Row="1" Margin="15" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="physiciansDataGrid" Style="{DynamicResource DataGridStyle1}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" Binding="{Binding UserID}"/>
+                            <DataGridTextColumn Header="Name" Binding="{Binding FullName}" IsReadOnly="True" Width="*"/>
+                            <DataGridTextColumn Header="Phone Number" Binding="{Binding PhoneNumber}" IsReadOnly="True" Width="*"/>
+                            <DataGridTemplateColumn Header="Details" IsReadOnly="True" Width="*">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Button Name="view" Style="{StaticResource gridEditButton}" Click="viewPhysician">
+                                                <Icon:PackIconMaterial Kind="EyeCircleOutline" Style="{StaticResource gridButtonIcon}"/>
+                                            </Button>
+
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                </Grid>
+            </Border>
+            <!--Patients-->
+            <Border Grid.Row="4" Margin="10,10,10,10" Style="{StaticResource theBorder}">
+                <Grid Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="87*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Name="patientsDGTitleTB" Text="Today's Patients" Margin="5" VerticalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource lightFontColor}" FontSize="25"/>
+                    <Border Style="{StaticResource theBorder}" Grid.Row="1" CornerRadius="5"/>
+
+                    <DataGrid Margin="15" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="patientsDataGrid" Style="{DynamicResource DataGridStyle1}">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" Binding="{Binding PatientID}"/>
+                            <DataGridTextColumn Header="Name" Binding="{Binding FullName}" IsReadOnly="True" Width="*"/>
+                            <DataGridTextColumn Header="Age" Binding="{Binding age}" IsReadOnly="True" Width="*"/>
+                            <DataGridTextColumn Header="Phone Number" Binding="{Binding PhoneNumber}" IsReadOnly="True" Width="*"/>
+                            <DataGridTemplateColumn Header="Details" IsReadOnly="True" Width="auto">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <Button Name="view" Style="{StaticResource gridEditButton}" Click="view_Click">
+                                                <Icon:PackIconMaterial Kind="EyeCircleOutline" Style="{StaticResource gridButtonIcon}"/>
+                                            </Button>
+                                            <!--<Button Margin="5 0 0 0" Style="{StaticResource gridRemoveButton}">
                             <Icon:PackIconMaterial Kind="DeleteOutline" Style="{StaticResource gridButtonIcon}"/>
                         </Button>-->
-                                    </StackPanel>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-                    </DataGrid.Columns>
-                </DataGrid>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
 
-            </Grid>
-        </Border>
-        <!--Today appointments-->
-        <Border Grid.Column="1" Grid.RowSpan="2" Style="{StaticResource theBorder}">
+                </Grid>
+            </Border>
+        </Grid>
+        
+        
+        <!--top right-->
+        <Border Grid.Row="0" Grid.RowSpan="2" Grid.Column="2" Style="{StaticResource theBorder}" Margin="10,0,10,10">
             <Grid Margin="10">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="13*"/>
-                    <RowDefinition Height="87*"/>
+                    <RowDefinition Height="55"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="30"/>
                 </Grid.RowDefinitions>
-                <TextBlock Text="Today's Appointments" Margin="10 5" VerticalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource lightFontColor}" FontSize="25"/>
-                <Icon:PackIconMaterial Kind="PlusBox" Foreground="{StaticResource lightFontColor}" MouseDown="newAppointment" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Width="30" Height="30" Margin="0 0 10 0"/>
-                <Border Style="{StaticResource theBorder}" Grid.Row="1" CornerRadius="5"></Border>
+                <TextBlock Name="selectedDayTB" Text="Wednesday, 18 September 2024" Margin="10 5" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource lightFontColor}" FontSize="25"/>
+                <!--Year Selection-->
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="10*"/>
+                        <ColumnDefinition Width="90*"/>
+                        <ColumnDefinition Width="10*"/>
+                    </Grid.ColumnDefinitions>
+                    <Button Style="{StaticResource calendarButton}" Margin="0" HorizontalAlignment="Right" Click="goLeftDay" VerticalAlignment="Center">
+                        <Icon:PackIconMaterial Kind="ArrowLeftBox" Width="25" Height="25" HorizontalAlignment="Center" Foreground="{StaticResource lightFontColor}"/>
+                    </Button>
+                    <Button Style="{StaticResource calendarButton}" Margin="0" HorizontalAlignment="Center" Grid.Column="2" Click="goRightDay" VerticalAlignment="Center">
+                        <Icon:PackIconMaterial Kind="ArrowRightBox" Width="25" Height="25" HorizontalAlignment="Center" Foreground="{StaticResource lightFontColor}"/>
+                    </Button>
+                    <StackPanel Grid.Column="1" Name="dayStack" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Grid>
+                <StackPanel  Orientation="Horizontal" Grid.Row="4" Margin="10 0 0 0">
+                    <Viewbox Width="150" VerticalAlignment="Center">
+                        <CheckBox Name="allPanelCB" Content="Control All Panels" FontWeight="SemiBold" VerticalAlignment="Center" FontSize="16" Foreground="{StaticResource lightFontColor}" Checked="allPanelCBCheck" Unchecked="allPanelCBCheck"/>
+                    </Viewbox>
+                    <Line Width="3" Margin="10 3" Stroke="{StaticResource lighterColor}" StrokeThickness="10" X1="1" X2="1" Y1="1" Y2="35" />
 
-                <DataGrid Grid.Row="1" Margin="15" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="todayAppointmentsDataGrid" Style="{DynamicResource DataGridStyle1}">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="10*" Binding="{Binding VisitID}"/>
-                        <DataGridTextColumn Header="Patient Name" Binding="{Binding PatientName}" IsReadOnly="True" Width="30*"/>
-                        <DataGridTextColumn Header="Physiotherapist" Binding="{Binding PhysioTherapistName}" IsReadOnly="True" Width="20*"/>
-                        <DataGridTemplateColumn Header="Actions" IsReadOnly="True" Width="10*">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <Button Name="view" Style="{StaticResource gridEditButton}" Click="view_Click">
-                                            <Icon:PackIconMaterial Kind="EyeCircleOutline" Style="{StaticResource gridButtonIcon}"/>
-                                        </Button>
-                                        <Button Name="start" Style="{StaticResource gridEditButton}" Foreground="Green" Click="view_Click">
-                                            <Icon:PackIconMaterial Kind="PlayBox" Style="{StaticResource gridButtonIcon}"/>
-                                        </Button>
-                                        <Button Name="delay" Style="{StaticResource gridEditButton}" Foreground="Green" Click="view_Click">
-                                            <Icon:PackIconMaterial Kind="PlayBox" Style="{StaticResource gridButtonIcon}"/>
-                                        </Button>
-                                        <Button Name="delete"  Margin="5 0 0 0" Style="{StaticResource gridRemoveButton}">
-                                            <Icon:PackIconMaterial Kind="DeleteOutline" Style="{StaticResource gridButtonIcon}"/>
-                                        </Button>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-                    </DataGrid.Columns>
-                </DataGrid>
+                    <TextBlock Text="Pick date:" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="18" FontWeight="SemiBold"/>
 
+                    <DatePicker Name="dp" IsTodayHighlighted="True" Margin="10 0" VerticalAlignment="Center" SelectedDateChanged="dpDateChanged" />
+                </StackPanel>
             </Grid>
         </Border>
-        <!--Active appointments-->
-        <Border Grid.Column="1" Grid.Row="2" Grid.RowSpan="2" Style="{StaticResource theBorder}" Margin="10">
+
+        <!--Appointments-->
+        <Border Grid.Column="2" Grid.Row="2" Grid.RowSpan="3" Style="{StaticResource theBorder}" Margin="10,10,10,10">
             <Grid Margin="10">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="20*"/>
-                    <RowDefinition Height="87*"/>
+                    <RowDefinition Height="60"/>
+                    <RowDefinition Height="60"/>
+                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <TextBlock Text="Active Appointments" Margin="5" VerticalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource lightFontColor}" FontSize="25"/>
-                <Border Style="{StaticResource theBorder}" Grid.Row="1" CornerRadius="5"/>
-                <DataGrid Grid.Row="1" Margin="15" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="ActiveAppointmentsDataGrid" Style="{DynamicResource DataGridStyle1}">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" Binding="{Binding VisitID}"/>
-                        <DataGridTextColumn Header="Patient Name" Binding="{Binding PatientName}" IsReadOnly="True" Width="*"/>
-                        <DataGridTextColumn Header="Physiotherapist" Binding="{Binding PhysioTherapistName}" IsReadOnly="True" Width="auto"/>
-                        <DataGridTemplateColumn Header="Details" IsReadOnly="True" Width="auto">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <Button Name="view" Style="{StaticResource gridEditButton}" Click="view_Click">
-                                            <Icon:PackIconMaterial Kind="EyeCircleOutline" Style="{StaticResource gridButtonIcon}"/>
-                                        </Button>
-                                        <!--<Button Margin="5 0 0 0" Style="{StaticResource gridRemoveButton}">
-         <Icon:PackIconMaterial Kind="DeleteOutline" Style="{StaticResource gridButtonIcon}"/>
-     </Button>-->
-                                    </StackPanel>
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
-                    </DataGrid.Columns>
-                </DataGrid>
+                <Border Style="{StaticResource theBorder}" BorderBrush="{StaticResource lightFontColor}" Background="{StaticResource lighterColor}" BorderThickness="2" CornerRadius="5" Margin="10" Grid.Row="0" MouseDown="newAppointment">
+                    <Label Content="New Appointment" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="21" FontWeight="Bold" Margin="0,-2,0,0"/>
+                </Border>
+                <Border Style="{StaticResource theBorder}" BorderBrush="{StaticResource lightFontColor}" Background="{StaticResource lighterColor}" BorderThickness="2" CornerRadius="5" Margin="10" Grid.Row="1" MouseDown="newPatient">
+                    <Label Content="New Patient" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="21" FontWeight="Bold" Margin="0,-2,0,0"/>
+                </Border>
+                <Border Style="{StaticResource theBorder}" Grid.Row="2" CornerRadius="5"></Border>
+                <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Hidden" Margin="5">
+                    <StackPanel Name="todayAppointmentsStackPanel"/>
+
+                </ScrollViewer>
+
 
             </Grid>
         </Border>
+        <Frame Name="leftSideFrame"  Grid.Row="0" Grid.RowSpan="5" Visibility="Hidden"/>
 
 
     </Grid>

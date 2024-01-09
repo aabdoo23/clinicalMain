@@ -11,50 +11,6 @@
     <Page.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
     </Page.Resources>
-    <Grid Grid.Column="1" Margin="5 20 25 20" Name="mainGrid">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="auto"/>
-        </Grid.RowDefinitions>
-
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-
-        <!--Title Section-->
-        <StackPanel Margin="7 10 0 25">
-            <TextBlock Text="Primary" Foreground="#797295" FontSize="13"/>
-            <TextBlock Text="Dashboard" Style="{StaticResource titleText}"/>
-        </StackPanel>
-
-        <!--Search Section-->
-        <Grid Grid.Column="2" VerticalAlignment="Top" Margin="0 10 0 0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="auto"/>
-            </Grid.ColumnDefinitions>
-
-            <!--Search Textbox-->
-            <Grid>
-                <TextBlock Margin="40 0 0 0" VerticalAlignment="Center" Foreground="{StaticResource darkerColor}"
-                       IsHitTestVisible="False" Panel.ZIndex="1" Text="Search..."
-                       Visibility="{Binding Converter={StaticResource BoolToVis}, ElementName=txtSearch}"/>
-                <TextBox x:Name="txtSearch" Style="{StaticResource searchTextbox}"/>
-                <Icon:PackIconMaterial Kind="Magnify" Width="14" Height="14" Foreground="{StaticResource darkerColor}" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="15 0 0 0"/>
-            </Grid>
-
-            <!--User Image-->
-            <Ellipse Width="45" Height="45" Margin="15 0 7 0" Grid.Column="1">
-                <Ellipse.Fill>
-                    <ImageBrush ImageSource="@\..\..\images\3alolo.png"/>
-                </Ellipse.Fill>
-            </Ellipse>
-        </Grid>
-
-        <!--Main Middle Chart Section-->
-    </Grid>
+    
 
 </Page>

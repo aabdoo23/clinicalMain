@@ -28,6 +28,8 @@ namespace clinical.BaseClasses
         public int age { get; set; }
         public int ActivePackageID {  get; set; }
         public int RemainingSessions {  get; set; }
+        public string FullName { get { return FirstName + " " + LastName; } }
+
         public Patient(int patientID, string firstName, string lastname, 
             DateTime birthdate, string gender, string phoneNumber, 
             string email, string address, 
