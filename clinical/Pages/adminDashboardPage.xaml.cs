@@ -27,19 +27,7 @@ namespace clinical.Pages
             hereNowDataGrid.ItemsSource=DB.GetAllUserswRecordsByDate(DateTime.Now);
             List<Visit> todayVisits = DB.GetTodayVisits();
 
-            foreach (Visit v in todayVisits)
-            {
-                Patient patient = DB.GetPatientById(v.PatientID);
-                if (patient != null)
-                {
-                    v.PatientName = patient.FirstName + " " + patient.LastName;
-                }
-                User pt = DB.GetUserById(v.PhysiotherapistID);
-                if (pt != null)
-                {
-                    v.PhysioTherapistName = pt.FirstName + " " + pt.LastName;
-                }
-            }
+            
             todayAppointmentsDataGrid.ItemsSource = todayVisits;
 
         }

@@ -12,16 +12,16 @@
         AllowsTransparency="True" WindowStyle="None" WindowStartupLocation="CenterScreen">
 
     <Border Background="{StaticResource lightFontColor}" CornerRadius="20" BorderThickness="2" BorderBrush="#ebedf3"
-            Padding="10" MouseDown="Border_MouseDown">
+            Padding="10">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="40"/>
                 <RowDefinition Height="90*"/>
                 
             </Grid.RowDefinitions>
-
             <Icon:PackIconMaterial Kind="CloseBox" MouseDown="PackIconMaterial_MouseDown" HorizontalAlignment="Right" Height="30" Width="30" Margin="0,1,12,0" Foreground="{StaticResource darkerColor}"/>
             <Icon:PackIconMaterial Kind="WindowMinimize" MouseDown="PackIconMaterial_MouseDown_1" VerticalAlignment="Bottom" HorizontalAlignment="Right" Height="30" Width="25" Margin="0,0,55,4" Foreground="{StaticResource darkerColor}"/>
+            <Border Background="Transparent" Margin="-10,-10,100,1" MouseDown="Border_MouseDown"/>
 
             <Border CornerRadius="20" Background="#FEFEFA" Grid.Row="1">
                 <Grid>

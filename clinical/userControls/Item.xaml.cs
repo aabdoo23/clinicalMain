@@ -24,6 +24,32 @@ namespace clinical.userControls
         {
             InitializeComponent();
         }
+
+
+
+
+        public static readonly DependencyProperty MarkDoneCommandProperty =
+            DependencyProperty.Register("MarkDoneCommand", typeof(ICommand), typeof(Item));
+
+        public ICommand MarkDoneCommand
+        {
+            get { return (ICommand)GetValue(MarkDoneCommandProperty); }
+            set { SetValue(MarkDoneCommandProperty, value); }
+        }
+
+        public static readonly DependencyProperty DeleteCommandProperty =
+            DependencyProperty.Register("DeleteCommandCommand", typeof(ICommand), typeof(Item));
+
+        public ICommand DeleteCommand
+        {
+            get { return (ICommand)GetValue(DeleteCommandProperty); }
+            set { SetValue(DeleteCommandProperty, value); }
+        }
+
+
+        
+
+
         public string Title
         {
             get { return (string)GetValue(TitleProperty); }
@@ -32,6 +58,13 @@ namespace clinical.userControls
 
         public static readonly DependencyProperty TitleProperty = DependencyProperty.Register("Title", typeof(string), typeof(Item));
 
+        public string Description
+        {
+            get { return (string)GetValue(DescriptionProperty); }
+            set { SetValue(DescriptionProperty, value); }
+        }
+
+        public static readonly DependencyProperty DescriptionProperty = DependencyProperty.Register("Description", typeof(string), typeof(Item));
 
         public string Time
         {

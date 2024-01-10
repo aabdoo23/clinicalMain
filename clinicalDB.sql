@@ -181,6 +181,7 @@ CREATE TABLE Visit (
     roomID INT,
     type TEXT NOT NULL,
     therapistNotes TEXT,
+    isDone boolean,
     PRIMARY KEY (visitID),
     FOREIGN KEY (UserID) REFERENCES User(userID),
     FOREIGN KEY (patientID) REFERENCES Patient(patientID),
@@ -293,6 +294,19 @@ CREATE TABLE payment(
     PRIMARY KEY (paymentID),
     FOREIGN KEY (physicianID) REFERENCES User(userID) ON UPDATE CASCADE ON DELETE SET NULL, 
     FOREIGN KEY (patientID) REFERENCES Patient(patientID) ON UPDATE CASCADE ON DELETE SET NULL 
+);
+
+
+CREATE TABLE calendarEvent(
+	eventID INT NOT NULL,
+    eventName varchar(255),
+    eventText TEXT,
+    userID int,
+    startTime datetime,
+    endTime datetime,
+    isDone boolean,
+    PRIMARY KEY (eventID),
+    FOREIGN KEY (userID) REFERENCES User(userID) ON UPDATE CASCADE ON DELETE CASCADE
 );
 #globalVars manual
 #0-8 (8 included) times for session times in this format: "16:00"

@@ -47,8 +47,20 @@ namespace clinical
         {
             DateTime dateTime = DateTime.Now;
             string s = "";
-            s += userID.ToString().Substring(0, 4);
+            s += userID.ToString().Substring(0, 2);
             s += dateTime.DayOfYear.ToString();
+            s += dateTime.Year.ToString().Substring(2,2);
+
+            return int.Parse(s);
+
+        }
+        public static int generateNewCalendarEventID(int userID)
+        {
+            DateTime dateTime = DateTime.Now;
+            string s = "";
+            s += userID.ToString().Substring(0, 2);
+            s += dateTime.DayOfYear.ToString();
+            s += dateTime.Year.ToString().Substring(2, 2);
 
             return int.Parse(s);
 

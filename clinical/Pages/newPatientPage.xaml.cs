@@ -39,7 +39,7 @@ namespace clinical.Pages
                 else maleRB.IsChecked = false;
                 addressTextBox.Text = toEdit.Address;
                 phoneTextBox.Text = toEdit.PhoneNumber;
-                ageTextBox.Text = toEdit.Age().ToString();
+                ageTextBox.Text = toEdit.Age.ToString();
             }
         }
         public newPatientPage()

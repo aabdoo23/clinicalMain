@@ -534,6 +534,38 @@ namespace clinical
 
             return patients;
         }
+        public static List<Patient> GetPatientsWithVisitsOnDateByPhysicianID(int physicianID,DateTime specificDate)
+        {
+            List<Patient> patients = new List<Patient>();
+            using (connection)
+            {
+                try
+                {
+                    if (connection.State == ConnectionState.Closed) connection.Open();
+
+                    using (MySqlCommand cmd = new MySqlCommand("SELECT DISTINCT p.* FROM patient p JOIN visit v ON p.patientID = v.patientID WHERE DATE(v.timeStamp) = @specificDate AND v.userID=@physicianID", connection))
+                    {
+                        cmd.Parameters.AddWithValue("@specificDate", specificDate.Date);
+                        cmd.Parameters.AddWithValue("@physicianID", physicianID);
+
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                Patient patient = MapPatient(reader);
+                                patients.Add(patient);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+
+            return patients;
+        }
         public static List<Patient> GetAllPatientsByPhysicianID(int physicianID)
         {
             List<Patient> patients = new List<Patient>();
@@ -3056,8 +3088,8 @@ namespace clinical
                 {
                     if (connection.State == ConnectionState.Closed) connection.Open();
 
-                    string query = "INSERT INTO Visit (visitID, userID, patientID, packageID, timeStamp, roomID, type, therapistNotes, height, weight) " +
-                                   "VALUES (@visitID, @userID, @patientID, @packageID, @timeStamp, @roomID, @type, @therapistNotes, @height, @weight)";
+                    string query = "INSERT INTO Visit (visitID, userID, patientID, packageID, timeStamp, roomID, type, therapistNotes, height, weight, isDone) " +
+                                   "VALUES (@visitID, @userID, @patientID, @packageID, @timeStamp, @roomID, @type, @therapistNotes, @height, @weight, @done)";
 
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
@@ -3071,6 +3103,7 @@ namespace clinical
                         command.Parameters.AddWithValue("@therapistNotes", visit.TherapistNotes);
                         command.Parameters.AddWithValue("@height", visit.Height);
                         command.Parameters.AddWithValue("@weight", visit.Weight);
+                        command.Parameters.AddWithValue("@done", visit.IsDone);
                         command.ExecuteNonQuery();
 
                         MessageBox.Show("Visit record inserted successfully.");
@@ -3093,7 +3126,7 @@ namespace clinical
 
                     string query = "UPDATE Visit SET userID = @userID, patientID = @patientID, " +
                                    "packageID = @packageID, timeStamp = @timeStamp, roomID = @roomID, " +
-                                   "type = @type, therapistNotes = @therapistNotes, height = @height , weight = @weight WHERE visitID = @visitID";
+                                   "type = @type, therapistNotes = @therapistNotes, height = @height , weight = @weight, isDone=@done WHERE visitID = @visitID";
 
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
@@ -3107,6 +3140,7 @@ namespace clinical
                         command.Parameters.AddWithValue("@therapistNotes", visit.TherapistNotes);
                         command.Parameters.AddWithValue("@height", visit.Height);
                         command.Parameters.AddWithValue("@weight", visit.Weight);
+                        command.Parameters.AddWithValue("@done", visit.IsDone);
 
                         command.ExecuteNonQuery();
 
@@ -3174,7 +3208,8 @@ namespace clinical
                                     reader["type"].ToString(),
                                     reader["therapistNotes"].ToString(),
                                     Convert.ToDouble(reader["height"]),
-                                    Convert.ToDouble(reader["weight"])
+                                    Convert.ToDouble(reader["weight"]),
+                                    Convert.ToBoolean(reader["isDone"])
                                 );
                             }
                         }
@@ -3217,7 +3252,9 @@ namespace clinical
                                     reader["type"].ToString(),
                                     reader["therapistNotes"].ToString(),
                                     Convert.ToDouble(reader["height"]),
-                                    Convert.ToDouble(reader["weight"])
+                                    Convert.ToDouble(reader["weight"]),
+                                    Convert.ToBoolean(reader["isDone"])
+
                                 );
 
                                 visitList.Add(visit);
@@ -3261,7 +3298,9 @@ namespace clinical
                                     reader["type"].ToString(),
                                     reader["therapistNotes"].ToString(),
                                     Convert.ToDouble(reader["height"]),
-                                    Convert.ToDouble(reader["weight"])
+                                    Convert.ToDouble(reader["weight"]),
+                                    Convert.ToBoolean(reader["isDone"])
+
                                 );
 
                                 visitList.Add(visit);
@@ -3287,7 +3326,7 @@ namespace clinical
                 {
                     if (connection.State == ConnectionState.Closed) connection.Open();
 
-                    string query = "SELECT * FROM Visit WHERE patientID=@patientID AND timeStamp < CURDATE()";
+                    string query = "SELECT * FROM Visit WHERE patientID=@patientID AND timeStamp < CURDATE() ORDER BY timeStamp ASC";
 
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
@@ -3307,7 +3346,9 @@ namespace clinical
                                     reader["type"].ToString(),
                                     reader["therapistNotes"].ToString(),
                                     Convert.ToDouble(reader["height"]),
-                                    Convert.ToDouble(reader["weight"])
+                                    Convert.ToDouble(reader["weight"]),
+                                    Convert.ToBoolean(reader["isDone"])
+
                                 );
 
                                 visitList.Add(visit);
@@ -3333,7 +3374,7 @@ namespace clinical
                 {
                     if (connection.State == ConnectionState.Closed) connection.Open();
 
-                    string query = "SELECT * FROM Visit WHERE patientID=@patientID AND timeStamp > CURDATE()";
+                    string query = "SELECT * FROM Visit WHERE patientID=@patientID AND timeStamp > CURDATE() ORDER BY timeStamp ASC";
 
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
@@ -3353,7 +3394,9 @@ namespace clinical
                                     reader["type"].ToString(),
                                     reader["therapistNotes"].ToString(),
                                     Convert.ToDouble(reader["height"]),
-                                    Convert.ToDouble(reader["weight"])
+                                    Convert.ToDouble(reader["weight"]),
+                                    Convert.ToBoolean(reader["isDone"])
+
                                 );
 
                                 visitList.Add(visit);
@@ -3379,7 +3422,7 @@ namespace clinical
                 {
                     if (connection.State == ConnectionState.Closed) connection.Open();
 
-                    string query = "SELECT * FROM Visit WHERE patientID=@patientID AND DATE(timeStamp) = CURDATE()";
+                    string query = "SELECT * FROM Visit WHERE patientID=@patientID AND DATE(timeStamp) = CURDATE() ORDER BY timeStamp ASC";
 
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
@@ -3399,7 +3442,9 @@ namespace clinical
                                     reader["type"].ToString(),
                                     reader["therapistNotes"].ToString(),
                                     Convert.ToDouble(reader["height"]),
-                                    Convert.ToDouble(reader["weight"])
+                                    Convert.ToDouble(reader["weight"]),
+                                    Convert.ToBoolean(reader["isDone"])
+
                                 );
 
                                 visitList.Add(visit);
@@ -3427,7 +3472,7 @@ namespace clinical
 
                     string query = "SELECT v.* FROM Visit v " +
                                    "INNER JOIN User u ON v.userID = u.userID " +
-                                   "WHERE u.userID = @physicianID";
+                                   "WHERE u.userID = @physicianID ORDER BY timeStamp ASC";
 
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
@@ -3447,7 +3492,9 @@ namespace clinical
                                     reader["type"].ToString(),
                                     reader["therapistNotes"].ToString(),
                                     Convert.ToDouble(reader["height"]),
-                                    Convert.ToDouble(reader["weight"])
+                                    Convert.ToDouble(reader["weight"]),
+                                    Convert.ToBoolean(reader["isDone"])
+
                                 );
 
                                 visitsForPhysician.Add(visit);
@@ -3473,7 +3520,7 @@ namespace clinical
                 {
                     if (connection.State == ConnectionState.Closed) connection.Open();
 
-                    string query = "SELECT * FROM Visit WHERE DATE(timeStamp) = CURDATE()";
+                    string query = "SELECT * FROM Visit WHERE DATE(timeStamp) = CURDATE() ORDER BY timeStamp ASC";
 
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
@@ -3491,53 +3538,9 @@ namespace clinical
                                     reader["type"].ToString(),
                                     reader["therapistNotes"].ToString(),
                                     Convert.ToDouble(reader["height"]),
-                                    Convert.ToDouble(reader["weight"])
-                                );
+                                    Convert.ToDouble(reader["weight"]),
+                                    Convert.ToBoolean(reader["isDone"])
 
-                                todayVisits.Add(visit);
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error: {ex.Message}");
-                }
-            }
-
-            return todayVisits;
-        }
-        public static List<Visit> GetVisitsByDay(DateTime day)
-        {
-            List<Visit> todayVisits = new List<Visit>();
-
-            using (connection)
-            {
-                try
-                {
-                    if (connection.State == ConnectionState.Closed) connection.Open();
-
-                    string query = "SELECT * FROM Visit WHERE CONVERT(DATE, timeStamp) = @ProvidedDate";
-
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
-                    {
-                        using (MySqlDataReader reader = command.ExecuteReader())
-                        {
-                            command.Parameters.AddWithValue("@ProvidedDate", day.Date);
-
-                            while (reader.Read())
-                            {
-                                Visit visit = new Visit(
-                                    Convert.ToInt32(reader["visitID"]),
-                                    Convert.ToInt32(reader["userID"]),
-                                    Convert.ToInt32(reader["patientID"]),
-                                    Convert.ToInt32(reader["packageID"]),
-                                    Convert.ToDateTime(reader["timeStamp"]),
-                                    Convert.ToInt32(reader["roomID"]),
-                                    reader["type"].ToString(),
-                                    reader["therapistNotes"].ToString(),
-                                    Convert.ToDouble(reader["height"]),
-                                    Convert.ToDouble(reader["weight"])
                                 );
 
                                 todayVisits.Add(visit);
@@ -3585,7 +3588,9 @@ namespace clinical
                                     reader["type"].ToString(),
                                     reader["therapistNotes"].ToString(),
                                     Convert.ToDouble(reader["height"]),
-                                    Convert.ToDouble(reader["weight"])
+                                    Convert.ToDouble(reader["weight"]),
+                                    Convert.ToBoolean(reader["isDone"])
+
                                 );
 
                                 todayPhysicianVisits.Add(visit);
@@ -3611,9 +3616,7 @@ namespace clinical
                 {
                     if (connection.State == ConnectionState.Closed) connection.Open();
 
-                    string query = "SELECT v.* FROM Visit v " +
-                                   "INNER JOIN User u ON v.userID = u.userID " +
-                                   "WHERE u.userID = @physicianID AND DATE(v.timeStamp) = @visitDate";
+                    string query = "SELECT * FROM Visit WHERE userID = @physicianID AND DATE(timeStamp) = @visitDate ORDER BY timeStamp ASC";
 
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
@@ -3634,7 +3637,9 @@ namespace clinical
                                     reader["type"].ToString(),
                                     reader["therapistNotes"].ToString(),
                                     Convert.ToDouble(reader["height"]),
-                                    Convert.ToDouble(reader["weight"])
+                                    Convert.ToDouble(reader["weight"]),
+                                    Convert.ToBoolean(reader["isDone"])
+
                                 );
 
                                 physicianVisitsOnDate.Add(visit);
@@ -3650,7 +3655,6 @@ namespace clinical
 
             return physicianVisitsOnDate;
         }
-
         public static List<Visit> GetAllVisitsOnDate(DateTime date)
         {
             List<Visit> physicianVisitsOnDate = new List<Visit>();
@@ -3661,7 +3665,7 @@ namespace clinical
                 {
                     if (connection.State == ConnectionState.Closed) connection.Open();
 
-                    string query = "SELECT * FROM Visit WHERE DATE(timeStamp) = @visitDate";
+                    string query = "SELECT * FROM Visit WHERE DATE(timeStamp) = @visitDate ORDER BY timeStamp ASC";
 
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
@@ -3681,7 +3685,9 @@ namespace clinical
                                     reader["type"].ToString(),
                                     reader["therapistNotes"].ToString(),
                                     Convert.ToDouble(reader["height"]),
-                                    Convert.ToDouble(reader["weight"])
+                                    Convert.ToDouble(reader["weight"]),
+                                    Convert.ToBoolean(reader["isDone"])
+
                                 );
 
                                 physicianVisitsOnDate.Add(visit);
@@ -5361,8 +5367,6 @@ namespace clinical
         {
             UpdateGlobalVar(12,val);
         }
-
-
         public static void UpdateGlobalVar(int id, string val)
         {
             using (connection)
@@ -5379,6 +5383,214 @@ namespace clinical
                     cmd.ExecuteNonQuery();
                 }
             }
+        }
+
+
+
+        ///calendarEvent
+        ////////////////////////////////////////////////////////
+        ///
+
+        public static void InsertCalendarEvent(CalendarEvent calendarEvent)
+        {
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+                    string query = "INSERT INTO calendarEvent (eventID, userID, eventName, eventText, startTime, endTime, isDone) " +
+                                   "VALUES (@eventID, @userID, @eventName, @eventText, @startTime, @endTime, @done)";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@eventID", calendarEvent.EventID);
+                        command.Parameters.AddWithValue("@userID", calendarEvent.UserID);
+                        command.Parameters.AddWithValue("@eventName", calendarEvent.EventName);
+                        command.Parameters.AddWithValue("@eventText", calendarEvent.EventText);
+                        command.Parameters.AddWithValue("@startTime", calendarEvent.EventStartTime);
+                        command.Parameters.AddWithValue("@endTime", calendarEvent.EventEndTime);
+                        command.Parameters.AddWithValue("@done", calendarEvent.IsDone);
+
+                        command.ExecuteNonQuery();
+                    }
+                    MessageBox.Show("Event added successfully.");
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+        }
+
+        public static void UpdateCalendarEvent(CalendarEvent calendarEvent)
+        {
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+                    string query = "UPDATE calendarEvent SET " +
+                                   "userID = @userID, " +
+                                   "eventName = @eventName, " +
+                                   "eventText = @eventText, " +
+                                   "startTime = @startTime, " +
+                                   "endTime = @endTime, " +
+                                   "isDone = @done " +
+                                   "WHERE eventID = @eventID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@eventID", calendarEvent.EventID);
+                        command.Parameters.AddWithValue("@userID", calendarEvent.UserID);
+                        command.Parameters.AddWithValue("@eventName", calendarEvent.EventName);
+                        command.Parameters.AddWithValue("@eventText", calendarEvent.EventText);
+                        command.Parameters.AddWithValue("@startTime", calendarEvent.EventStartTime);
+                        command.Parameters.AddWithValue("@endTime", calendarEvent.EventEndTime);
+                        command.Parameters.AddWithValue("@done", calendarEvent.IsDone);
+
+                        command.ExecuteNonQuery();
+                    }
+                    MessageBox.Show("Event updated successfully.");
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+        }
+
+        public static List<CalendarEvent> GetAllCalendarEvents()
+        {
+            List<CalendarEvent> calendarEvents = new List<CalendarEvent>();
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+                    string query = "SELECT * FROM calendarEvent";
+
+                    using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                    {
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                CalendarEvent calendarEvent = MapCalendarEvent(reader);
+                                calendarEvents.Add(calendarEvent);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+
+            return calendarEvents;
+        }
+        public static void DeleteCalendarEvent(CalendarEvent calendarEvent)
+        {
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+                    string query = "Delete FROM calendarEvent Where eventID=@eId";
+
+                    using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@eId", calendarEvent.EventID);
+                        cmd.ExecuteReader();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+
+        }
+
+        private static CalendarEvent MapCalendarEvent(MySqlDataReader reader)
+        {
+            return new CalendarEvent(Convert.ToInt32(reader["eventID"]),
+                Convert.ToInt32(reader["userID"]),
+                Convert.ToString(reader["eventName"]),
+                Convert.ToString(reader["eventText"]),
+                Convert.ToDateTime(reader["startTime"]),
+                Convert.ToDateTime(reader["endTime"]),
+                Convert.ToBoolean(reader["isDone"])
+
+            );
+        }
+        public static List<CalendarEvent> GetCalendarEventsByUserID(int userID)
+        {
+            List<CalendarEvent> calendarEvents = new List<CalendarEvent>();
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+                    string query = "SELECT * FROM calendarEvent WHERE userID = @userID";
+
+                    using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@userID", userID);
+
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                CalendarEvent calendarEvent = MapCalendarEvent(reader);
+                                calendarEvents.Add(calendarEvent);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+
+            return calendarEvents;
+        }
+
+        public static List<CalendarEvent> GetCalendarEventsByUserIDAndDate(int userID, DateTime startDateTime)
+        {
+            List<CalendarEvent> calendarEvents = new List<CalendarEvent>();
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+                    string query = "SELECT * FROM calendarEvent WHERE userID = @userID AND DATE(startTime) = DATE(@startDateTime) ORDER BY startTime ASC";
+
+                    using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                    {
+                        cmd.Parameters.AddWithValue("@userID", userID);
+                        cmd.Parameters.AddWithValue("@startDateTime", startDateTime);
+
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                CalendarEvent calendarEvent = MapCalendarEvent(reader);
+                                calendarEvents.Add(calendarEvent);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+
+            return calendarEvents;
         }
     }
 }

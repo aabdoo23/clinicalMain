@@ -24,6 +24,17 @@ namespace clinical.userControls
         {
             InitializeComponent();
         }
+
+
+
+        public static readonly DependencyProperty CommandProperty =
+            DependencyProperty.Register("Command", typeof(ICommand), typeof(MenuButton));
+
+        public ICommand Command
+        {
+            get { return (ICommand)GetValue(CommandProperty); }
+            set { SetValue(CommandProperty, value); }
+        }
         public string Caption
         {
             get { return (string)GetValue(CaptionProperty); }

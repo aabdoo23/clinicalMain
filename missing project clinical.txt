@@ -7,7 +7,9 @@ random thoughts:
 --delete
 --
 
+-reciptionist can't view visit and patient as physician or admin
 
+-visit to have a done bool, pending for physician to request a follow up, to be finalized with reception
 
 unfinished bussiness:
 
@@ -27,11 +29,7 @@ unfinished bussiness:
 
 9-ML and Desicion support
 
-10- Notes section in calendar page
-
 11- print the prescription properly
-
-12- dicom viewer
 
 13- Scheduling system
 
@@ -42,6 +40,8 @@ unfinished bussiness:
 16- salary and shit
 
 not urgent:
+
+-visitType class and table(id,name,time,cost), to be referenced in visit table
 
 -when updating height and weight in a visit, only update the patient if it's the most recent visit
 
@@ -102,8 +102,9 @@ done:
 ==payment class done
 ==revenue calculation done
 
++Notes section in calendar page
 
-
++- dicom viewer
 
 ////////////////////
 

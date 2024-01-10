@@ -136,7 +136,7 @@ namespace clinical
             if (result == MessageBoxResult.Yes)
             {
                 int id = globals.generateNewVisitID(selectedPatient.PatientID, selectedDateTime);
-                Visit visit = new Visit(id, selectedPhysician.UserID, selectedPatient.PatientID, selectedPackage.PackageID, selectedDateTime, 1,visitTypeCB.SelectedItem.ToString(), "",selectedPatient.Height,selectedPatient.Weight);
+                Visit visit = new Visit(id, selectedPhysician.UserID, selectedPatient.PatientID, selectedPackage.PackageID, selectedDateTime, 1,visitTypeCB.SelectedItem.ToString(), "",selectedPatient.Height,selectedPatient.Weight,false);
 
                 globals.scheduleVisit(visit);
 

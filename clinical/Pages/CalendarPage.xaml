@@ -95,9 +95,22 @@
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
 
+                                <fa:ImageAwesome Icon="Language" Width="15" Height="15" Foreground="{StaticResource lightFontColor}"/>
+                                <TextBlock x:Name="lblTitle" MouseDown="lblNote_MouseDown" Text="Title" Style="{StaticResource calendarTextHint}"/>
+                                <TextBox Name="txtTitle" TextChanged="txtNote_TextChanged" Style="{StaticResource calendarTextBox}"/>
+                            </Grid>
+
+                            <Separator Margin="0 12 0 11" Background="{StaticResource lightFontColor}" Height="0.8"/>
+
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
                                 <fa:ImageAwesome Icon="Pencil" Width="15" Height="15" Foreground="{StaticResource lightFontColor}"/>
-                                <TextBlock x:Name="lblNote" MouseDown="lblNote_MouseDown" Text="Add Note" Style="{StaticResource calendarTextHint}"/>
-                                <TextBox Name="txtNote" TextChanged="txtNote_TextChanged" Style="{StaticResource calendarTextBox}"/>
+                                <TextBlock x:Name="lblText" MouseDown="lblTime_MouseDown" Text="Description" Style="{StaticResource calendarTextHint}"/>
+                                <TextBox Name="txtText" TextChanged="txtTime_TextChanged" Style="{StaticResource calendarTextBox}"/>
                             </Grid>
 
                             <Separator Margin="0 12 0 11" Background="{StaticResource lightFontColor}" Height="0.8"/>
@@ -106,17 +119,28 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="auto"/>
                                     <ColumnDefinition Width="*"/>
+                                   
                                 </Grid.ColumnDefinitions>
 
                                 <fa:ImageAwesome Icon="Bell" Width="15" Height="15" Foreground="{StaticResource lightFontColor}"/>
-                                <TextBlock x:Name="lblTime" MouseDown="lblTime_MouseDown" Text="_ _ : _ _  -  _ _ : _ _" Style="{StaticResource calendarTextHint}" Foreground="{StaticResource lightFontColor}"/>
-                                <TextBox Name="txtTime" TextChanged="txtTime_TextChanged" Style="{StaticResource calendarTextBox}"/>
+                                <StackPanel Orientation="Horizontal" Grid.Column="1">
+                                    <TextBlock Text="From:" Margin="10 0 5 0" VerticalAlignment="Center" FontWeight="DemiBold" Foreground="{StaticResource lightFontColor}"/>
+                                    <ComboBox Name="fromHrCB"/>
+                                    <TextBlock Text=":" Margin="5 0" VerticalAlignment="Center" FontWeight="DemiBold" Foreground="{StaticResource lightFontColor}"/>
+                                    <ComboBox Name="fromMinCB"/>
+                                    <TextBlock Text="To:" Margin="10 0 5 0" VerticalAlignment="Center" FontWeight="DemiBold" Foreground="{StaticResource lightFontColor}"/>
+                                    <ComboBox Name="toHrCB"/>
+                                    <TextBlock Text=":" Margin="5 0" VerticalAlignment="Center" FontWeight="DemiBold" Foreground="{StaticResource lightFontColor}"/>
+                                    <ComboBox Name="toMinCB"/>
+
+                                </StackPanel>
+                                
                             </Grid>
 
                         </StackPanel>
 
                         <Button Style="{StaticResource calendarButton}" Grid.Column="1">
-                            <fa:ImageAwesome Icon="PlusCircle" Width="28" Height="28" Foreground="#f9f9f9" />
+                            <fa:ImageAwesome Icon="PlusCircle" Width="28" Height="28" Foreground="{StaticResource lightFontColor}" MouseDown="addNote"/>
                         </Button>
                     </Grid>
                 </Border>
@@ -124,7 +148,7 @@
                 <StackPanel Name="visitsStackPanel"/>
 
                 <!--Notes-->
-                <!--<uc:Item Title="Post on social networks" Time="09:45 - 10:30" Color="{StaticResource lightFontColor}" Icon="CheckCircle" IconBell="BellSlash"/>-->
+                <!--<uc:Item Title="Post on social networks" Time="09:45 - 10:30" Color="{StaticResource darkerColor}"  Description="asd" Icon="UserMd" IconBell="Bell"/>-->
                 
 
             </StackPanel>

@@ -54,7 +54,7 @@ namespace clinical
             currentVisit = currVisit;
             todayDatePicker.SelectedDate = DateTime.Now;
             patientNameTextBox.Text = currentPatient.FirstName + " " + currentPatient.LastName;
-            patientAgeTextBox.Text = currentPatient.Age().ToString();
+            patientAgeTextBox.Text = currentPatient.Age.ToString();
             mainStackPanel.Children.Clear();
         }
         public prescriptionWindow(Prescription prescription)
@@ -65,7 +65,7 @@ namespace clinical
             currentPatient = DB.GetPatientById(prescription.PatientID);
             todayDatePicker.SelectedDate = DateTime.Now;
             patientNameTextBox.Text = currentPatient.FirstName + " " + currentPatient.LastName;
-            patientAgeTextBox.Text = currentPatient.Age().ToString();
+            patientAgeTextBox.Text = currentPatient.Age.ToString();
             mainStackPanel.Children.Clear();
             prescription.IssuedExercisesIDs = DB.GetIssuedExercisesByPrescriptionID(prescription.PrescriptionID);
             foreach (IssueExercise issue in prescription.IssuedExercisesIDs)

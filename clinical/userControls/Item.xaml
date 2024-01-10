@@ -16,7 +16,8 @@
         <fa:ImageAwesome Icon="{Binding Path=Icon,ElementName=item}" Width="20" Height="20" VerticalAlignment="Top" Foreground="#f1f1f1" Margin="0 3 0 0"/>
 
         <StackPanel Grid.Column="1" Margin="10 0">
-            <TextBlock FontSize="16" Foreground="{Binding Path=Color,ElementName=item}" Text="{Binding Path=Title,ElementName=item}"/>
+            <TextBlock FontSize="16" FontWeight="Bold" Foreground="{Binding Path=Color,ElementName=item}" Text="{Binding Path=Title,ElementName=item}"/>
+            <TextBlock FontSize="12" Foreground="{Binding Path=Color,ElementName=item}" Text="{Binding Path=Description,ElementName=item}"/>
 
             <StackPanel Orientation="Horizontal" Margin="0 5 0 0">
                 <fa:ImageAwesome Grid.Column="2" Icon="{Binding Path=IconBell,ElementName=item}" Width="12" Height="12" Foreground="{Binding Path=Color,ElementName=item}"/>
@@ -51,10 +52,8 @@
             <Border Background="White" CornerRadius="5" Padding="0 4">
                 <StackPanel>
 
-                    <local:MenuButton Icon="Check" Caption="Check"/>
-                    <local:MenuButton Icon="BellSlash" Caption="Mute"/>
-                    <local:MenuButton Icon="Pencil" Caption="Edit"/>
-                    <local:MenuButton Icon="Trash" Caption="Delete"/>
+                    <local:MenuButton Icon="Check" Caption="Mark Done/UnDone" Command="{Binding Path=MarkDoneCommand,ElementName=item}"/>
+                    <local:MenuButton Icon="Trash" Caption="Delete" Command="{Binding Path=DeleteCommand, ElementName=item}"/>
 
                 </StackPanel>
             </Border>

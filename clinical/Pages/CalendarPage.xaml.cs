@@ -1,7 +1,10 @@
 ﻿using clinical.BaseClasses;
 using clinical.userControls;
+using FontAwesome.WPF;
+using NuGet.Protocol.Plugins;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
@@ -62,6 +65,30 @@ namespace clinical.Pages
                 mnthStack.Children.Add(mnthBtn);
             }            
 
+
+            List<string>hours = new List<string>();
+            List<string>minutes = new List<string>();
+            for(int i = 1; i <= 23; i++)
+            {
+                hours.Add(i.ToString("D2"));
+            }
+            for(int i = 1;i <= 59; i++)
+            {
+                minutes.Add(i.ToString("D2"));
+            }
+            fromHrCB.ItemsSource=hours;
+            toHrCB.ItemsSource = hours;
+            fromMinCB.ItemsSource=minutes;
+            toMinCB.ItemsSource=minutes;
+
+            fromHrCB.SelectedIndex = 0;
+            toHrCB.SelectedIndex = 0;
+            fromMinCB.SelectedIndex = 0;
+            toMinCB.SelectedIndex = 0;
+            
+
+
+
         }
 
         void refreshYears()
@@ -100,47 +127,127 @@ namespace clinical.Pages
             
             DateTime dateTime = new DateTime(selectedDay.Year, selectedDay.Month, selectedDay.Day);
             List<Visit> todayVisits = DB.GetPhysicianVisitsOnDate(globals.signedIn.UserID, dateTime);
-            
-            todayTaskCnt.Text = todayVisits.Count.ToString()+" tasks- n dates left";
+            List<CalendarEvent> calendarEvents = DB.GetCalendarEventsByUserIDAndDate(globals.signedIn.UserID,dateTime);
+            int collectedSize = todayVisits.Count + calendarEvents.Count;
+            int doneTotal = 0;
 
-           
             visitsStackPanel.Children.Clear();
-            foreach (Visit visit1 in todayVisits)
-            {
-                Item itemControl = new Item();
-                itemControl.Title = visit1.VisitID.ToString();
-                itemControl.Time = visit1.TimeStamp.Hour.ToString()+" : "+ visit1.TimeStamp.Minute.ToString();
-                itemControl.Color = (SolidColorBrush)FindResource("lightFontColor");
-                visitsStackPanel.Children.Add(itemControl);
-            }
-            
 
+            int i = 0,j=0;
+            while(i<todayVisits.Count||j<calendarEvents.Count)
+            {
+                if (i < todayVisits.Count && (j == calendarEvents.Count || todayVisits[i].TimeStamp < calendarEvents[j].EventStartTime))
+                {
+                    Visit visit1 = todayVisits[i];
+                    Item itemControl = new Item();
+                    itemControl.Title = $"{visit1.PatientName}";
+                    itemControl.Description = $"{visit1.Type}";
+                    itemControl.IconBell = FontAwesomeIcon.Bell;
+                    if (visit1.IsDone)
+                    {
+                        doneTotal++;
+                        itemControl.Icon = FontAwesomeIcon.UserPlus;
+                        itemControl.Color = (SolidColorBrush)FindResource("darkerColor");
+                    }
+                    else
+                    {
+                        itemControl.Icon = FontAwesomeIcon.UserMd;
+                        itemControl.Color = (SolidColorBrush)FindResource("lightFontColor");
+                    }
+
+                    itemControl.Time = visit1.TimeStamp.ToString("HH:mm");
+                    itemControl.MarkDoneCommand = new RelayCommand(() => markVisitDone(visit1));
+
+                    visitsStackPanel.Children.Add(itemControl);
+                    i++;
+                }
+                else if (j < calendarEvents.Count)
+                {
+                    CalendarEvent ev = calendarEvents[j];
+                    Item itemControl = new Item();
+                    itemControl.Title = ev.EventName;
+                    itemControl.Description = ev.EventText;
+                    itemControl.IconBell = FontAwesomeIcon.Bell;
+
+                    if (ev.IsDone)
+                    {
+                        doneTotal++;
+                        itemControl.Icon = FontAwesomeIcon.CheckCircle;
+                        itemControl.Color = (SolidColorBrush)FindResource("darkerColor");
+                    }
+                    else
+                    {
+                        itemControl.Icon = FontAwesomeIcon.CalendarCheckOutline;
+                        itemControl.Color = (SolidColorBrush)FindResource("lightFontColor");
+                    }
+                    
+
+                    itemControl.Time = ev.EventStartTime.ToString("HH:mm") + " - " + ev.EventEndTime.ToString("HH:mm");
+                    itemControl.MarkDoneCommand = new RelayCommand(() => markEventDone(ev));
+                    itemControl.DeleteCommand = new RelayCommand(() => deleteEvent(ev));
+
+                    visitsStackPanel.Children.Add(itemControl);
+                    j++;
+                }
+                else
+                {
+                    break;
+                }
+
+            }
+            todayTaskCnt.Text = $"{collectedSize} tasks - {doneTotal} done - {collectedSize-doneTotal} left";
+
+
+        }
+
+        void deleteEvent(CalendarEvent ev)
+        {
+            MessageBoxResult result = MessageBox.Show($"Are you sure you want to drop task {ev.EventName}? This action cannot be undone.", "Delete Task", MessageBoxButton.YesNoCancel);
+            if (result == MessageBoxResult.Yes)
+            {
+                DB.DeleteCalendarEvent(ev);
+                Refresh();
+            }
+        }
+
+        void markVisitDone(Visit visit)
+        {
+            visit.IsDone=!visit.IsDone;
+            DB.UpdateVisit(visit);
+            Refresh();
+        }
+
+        void markEventDone(CalendarEvent ev)
+        {
+            ev.IsDone = !ev.IsDone;
+            DB.UpdateCalendarEvent(ev);
+            Refresh();
         }
 
         private void lblNote_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            txtNote.Focus();
+            txtTitle.Focus();
         }
 
         private void lblTime_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            txtTime.Focus();
+            txtText.Focus();
         }
         
-        private void txtNote_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        private void txtNote_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (!string.IsNullOrEmpty(txtNote.Text) && txtNote.Text.Length > 0)
-                lblNote.Visibility = Visibility.Collapsed;
+            if (!string.IsNullOrEmpty(txtTitle.Text) && txtTitle.Text.Length > 0)
+                lblTitle.Visibility = Visibility.Collapsed;
             else
-                lblNote.Visibility = Visibility.Visible;
+                lblTitle.Visibility = Visibility.Visible;
         }
 
-        private void txtTime_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        private void txtTime_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (!string.IsNullOrEmpty(txtTime.Text) && txtTime.Text.Length > 0)
-                lblTime.Visibility = Visibility.Collapsed;
+            if (!string.IsNullOrEmpty(txtText.Text) && txtText.Text.Length > 0)
+                lblText.Visibility = Visibility.Collapsed;
             else
-                lblTime.Visibility = Visibility.Visible;
+                lblText.Visibility = Visibility.Visible;
         }
 
         private void selectedDayChanged(object sender, SelectionChangedEventArgs e)
@@ -186,6 +293,12 @@ namespace clinical.Pages
             rightestYr--;
             refreshYears();
         }
+        private void goRightYr(object sender, RoutedEventArgs e)
+        {
+            leftestYr++;
+            rightestYr++;
+            refreshYears();
+        }
 
         private void prevDay(object sender, RoutedEventArgs e)
         {
@@ -203,11 +316,15 @@ namespace clinical.Pages
             Refresh();
         }
 
-        private void goRightYr(object sender, RoutedEventArgs e)
+        private void addNote(object sender, MouseButtonEventArgs e)
         {
-            leftestYr++;
-            rightestYr++;
-            refreshYears();
+            DateTime fromDT = new DateTime(selectedDay.Year, selectedDay.Month, selectedDay.Day, (int)fromHrCB.SelectedItem, (int)fromMinCB.SelectedItem, 0);
+            DateTime toDT= new DateTime(selectedDay.Year, selectedDay.Month, selectedDay.Day, (int)toHrCB.SelectedItem, (int)toMinCB.SelectedItem, 0);
+            string title = txtTitle.Text;
+            string desc = txtText.Text;
+            CalendarEvent ev = new CalendarEvent(globals.generateNewCalendarEventID(globals.signedIn.UserID), globals.signedIn.UserID, title, desc, fromDT, toDT, false) ;
+            DB.InsertCalendarEvent(ev);
+            Refresh();
         }
 
     }

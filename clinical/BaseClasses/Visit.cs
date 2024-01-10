@@ -17,12 +17,18 @@ namespace clinical.BaseClasses
         public int RoomID { get; set; }
         public string Type { get; set; }
         public string TherapistNotes { get; set; }
-        public string PatientName { get; set; }
-        public string PhysioTherapistName { get; set; }
+        public string PatientName { get { 
+            return DB.GetPatientById(PatientID).FullName;
+            } }
+        public string PhysioTherapistName { get {
+                return DB.GetUserById(PhysiotherapistID).FullName;
+            } }
         public double Height { get; set; }
         public double Weight { get; set; }
+        public bool IsDone { get; set; }
+
         // Constructor
-        public Visit(int visitID, int physiotherapistID, int patientID, int packageID, DateTime timeStamp, int roomID, string type, string therapistNotes, double height, double weight)
+        public Visit(int visitID, int physiotherapistID, int patientID, int packageID, DateTime timeStamp, int roomID, string type, string therapistNotes, double height, double weight, bool isDone)
         {
             VisitID = visitID;
             PhysiotherapistID = physiotherapistID;
@@ -34,6 +40,7 @@ namespace clinical.BaseClasses
             TherapistNotes = therapistNotes;
             this.Weight=weight; 
             this.Height=height;
+            this.IsDone = isDone;
         }
     }
 }

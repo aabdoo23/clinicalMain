@@ -37,7 +37,7 @@ namespace clinical.Pages
             patientIDTxt.Text = patient.PatientID.ToString();
             patientNameMainTxt.Text = patient.FirstName + " " + patient.LastName;
             patientNameTxt.Text = patient.FirstName + " " + patient.LastName;
-            ageTxt.Text = patient.Age().ToString();
+            ageTxt.Text = patient.Age.ToString();
             contactInfoTxt.Text = patient.PhoneNumber;
             referringTxt.Text = patient.referringName;
             noteTXT.Text = patient.Email;

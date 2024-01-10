@@ -25,7 +25,16 @@ namespace clinical.BaseClasses
         public double DueAmount { get; set; }
         public string referringName { get; set; }
         public string referringPN { get; set; }
-        public int age { get; set; }
+        public int Age { get {
+                DateTime currentDate = DateTime.Now;
+                int age = currentDate.Year - Birthdate.Year;
+                if (currentDate.Month < Birthdate.Month || (currentDate.Month == Birthdate.Month && currentDate.Day < Birthdate.Day))
+                {
+                    age--;
+                }
+                return age;
+            }
+        }
         public int ActivePackageID {  get; set; }
         public int RemainingSessions {  get; set; }
         public string FullName { get { return FirstName + " " + LastName; } }
@@ -55,21 +64,10 @@ namespace clinical.BaseClasses
             referringPN=refPN;
             ActivePackageID = activePackageID;
             RemainingSessions=remainingSessions;
-            this.age = Age();
         }
 
         // calculate age based on birthdate
-        public int Age()
-        {
-            DateTime currentDate = DateTime.Now;
-            int age = currentDate.Year - Birthdate.Year;
-            if (currentDate.Month < Birthdate.Month || (currentDate.Month == Birthdate.Month && currentDate.Day < Birthdate.Day))
-            {
-                age--;
-            }
-            this.age = age;
-            return age;
-        }
+        
         
     }
 }
