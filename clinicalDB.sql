@@ -15,6 +15,15 @@ CREATE TABLE User (
     nationalID varchar(30)    
 );
 
+CREATE TABLE appointmentType(
+	typeID int,
+    typeName varchar(255),
+    typeDescription Text,
+    timeInMinutes int,
+    cost double,
+    PRIMARY KEY (typeID)
+);
+
 CREATE TABLE Package (
     PackageID INT PRIMARY KEY,
     PackageName VARCHAR(255) NOT NULL,
@@ -175,15 +184,16 @@ CREATE TABLE Visit (
     userID int not null,
     patientID INT NOT NULL,
     packageID INT,
+    visitTypeID int,
     height double,
     weight double,
     timeStamp DATETIME,
     roomID INT,
-    type TEXT NOT NULL,
     therapistNotes TEXT,
     isDone boolean,
     PRIMARY KEY (visitID),
     FOREIGN KEY (UserID) REFERENCES User(userID),
+    FOREIGN KEY (visitTypeID) REFERENCES appointmentType(typeID) ON DELETE SET NULL ON UPDATE CASCADE,
     FOREIGN KEY (patientID) REFERENCES Patient(patientID),
     FOREIGN KEY (packageID) REFERENCES package(packageID),
     FOREIGN KEY (roomID) REFERENCES Room(roomID)
@@ -322,3 +332,4 @@ CREATE TABLE globalVars(
     varValue varChar(255) null,
     PRIMARY KEY (varID)
 );
+

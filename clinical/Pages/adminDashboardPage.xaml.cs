@@ -6,6 +6,11 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Collections.Generic;
 using MySqlX.XDevAPI.Common;
+using LiveCharts.Wpf;
+using LiveCharts;
+using System.Globalization;
+using System.Linq;
+using System.Windows.Media;
 
 namespace clinical.Pages
 {
@@ -26,11 +31,63 @@ namespace clinical.Pages
             employeesDataGrid.ItemsSource= DB.GetAllEmployees();
             hereNowDataGrid.ItemsSource=DB.GetAllUserswRecordsByDate(DateTime.Now);
             List<Visit> todayVisits = DB.GetTodayVisits();
+            UpdateFinancesChart();
+            List<Visit> visits = DB.GetAllVisitsOnDate(DateTime.Now);
+            foreach (var i in visits)
+            {
+                appointmentsStackPanel.Children.Add(globals.createAppointmentUIObject(i, viewVisit, viewPatient));
+            }
 
-            
-            todayAppointmentsDataGrid.ItemsSource = todayVisits;
 
         }
+
+        void viewVisit(Visit visit)
+        {
+            if (visit != null)
+            {
+                NavigationService.Navigate(new visit(visit));
+            }
+        }
+        void viewPatient(Patient patient)
+        {
+            if (patient != null)
+            {
+                NavigationService.Navigate(new patientViewMainPage(patient));
+            }
+        }
+        private void UpdateFinancesChart()
+        {
+            List<Payment> payments = DB.GetAllPayments();
+
+            SeriesCollection s = new LiveCharts.SeriesCollection();
+            financesChart.Series = s; // Set the series collection for the specific chart
+
+            var distinctPhysicianIds = payments.Select(payment => payment.PhysicianID).Distinct();
+            List<Brush> barColors = new List<Brush> { (Brush)Application.Current.Resources["lightFontColor"], (Brush)Application.Current.Resources["lighterColor"], (Brush)Application.Current.Resources["selectedColor"], Brushes.AntiqueWhite};
+            int colorInd=0;
+
+            foreach (var physicianId in distinctPhysicianIds)
+            {
+                var paymentsForPhysician = payments.Where(payment => payment.PhysicianID == physicianId);
+
+                ColumnSeries columnSeries = new ColumnSeries
+                {
+                    Title = $"Dr. {DB.GetUserById(physicianId).FullName}",
+                    Values = new ChartValues<double> { paymentsForPhysician.Sum(payment => payment.Amount) },
+                    LabelPoint = point => point.Y.ToString("C"),
+                    Fill = barColors[colorInd] // Customize the color if needed
+                };
+                colorInd = (colorInd + 1) % barColors.Count;
+                s.Add(columnSeries);
+            }
+
+            // Set the X-axis labels dynamically based on physician IDs
+            financesChart.AxisX[0].Labels = distinctPhysicianIds.Select(id => $"Dr. {DB.GetUserById(id).FullName}").ToArray();
+            financesChart.AxisY[0].LabelFormatter = value => value.ToString("C"); // Use currency format if applicable
+
+
+        }
+
         private void view_Click(object sender, RoutedEventArgs e)
         {
 
@@ -56,7 +113,7 @@ namespace clinical.Pages
 
         private void viewPhysician(object sender, RoutedEventArgs e)
         {
-            
+            new viewUser((User)physiciansDataGrid.SelectedItem).Show();
         }
 
         private void startVisitClick(object sender, RoutedEventArgs e)
@@ -69,12 +126,7 @@ namespace clinical.Pages
 
         }
 
-        private void viewVisitClick(object sender, RoutedEventArgs e)
-        {
-            Visit selectedVisit = (Visit)todayAppointmentsDataGrid.SelectedItem;
-            visit window = new visit(selectedVisit);
-            NavigationService.Navigate(window);
-        }
+       
 
         private void deleteUser(object sender, RoutedEventArgs e)
         {

@@ -9,13 +9,18 @@
     <Page.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
     </Page.Resources>
-    <Grid Margin="5">
+    <Border Margin="5" Style="{StaticResource theBorder}" Background="{StaticResource lightFontColor}">
+    <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="45*"/>
             <ColumnDefinition Width="45*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="60"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
             <RowDefinition Height="1*"/>
             <RowDefinition Height="1*"/>
             <RowDefinition Height="60"/>
@@ -25,7 +30,7 @@
         <Icon:PackIconMaterial Kind="RefreshCircle" Foreground="{StaticResource darkerColor}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Width="50" Height="50" Margin="0 0 10 0" MouseDown="Refresh"/>
 
         <!--Packages-->
-        <Border Style="{StaticResource theBorder}" Margin="5" Grid.Row="1">
+        <Border Style="{StaticResource theLinedBorder}" Margin="5" Grid.Row="1" Grid.RowSpan="2">
             <Grid Margin="5">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="50"/>
@@ -58,8 +63,44 @@
             </Grid>
         </Border>
 
+        
+        <!--Appointment Types-->
+        <Border Style="{StaticResource theLinedBorder}" Margin="5" Grid.Row="3" Grid.RowSpan="2">
+            <Grid Margin="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="87*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Text="Appointment Types" Margin="5" VerticalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource lightFontColor}" FontSize="25"/>
+                <Icon:PackIconMaterial Kind="PlusBox" Foreground="{StaticResource lightFontColor}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Width="30" Height="30" Margin="0 0 10 0" MouseDown="newAppointmentType"/>
+
+                <DataGrid Grid.Row="1" Margin="5" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="appointmentTypesDataGrid" Style="{DynamicResource DataGridStyle1}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" Binding="{Binding TypeID}"/>
+                        <DataGridTextColumn Header="Name" Binding="{Binding Name}" IsReadOnly="True" Width="*"/>
+                        <DataGridTextColumn Header="Time" Binding="{Binding TimeInMinutes}" IsReadOnly="True" Width="*"/>
+                        <DataGridTextColumn Header="Price" Binding="{Binding Cost}" IsReadOnly="True" Width="*"/>
+                        <DataGridTemplateColumn Header="Details" IsReadOnly="True" Width="auto">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Button Name="view" Style="{StaticResource gridEditButton}" Click="viewAppointmentType">
+                                            <Icon:PackIconMaterial Kind="EyeCircleOutline" Style="{StaticResource gridButtonIcon}"/>
+                                        </Button>
+
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+            </Grid>
+        </Border>
+
+
         <!--Access Requests-->
-        <Border Grid.Row="1" Grid.Column="1" Margin="5" Style="{StaticResource theBorder}">
+        <Border Grid.Row="1" Grid.Column="1" Margin="5" Style="{StaticResource theLinedBorder}" Grid.RowSpan="3">
             <Grid Margin="5">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="50"/>
@@ -97,7 +138,7 @@
         </Border>
 
         <!--Rooms-->
-        <Border Grid.Row="2" Margin="5" Grid.RowSpan="1" Style="{StaticResource theBorder}">
+        <Border Grid.Row="5" Margin="5" Grid.RowSpan="2" Style="{StaticResource theLinedBorder}">
             <Grid Margin="5">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="50"/>
@@ -130,7 +171,7 @@
         </Border>
 
         <!--Equipment-->
-        <Border Grid.Row="2" Grid.Column="1" Margin="5" Style="{StaticResource theBorder}">
+        <Border Grid.Row="4" Grid.Column="1" Margin="5" Style="{StaticResource theLinedBorder}" Grid.RowSpan="3">
             <Grid Margin="5">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="50"/>
@@ -166,23 +207,23 @@
         </Border>
 
         <!--Pagingation Section-->
-        <Border Grid.Row="3" Grid.Column="1" HorizontalAlignment="Right" BorderBrush="#DEE4EC" BorderThickness="1" CornerRadius="5" Padding="5" Background="{StaticResource lightFontColor}" Margin="0 10 10 10">
+        <Border Grid.Row="10" Grid.Column="1" HorizontalAlignment="Right" BorderBrush="{StaticResource darkerColor}" BorderThickness="2" CornerRadius="5" Padding="5" Background="{StaticResource lighterColor}" Margin="0 10 10 10">
             <StackPanel Orientation="Horizontal">
 
                 <Button Style="{StaticResource pagingButton}" Click="goToFirstPage">
-                    <Icon:PackIconMaterial Kind="ChevronLeft" Style="{StaticResource pagingButtonIcon}"/>
+                        <Icon:PackIconMaterial Kind="ChevronLeft" Style="{StaticResource pagingButtonIcon}" Foreground="{StaticResource lightFontColor}"/>
                 </Button>
-                <Button Style="{StaticResource pagingButton}" Content="1" Click="goToFirstPage" />
+                <Button Style="{StaticResource pagingButton}" Foreground="{StaticResource lightFontColor}" Content="1" Click="goToFirstPage" />
 
                 <Button Style="{StaticResource pagingButton}" Content="2" Background="{StaticResource selectedColor}" Foreground="{StaticResource lightFontColor}" />
 
                 <Rectangle Width="1" Fill="#DEE4EC" Margin="3 7"/>
                 <Button Style="{StaticResource pagingButton}" >
-                    <Icon:PackIconMaterial Kind="ChevronRight" Style="{StaticResource pagingButtonIcon}"/>
+                        <Icon:PackIconMaterial Kind="ChevronRight" Style="{StaticResource pagingButtonIcon}" Foreground="{StaticResource lightFontColor}"/>
                 </Button>
             </StackPanel>
         </Border>
 
     </Grid>
-
+    </Border>
 </Page>

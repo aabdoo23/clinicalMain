@@ -27,6 +27,8 @@ namespace clinical.Pages
             packagesDataGrid.ItemsSource = DB.GetAllPackages();
             roomsDataGrid.ItemsSource = DB.GetAllRooms();
             equipmentDataGrid.ItemsSource = DB.GetAllEquipment();
+            appointmentTypesDataGrid.ItemsSource = DB.GetAllAppointmentTypes();
+
             //accessRequestsDataGrid.ItemsSource = DB.GetAllAccessRequests();
 
         }
@@ -93,7 +95,19 @@ namespace clinical.Pages
             packagesDataGrid.ItemsSource = DB.GetAllPackages();
             roomsDataGrid.ItemsSource = DB.GetAllRooms();
             equipmentDataGrid.ItemsSource = DB.GetAllEquipment();
+            appointmentTypesDataGrid.ItemsSource = DB.GetAllAppointmentTypes();
             //accessRequestsDataGrid.ItemsSource = DB.GetAllAccessRequests();
+        }
+
+        private void newAppointmentType(object sender, MouseButtonEventArgs e)
+        {
+            new newPatientForm(12).Show();
+        }
+
+        private void viewAppointmentType(object sender, RoutedEventArgs e)
+        {
+            AppointmentType ap = (AppointmentType)appointmentTypesDataGrid.SelectedItem;
+            new newPatientForm(ap).Show();
         }
     }
 }

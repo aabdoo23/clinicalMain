@@ -21,71 +21,20 @@
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto" />
+            <RowDefinition Height="50" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <!--Background-->
-        <Border 
-                Background="#F8F7FC"
+        <Border Style="{StaticResource theLinedBorder}"
                 Grid.Column="0"
+                Margin="10"
+                Background="{StaticResource lightFontColor}"
                 Grid.ColumnSpan="2"
                 Grid.RowSpan="2" />
 
 
-        <!--Top Section-->
-        <Grid Grid.Column="0"
-              Grid.ColumnSpan="2"
-              Margin="40 30">
-
-            <!--Search Textbox-->
-            <Grid Width="500" HorizontalAlignment="Left">
-
-                <ComboBox Style="{DynamicResource ComboBoxStyle1}" HorizontalAlignment="Left" Margin="3 0 0 0" Panel.ZIndex="2">
-                    <ComboBoxItem Content="All Category" IsSelected="True"  />
-                    <ComboBoxItem Content="Books" />
-                    <ComboBoxItem Content="Cars" />
-                    <ComboBoxItem Content="Plants" />
-                </ComboBox>
-
-                <Rectangle Width="1" Fill="#E9E9E9" Panel.ZIndex="2" HorizontalAlignment="Left" Margin="130 19 0 19"/>
-
-                <TextBlock Margin="150 0 20 0"
-                           VerticalAlignment="Center"
-                           Foreground="#868686"
-                           IsHitTestVisible="False"
-                           Panel.ZIndex="1"
-                           Text="Search here ..."
-                           Visibility="{Binding ElementName=textBoxSearch, Path=Text, Converter={StaticResource BoolToVisConverter}}" />
-
-                <TextBox Name="textBoxSearch" Style="{StaticResource searchTextbox}" />
-
-                <Button Style="{StaticResource textBoxButton}" HorizontalAlignment="Right" Margin="0 0 7 0">
-                    <icon:PackIconMaterial Kind="Magnify" Width="15" Foreground="#c7c7c7" />
-                </Button>
-            </Grid>
-
-            <!--Top Menu-->
-            <StackPanel Orientation="Horizontal"
-                        HorizontalAlignment="Right">
-
-                <Button Style="{StaticResource textBoxButton}">
-                    <icon:PackIconMaterial Kind="BellOutline"
-                                           Foreground="#88878E" />
-                </Button>
-
-                <Button Style="{StaticResource textBoxButton}" Background="#e9e9e9">
-                    <icon:PackIconMaterial Kind="AccountArrowLeftOutline"
-                                           Foreground="#88878E" />
-                </Button>
-
-                <Button Style="{StaticResource textBoxButton}">
-                    <icon:PackIconMaterial Kind="DotsVertical"
-                                           Foreground="#88878E" />
-                </Button>
-
-            </StackPanel>
-        </Grid>
+        
 
         <!--Chat Items Section-->
         <Border Grid.Column="0"
@@ -122,7 +71,7 @@
                                Margin="25 15 0 5" />
 
                     <!--Person Items-->
-                    <ScrollViewer VerticalScrollBarVisibility="Auto" MinHeight="200">
+                    <ScrollViewer VerticalScrollBarVisibility="Hidden" Margin="10 0 0 0" MinHeight="320">
                         <StackPanel Name="chatStack"/>
 
                     </ScrollViewer>
@@ -131,10 +80,11 @@
         </Border>
 
         <!--Chat Section-->
-        <Border CornerRadius="15" ClipToBounds="True"
-                Background="#ffffff"
+        <Border CornerRadius="5" ClipToBounds="True"
+                Background="{StaticResource lighterColor}"
                 Grid.Column="1"
                 Margin="0 0 30 30"
+                
                 Grid.Row="1">
             <Grid>
                 <Grid.RowDefinitions>
@@ -144,7 +94,7 @@
                 </Grid.RowDefinitions>
 
                 <!--Top Chat MenuBar-->
-                <Grid Background="#ffffff">
+                <Grid Background="{StaticResource lighterColor}">
                     <Grid.Effect>
                         <DropShadowEffect ShadowDepth="1" Direction="-90" BlurRadius="20" Opacity="0.1"/>
                     </Grid.Effect>
@@ -152,6 +102,7 @@
                     <TextBlock Text="Announcements"
                                FontSize="16"
                                Margin="20 15"
+                               Foreground="{StaticResource lightFontColor}"
                                HorizontalAlignment="Left" Name="roomName" />
 
                     <StackPanel Orientation="Horizontal"
@@ -161,7 +112,7 @@
                         <Button Style="{StaticResource textBoxButton}">
                             <icon:PackIconMaterial Kind="DotsVertical"
                                                    Width="14" Height="14"
-                                                   Foreground="#88878E" />
+                                                   Foreground="{StaticResource lightFontColor}" />
                         </Button>
 
                     </StackPanel>
@@ -180,7 +131,7 @@
 
                     <uc:UserChat Username="Dr. Akram Tawfik"
                                  Source="/images/akram tawfik.png" />
-                    <uc:MessageChat Color="#C490FF"
+                    <uc:MessageChat Color="{StaticResource darkerColor}"
                                     Message="مش معايا غير العلاني" />
                     <TextBlock Text="6:39 PM"
                                Style="{StaticResource timeText}" />
@@ -214,16 +165,16 @@
                     <Grid>
                         <TextBlock Margin="15 0 120 0"
                                    VerticalAlignment="Center"
-                                   Foreground="#868686"
+                                   Foreground="{StaticResource darkerColor}"
                                    IsHitTestVisible="False"
                                    Panel.ZIndex="1"
-                                   Text="Type yout message ..."
+                                   Text="Type your message ..."
                                    Visibility="{Binding ElementName=textBoxMessage, Path=Text, Converter={StaticResource BoolToVisConverter}}" />
                         <TextBox Name="textBoxMessage"
                                  Style="{StaticResource messageTextbox}" KeyDown="enter" />
 
                         <!--Buttons-->
-                        <StackPanel Orientation="Horizontal"
+                        <!--<StackPanel Orientation="Horizontal"
                                     Margin="0 0 8 0"
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Center">
@@ -247,7 +198,7 @@
                                                        Foreground="#a6a6a6" />
                             </Button>
 
-                        </StackPanel>
+                        </StackPanel>-->
                     </Grid>
 
                     <!--Send Button-->
@@ -258,7 +209,7 @@
                         <icon:PackIconMaterial Kind="Send"
                                                Margin="3 0 0 2"
                                                Width="16"
-                                               Foreground="{StaticResource darkerColor}"
+                                               Foreground="{StaticResource lightFontColor}"
                                                >
                             <icon:PackIconMaterial.LayoutTransform>
                                 <RotateTransform Angle="-45" />

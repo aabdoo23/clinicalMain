@@ -11,6 +11,7 @@ using MySqlX.XDevAPI.Relational;
 using System.Windows.Input;
 using System.Windows.Navigation;
 using System.Runtime.CompilerServices;
+using System.Linq;
 
 namespace clinical
 {
@@ -146,23 +147,6 @@ namespace clinical
             return Convert.ToInt32(s);
         }
 
-        public static void scheduleVisit(Visit visit)
-        {
-            if (visit == null) { return; }
-
-            int physicianID = visit.PhysiotherapistID;
-            List<Visit> futureVisits = DB.GetFuturePhysicianVisits(physicianID);
-            foreach(var i in futureVisits)
-            {
-                if (visit.TimeStamp == i.TimeStamp)
-                {
-                    visit.TimeStamp.AddHours(DB.GetDefaultAppointmentTimeInMinutes());
-                }
-            }
-            DB.InsertVisit(visit);
-            MessageBox.Show($"Visit booked on {visit.TimeStamp.DayOfWeek}, {visit.TimeStamp.Date}, {visit.TimeStamp.Hour}:{visit.TimeStamp.Minute}.");
-
-        }
 
         public static void updateCalendarWithVisits(int physicianID)
         {
@@ -349,10 +333,134 @@ namespace clinical
 
             return border;
         }
-        
 
 
 
+        ///////////////////////////////////////////////
+        ///Scheduling part
+        ///////////////////////////////////////////////
+        ///
+
+
+        public static void ScheduleVisit(Visit newVisit)
+        {
+            if (CanBookVisit(newVisit))
+            { DB.InsertVisit(newVisit); }
+            else
+            {
+                MessageBox.Show("Can't Book in this time slot, change slot or select first available slot.");
+            }
+
+               
+        }
+
+        static bool CanBookVisit(Visit visit)
+        {
+            // Generate time slots for the proposed date and time
+            Visit fakeVisit = visit;
+            List<DateTime> proposedSlots = GenerateTimeSlots(visit.TimeStamp, fakeVisit.TimeStamp.AddMinutes(DB.GetAppointmentTypeByID(visit.AppointmentTypeID).TimeInMinutes), TimeSpan.FromMinutes(DB.GetSlotDuration()));
+
+            List<Visit> existingVisits = DB.GetFuturePhysicianVisits(visit.PhysiotherapistID);  
+
+
+            // Check for conflicts with existing visits
+            List<DateTime> unavailableSlots = existingVisits
+                .SelectMany(visit => GenerateTimeSlots(visit.TimeStamp, visit.TimeStamp.AddMinutes(DB.GetAppointmentTypeByID(visit.AppointmentTypeID).TimeInMinutes), TimeSpan.FromMinutes(DB.GetSlotDuration())))
+                .ToList();
+
+            // Check if there are any common elements (conflicts)
+            bool hasConflicts = proposedSlots.Intersect(unavailableSlots).Any();
+
+            // If there are no conflicts, return true; otherwise, return false
+            return !hasConflicts;
+        }
+        public static DateTime FindFirstFreeSlot(int PhysiotherapistID, DateTime when)
+        {
+            List<DateTime> availableSlots = FindAvailableTimeSlots(PhysiotherapistID,when);
+
+            while(availableSlots.Count == 0)
+            {
+                when = when.AddDays(7);
+                availableSlots = FindAvailableTimeSlots(PhysiotherapistID, when);
+            }
+            return availableSlots[0];
+        }
+
+        static List<DateTime> FindAvailableTimeSlots(int PhysiotherapistID, DateTime when)
+        {
+            List<DateTime> allSlots = GenerateAllPossibleTimeSlots(when);
+            List<Visit> existingVisits = DB.GetFuturePhysicianVisits(PhysiotherapistID);
+
+            List<DateTime> unavailableSlots = existingVisits
+                .SelectMany(visit => GenerateTimeSlots(visit.TimeStamp, visit.TimeStamp.AddMinutes(DB.GetAppointmentTypeByID(visit.AppointmentTypeID).TimeInMinutes), TimeSpan.FromMinutes(DB.GetSlotDuration())))
+                .ToList();
+
+            List<DateTime> availableSlots = allSlots.Except(unavailableSlots).ToList();
+
+            return availableSlots;
+        }
+
+        public static List<string> GetAvailableTimeSlotsOnDay(DateTime selectedDay, int PhysiotherapistID)
+        {
+            // Generate time slots for the selected day
+            DateTime dayStartTime = selectedDay.Date.AddHours(DB.GetOpeningTime());
+            DateTime dayEndTime = selectedDay.Date.AddHours(DB.GetClosingTime()); 
+            TimeSpan slotDuration = TimeSpan.FromMinutes(DB.GetSlotDuration());
+
+            List<DateTime> allSlots = GenerateTimeSlots(dayStartTime, dayEndTime, slotDuration);
+            List<Visit> existingVisits = DB.GetFuturePhysicianVisits(PhysiotherapistID);
+
+            // Check for conflicts with existing visits
+            List<DateTime> unavailableSlots = existingVisits
+                .Where(visit => visit.TimeStamp.Date == selectedDay.Date)
+                .SelectMany(visit => GenerateTimeSlots(visit.TimeStamp, visit.TimeStamp.AddMinutes(DB.GetAppointmentTypeByID(visit.AppointmentTypeID).TimeInMinutes), TimeSpan.FromMinutes(DB.GetSlotDuration())))
+                .ToList();
+
+            // Find available slots by removing occupied slots
+            List<DateTime> availableSlots = allSlots.Except(unavailableSlots).ToList();
+            List<string> toReturn = new List<string>();
+            foreach(var i in availableSlots)
+            {
+                toReturn.Add(i.ToString("HH:mm"));
+            }
+            return toReturn;
+        }
+
+        static List<DateTime> GenerateAllPossibleTimeSlots(DateTime when)
+        {
+            // Generate a list of time slots for multiple days
+            DateTime startDate = when;
+            DateTime endDate = when.AddDays(7); // Schedule for the next 7 days
+            TimeSpan slotDuration = TimeSpan.FromMinutes(DB.GetSlotDuration());
+
+            List<DateTime> allSlots = new List<DateTime>();
+
+            for (DateTime date = startDate; date <= endDate; date = date.AddDays(1))
+            {
+                DateTime clinicStartTime = date.AddHours(DB.GetOpeningTime());
+                DateTime clinicEndTime = date.AddHours(DB.GetClosingTime());  
+
+                for (DateTime time = clinicStartTime; time < clinicEndTime; time += slotDuration)
+                {
+                    allSlots.Add(time);
+                }
+            }
+
+            return allSlots;
+        }
+
+        static List<DateTime> GenerateTimeSlots(DateTime startTime, DateTime endTime, TimeSpan slotDuration)
+        {
+            // Generate a list of time slots for a given time range
+            List<DateTime> slots = new List<DateTime>();
+
+            for (DateTime time = startTime; time < endTime; time += slotDuration)
+            {
+                slots.Add(time);
+            }
+
+            return slots;
+        }
 
 
     }

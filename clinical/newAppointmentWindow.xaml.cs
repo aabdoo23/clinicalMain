@@ -27,22 +27,22 @@ namespace clinical
         User selectedPhysician = null;
         DateTime selectedDateTime = DateTime.Now;
         DateTime lastSelectedDT = DateTime.Now;
-        int selectedType= 0;
+        AppointmentType selectedType;
         
         List<string> times = new List<string>();
 
-        List<string> types = new List<string> { "Consultation", "Follow-up", "Exercise"};
 
         public newAppointmentWindow()
         {
             InitializeComponent();
-            for(int i = 0; i <= 8; i++)
+
+            for(int i = 16; i <= 22; i++) //slots here
             {
-                string sessionTime = DB.GetSessionTime(i);
-                if (sessionTime == null ||sessionTime=="") continue;
-                times.Add(sessionTime);
+                times.Add($"{i}:00");
+                times.Add($"{i}:30");
 
             }
+
             List<Patient> list = DB.GetAllPatients();
             foreach (Patient pat in list)
             {
@@ -54,6 +54,8 @@ namespace clinical
             textBoxFilter.TextChanged += textBoxFilter_TextChanged;
 
             datePicker.SelectedDate=DateTime.Now;
+            List<AppointmentType> types = DB.GetAllAppointmentTypes();
+
             visitTypeCB.ItemsSource = types;
             timePicker.ItemsSource = times;
             timePicker.SelectedIndex = 0;
@@ -96,7 +98,7 @@ namespace clinical
             packageTB.Text = selectedPackage.ToString();
             patientDueTB.Text=selectedPatient.DueAmount.ToString();
             handleFinances();
-
+            Refresh();
 
 
         }
@@ -129,16 +131,16 @@ namespace clinical
         private void saveClicked(object sender, MouseButtonEventArgs e)
         {
             if(selectedPatient == null) { return; }
-            MessageBoxResult result = MessageBox.Show("Book "+selectedPatient.FirstName+" a reservation on "+ selectedDateTime.Month+", "
-                + selectedDateTime.Day+", "+selectedDateTime.Hour+", "+selectedDateTime.Minute, "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            MessageBoxResult result = MessageBox.Show("Book "+selectedPatient.FullName+" a reservation on "+ selectedDateTime.ToString("g"), "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
             // Check the user's response
             if (result == MessageBoxResult.Yes)
             {
                 int id = globals.generateNewVisitID(selectedPatient.PatientID, selectedDateTime);
-                Visit visit = new Visit(id, selectedPhysician.UserID, selectedPatient.PatientID, selectedPackage.PackageID, selectedDateTime, 1,visitTypeCB.SelectedItem.ToString(), "",selectedPatient.Height,selectedPatient.Weight,false);
+                AppointmentType ap = (AppointmentType)visitTypeCB.SelectedItem;
+                Visit visit = new Visit(id, selectedPhysician.UserID, selectedPatient.PatientID, selectedPackage.PackageID, selectedDateTime, 1, "",selectedPatient.Height,selectedPatient.Weight,false,ap.TypeID);
 
-                globals.scheduleVisit(visit);
+                globals.ScheduleVisit(visit);
 
                 //updating patient
 
@@ -167,10 +169,12 @@ namespace clinical
         {
             lastSelectedDT = selectedDateTime;
             selectedDateTime = (DateTime)datePicker.SelectedDate;
+            Refresh();
         }
 
         private void timeChanged(object sender, SelectionChangedEventArgs e)
         {
+            if ((string)timePicker.SelectedItem==null) return;
             string s= (string)timePicker.SelectedItem;
             string hr = "",min="";
             hr+= s[0];
@@ -184,12 +188,18 @@ namespace clinical
         }
         private void first_avail(object sender, RoutedEventArgs e)
         {
+
+            if (selectedPatient == null ||selectedPhysician==null)
+            {
+                return;
+            }
+            DateTime firstFree=globals.FindFirstFreeSlot(selectedPhysician.UserID, DateTime.Today);
             datePicker.IsEnabled = false;
             timePicker.IsEnabled = false;
+            datePicker.SelectedDate = firstFree;
+            timePicker.SelectedItem = firstFree.ToString("HH:mm");
 
-            //missing implementation
-
-
+            Refresh();
         }
 
         private void not_first_avail(object sender, RoutedEventArgs e)
@@ -203,6 +213,7 @@ namespace clinical
         {
             selectedPhysician= (User)(physicianPicker.SelectedItem);
             physicianName.Text="Dr. "+selectedPhysician.FirstName+" "+selectedPhysician.LastName;
+            Refresh();
         }
 
         private void typeChanged(object sender, SelectionChangedEventArgs e)
@@ -211,6 +222,15 @@ namespace clinical
             handleFinances();
         }
 
+        void Refresh()
+        {
+            if (selectedPhysician == null) return;
+            List<string> availTimes= globals.GetAvailableTimeSlotsOnDay(datePicker.SelectedDate.Value, selectedPhysician.UserID);
+            if (availTimes.Count == 0) {
+                datePicker.SelectedDate.Value.AddDays(1);
+                }
+            timePicker.ItemsSource = availTimes;
+        }
 
         //current visit due amount:
         //1- patient has a package active, thus all visits are rendered paid and only patient due amount is displayed
@@ -218,25 +238,13 @@ namespace clinical
 
         void handleFinances()
         {
-            selectedType = visitTypeCB.SelectedIndex;
+            selectedType = (AppointmentType) visitTypeCB.SelectedItem;
             if (selectedPatient != null) //selected a patient? YES
             {
-                if (selectedPackage == null || selectedPackage.PackageID == 0) //patient has a package? NO
+                if (selectedPackage == null || selectedPackage.PackageID == 0 || selectedPatient.RemainingSessions==0) //patient has a package? NO
                 {
-                    double price = 0;
-                    if (selectedType == 0)
-                    {
-                        price = DB.GetConsultationCost();
-                    }
-                    else if (selectedType == 1)
-                    {
-                        price = DB.GetFollowUpCost();
-                    }
-                    else
-                    {
-                        price = DB.GetExerciseCost();
-                    }
-
+                    double price = selectedType.Cost;
+                    selectedPatient.ActivePackageID = 0;
                     double patientDueAmount = price + selectedPatient.DueAmount  ;
                     double visitDueAmount = price;
 
@@ -269,8 +277,6 @@ namespace clinical
                 }
             }
         }
-
-
 
         private void paidTxtChanged(object sender, TextChangedEventArgs e)
         {

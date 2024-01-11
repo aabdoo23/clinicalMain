@@ -89,7 +89,7 @@ namespace clinical.Pages
             
             Border border = new Border
             {
-                Style = (Style)Application.Current.Resources["theBorder"],
+                Style = (Style)Application.Current.Resources["theLinedBorder"],
                 Background = (Brush)Application.Current.Resources["lighterColor"],
                 Margin = new Thickness(5),
                 Width = 55
@@ -112,7 +112,7 @@ namespace clinical.Pages
                 HorizontalAlignment = HorizontalAlignment.Center,
                 FontWeight = FontWeights.SemiBold,
                 Foreground = (Brush)Application.Current.Resources["lightFontColor"],
-                FontSize = 16
+                FontSize = 14
             };
 
             TextBlock dateTextBlock = new TextBlock
@@ -122,7 +122,7 @@ namespace clinical.Pages
                 HorizontalAlignment = HorizontalAlignment.Center,
                 FontWeight = FontWeights.Bold,
                 Foreground = (Brush)Application.Current.Resources["lightFontColor"],
-                FontSize = 24
+                FontSize = 21
             };
 
             grid.Children.Add(dayTextBlock);

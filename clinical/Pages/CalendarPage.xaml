@@ -15,7 +15,7 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <Border CornerRadius="20 0 0 20" Background="#FEFEFE"/>
+            <Border CornerRadius="20 0 0 20" Background="{StaticResource lightFontColor}"/>
 
             <Border CornerRadius="0 20 20 0"  Grid.Column="1" Background="{StaticResource lighterColor}"/>
         </Grid>

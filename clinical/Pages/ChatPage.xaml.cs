@@ -71,7 +71,7 @@ namespace clinical.Pages
                     MyMessageChat ms = new MyMessageChat();
                     ms.Message = ch.MessageContent;
                     TextBlock myTime = new TextBlock();
-                    myTime.Text = ch.TimeStamp.Hour.ToString() + ":" + ch.TimeStamp.Minute.ToString();
+                    myTime.Text = ch.TimeStamp.ToString("t");
                     myTime.Style = FindResource("timeTextRight") as Style;
 
                     texts.Children.Add(ms);
@@ -84,7 +84,7 @@ namespace clinical.Pages
                     ms.Message = ch.MessageContent;
                     ms.Color = (Brush)FindResource("darkerColor");
                     TextBlock myTime = new TextBlock();
-                    myTime.Text = ch.TimeStamp.Hour.ToString() + ":" + ch.TimeStamp.Minute.ToString();
+                    myTime.Text = ch.TimeStamp.ToString("t");
                     myTime.Style = FindResource("timeText") as Style;
 
                     texts.Children.Add(ms);
@@ -106,7 +106,7 @@ namespace clinical.Pages
                     MyMessageChat ms = new MyMessageChat();
                     ms.Message = ch.MessageContent;
                     TextBlock myTime = new TextBlock();
-                    myTime.Text = ch.TimeStamp.Hour.ToString() + ":" + ch.TimeStamp.Minute.ToString();
+                    myTime.Text = ch.TimeStamp.ToString("t");
                     myTime.Style = FindResource("timeTextRight") as Style;
 
                     texts.Children.Add(ms);
@@ -119,7 +119,7 @@ namespace clinical.Pages
                     ms.Message = ch.MessageContent;
                     ms.Color = (Brush)FindResource("darkerColor");
                     TextBlock myTime = new TextBlock();
-                    myTime.Text = ch.TimeStamp.Hour.ToString() + ":" + ch.TimeStamp.Minute.ToString();
+                    myTime.Text = ch.TimeStamp.Hour.ToString("t");
                     myTime.Style = FindResource("timeText") as Style;
 
                     texts.Children.Add(ms);

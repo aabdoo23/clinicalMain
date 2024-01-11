@@ -107,5 +107,20 @@ namespace clinical
             mainFrame.Navigate(new adminSettingsPage());
 
         }
+
+        private void signOut(object sender, RoutedEventArgs e)
+        {
+
+            MessageBoxResult result = MessageBox.Show("Are you sure you want to sign out?", "Sign Out", MessageBoxButton.YesNo, MessageBoxImage.Question);
+
+            if (result == MessageBoxResult.Yes)
+            {
+                new loginPage().Show();
+                Window.GetWindow(this).Close();
+                globals.signedIn = null;
+            }
+
+
+        }
     }
 }

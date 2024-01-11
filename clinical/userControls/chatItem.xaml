@@ -15,18 +15,18 @@
                     <Trigger Property="IsMouseOver"
                              Value="True">
                         <Setter Property="Background"
-                                Value="#F1EFFB" />
+                                Value="{StaticResource lighterColor}" />
                         <Setter Property="BorderBrush"
-                                Value="#6F52F9" />
+                                Value="{StaticResource darkerColor}" />
                     </Trigger>
 
                     <DataTrigger Binding="{Binding ElementName=item, Path=IsActive}"
                                  Value="True">
 
                         <Setter Property="Background"
-                                Value="#F1EFFB" />
+                                Value="{StaticResource lighterColor}" />
                         <Setter Property="BorderBrush"
-                                Value="#6F52F9" />
+                                Value="{StaticResource darkerColor}" />
                     </DataTrigger>
                 </Style.Triggers>
             </Style>
@@ -76,11 +76,11 @@
                         Grid.Column="1"
                         Margin="15 0 0 0">
                 <TextBlock Text="{Binding Path=Title,ElementName=item}"
-                           Foreground="#212121"
-                           FontSize="14"
+                           Foreground="{StaticResource darkerColor}"
+                           FontSize="16"
                            FontWeight="SemiBold" />
                 <TextBlock Text="{Binding Path=Message,ElementName=item}"
-                           Foreground="#8b8b8b"
+                           Foreground="{StaticResource darkerColor}"
                            Margin="0 3 0 0" />
             </StackPanel>
 

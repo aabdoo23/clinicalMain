@@ -103,8 +103,16 @@ namespace clinical.Pages
                 window.Height = 282;
                 window.Width = 480;
 
-                formTitle.Content = "New Patient Eval Test";
+                formTitle.Content = "New Patient Evaluation Test";
                 mainFrame.Navigate(new newEvaluationTestPage());
+            }
+            else if (type == 12)
+            {
+                window.Height = 321;
+                window.Width = 420;
+
+                formTitle.Content = "New Appointment Type";
+                mainFrame.Navigate(new newAppointmentTypePage());
             }
 
         }
@@ -163,6 +171,17 @@ namespace clinical.Pages
             window.Width = 400;
             formTitle.Content = "View Chronic Disease";
             mainFrame.Navigate(new newChronic(toView));
+        }
+        
+        //view Appointment Type
+        public newPatientForm(AppointmentType toView)
+        {
+            InitializeComponent();
+            window.Height = 321;
+            window.Width = 420;
+
+            formTitle.Content = "View Appointment Type";
+            mainFrame.Navigate(new newAppointmentTypePage(toView));
         }
 
         //view treatment plan

@@ -95,8 +95,7 @@
 
                             <TextBox Name="textBoxFilter" Style="{StaticResource filterTextBox}" Background="{StaticResource lightFontColor}" TextChanged="textBoxFilter_TextChanged"/>
                         </Grid>
-                    <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="2" >
-                            <DataGrid Name="allPatientsDataGrid"  Margin="10" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" Style="{DynamicResource DataGridStyle1}">
+                            <DataGrid Name="allPatientsDataGrid" Grid.Row="2" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" Margin="10" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" Style="{DynamicResource DataGridStyle1}">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" Binding="{Binding PatientID}"/>
                                     <DataGridTextColumn Header="Name" Binding="{Binding FirstName}" IsReadOnly="True" Width="*"/>
@@ -114,7 +113,6 @@
                                     </DataGridTemplateColumn>
                                 </DataGrid.Columns>
                             </DataGrid>
-                        </ScrollViewer>
                     
                     <Border Name="saveBTN" MouseDown="saveClicked" Style="{StaticResource theBorder}" BorderBrush="{StaticResource lightFontColor}" Background="{StaticResource lighterColor}" BorderThickness="2" CornerRadius="5" Margin="10,10,10,10"  Grid.Row="3">
                         <Label Content="Save" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="24" FontWeight="Bold"/>

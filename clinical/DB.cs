@@ -299,7 +299,7 @@ namespace clinical
                 Convert.ToInt32(reader["userID"]),
                 reader["firstName"].ToString(),
                 reader["lastName"].ToString(),
-                reader["gender"].ToString(),
+                (bool)reader["gender"]?"Male":"Female",
                 Convert.ToDateTime(reader["hireDate"]),
                 Convert.ToDateTime(reader["birthdate"]),
                 reader["address"].ToString(),
@@ -3088,8 +3088,8 @@ namespace clinical
                 {
                     if (connection.State == ConnectionState.Closed) connection.Open();
 
-                    string query = "INSERT INTO Visit (visitID, userID, patientID, packageID, timeStamp, roomID, type, therapistNotes, height, weight, isDone) " +
-                                   "VALUES (@visitID, @userID, @patientID, @packageID, @timeStamp, @roomID, @type, @therapistNotes, @height, @weight, @done)";
+                    string query = "INSERT INTO Visit (visitID, userID, patientID, packageID, timeStamp, roomID, therapistNotes, height, weight, isDone, visitTypeID) " +
+                                   "VALUES (@visitID, @userID, @patientID, @packageID, @timeStamp, @roomID, @therapistNotes, @height, @weight, @done, @visitTypeID)";
 
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
@@ -3099,14 +3099,14 @@ namespace clinical
                         command.Parameters.AddWithValue("@packageID", visit.PackageID);
                         command.Parameters.AddWithValue("@timeStamp", visit.TimeStamp);
                         command.Parameters.AddWithValue("@roomID", visit.RoomID);
-                        command.Parameters.AddWithValue("@type", visit.Type);
                         command.Parameters.AddWithValue("@therapistNotes", visit.TherapistNotes);
                         command.Parameters.AddWithValue("@height", visit.Height);
                         command.Parameters.AddWithValue("@weight", visit.Weight);
                         command.Parameters.AddWithValue("@done", visit.IsDone);
+                        command.Parameters.AddWithValue("@visitTypeID", visit.AppointmentTypeID);
                         command.ExecuteNonQuery();
 
-                        MessageBox.Show("Visit record inserted successfully.");
+                        MessageBox.Show($"Visit Booked on {visit.TimeStamp.ToString("g")}");
                     }
                 }
                 catch (Exception ex)
@@ -3125,8 +3125,7 @@ namespace clinical
                     if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "UPDATE Visit SET userID = @userID, patientID = @patientID, " +
-                                   "packageID = @packageID, timeStamp = @timeStamp, roomID = @roomID, " +
-                                   "type = @type, therapistNotes = @therapistNotes, height = @height , weight = @weight, isDone=@done WHERE visitID = @visitID";
+                                   "packageID = @packageID, timeStamp = @timeStamp, roomID = @roomID, therapistNotes = @therapistNotes, height = @height , weight = @weight, isDone=@done, visitTypeID=@visitTypeID WHERE visitID = @visitID";
 
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
@@ -3136,11 +3135,11 @@ namespace clinical
                         command.Parameters.AddWithValue("@packageID", visit.PackageID);
                         command.Parameters.AddWithValue("@timeStamp", visit.TimeStamp);
                         command.Parameters.AddWithValue("@roomID", visit.RoomID);
-                        command.Parameters.AddWithValue("@type", visit.Type);
                         command.Parameters.AddWithValue("@therapistNotes", visit.TherapistNotes);
                         command.Parameters.AddWithValue("@height", visit.Height);
                         command.Parameters.AddWithValue("@weight", visit.Weight);
                         command.Parameters.AddWithValue("@done", visit.IsDone);
+                        command.Parameters.AddWithValue("@visitTypeID", visit.AppointmentTypeID);
 
                         command.ExecuteNonQuery();
 
@@ -3198,19 +3197,7 @@ namespace clinical
                         {
                             if (reader.Read())
                             {
-                                return new Visit(
-                                    Convert.ToInt32(reader["visitID"]),
-                                    Convert.ToInt32(reader["userID"]),
-                                    Convert.ToInt32(reader["patientID"]),
-                                    Convert.ToInt32(reader["packageID"]),
-                                    Convert.ToDateTime(reader["timeStamp"]),
-                                    Convert.ToInt32(reader["roomID"]),
-                                    reader["type"].ToString(),
-                                    reader["therapistNotes"].ToString(),
-                                    Convert.ToDouble(reader["height"]),
-                                    Convert.ToDouble(reader["weight"]),
-                                    Convert.ToBoolean(reader["isDone"])
-                                );
+                                return MapVisit(reader);
                             }
                         }
                     }
@@ -3242,22 +3229,9 @@ namespace clinical
                         {
                             while (reader.Read())
                             {
-                                Visit visit = new Visit(
-                                    Convert.ToInt32(reader["visitID"]),
-                                    Convert.ToInt32(reader["userID"]),
-                                    Convert.ToInt32(reader["patientID"]),
-                                    Convert.ToInt32(reader["packageID"]),
-                                    Convert.ToDateTime(reader["timeStamp"]),
-                                    Convert.ToInt32(reader["roomID"]),
-                                    reader["type"].ToString(),
-                                    reader["therapistNotes"].ToString(),
-                                    Convert.ToDouble(reader["height"]),
-                                    Convert.ToDouble(reader["weight"]),
-                                    Convert.ToBoolean(reader["isDone"])
+                                
 
-                                );
-
-                                visitList.Add(visit);
+                                visitList.Add(MapVisit(reader));
                             }
                         }
                     }
@@ -3288,22 +3262,8 @@ namespace clinical
                         {
                             while (reader.Read())
                             {
-                                Visit visit = new Visit(
-                                    Convert.ToInt32(reader["visitID"]),
-                                    Convert.ToInt32(reader["userID"]),
-                                    Convert.ToInt32(reader["patientID"]),
-                                    Convert.ToInt32(reader["packageID"]),
-                                    Convert.ToDateTime(reader["timeStamp"]),
-                                    Convert.ToInt32(reader["roomID"]),
-                                    reader["type"].ToString(),
-                                    reader["therapistNotes"].ToString(),
-                                    Convert.ToDouble(reader["height"]),
-                                    Convert.ToDouble(reader["weight"]),
-                                    Convert.ToBoolean(reader["isDone"])
-
-                                );
-
-                                visitList.Add(visit);
+                                
+                                visitList.Add(MapVisit(reader));
                             }
                         }
                     }
@@ -3336,22 +3296,9 @@ namespace clinical
                         {
                             while (reader.Read())
                             {
-                                Visit visit = new Visit(
-                                    Convert.ToInt32(reader["visitID"]),
-                                    Convert.ToInt32(reader["userID"]),
-                                    Convert.ToInt32(reader["patientID"]),
-                                    Convert.ToInt32(reader["packageID"]),
-                                    Convert.ToDateTime(reader["timeStamp"]),
-                                    Convert.ToInt32(reader["roomID"]),
-                                    reader["type"].ToString(),
-                                    reader["therapistNotes"].ToString(),
-                                    Convert.ToDouble(reader["height"]),
-                                    Convert.ToDouble(reader["weight"]),
-                                    Convert.ToBoolean(reader["isDone"])
+                                
 
-                                );
-
-                                visitList.Add(visit);
+                                visitList.Add(MapVisit(reader));
                             }
                         }
                     }
@@ -3384,22 +3331,9 @@ namespace clinical
                         {
                             while (reader.Read())
                             {
-                                Visit visit = new Visit(
-                                    Convert.ToInt32(reader["visitID"]),
-                                    Convert.ToInt32(reader["userID"]),
-                                    Convert.ToInt32(reader["patientID"]),
-                                    Convert.ToInt32(reader["packageID"]),
-                                    Convert.ToDateTime(reader["timeStamp"]),
-                                    Convert.ToInt32(reader["roomID"]),
-                                    reader["type"].ToString(),
-                                    reader["therapistNotes"].ToString(),
-                                    Convert.ToDouble(reader["height"]),
-                                    Convert.ToDouble(reader["weight"]),
-                                    Convert.ToBoolean(reader["isDone"])
+                                
 
-                                );
-
-                                visitList.Add(visit);
+                                visitList.Add(MapVisit(reader));
                             }
                         }
                     }
@@ -3432,22 +3366,8 @@ namespace clinical
                         {
                             while (reader.Read())
                             {
-                                Visit visit = new Visit(
-                                    Convert.ToInt32(reader["visitID"]),
-                                    Convert.ToInt32(reader["userID"]),
-                                    Convert.ToInt32(reader["patientID"]),
-                                    Convert.ToInt32(reader["packageID"]),
-                                    Convert.ToDateTime(reader["timeStamp"]),
-                                    Convert.ToInt32(reader["roomID"]),
-                                    reader["type"].ToString(),
-                                    reader["therapistNotes"].ToString(),
-                                    Convert.ToDouble(reader["height"]),
-                                    Convert.ToDouble(reader["weight"]),
-                                    Convert.ToBoolean(reader["isDone"])
-
-                                );
-
-                                visitList.Add(visit);
+                               
+                                visitList.Add(MapVisit(reader));
                             }
                         }
                     }
@@ -3482,22 +3402,9 @@ namespace clinical
                         {
                             while (reader.Read())
                             {
-                                Visit visit = new Visit(
-                                    Convert.ToInt32(reader["visitID"]),
-                                    Convert.ToInt32(reader["userID"]),
-                                    Convert.ToInt32(reader["patientID"]),
-                                    Convert.ToInt32(reader["packageID"]),
-                                    Convert.ToDateTime(reader["timeStamp"]),
-                                    Convert.ToInt32(reader["roomID"]),
-                                    reader["type"].ToString(),
-                                    reader["therapistNotes"].ToString(),
-                                    Convert.ToDouble(reader["height"]),
-                                    Convert.ToDouble(reader["weight"]),
-                                    Convert.ToBoolean(reader["isDone"])
+                                
 
-                                );
-
-                                visitsForPhysician.Add(visit);
+                                visitsForPhysician.Add(MapVisit(reader));
                             }
                         }
                     }
@@ -3528,22 +3435,9 @@ namespace clinical
                         {
                             while (reader.Read())
                             {
-                                Visit visit = new Visit(
-                                    Convert.ToInt32(reader["visitID"]),
-                                    Convert.ToInt32(reader["userID"]),
-                                    Convert.ToInt32(reader["patientID"]),
-                                    Convert.ToInt32(reader["packageID"]),
-                                    Convert.ToDateTime(reader["timeStamp"]),
-                                    Convert.ToInt32(reader["roomID"]),
-                                    reader["type"].ToString(),
-                                    reader["therapistNotes"].ToString(),
-                                    Convert.ToDouble(reader["height"]),
-                                    Convert.ToDouble(reader["weight"]),
-                                    Convert.ToBoolean(reader["isDone"])
+                                
 
-                                );
-
-                                todayVisits.Add(visit);
+                                todayVisits.Add(MapVisit(reader));
                             }
                         }
                     }
@@ -3578,22 +3472,9 @@ namespace clinical
                         {
                             while (reader.Read())
                             {
-                                Visit visit = new Visit(
-                                    Convert.ToInt32(reader["visitID"]),
-                                    Convert.ToInt32(reader["userID"]),
-                                    Convert.ToInt32(reader["patientID"]),
-                                    Convert.ToInt32(reader["packageID"]),
-                                    Convert.ToDateTime(reader["timeStamp"]),
-                                    Convert.ToInt32(reader["roomID"]),
-                                    reader["type"].ToString(),
-                                    reader["therapistNotes"].ToString(),
-                                    Convert.ToDouble(reader["height"]),
-                                    Convert.ToDouble(reader["weight"]),
-                                    Convert.ToBoolean(reader["isDone"])
+                                
 
-                                );
-
-                                todayPhysicianVisits.Add(visit);
+                                todayPhysicianVisits.Add(MapVisit(reader));
                             }
                         }
                     }
@@ -3627,22 +3508,8 @@ namespace clinical
                         {
                             while (reader.Read())
                             {
-                                Visit visit = new Visit(
-                                    Convert.ToInt32(reader["visitID"]),
-                                    Convert.ToInt32(reader["userID"]),
-                                    Convert.ToInt32(reader["patientID"]),
-                                    Convert.ToInt32(reader["packageID"]),
-                                    Convert.ToDateTime(reader["timeStamp"]),
-                                    Convert.ToInt32(reader["roomID"]),
-                                    reader["type"].ToString(),
-                                    reader["therapistNotes"].ToString(),
-                                    Convert.ToDouble(reader["height"]),
-                                    Convert.ToDouble(reader["weight"]),
-                                    Convert.ToBoolean(reader["isDone"])
-
-                                );
-
-                                physicianVisitsOnDate.Add(visit);
+                               
+                                physicianVisitsOnDate.Add(MapVisit(reader));
                             }
                         }
                     }
@@ -3675,22 +3542,7 @@ namespace clinical
                         {
                             while (reader.Read())
                             {
-                                Visit visit = new Visit(
-                                    Convert.ToInt32(reader["visitID"]),
-                                    Convert.ToInt32(reader["userID"]),
-                                    Convert.ToInt32(reader["patientID"]),
-                                    Convert.ToInt32(reader["packageID"]),
-                                    Convert.ToDateTime(reader["timeStamp"]),
-                                    Convert.ToInt32(reader["roomID"]),
-                                    reader["type"].ToString(),
-                                    reader["therapistNotes"].ToString(),
-                                    Convert.ToDouble(reader["height"]),
-                                    Convert.ToDouble(reader["weight"]),
-                                    Convert.ToBoolean(reader["isDone"])
-
-                                );
-
-                                physicianVisitsOnDate.Add(visit);
+                                physicianVisitsOnDate.Add(MapVisit(reader));
                             }
                         }
                     }
@@ -3703,6 +3555,24 @@ namespace clinical
 
             return physicianVisitsOnDate;
         }
+        private static Visit MapVisit(MySqlDataReader reader)
+        {
+            return new Visit(
+                Convert.ToInt32(reader["visitID"]),
+                Convert.ToInt32(reader["userID"]),
+                Convert.ToInt32(reader["patientID"]),
+                Convert.ToInt32(reader["packageID"]),
+                Convert.ToDateTime(reader["timeStamp"]),
+                Convert.ToInt32(reader["roomID"]),
+                reader["therapistNotes"].ToString(),
+                Convert.ToDouble(reader["height"]),
+                Convert.ToDouble(reader["weight"]),
+                Convert.ToBoolean(reader["isDone"]),
+                Convert.ToInt32(reader["visitTypeID"])
+            );
+        }
+
+
 
         /// evaluationTest
         ///////////////////////////////////////////////////////////////////
@@ -5306,15 +5176,15 @@ namespace clinical
         {
             return (int)GetIntValueByID(9);
         }
-        public static double GetConsultationCost()
+        public static double GetSlotDuration()
         {
             return GetIntValueByID(10);
         }
-        public static double GetFollowUpCost()
+        public static double GetOpeningTime()
         {
             return GetIntValueByID(11);
         }
-        public static double GetExerciseCost()
+        public static double GetClosingTime()
         {
             return GetIntValueByID(12);
         }
@@ -5592,5 +5462,171 @@ namespace clinical
 
             return calendarEvents;
         }
+
+        ///appointment type
+        /////////////////////////////////////////////////////////
+        ///
+        public static void InsertAppointmentType(AppointmentType appointmentType)
+        {
+            using (connection)
+            {
+                try
+                {
+                    if (connection.State == ConnectionState.Closed)
+                        connection.Open();
+
+                    string query = "INSERT INTO appointmentType (typeID, typeName, typeDescription, timeInMinutes, cost) " +
+                                   "VALUES (@typeID, @typeName, @typeDescription, @timeInMinutes, @cost)";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@typeID", appointmentType.TypeID);
+                        command.Parameters.AddWithValue("@typeName", appointmentType.Name);
+                        command.Parameters.AddWithValue("@typeDescription", appointmentType.Description);
+                        command.Parameters.AddWithValue("@timeInMinutes", appointmentType.TimeInMinutes);
+                        command.Parameters.AddWithValue("@cost", appointmentType.Cost);
+
+                        command.ExecuteNonQuery();
+
+                        MessageBox.Show("AppointmentType inserted successfully.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+        }
+        public static List<AppointmentType> GetAllAppointmentTypes()
+        {
+            List<AppointmentType> appointmentTypes = new List<AppointmentType>();
+
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+                    string query = "SELECT * FROM appointmentType";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    using (MySqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            AppointmentType appointmentType = new AppointmentType(
+                                Convert.ToInt32(reader["typeID"]),
+                                Convert.ToString(reader["typeName"]),
+                                Convert.ToString(reader["typeDescription"]),
+                                Convert.ToInt32(reader["timeInMinutes"]),
+                                Convert.ToDouble(reader["cost"])
+                            );
+
+                            appointmentTypes.Add(appointmentType);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+
+            return appointmentTypes;
+        }
+        public static AppointmentType GetAppointmentTypeByID(int id)
+        {
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+                    string query = "SELECT * FROM appointmentType Where typeID=@id";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@id", id);
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                return new AppointmentType(
+                                    Convert.ToInt32(reader["typeID"]),
+                                    Convert.ToString(reader["typeName"]),
+                                    Convert.ToString(reader["typeDescription"]),
+                                    Convert.ToInt32(reader["timeInMinutes"]),
+                                    Convert.ToDouble(reader["cost"])
+                                );
+
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+            return null;
+        }
+        public static void UpdateAppointmentType(AppointmentType appointmentType)
+        {
+            using (connection)
+            {
+                try
+                {
+                    if (connection.State == ConnectionState.Closed)
+                        connection.Open();
+
+                    string query = "UPDATE appointmentType SET typeName = @typeName, " +
+                                   "typeDescription = @typeDescription, timeInMinutes = @timeInMinutes, cost = @cost " +
+                                   "WHERE typeID = @typeID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@typeName", appointmentType.Name);
+                        command.Parameters.AddWithValue("@typeDescription", appointmentType.Description);
+                        command.Parameters.AddWithValue("@timeInMinutes", appointmentType.TimeInMinutes);
+                        command.Parameters.AddWithValue("@cost", appointmentType.Cost);
+                        command.Parameters.AddWithValue("@typeID", appointmentType.TypeID);
+
+                        command.ExecuteNonQuery();
+
+                        MessageBox.Show("AppointmentType updated successfully.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+        }
+        public static void DeleteAppointmentType(int typeID)
+        {
+            using (connection)
+            {
+                try
+                {
+                    if (connection.State == ConnectionState.Closed)
+                        connection.Open();
+
+                    string query = "DELETE FROM appointmentType WHERE typeID = @typeID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@typeID", typeID);
+
+                        command.ExecuteNonQuery();
+
+                        MessageBox.Show("AppointmentType deleted successfully.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+        }
+
+
     }
 }

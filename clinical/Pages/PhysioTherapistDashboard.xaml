@@ -32,7 +32,7 @@
                 <RowDefinition Height="35*"/>
             </Grid.RowDefinitions>
             <!--Top Left-->
-            <Border Grid.Row="0" Grid.RowSpan="2" Style="{StaticResource theBorder}" >
+            <Border Grid.Row="0" Grid.RowSpan="2" Style="{StaticResource theLinedBorder}" >
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="60"/>
@@ -41,7 +41,7 @@
                     </Grid.RowDefinitions>
                     <TextBlock Name="signedInTB" Text="Welcome, Mohamed" Margin="20,17,20,0" VerticalAlignment="Top"  FontWeight="Bold" Foreground="{StaticResource lightFontColor}" FontSize="28"/>
                     <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="10 5">
-                        <Border Style="{StaticResource theBorder}" Margin="10" Background="{StaticResource lighterColor}">
+                        <Border Style="{StaticResource theLinedBorder}" Margin="10" Background="{StaticResource lighterColor}">
                             <StackPanel Orientation="Horizontal" Margin="5">
                                 <Icon:PackIconMaterial Kind="Calendar" Margin="10 0 0 0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="35" Height="35" Foreground="{StaticResource lightFontColor}"/>
 
@@ -58,9 +58,9 @@
 
 
                         </Border>
-                        <Border Style="{StaticResource theBorder}" Margin="10" Background="{StaticResource lighterColor}">
+                        <Border Style="{StaticResource theLinedBorder}" Margin="10" Background="{StaticResource lighterColor}">
                             <StackPanel Orientation="Horizontal" Margin="5">
-                                <Icon:PackIconMaterial Kind="HammerSickle" Margin="10 0 0 0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="35" Height="35" Foreground="{StaticResource lightFontColor}"/>
+                                <Icon:PackIconMaterial Kind="AccountDetails" Margin="10 0 0 0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="35" Height="35" Foreground="{StaticResource lightFontColor}"/>
 
                                 <Grid>
                                     <Grid.RowDefinitions>
@@ -75,7 +75,7 @@
 
 
                         </Border>
-                        <Border Style="{StaticResource theBorder}" Margin="10" Background="{StaticResource lighterColor}" BorderBrush="{StaticResource lightFontColor}" BorderThickness="2" MouseDown="viewReciptionistProfile">
+                        <Border Style="{StaticResource theLinedBorder}" Margin="10" Background="{StaticResource lighterColor}" MouseDown="viewReciptionistProfile">
                             <StackPanel Orientation="Horizontal" Margin="5">
 
                                 <Grid Width="130">
@@ -95,7 +95,7 @@
                 </Grid>
             </Border>
             <!--Patients-->
-            <Border Grid.Row="2" Grid.RowSpan="3" Margin="10" Style="{StaticResource theBorder}">
+            <Border Grid.Row="2" Grid.RowSpan="3" Margin="10" Style="{StaticResource theLinedBorder}">
                 <Grid Margin="10">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="50"/>
@@ -133,7 +133,7 @@
 
 
         <!--top right-->
-        <Border Grid.Row="0" Grid.RowSpan="2" Grid.Column="2" Style="{StaticResource theBorder}" Margin="10,0,10,10">
+        <Border Grid.Row="0" Grid.RowSpan="2" Grid.Column="2" Style="{StaticResource theLinedBorder}" Margin="10,0,10,10">
             <Grid Margin="10">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="55"/>
@@ -170,7 +170,7 @@
         </Border>
 
         <!--Appointments-->
-        <Border Grid.Column="2" Grid.Row="2" Grid.RowSpan="3" Style="{StaticResource theBorder}" Margin="10,10,10,10">
+        <Border Grid.Column="2" Grid.Row="2" Grid.RowSpan="3" Style="{StaticResource theLinedBorder}" Margin="10,10,10,10">
             <Grid Margin="10">
                 <Grid.RowDefinitions>
                     

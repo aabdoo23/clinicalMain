@@ -96,6 +96,13 @@
             <Setter Property="CornerRadius" Value="10"/>
             <Setter Property="Margin" Value="10 0 10 10"/>
         </Style>
+        <Style x:Key="theLinedBorder" TargetType="Border">
+            <Setter Property="Background" Value="{StaticResource darkerColor}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource lightFontColor}"/>
+            <Setter Property="BorderThickness" Value="2"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="Margin" Value="10 0 10 10"/>
+        </Style>
 
         <Style x:Key="searchTextbox" TargetType="TextBox">
             <Setter Property="Background" Value="{StaticResource lighterColor}"/>
@@ -1391,7 +1398,7 @@
 
 
         <Style x:Key="textTitle" TargetType="TextBlock">
-            <Setter Property="Foreground" Value="#23232E" />
+            <Setter Property="Foreground" Value="{StaticResource darkerColor}" />
             <Setter Property="FontSize" Value="20" />
             <Setter Property="FontWeight" Value="SemiBold" />
         </Style>
@@ -1422,7 +1429,7 @@
 
 
         <Style x:Key="timeText" TargetType="TextBlock">
-            <Setter Property="Foreground" Value="#979797" />
+            <Setter Property="Foreground" Value="{StaticResource lightFontColor}" />
             <Setter Property="FontSize" Value="11" />
             <Setter Property="Margin" Value="47 3 0 0" />
         </Style>
@@ -1431,15 +1438,17 @@
         <Style x:Key="timeTextRight" TargetType="TextBlock" BasedOn="{StaticResource timeText}">
             <Setter Property="Margin" Value="0 3 7 0" />
             <Setter Property="HorizontalAlignment" Value="Right" />
+            <Setter Property="Foreground" Value="{StaticResource lightFontColor}" />
         </Style>
 
 
         <Style x:Key="messageTextbox" TargetType="TextBox">
-            <Setter Property="Background" Value="#F5F7F9" />
-            <Setter Property="Foreground" Value="#767676" />
+            <Setter Property="Background" Value="{StaticResource lightFontColor}" />
+            <Setter Property="Foreground" Value="{StaticResource darkerColor}" />
             <Setter Property="BorderThickness" Value="1" />
             <Setter Property="BorderBrush" Value="#E1E0E3" />
-            <Setter Property="FontSize" Value="12" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontWeight" Value="SemiBold" />
             <Setter Property="Padding" Value="10 15 120 15" />
             <Setter Property="VerticalAlignment" Value="Center" />
             <Setter Property="Margin" Value="0 10" />

@@ -24,7 +24,7 @@ namespace clinical
         public viewUser(User user)
         {
             InitializeComponent();
-            if (user.UserID.ToString().StartsWith('1'))
+            if (globals.signedIn.UserID.ToString().StartsWith('1'))
             {
                 mainFrame.Navigate(new viewPhysiotherapist(user));
             }

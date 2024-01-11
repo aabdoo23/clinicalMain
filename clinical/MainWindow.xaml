@@ -44,8 +44,8 @@
                         <Grid>
                             <StackPanel VerticalAlignment="Top">
 
-                                <Button Style="{StaticResource topMenuButton}">
-                                    <Icon:PackIconMaterial Kind="BellCheckOutline" Style="{StaticResource menuButtonIcon}"/>
+                                <Button Style="{StaticResource topMenuButton}" Click="signOut">
+                                    <Icon:PackIconMaterial Kind="AccountArrowLeft" Style="{StaticResource menuButtonIcon}"/>
                                 </Button>
 
 
