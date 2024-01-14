@@ -11,6 +11,7 @@ using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -28,11 +29,7 @@ namespace clinical.Pages
         public patientViewMainPage(Patient patient)
         {
             InitializeComponent();
-            if (NavigationService!=null&&NavigationService.CanGoBack == false)
-            {
-                goBackIcon.Visibility = Visibility.Hidden;
-
-            }
+            
             this.currPatient = patient;
             patientIDTxt.Text = patient.PatientID.ToString();
             patientNameMainTxt.Text = patient.FirstName + " " + patient.LastName;
@@ -41,17 +38,19 @@ namespace clinical.Pages
             contactInfoTxt.Text = patient.PhoneNumber;
             referringTxt.Text = patient.referringName;
             noteTXT.Text = patient.Email;
+            heightTxt.Text = patient.Height.ToString();
+            weightTxt.Text = patient.Weight.ToString();
 
             LoadChart();
 
             List<ChronicDisease> patientChronics = DB.GetAllChronicDiseasesByPatientID(currPatient.PatientID);
-            foreach(ChronicDisease ch in patientChronics)
+            foreach (ChronicDisease ch in patientChronics)
             {
                 CreateChronicBorder(ch);
             }
 
-            List<Injury> patientInjuries =DB.GetAllInjuriesByPatientID(currPatient.PatientID);
-            foreach(Injury inj in patientInjuries)
+            List<Injury> patientInjuries = DB.GetAllInjuriesByPatientID(currPatient.PatientID);
+            foreach (Injury inj in patientInjuries)
             {
                 CreateInjuryBorder(inj);
             }
@@ -73,7 +72,7 @@ namespace clinical.Pages
         private void viewVisitClick(object sender, RoutedEventArgs e)
         {
             Visit vis = (Visit)previousVisitsDataGrid.SelectedItem;
-            if(vis==null)vis= (Visit)currVisitsDataGrid.SelectedItem;
+            if (vis == null) vis = (Visit)currVisitsDataGrid.SelectedItem;
             NavigationService.Navigate(new visit(vis));
 
         }
@@ -141,6 +140,8 @@ namespace clinical.Pages
         private void UpdateChart()
         {
             List<EvaluationTestFeedBack> feedBacks = DB.GetFeedbackByPatient(currPatient.PatientID);
+            List<Visit> visits = DB.GetPatientPrevVisits(currPatient.PatientID);
+
             SeriesCollection = new LiveCharts.SeriesCollection();
 
             var distinctTestIds = feedBacks.Select(feedback => feedback.TestID).Distinct();
@@ -176,6 +177,24 @@ namespace clinical.Pages
                 SeriesCollection.Add(lineSeries);
             }
 
+            // Create series for weight progress
+            var weightSeries = new LineSeries
+            {
+                Title = "Weight Progress",
+                Values = new ChartValues<double>(visits.Select(visit => visit.Weight)),
+                PointGeometry = null
+            };
+            SeriesCollection.Add(weightSeries);
+
+            // Create series for height progress
+            var heightSeries = new LineSeries
+            {
+                Title = "Height Progress",
+                Values = new ChartValues<double>(visits.Select(visit => visit.Height)),
+                PointGeometry = null
+            };
+            SeriesCollection.Add(heightSeries);
+
             // Set the X-axis labels dynamically based on the selected time unit
             Labels = displayMonths
                 ? feedBacks.Select(feedback => feedback.TimeStamp.ToString("MMM")).Distinct().OrderBy(month => DateTime.ParseExact(month, "MMM", CultureInfo.InvariantCulture).Month).ToArray()
@@ -183,17 +202,22 @@ namespace clinical.Pages
 
             YFormatter = value => value;
 
+            // Bind the SeriesCollection to the Legend
+            BindingOperations.SetBinding(mainChart, LiveCharts.Wpf.CartesianChart.SeriesProperty, new Binding("SeriesCollection"));
+
+            // Set the DataContext
             DataContext = this;
         }
 
-        
+
+
         private void monthlyWeekly(object sender, MouseButtonEventArgs e)
         {
             displayMonths = !displayMonths;
             UpdateChart();
-            if(displayMonths)monthlyWeeklyTB.Text = "Monthly";
+            if (displayMonths) monthlyWeeklyTB.Text = "Monthly";
             else monthlyWeeklyTB.Text = "Weekly";
-            
+
         }
 
         public LiveCharts.SeriesCollection SeriesCollection { get; set; }
@@ -219,9 +243,9 @@ namespace clinical.Pages
                 TextWrapping = TextWrapping.Wrap
             };
 
-            double maxBorderWidth = chronicWrapPanel.ActualWidth; 
-            
-            double desiredWidth = MeasureTextWidth(chronic.ChronicDiseaseName, textBlock.FontSize) + 100; 
+            double maxBorderWidth = chronicWrapPanel.ActualWidth;
+
+            double desiredWidth = MeasureTextWidth(chronic.ChronicDiseaseName, textBlock.FontSize) + 100;
 
             border.MinWidth = Math.Min(desiredWidth, maxBorderWidth);
 
@@ -251,7 +275,7 @@ namespace clinical.Pages
                 TextWrapping = TextWrapping.Wrap
             };
 
-            double maxBorderWidth = injuriesWrapPanel.ActualWidth; 
+            double maxBorderWidth = injuriesWrapPanel.ActualWidth;
 
             double desiredWidth = MeasureTextWidth(inj.InjuryName, textBlock.FontSize);
 
@@ -271,9 +295,9 @@ namespace clinical.Pages
                 text,
                 CultureInfo.CurrentUICulture,
                 FlowDirection.LeftToRight,
-                new Typeface("Arial"), 
+                new Typeface("Arial"),
                 fontSize,
-                Brushes.Black 
+                Brushes.Black
             );
 
             return formattedText.Width;
@@ -287,7 +311,8 @@ namespace clinical.Pages
 
         private void navigateBack(object sender, MouseButtonEventArgs e)
         {
-            NavigationService.GoBack();
+            if (NavigationService != null && NavigationService.CanGoBack)
+                NavigationService.GoBack();
         }
     }
 

@@ -60,10 +60,13 @@ namespace clinical.Pages.adminSettingsNewPages
             int time=int.Parse(planTimeTextBox.Text.Trim());
             string notes = descriptionTextBox.Text.Trim();
             string name = NameTextBox.Text.Trim();
+            string keywords = keywordsTextBox.Text.Trim();
             int injuryId = ((Injury)injuriesCB.SelectedItem).InjuryID;
             double price=double.Parse(priceTextBox.Text.Trim());    
 
-            TreatmentPlan tp = new TreatmentPlan(id, name, time, price, notes, injuryId);
+
+
+            TreatmentPlan tp = new TreatmentPlan(id,name,time,price,notes,keywords,injuryId,0,0,DateTime.Now);
 
 
             if (viewing)

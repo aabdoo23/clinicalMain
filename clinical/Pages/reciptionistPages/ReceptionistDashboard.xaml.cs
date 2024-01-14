@@ -1,4 +1,5 @@
 ﻿using clinical.BaseClasses;
+using clinical.Pages.reciptionistPages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,7 +47,9 @@ namespace clinical.Pages
 
             if (patient != null)
             {
-                NavigationService.Navigate(new patientViewMainPage(patient));
+                leftSideFrame.NavigationService.Navigate(new reciptionistViewPatient(patient));
+                leftSideFrame.Visibility = Visibility.Visible;
+                leftSideFrame.BringIntoView();
             }
 
         }
@@ -57,10 +60,7 @@ namespace clinical.Pages
                 NavigationService.Navigate(new visit(visit));
             }
         }
-        private void view_Click(object sender, RoutedEventArgs e)
-        {
 
-        }
 
         private void newAppointment(object sender, MouseButtonEventArgs e)
         {
@@ -214,6 +214,16 @@ namespace clinical.Pages
         private void viewReciptionistProfile(object sender, MouseButtonEventArgs e)
         {
 
+        }
+
+        private void viewPatient(object sender, RoutedEventArgs e)
+        {
+            viewPatient((Patient)patientsDataGrid.SelectedItem);
+        }
+
+        private void leftSideFrame_Navigated(object sender, NavigationEventArgs e)
+        {
+            if (leftSideFrame.NavigationService.Equals(new DashBoardPage())) { leftSideFrame.Visibility = Visibility.Hidden; }
         }
     }
 }

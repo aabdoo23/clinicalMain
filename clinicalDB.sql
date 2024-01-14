@@ -56,12 +56,12 @@ CREATE TABLE ChatGroup (
     PRIMARY KEY (chatGroupID)
 );
 
-CREATE TABLE Drug (
-    drugID INT NOT NULL AUTO_INCREMENT,
-    drugName VARCHAR(100) NOT NULL,
-    normalDosage VARCHAR(255),
+CREATE TABLE scanTest (
+    scanTestID INT NOT NULL,
+    scanTestName VARCHAR(100) NOT NULL,
+    recommendedLab VARCHAR(255),
     notes TEXT,
-    PRIMARY KEY (drugID)
+    PRIMARY KEY (scanTestID)
 );
 
 CREATE TABLE Equipment (
@@ -157,18 +157,6 @@ CREATE TABLE Injury (
     PRIMARY KEY (injuryID)
 );
 
-CREATE TABLE TreatmentPlan (
-    planID INT NOT NULL,
-    planName VARCHAR(100) NOT NULL,
-    planTime INT NOT NULL,
-    injuryID INT,
-    price DECIMAL(10,2),
-    notes TEXT,
-    PRIMARY KEY (planID),
-    FOREIGN KEY (injuryID) REFERENCES Injury(injuryID)
-);
-
-
 
 CREATE TABLE DrugRelation (
     drugRelationID INT NOT NULL,
@@ -199,6 +187,23 @@ CREATE TABLE Visit (
     FOREIGN KEY (roomID) REFERENCES Room(roomID)
 );
 
+CREATE TABLE TreatmentPlan (
+    planID INT NOT NULL,
+    planName VARCHAR(100) NOT NULL,
+    planTime INT NOT NULL,
+    injuryID INT,
+    price DECIMAL(10,2),
+    notes TEXT,
+    keyWords TEXT,
+    patientID int,
+    visitID int,
+    timeStamp DateTime,
+    PRIMARY KEY (planID),
+    FOREIGN KEY (injuryID) REFERENCES Injury(injuryID),
+    FOREIGN KEY (patientID) REFERENCES Patient(patientID),
+    FOREIGN KEY (visitID) REFERENCES Visit(visitID)
+);
+
 CREATE TABLE Prescription (
     prescriptionID INT NOT NULL,
     timeStamp DATETIME,
@@ -211,15 +216,14 @@ CREATE TABLE Prescription (
     FOREIGN KEY (visitID) REFERENCES Visit(visitID)
 );
 
-CREATE TABLE IssueDrug (
+CREATE TABLE IssueScan (
     issueID INT NOT NULL,
-    drugID INT NOT NULL,
+    scanTestID INT NOT NULL,
     prescriptionID INT NOT NULL,
     patientID INT NOT NULL,
-    frequency TEXT,
     notes TEXT,
     PRIMARY KEY (issueID),
-    FOREIGN KEY (drugID) REFERENCES Drug(drugID),
+    FOREIGN KEY (scanTestID) REFERENCES scanTest(scanTestID),
     FOREIGN KEY (prescriptionID) REFERENCES Prescription(prescriptionID),
     FOREIGN KEY (patientID) REFERENCES Patient(patientID)
 );
@@ -228,13 +232,13 @@ CREATE TABLE IssueExercise (
     issueID INT NOT NULL,
     exerciseID INT NOT NULL,
     patientID INT NOT NULL,
-    prescriptionID INT NOT NULL,
+    treatmentPlanID INT NOT NULL,
     frequency TEXT,
     notes TEXT,
     PRIMARY KEY (issueID),
     FOREIGN KEY (exerciseID) REFERENCES Exercise(exerciseID),
     FOREIGN KEY (patientID) REFERENCES Patient(patientID),
-    FOREIGN KEY (prescriptionID) REFERENCES Prescription(prescriptionID)
+    FOREIGN KEY (treatmentPlanID) REFERENCES treatmentPlan(planID)
 );
 
 

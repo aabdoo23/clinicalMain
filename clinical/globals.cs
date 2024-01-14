@@ -335,6 +335,161 @@ namespace clinical
         }
 
 
+        public static Border createAppointmentUIObject(Visit visit, Action<Visit> viewVisit)
+        {
+            if (visit == null) { return null; }
+
+            Patient patient = DB.GetPatientById(visit.PatientID);
+            User physician = DB.GetUserById(visit.PhysiotherapistID);
+            if (patient == null) { return null; }
+            Border border = new Border
+            {
+                Margin = new Thickness(10),
+                BorderBrush = Brushes.AliceBlue,
+                BorderThickness = new Thickness(2),
+                CornerRadius = new CornerRadius(10),
+                Background = (Brush)Application.Current.Resources["lighterColor"],
+                Height = 188
+            };
+
+            Grid grid = new Grid
+            {
+                Margin = new Thickness(10)
+            };
+
+            for (int i = 0; i < 5; i++)
+            {
+                grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+            }
+
+            TextBlock visitTime = new TextBlock
+            {
+                Text = visit.TimeStamp.Date.ToString("D") + ", " + visit.TimeStamp.ToString("HH:mm tt"),
+                Margin = new Thickness(10, 0, 0, 0),
+                VerticalAlignment = VerticalAlignment.Center,
+                FontWeight = FontWeights.SemiBold,
+                Foreground = (Brush)Application.Current.Resources["lightFontColor"],
+                FontSize = 16
+            };
+
+            TextBlock patientName = new TextBlock
+            {
+                Text = $"{patient.FirstName} {patient.LastName}",
+                Margin = new Thickness(10, 5, 0, 0),
+                VerticalAlignment = VerticalAlignment.Center,
+                FontWeight = FontWeights.Bold,
+                Foreground = (Brush)Application.Current.Resources["lightFontColor"],
+                FontSize = 20
+            };
+
+            StackPanel visitTypePanel = new StackPanel
+            {
+                Orientation = Orientation.Horizontal,
+                Margin = new Thickness(10, 0, 0, 0)
+            };
+
+            TextBlock visitType = new TextBlock
+            {
+                Text = $"{visit.Type} with ",
+                VerticalAlignment = VerticalAlignment.Center,
+                Foreground = (Brush)Application.Current.Resources["lightFontColor"],
+                FontSize = 14
+            };
+
+            TextBlock physicianName = new TextBlock
+            {
+                Text = $"DR. {physician.FirstName} {physician.LastName}",
+                VerticalAlignment = VerticalAlignment.Center,
+                FontWeight = FontWeights.SemiBold,
+                Foreground = (Brush)Application.Current.Resources["lightFontColor"],
+                FontSize = 14
+            };
+
+            visitTypePanel.Children.Add(visitType);
+            visitTypePanel.Children.Add(physicianName);
+
+            StackPanel phonePanel = new StackPanel
+            {
+                Orientation = Orientation.Horizontal,
+                Margin = new Thickness(10, 10, 0, 0)
+            };
+
+            PackIconMaterial phoneIcon = new PackIconMaterial
+            {
+                Kind = PackIconMaterialKind.Phone,
+                Margin = new Thickness(0),
+                Foreground = (Brush)Application.Current.Resources["lightFontColor"]
+            };
+
+            TextBlock patientPhone = new TextBlock
+            {
+                Text = patient.PhoneNumber,
+                Margin = new Thickness(5, 0, 5, 0),
+                FontWeight = FontWeights.SemiBold,
+                Foreground = (Brush)Application.Current.Resources["lightFontColor"],
+                FontSize = 14
+            };
+
+            phonePanel.Children.Add(phoneIcon);
+            phonePanel.Children.Add(patientPhone);
+
+            StackPanel buttonsPanel = new StackPanel
+            {
+                Orientation = Orientation.Horizontal,
+                Margin = new Thickness(10, 5, 0, 0)
+            };
+
+            
+
+            Border viewVisitButton = new Border
+            {
+                Name = "viewVisitBTN",
+                Style = (Style)Application.Current.Resources["theBorder"],
+                BorderBrush = (Brush)Application.Current.Resources["lightFontColor"],
+                BorderThickness = new Thickness(2),
+                CornerRadius = new CornerRadius(5),
+                Margin = new Thickness(5, 0, 5, 0),
+                Background = (Brush)Application.Current.Resources["darkerColor"]
+            };
+
+            TextBlock viewVisitText = new TextBlock
+            {
+                Text = "Appointment Details",
+                TextWrapping = TextWrapping.Wrap,
+                Foreground = (Brush)Application.Current.Resources["lightFontColor"],
+                VerticalAlignment = VerticalAlignment.Center,
+                Margin = new Thickness(10, 5, 10, 5),
+                HorizontalAlignment = HorizontalAlignment.Center,
+                FontSize = 12,
+                TextAlignment = TextAlignment.Center,
+                FontWeight = FontWeights.Bold
+            };
+            viewVisitButton.Child = viewVisitText;
+
+            viewVisitButton.MouseDown += (sender, e) => viewVisit(visit); ;
+            buttonsPanel.Children.Add(viewVisitButton);
+
+            
+
+            Grid.SetRow(visitTime, 0);
+            Grid.SetRow(patientName, 1);
+            Grid.SetRow(visitTypePanel, 2);
+            Grid.SetRow(phonePanel, 3);
+            Grid.SetRow(buttonsPanel, 4);
+
+
+            grid.Children.Add(visitTime);
+            grid.Children.Add(patientName);
+            grid.Children.Add(visitTypePanel);
+            grid.Children.Add(phonePanel);
+            grid.Children.Add(buttonsPanel);
+
+            border.Child = grid;
+
+            return border;
+        }
+
+
 
         ///////////////////////////////////////////////
         ///Scheduling part

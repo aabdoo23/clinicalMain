@@ -2,6 +2,7 @@
 using MySql.Data.MySqlClient;
 using Org.BouncyCastle.Utilities;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.IO.Packaging;
@@ -79,7 +80,8 @@ namespace clinical
                         cmd.ExecuteNonQuery();
                     }
                 }
-                catch (Exception ex) {
+                catch (Exception ex)
+                {
                     MessageBox.Show(ex.Message);
                 }
             }
@@ -109,7 +111,8 @@ namespace clinical
 
                     }
                 }
-                catch (Exception ex) {
+                catch (Exception ex)
+                {
                     MessageBox.Show(ex.Message);
                 }
             }
@@ -299,7 +302,7 @@ namespace clinical
                 Convert.ToInt32(reader["userID"]),
                 reader["firstName"].ToString(),
                 reader["lastName"].ToString(),
-                (bool)reader["gender"]?"Male":"Female",
+                (bool)reader["gender"] ? "Male" : "Female",
                 Convert.ToDateTime(reader["hireDate"]),
                 Convert.ToDateTime(reader["birthdate"]),
                 reader["address"].ToString(),
@@ -308,14 +311,14 @@ namespace clinical
                 reader["nationalID"].ToString()
             );
         }
-        
+
         /// user work days
         ///////////////////////////////////////////////////////        
         ///
 
         public static List<int> GetUserWorkDaysById(int userID)
         {
-            List<int> days=new List<int>();
+            List<int> days = new List<int>();
             using (connection)
             {
                 try
@@ -352,7 +355,7 @@ namespace clinical
         public static void updateUserWorkDays(int userID, List<int> days)
         {
             DeleteUserWorkDaysById(userID);
-            foreach(int i in days)
+            foreach (int i in days)
             {
                 InsertUserWorkDay(userID, i);
 
@@ -397,16 +400,17 @@ namespace clinical
                     {
                         cmd.Parameters.AddWithValue("@userID", userId);
                         cmd.Parameters.AddWithValue("@day", day);
-                         cmd.ExecuteNonQuery();
+                        cmd.ExecuteNonQuery();
                     }
                 }
-                catch (Exception e) {
+                catch (Exception e)
+                {
                     MessageBox.Show(e.Message);
                 }
             }
 
         }
-        
+
 
 
         ///<Patient>
@@ -415,7 +419,7 @@ namespace clinical
 
         public static Patient MapPatient(MySqlDataReader reader)
         {
-      
+
             Patient p = new Patient(
                 Convert.ToInt32(reader["patientID"]),
                 reader["firstName"].ToString(),
@@ -435,11 +439,11 @@ namespace clinical
                 reader["referringPN"].ToString(),
                 Convert.ToInt32(reader["activePackageID"]),
                 Convert.ToInt32(reader["remainingSessions"])
-                
+
 
             );
             return p;
-        } 
+        }
         public static Patient GetPatientById(int patientID)
         {
             using (connection)
@@ -534,7 +538,7 @@ namespace clinical
 
             return patients;
         }
-        public static List<Patient> GetPatientsWithVisitsOnDateByPhysicianID(int physicianID,DateTime specificDate)
+        public static List<Patient> GetPatientsWithVisitsOnDateByPhysicianID(int physicianID, DateTime specificDate)
         {
             List<Patient> patients = new List<Patient>();
             using (connection)
@@ -771,9 +775,9 @@ namespace clinical
             }
 
             return injuries;
-        
 
-    }
+
+        }
         public static void InsertPatientInjuries(int injuryID, int patientID)
         {
             using (connection)
@@ -786,12 +790,12 @@ namespace clinical
                         "VALUES (@chronicID, @chronicDiseaseName)",
                         connection))
                     {
-                        
-                           cmd.Parameters.AddWithValue("@chronicID", injuryID);
-                            cmd.Parameters.AddWithValue("@chronicDiseaseName", patientID);
 
-                            cmd.ExecuteNonQuery();
-                        
+                        cmd.Parameters.AddWithValue("@chronicID", injuryID);
+                        cmd.Parameters.AddWithValue("@chronicDiseaseName", patientID);
+
+                        cmd.ExecuteNonQuery();
+
 
                     }
                 }
@@ -849,12 +853,12 @@ namespace clinical
                         "VALUES (@chronicID, @chronicDiseaseName)",
                         connection))
                     {
-                        
-                            cmd.Parameters.AddWithValue("@chronicID", chronicID);
-                            cmd.Parameters.AddWithValue("@chronicDiseaseName", patientID);
 
-                            cmd.ExecuteNonQuery();
-                        
+                        cmd.Parameters.AddWithValue("@chronicID", chronicID);
+                        cmd.Parameters.AddWithValue("@chronicDiseaseName", patientID);
+
+                        cmd.ExecuteNonQuery();
+
 
                     }
                 }
@@ -1179,7 +1183,7 @@ namespace clinical
                 {
                     if (connection.State == ConnectionState.Closed) connection.Open();
                     using (MySqlCommand cmd = new MySqlCommand(
-                        "UPDATE Exercise SET exerciseName=@exerciseName, explanationLink = @explanationLink, notes=@notes WHERE exerciseID=@exerciseID " ,connection))
+                        "UPDATE Exercise SET exerciseName=@exerciseName, explanationLink = @explanationLink, notes=@notes WHERE exerciseID=@exerciseID ", connection))
                     {
                         cmd.Parameters.AddWithValue("@exerciseID", exercise.ExerciseID);
                         cmd.Parameters.AddWithValue("@exerciseName", exercise.ExerciseName);
@@ -1218,10 +1222,11 @@ namespace clinical
             {
                 try
                 {
-                    if (connection.State == ConnectionState.Closed) connection.Open();
+                    if (connection.State == ConnectionState.Closed)
+                        connection.Open();
 
-                    string query = "INSERT INTO TreatmentPlan (planID, planName, planTime, injuryID, price, notes) " +
-                                   "VALUES (@planID, @planName, @planTime, @injuryID, @price, @notes)";
+                    string query = "INSERT INTO TreatmentPlan (planID, planName, planTime, injuryID, price, notes, patientID, keywords, visitID,timeStamp) " +
+                                   "VALUES (@planID, @planName, @planTime, @injuryID, @price, @notes, @patientID, @keywords, @visitID, @timeStamp)";
 
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
@@ -1231,6 +1236,10 @@ namespace clinical
                         command.Parameters.AddWithValue("@injuryID", treatmentPlan.InjuryID);
                         command.Parameters.AddWithValue("@price", treatmentPlan.Price);
                         command.Parameters.AddWithValue("@notes", treatmentPlan.Notes);
+                        command.Parameters.AddWithValue("@patientID", treatmentPlan.PatientID);
+                        command.Parameters.AddWithValue("@keywords", treatmentPlan.Keywords);
+                        command.Parameters.AddWithValue("@visitID", treatmentPlan.VisitID);
+                        command.Parameters.AddWithValue("@timeStamp", treatmentPlan.Timestamp);
 
                         command.ExecuteNonQuery();
 
@@ -1244,26 +1253,160 @@ namespace clinical
             }
         }
 
+        public static List<TreatmentPlan> GetAllTreatmentPlans()
+        {
+            List<TreatmentPlan> treatmentPlans = new List<TreatmentPlan>();
+
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+                    string query = "SELECT * FROM TreatmentPlan";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    using (MySqlDataReader reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            TreatmentPlan treatmentPlan = new TreatmentPlan(
+                                Convert.ToInt32(reader["planID"]),
+                                Convert.ToString(reader["planName"]),
+                                Convert.ToInt32(reader["planTime"]),
+                                Convert.ToDouble(reader["price"]),
+                                Convert.ToString(reader["notes"]),
+                                Convert.ToString(reader["keywords"]),
+                                Convert.ToInt32(reader["injuryID"]),
+                                Convert.ToInt32(reader["patientID"]),
+                                Convert.ToInt32(reader["visitID"]),
+                                Convert.ToDateTime(reader["timeStamp"])
+                            );
+
+                            treatmentPlans.Add(treatmentPlan);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+
+            return treatmentPlans;
+        }
+
+        public static TreatmentPlan GetTreatmentPlanByID(int planID)
+        {
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+                    string query = "SELECT * FROM TreatmentPlan WHERE planID = @planID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@planID", planID);
+
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                return new TreatmentPlan(
+                                    Convert.ToInt32(reader["planID"]),
+                                    Convert.ToString(reader["planName"]),
+                                    Convert.ToInt32(reader["planTime"]),
+                                    Convert.ToDouble(reader["price"]),
+                                    Convert.ToString(reader["notes"]),
+                                    Convert.ToString(reader["keywords"]),
+                                    Convert.ToInt32(reader["injuryID"]),
+                                    Convert.ToInt32(reader["patientID"]),
+                                    Convert.ToInt32(reader["visitID"]),
+                                    Convert.ToDateTime(reader["timeStamp"])
+
+                                );
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+
+            return null; // Return null if the treatment plan with the specified ID is not found
+        }
+        public static List<TreatmentPlan> GetAllTreatmentPlansByPatientID(int patientID)
+        {
+            List<TreatmentPlan> treatmentPlans = new List<TreatmentPlan>();
+
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+                    string query = "SELECT * FROM TreatmentPlan WHERE patientID=@pId";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection)) {
+                        command.Parameters.AddWithValue("@pId", patientID);
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                TreatmentPlan treatmentPlan = new TreatmentPlan(
+                                    Convert.ToInt32(reader["planID"]),
+                                    Convert.ToString(reader["planName"]),
+                                    Convert.ToInt32(reader["planTime"]),
+                                    Convert.ToDouble(reader["price"]),
+                                    Convert.ToString(reader["notes"]),
+                                    Convert.ToString(reader["keywords"]),
+                                    Convert.ToInt32(reader["injuryID"]),
+                                    Convert.ToInt32(reader["patientID"]),
+                                    Convert.ToInt32(reader["visitID"]),
+                                    Convert.ToDateTime(reader["timeStamp"])
+                                );
+
+                                treatmentPlans.Add(treatmentPlan);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+
+            return treatmentPlans;
+        }
+
         public static void UpdateTreatmentPlan(TreatmentPlan treatmentPlan)
         {
             using (connection)
             {
                 try
                 {
-                    if (connection.State == ConnectionState.Closed) connection.Open();
+                    if (connection.State == ConnectionState.Closed)
+                        connection.Open();
 
-                    string query = "UPDATE TreatmentPlan SET planName = @planName, planTime = @planTime, " +
-                                   "injuryID = @injuryID, price = @price, notes = @notes " +
+                    string query = "UPDATE TreatmentPlan SET planName = @planName, " +
+                                   "planTime = @planTime, injuryID = @injuryID, price = @price, " +
+                                   "notes = @notes, patientID = @patientID, visitID = @visitID, keywords=@keywords, timeStamp=@timeStamp " +
                                    "WHERE planID = @planID";
 
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
-                        command.Parameters.AddWithValue("@planID", treatmentPlan.PlanID);
                         command.Parameters.AddWithValue("@planName", treatmentPlan.PlanName);
                         command.Parameters.AddWithValue("@planTime", treatmentPlan.PlanTimeInWeeks);
                         command.Parameters.AddWithValue("@injuryID", treatmentPlan.InjuryID);
                         command.Parameters.AddWithValue("@price", treatmentPlan.Price);
                         command.Parameters.AddWithValue("@notes", treatmentPlan.Notes);
+                        command.Parameters.AddWithValue("@keywords", treatmentPlan.Keywords);
+                        command.Parameters.AddWithValue("@patientID", treatmentPlan.PatientID);
+                        command.Parameters.AddWithValue("@visitID", treatmentPlan.VisitID);
+                        command.Parameters.AddWithValue("@planID", treatmentPlan.PlanID);
+                        command.Parameters.AddWithValue("@timeStamp", treatmentPlan.Timestamp);
 
                         command.ExecuteNonQuery();
 
@@ -1283,7 +1426,8 @@ namespace clinical
             {
                 try
                 {
-                    if (connection.State == ConnectionState.Closed) connection.Open();
+                    if (connection.State == ConnectionState.Closed)
+                        connection.Open();
 
                     string query = "DELETE FROM TreatmentPlan WHERE planID = @planID";
 
@@ -1300,86 +1444,6 @@ namespace clinical
                 {
                     MessageBox.Show($"Error: {ex.Message}");
                 }
-            }
-        }
-
-        public static TreatmentPlan GetTreatmentPlanByID(int planID)
-        {
-            using (connection)
-            {
-                try
-                {
-                    if (connection.State == ConnectionState.Closed) connection.Open();
-
-                    string query = "SELECT * FROM TreatmentPlan WHERE planID = @planID";
-
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@planID", planID);
-
-                        using (MySqlDataReader reader = command.ExecuteReader())
-                        {
-                            if (reader.Read())
-                            {
-                                return new TreatmentPlan(
-                                    Convert.ToInt32(reader["planID"]),
-                                    reader["planName"].ToString(),
-                                    Convert.ToInt32(reader["planTime"]),
-                                    Convert.ToDouble(reader["price"]),
-                                    reader["notes"].ToString(),
-                                    Convert.ToInt32(reader["injuryID"])
-                                );
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error: {ex.Message}");
-                }
-
-                return null;
-            }
-        }
-
-        public static List<TreatmentPlan> GetAllTreatmentPlans()
-        {
-            List<TreatmentPlan> treatmentPlans = new List<TreatmentPlan>();
-
-            using (connection)
-            {
-                try
-                {
-                    if (connection.State == ConnectionState.Closed) connection.Open();
-
-                    string query = "SELECT * FROM TreatmentPlan";
-
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
-                    {
-                        using (MySqlDataReader reader = command.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                TreatmentPlan treatmentPlan = new TreatmentPlan(
-                                    Convert.ToInt32(reader["planID"]),
-                                    reader["planName"].ToString(),
-                                    Convert.ToInt32(reader["planTime"]),
-                                    Convert.ToDouble(reader["price"]),
-                                    reader["notes"].ToString(),
-                                    Convert.ToInt32(reader["injuryID"])
-                                );
-
-                                treatmentPlans.Add(treatmentPlan);
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error: {ex.Message}");
-                }
-
-                return treatmentPlans;
             }
         }
 
@@ -1783,7 +1847,7 @@ namespace clinical
                 {
                     if (connection.State == ConnectionState.Closed) connection.Open();
 
-                     string query = "SELECT cm.* FROM ChatMessage cm JOIN chatRoom cr ON cm.chatroomID = cr.chatroomID WHERE cm.timeStamp >= NOW() - INTERVAL 0.7 SECOND AND cr.chatroomID = @chatRoomID ORDER BY timeStamp ASC;";
+                    string query = "SELECT cm.* FROM ChatMessage cm JOIN chatRoom cr ON cm.chatroomID = cr.chatroomID WHERE cm.timeStamp >= NOW() - INTERVAL 0.7 SECOND AND cr.chatroomID = @chatRoomID ORDER BY timeStamp ASC;";
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
                         command.Parameters.AddWithValue("@chatRoomID", chatRoomID);
@@ -2125,29 +2189,32 @@ namespace clinical
             }
         }
 
-        /// drug
+        /// scanTest
         /////////////////////////////////////////////////////////////////////////
         ///
-        public static void InsertDrug(Drug drug)
+
+        public static void InsertScanTest(ScanTest scanTest)
         {
             using (connection)
             {
                 try
                 {
-                    if (connection.State == ConnectionState.Closed) connection.Open();
+                    if (connection.State == ConnectionState.Closed)
+                        connection.Open();
 
-                    string query = "INSERT INTO Drug (drugName, normalDosage, notes) " +
-                                   "VALUES (@drugName, @normalDosage, @notes)";
+                    string query = "INSERT INTO scanTest (scanTestID, scanTestName, recommendedLab, notes) " +
+                                   "VALUES (@scanTestID, @scanTestName, @recommendedLab, @notes)";
 
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
-                        command.Parameters.AddWithValue("@drugName", drug.DrugName);
-                        command.Parameters.AddWithValue("@normalDosage", drug.NormalDosage);
-                        command.Parameters.AddWithValue("@notes", drug.Notes);
+                        command.Parameters.AddWithValue("@scanTestID", scanTest.ScanTestID);
+                        command.Parameters.AddWithValue("@scanTestName", scanTest.ScanTestName);
+                        command.Parameters.AddWithValue("@recommendedLab", scanTest.RecommendedLab);
+                        command.Parameters.AddWithValue("@notes", scanTest.Notes);
 
                         command.ExecuteNonQuery();
 
-                        MessageBox.Show("Drug inserted successfully.");
+                        MessageBox.Show("ScanTest inserted successfully.");
                     }
                 }
                 catch (Exception ex)
@@ -2157,27 +2224,31 @@ namespace clinical
             }
         }
 
-        public static void UpdateDrug(Drug drug)
+        public static List<ScanTest> GetAllScanTests()
         {
+            List<ScanTest> scanTests = new List<ScanTest>();
+
             using (connection)
             {
                 try
                 {
-                    if (connection.State == ConnectionState.Closed) connection.Open();
-
-                    string query = "UPDATE Drug SET drugName = @drugName, normalDosage = @normalDosage, notes = @notes " +
-                                   "WHERE drugID = @drugID";
+                    connection.Open();
+                    string query = "SELECT * FROM scanTest";
 
                     using (MySqlCommand command = new MySqlCommand(query, connection))
+                    using (MySqlDataReader reader = command.ExecuteReader())
                     {
-                        command.Parameters.AddWithValue("@drugID", drug.DrugID);
-                        command.Parameters.AddWithValue("@drugName", drug.DrugName);
-                        command.Parameters.AddWithValue("@normalDosage", drug.NormalDosage);
-                        command.Parameters.AddWithValue("@notes", drug.Notes);
+                        while (reader.Read())
+                        {
+                            ScanTest scanTest = new ScanTest(
+                                Convert.ToInt32(reader["scanTestID"]),
+                                Convert.ToString(reader["scanTestName"]),
+                                Convert.ToString(reader["recommendedLab"]),
+                                Convert.ToString(reader["notes"])
+                            );
 
-                        command.ExecuteNonQuery();
-
-                        MessageBox.Show("Drug updated successfully.");
+                            scanTests.Add(scanTest);
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -2185,57 +2256,32 @@ namespace clinical
                     MessageBox.Show($"Error: {ex.Message}");
                 }
             }
+
+            return scanTests;
         }
 
-        public static void DeleteDrug(int drugID)
+        public static ScanTest GetScanTestById(int scanTestID)
         {
             using (connection)
             {
                 try
                 {
-                    if (connection.State == ConnectionState.Closed) connection.Open();
-
-                    string query = "DELETE FROM Drug WHERE drugID = @drugID";
-
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@drugID", drugID);
-
-                        command.ExecuteNonQuery();
-
-                        MessageBox.Show("Drug deleted successfully.");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error: {ex.Message}");
-                }
-            }
-        }
-
-        public static Drug GetDrugByID(int drugID)
-        {
-            using (connection)
-            {
-                try
-                {
-                    if (connection.State == ConnectionState.Closed) connection.Open();
-
-                    string query = "SELECT * FROM Drug WHERE drugID = @drugID";
+                    connection.Open();
+                    string query = "SELECT * FROM scanTest WHERE scanTestID = @scanTestID";
 
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
-                        command.Parameters.AddWithValue("@drugID", drugID);
+                        command.Parameters.AddWithValue("@scanTestID", scanTestID);
 
                         using (MySqlDataReader reader = command.ExecuteReader())
                         {
                             if (reader.Read())
                             {
-                                return new Drug(
-                                    Convert.ToInt32(reader["drugID"]),
-                                    reader["drugName"].ToString(),
-                                    reader["normalDosage"].ToString(),
-                                    reader["notes"].ToString()
+                                return new ScanTest(
+                                    Convert.ToInt32(reader["scanTestID"]),
+                                    Convert.ToString(reader["scanTestName"]),
+                                    Convert.ToString(reader["recommendedLab"]),
+                                    Convert.ToString(reader["notes"])
                                 );
                             }
                         }
@@ -2245,49 +2291,70 @@ namespace clinical
                 {
                     MessageBox.Show($"Error: {ex.Message}");
                 }
-
-                return null;
             }
+
+            return null; // Return null if the scan test with the specified ID is not found
         }
 
-        public static List<Drug> GetAllDrugs()
+        public static void UpdateScanTest(ScanTest scanTest)
         {
-            List<Drug> drugs = new List<Drug>();
-
             using (connection)
             {
                 try
                 {
-                    if (connection.State == ConnectionState.Closed) connection.Open();
+                    if (connection.State == ConnectionState.Closed)
+                        connection.Open();
 
-                    string query = "SELECT * FROM Drug";
+                    string query = "UPDATE scanTest SET scanTestName = @scanTestName, " +
+                                   "recommendedLab = @recommendedLab, notes = @notes " +
+                                   "WHERE scanTestID = @scanTestID";
 
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
-                        using (MySqlDataReader reader = command.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                Drug drug = new Drug(
-                                    Convert.ToInt32(reader["drugID"]),
-                                    reader["drugName"].ToString(),
-                                    reader["normalDosage"].ToString(),
-                                    reader["notes"].ToString()
-                                );
+                        command.Parameters.AddWithValue("@scanTestName", scanTest.ScanTestName);
+                        command.Parameters.AddWithValue("@recommendedLab", scanTest.RecommendedLab);
+                        command.Parameters.AddWithValue("@notes", scanTest.Notes);
+                        command.Parameters.AddWithValue("@scanTestID", scanTest.ScanTestID);
 
-                                drugs.Add(drug);
-                            }
-                        }
+                        command.ExecuteNonQuery();
+
+                        MessageBox.Show("ScanTest updated successfully.");
                     }
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show($"Error: {ex.Message}");
                 }
-
-                return drugs;
             }
         }
+
+        public static void DeleteScanTest(int scanTestID)
+        {
+            using (connection)
+            {
+                try
+                {
+                    if (connection.State == ConnectionState.Closed)
+                        connection.Open();
+
+                    string query = "DELETE FROM scanTest WHERE scanTestID = @scanTestID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@scanTestID", scanTestID);
+
+                        command.ExecuteNonQuery();
+
+                        MessageBox.Show("ScanTest deleted successfully.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+        }
+
 
         /// injury
         /////////////////////////////////////////////////////////////////////////
@@ -3075,7 +3142,7 @@ namespace clinical
             }
         }
 
-        
+
 
         ///visit
         /////////////////////////////////////////////////////////////////////
@@ -3210,6 +3277,37 @@ namespace clinical
                 return null;
             }
         }
+        public static Visit GetMostRecentVisitByPatientID(int patientId)
+        {
+            using (connection)
+            {
+                try
+                {
+                    if (connection.State == ConnectionState.Closed) connection.Open();
+
+                    string query = "SELECT * FROM Visit WHERE patientID = @patientID AND isDone = 1 ORDER BY timeStamp DESC LIMIT 1";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@patientID", patientId);
+
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                return MapVisit(reader);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+
+                return null;
+            }
+        }
 
         public static List<Visit> GetAllVisits()
         {
@@ -3229,7 +3327,7 @@ namespace clinical
                         {
                             while (reader.Read())
                             {
-                                
+
 
                                 visitList.Add(MapVisit(reader));
                             }
@@ -3262,7 +3360,7 @@ namespace clinical
                         {
                             while (reader.Read())
                             {
-                                
+
                                 visitList.Add(MapVisit(reader));
                             }
                         }
@@ -3286,7 +3384,7 @@ namespace clinical
                 {
                     if (connection.State == ConnectionState.Closed) connection.Open();
 
-                    string query = "SELECT * FROM Visit WHERE patientID=@patientID AND timeStamp < CURDATE() ORDER BY timeStamp ASC";
+                    string query = "SELECT * FROM Visit WHERE patientID=@patientID AND (timeStamp < CURDATE() OR isDone=1) ORDER BY timeStamp ASC";
 
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
@@ -3296,7 +3394,7 @@ namespace clinical
                         {
                             while (reader.Read())
                             {
-                                
+
 
                                 visitList.Add(MapVisit(reader));
                             }
@@ -3321,7 +3419,7 @@ namespace clinical
                 {
                     if (connection.State == ConnectionState.Closed) connection.Open();
 
-                    string query = "SELECT * FROM Visit WHERE patientID=@patientID AND timeStamp > CURDATE() ORDER BY timeStamp ASC";
+                    string query = "SELECT * FROM Visit WHERE patientID=@patientID AND timeStamp > CURDATE() AND isDone=0 ORDER BY timeStamp ASC";
 
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
@@ -3331,7 +3429,7 @@ namespace clinical
                         {
                             while (reader.Read())
                             {
-                                
+
 
                                 visitList.Add(MapVisit(reader));
                             }
@@ -3356,7 +3454,7 @@ namespace clinical
                 {
                     if (connection.State == ConnectionState.Closed) connection.Open();
 
-                    string query = "SELECT * FROM Visit WHERE patientID=@patientID AND DATE(timeStamp) = CURDATE() ORDER BY timeStamp ASC";
+                    string query = "SELECT * FROM Visit WHERE patientID=@patientID AND DATE(timeStamp) = CURDATE() AND isDone=0 ORDER BY timeStamp ASC";
 
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
@@ -3366,7 +3464,7 @@ namespace clinical
                         {
                             while (reader.Read())
                             {
-                               
+
                                 visitList.Add(MapVisit(reader));
                             }
                         }
@@ -3402,7 +3500,7 @@ namespace clinical
                         {
                             while (reader.Read())
                             {
-                                
+
 
                                 visitsForPhysician.Add(MapVisit(reader));
                             }
@@ -3435,7 +3533,7 @@ namespace clinical
                         {
                             while (reader.Read())
                             {
-                                
+
 
                                 todayVisits.Add(MapVisit(reader));
                             }
@@ -3462,7 +3560,7 @@ namespace clinical
 
                     string query = "SELECT v.* FROM Visit v " +
                                    "INNER JOIN User u ON v.userID = u.userID " +
-                                   "WHERE u.userID = @physicianID AND DATE(v.timeStamp) >= CURDATE() ORDER BY timeStamp ASC";
+                                   "WHERE u.userID = @physicianID AND DATE(v.timeStamp) >= CURDATE() AND isDone=0 ORDER BY timeStamp ASC";
 
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
@@ -3472,7 +3570,7 @@ namespace clinical
                         {
                             while (reader.Read())
                             {
-                                
+
 
                                 todayPhysicianVisits.Add(MapVisit(reader));
                             }
@@ -3508,7 +3606,7 @@ namespace clinical
                         {
                             while (reader.Read())
                             {
-                               
+
                                 physicianVisitsOnDate.Add(MapVisit(reader));
                             }
                         }
@@ -3597,7 +3695,7 @@ namespace clinical
                                 Convert.ToInt32(reader["testID"]),
                                 Convert.ToString(reader["testName"]),
                                 Convert.ToString(reader["testDescription"])
-                            
+
                                 );
 
                             tests.Add(test);
@@ -3965,7 +4063,7 @@ namespace clinical
         {
             using (connection)
             {
-                Prescription toReturn=new Prescription();
+                Prescription toReturn = new Prescription();
 
                 try
                 {
@@ -3980,7 +4078,7 @@ namespace clinical
                         {
                             if (reader.Read())
                             {
-                                toReturn=new Prescription(
+                                toReturn = new Prescription(
                                     Convert.ToInt32(reader["prescriptionID"]),
                                     Convert.ToDateTime(reader["timeStamp"]),
                                     Convert.ToInt32(reader["patientID"]),
@@ -3991,7 +4089,6 @@ namespace clinical
                             }
                         }
                     }
-                    toReturn.IssuedExercisesIDs = GetIssuedExercisesByPrescriptionID(prescriptionID);
 
                 }
                 catch (Exception ex)
@@ -4075,10 +4172,6 @@ namespace clinical
                             }
                         }
                     }
-                    foreach(Prescription p in prescriptionList)
-                    {
-                        p.IssuedDrugsIDs = GetIssuedDrugsByPrescriptionID(p.PrescriptionID);
-                    }
 
                 }
                 catch (Exception ex)
@@ -4090,7 +4183,7 @@ namespace clinical
                 return prescriptionList;
             }
         }
-        public static  List<Prescription> GetAllPrescriptionsByVisitID(int visitID)
+        public static List<Prescription> GetAllPrescriptionsByVisitID(int visitID)
         {
             List<Prescription> prescriptionList = new List<Prescription>();
 
@@ -4121,10 +4214,6 @@ namespace clinical
                                 prescriptionList.Add(prescription);
                             }
                         }
-                    }
-                    foreach (Prescription p in prescriptionList)
-                    {
-                        p.IssuedDrugsIDs = GetIssuedDrugsByPrescriptionID(p.PrescriptionID);
                     }
                 }
 
@@ -4319,7 +4408,7 @@ namespace clinical
             }
         }
 
-        
+
 
         public static List<MedicalRecord> GetAllPatientRecords(int patientID)
         {
@@ -4366,32 +4455,33 @@ namespace clinical
         }
 
 
-        ///issueDrug
+        ///issueScan
         ///////////////////////////////////////////////////////////////////////////
         ///
-        public static void InsertIssueDrug(IssueDrug issueDrug)
+
+        public static void InsertIssueScan(IssueScan issueScan)
         {
             using (connection)
             {
                 try
                 {
-                    if (connection.State == ConnectionState.Closed) connection.Open();
+                    if (connection.State == ConnectionState.Closed)
+                        connection.Open();
 
-                    string query = "INSERT INTO IssueDrug (issueID, drugID, prescriptionID, patientID, frequency, notes) " +
-                                   "VALUES (@issueID, @drugID, @prescriptionID, @patientID, @frequency, @notes)";
+                    string query = "INSERT INTO IssueScan (issueID, scanTestID, prescriptionID, patientID, notes) " +
+                                   "VALUES (@issueID, @scanTestID, @prescriptionID, @patientID, @notes)";
 
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
-                        command.Parameters.AddWithValue("@issueID", issueDrug.IssueID);
-                        command.Parameters.AddWithValue("@drugID", issueDrug.DrugID);
-                        command.Parameters.AddWithValue("@prescriptionID", issueDrug.PrescriptionID);
-                        command.Parameters.AddWithValue("@patientID", issueDrug.PatientID);
-                        command.Parameters.AddWithValue("@frequency", issueDrug.Frequency);
-                        command.Parameters.AddWithValue("@notes", issueDrug.Notes);
+                        command.Parameters.AddWithValue("@issueID", issueScan.IssueID);
+                        command.Parameters.AddWithValue("@scanTestID", issueScan.ScanTestID);
+                        command.Parameters.AddWithValue("@prescriptionID", issueScan.PrescriptionID);
+                        command.Parameters.AddWithValue("@patientID", issueScan.PatientID);
+                        command.Parameters.AddWithValue("@notes", issueScan.Notes);
 
                         command.ExecuteNonQuery();
 
-                        MessageBox.Show("Issue drug record inserted successfully.");
+                        //MessageBox.Show("IssueScan inserted successfully.");
                     }
                 }
                 catch (Exception ex)
@@ -4401,31 +4491,32 @@ namespace clinical
             }
         }
 
-        public static void UpdateIssueDrug(IssueDrug issueDrug)
+        public static List<IssueScan> GetAllIssueScans()
         {
+            List<IssueScan> issueScans = new List<IssueScan>();
+
             using (connection)
             {
                 try
                 {
-                    if (connection.State == ConnectionState.Closed) connection.Open();
-
-                    string query = "UPDATE IssueDrug SET drugID = @drugID, " +
-                                   "prescriptionID = @prescriptionID, patientID = @patientID, " +
-                                   "frequency = @frequency, notes = @notes " +
-                                   "WHERE issueID = @issueID";
+                    connection.Open();
+                    string query = "SELECT * FROM IssueScan";
 
                     using (MySqlCommand command = new MySqlCommand(query, connection))
+                    using (MySqlDataReader reader = command.ExecuteReader())
                     {
-                        command.Parameters.AddWithValue("@issueID", issueDrug.IssueID);
-                        command.Parameters.AddWithValue("@drugID", issueDrug.DrugID);
-                        command.Parameters.AddWithValue("@prescriptionID", issueDrug.PrescriptionID);
-                        command.Parameters.AddWithValue("@patientID", issueDrug.PatientID);
-                        command.Parameters.AddWithValue("@frequency", issueDrug.Frequency);
-                        command.Parameters.AddWithValue("@notes", issueDrug.Notes);
+                        while (reader.Read())
+                        {
+                            IssueScan issueScan = new IssueScan(
+                                Convert.ToInt32(reader["issueID"]),
+                                Convert.ToInt32(reader["scanTestID"]),
+                                Convert.ToInt32(reader["prescriptionID"]),
+                                Convert.ToInt32(reader["patientID"]),
+                                Convert.ToString(reader["notes"])
+                            );
 
-                        command.ExecuteNonQuery();
-
-                        MessageBox.Show("Issue drug record updated successfully.");
+                            issueScans.Add(issueScan);
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -4433,25 +4524,38 @@ namespace clinical
                     MessageBox.Show($"Error: {ex.Message}");
                 }
             }
-        }
 
-        public static void DeleteIssueDrug(int issueID)
+            return issueScans;
+        }
+        public static List<IssueScan> GetAllIssueScansByPatientID(int patientID)
         {
+            List<IssueScan> issueScans = new List<IssueScan>();
+
             using (connection)
             {
                 try
                 {
-                    if (connection.State == ConnectionState.Closed) connection.Open();
-
-                    string query = "DELETE FROM IssueDrug WHERE issueID = @issueID";
+                    connection.Open();
+                    string query = "SELECT * FROM IssueScan WHERE patientID=@pId";
 
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
-                        command.Parameters.AddWithValue("@issueID", issueID);
+                        command.Parameters.AddWithValue("@pId", patientID);
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                IssueScan issueScan = new IssueScan(
+                                    Convert.ToInt32(reader["issueID"]),
+                                    Convert.ToInt32(reader["scanTestID"]),
+                                    Convert.ToInt32(reader["prescriptionID"]),
+                                    Convert.ToInt32(reader["patientID"]),
+                                    Convert.ToString(reader["notes"])
+                                );
 
-                        command.ExecuteNonQuery();
-
-                        MessageBox.Show("Issue drug record deleted successfully.");
+                                issueScans.Add(issueScan);
+                            }
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -4459,17 +4563,57 @@ namespace clinical
                     MessageBox.Show($"Error: {ex.Message}");
                 }
             }
+
+            return issueScans;
+        }
+        public static List<IssueScan> GetAllIssueScansByPrescriptionID(int prescriptionID)
+        {
+            List<IssueScan> issueScans = new List<IssueScan>();
+
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+                    string query = "SELECT * FROM IssueScan WHERE prescriptionID=@pId";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@pId", prescriptionID);
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                IssueScan issueScan = new IssueScan(
+                                    Convert.ToInt32(reader["issueID"]),
+                                    Convert.ToInt32(reader["scanTestID"]),
+                                    Convert.ToInt32(reader["prescriptionID"]),
+                                    Convert.ToInt32(reader["patientID"]),
+                                    Convert.ToString(reader["notes"])
+                                );
+
+                                issueScans.Add(issueScan);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+
+            return issueScans;
         }
 
-        public static IssueDrug GetIssueDrugByID(int issueID)
+        public static IssueScan GetIssueScanById(int issueID)
         {
             using (connection)
             {
                 try
                 {
-                    if (connection.State == ConnectionState.Closed) connection.Open();
-
-                    string query = "SELECT * FROM IssueDrug WHERE issueID = @issueID";
+                    connection.Open();
+                    string query = "SELECT * FROM IssueScan WHERE issueID = @issueID";
 
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
@@ -4479,13 +4623,12 @@ namespace clinical
                         {
                             if (reader.Read())
                             {
-                                return new IssueDrug(
+                                return new IssueScan(
                                     Convert.ToInt32(reader["issueID"]),
-                                    Convert.ToInt32(reader["drugID"]),
+                                    Convert.ToInt32(reader["scanTestID"]),
                                     Convert.ToInt32(reader["prescriptionID"]),
                                     Convert.ToInt32(reader["patientID"]),
-                                    reader["frequency"].ToString(),
-                                    reader["notes"].ToString()
+                                    Convert.ToString(reader["notes"])
                                 );
                             }
                         }
@@ -4495,181 +4638,70 @@ namespace clinical
                 {
                     MessageBox.Show($"Error: {ex.Message}");
                 }
-
-                return null;
             }
+
+            return null; // Return null if the issue scan with the specified ID is not found
         }
 
-        public static List<IssueDrug> GetAllIssueDrugs()
+        public static void UpdateIssueScan(IssueScan issueScan)
         {
-            List<IssueDrug> issueDrugList = new List<IssueDrug>();
-
             using (connection)
             {
                 try
                 {
-                    if (connection.State == ConnectionState.Closed) connection.Open();
+                    if (connection.State == ConnectionState.Closed)
+                        connection.Open();
 
-                    string query = "SELECT * FROM IssueDrug";
+                    string query = "UPDATE IssueScan SET scanTestID = @scanTestID, " +
+                                   "prescriptionID = @prescriptionID, patientID = @patientID, " +
+                                   "notes = @notes WHERE issueID = @issueID";
 
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
-                        using (MySqlDataReader reader = command.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                IssueDrug issueDrug = new IssueDrug(
-                                    Convert.ToInt32(reader["issueID"]),
-                                    Convert.ToInt32(reader["drugID"]),
-                                    Convert.ToInt32(reader["prescriptionID"]),
-                                    Convert.ToInt32(reader["patientID"]),
-                                    reader["frequency"].ToString(),
-                                    reader["notes"].ToString()
-                                );
+                        command.Parameters.AddWithValue("@scanTestID", issueScan.ScanTestID);
+                        command.Parameters.AddWithValue("@prescriptionID", issueScan.PrescriptionID);
+                        command.Parameters.AddWithValue("@patientID", issueScan.PatientID);
+                        command.Parameters.AddWithValue("@notes", issueScan.Notes);
+                        command.Parameters.AddWithValue("@issueID", issueScan.IssueID);
 
-                                issueDrugList.Add(issueDrug);
-                            }
-                        }
+                        command.ExecuteNonQuery();
+
+                        MessageBox.Show("IssueScan updated successfully.");
                     }
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show($"Error: {ex.Message}");
                 }
-
-                return issueDrugList;
             }
         }
 
-        public static List<IssueDrug> GetIssuedDrugsByPrescriptionID(int prescriptionID)
+        public static void DeleteIssueScan(int issueID)
         {
-            List<IssueDrug> issuedDrugsByPrescriptionID = new List<IssueDrug>();
-
             using (connection)
             {
                 try
                 {
-                    if (connection.State == ConnectionState.Closed) connection.Open();
+                    if (connection.State == ConnectionState.Closed)
+                        connection.Open();
 
-                    string query = "SELECT * FROM IssueDrug WHERE prescriptionID = @prescriptionID";
+                    string query = "DELETE FROM IssueScan WHERE issueID = @issueID";
 
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
-                        command.Parameters.AddWithValue("@prescriptionID", prescriptionID);
+                        command.Parameters.AddWithValue("@issueID", issueID);
 
-                        using (MySqlDataReader reader = command.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                IssueDrug issueDrug = new IssueDrug(
-                                    Convert.ToInt32(reader["issueID"]),
-                                    Convert.ToInt32(reader["drugID"]),
-                                    Convert.ToInt32(reader["prescriptionID"]),
-                                    Convert.ToInt32(reader["patientID"]),
-                                    reader["frequency"].ToString(),
-                                    reader["notes"].ToString()
-                                );
+                        command.ExecuteNonQuery();
 
-                                issuedDrugsByPrescriptionID.Add(issueDrug);
-                            }
-                        }
+                        MessageBox.Show("IssueScan deleted successfully.");
                     }
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show($"Error: {ex.Message}");
                 }
-
-                return issuedDrugsByPrescriptionID;
             }
         }
-
-        public static List<IssueDrug> GetIssuedDrugsByPatientID(int patientID)
-        {
-            List<IssueDrug> issuedDrugsByPatientID = new List<IssueDrug>();
-
-            using (connection)
-            {
-                try
-                {
-                    if (connection.State == ConnectionState.Closed) connection.Open();
-
-                    string query = "SELECT * FROM IssueDrug WHERE patientID = @patientID";
-
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@patientID", patientID);
-
-                        using (MySqlDataReader reader = command.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                IssueDrug issueDrug = new IssueDrug(
-                                    Convert.ToInt32(reader["issueID"]),
-                                    Convert.ToInt32(reader["drugID"]),
-                                    Convert.ToInt32(reader["prescriptionID"]),
-                                    Convert.ToInt32(reader["patientID"]),
-                                    reader["frequency"].ToString(),
-                                    reader["notes"].ToString()
-                                );
-
-                                issuedDrugsByPatientID.Add(issueDrug);
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error: {ex.Message}");
-                }
-
-                return issuedDrugsByPatientID;
-            }
-        }
-
-        public static List<IssueDrug> GetAllIssuesOfDrug(int drugID)
-        {
-            List<IssueDrug> allIssuesOfDrug = new List<IssueDrug>();
-
-            using (connection)
-            {
-                try
-                {
-                    if (connection.State == ConnectionState.Closed) connection.Open();
-
-                    string query = "SELECT * FROM IssueDrug WHERE drugID = @drugID";
-
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@drugID", drugID);
-
-                        using (MySqlDataReader reader = command.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                IssueDrug issueDrug = new IssueDrug(
-                                    Convert.ToInt32(reader["issueID"]),
-                                    Convert.ToInt32(reader["drugID"]),
-                                    Convert.ToInt32(reader["prescriptionID"]),
-                                    Convert.ToInt32(reader["patientID"]),
-                                    reader["frequency"].ToString(),
-                                    reader["notes"].ToString()
-                                );
-
-                                allIssuesOfDrug.Add(issueDrug);
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error: {ex.Message}");
-                }
-
-                return allIssuesOfDrug;
-            }
-        }
-
 
         ///issueExercise
         /////////////////////////////////////////////////////////////////////////
@@ -4682,7 +4714,7 @@ namespace clinical
                 {
                     if (connection.State == ConnectionState.Closed) connection.Open();
 
-                    string query = "INSERT INTO IssueExercise (issueID, exerciseID, patientID, prescriptionID, frequency, notes) " +
+                    string query = "INSERT INTO IssueExercise (issueID, exerciseID, patientID, treatmentPlanID, frequency, notes) " +
                                    "VALUES (@issueID, @exerciseID, @patientID, @prescriptionID, @frequency, @notes)";
 
                     using (MySqlCommand command = new MySqlCommand(query, connection))
@@ -4690,13 +4722,13 @@ namespace clinical
                         command.Parameters.AddWithValue("@issueID", issueExercise.IssueID);
                         command.Parameters.AddWithValue("@exerciseID", issueExercise.ExerciseID);
                         command.Parameters.AddWithValue("@patientID", issueExercise.PatientID);
-                        command.Parameters.AddWithValue("@prescriptionID", issueExercise.PrescriptionID);
+                        command.Parameters.AddWithValue("@prescriptionID", issueExercise.TreatmentPlanID);
                         command.Parameters.AddWithValue("@frequency", issueExercise.Frequency);
                         command.Parameters.AddWithValue("@notes", issueExercise.Notes);
 
                         command.ExecuteNonQuery();
 
-                        MessageBox.Show("Issue exercise record inserted successfully.");
+                        //MessageBox.Show("Issue exercise record inserted successfully.");
                     }
                 }
                 catch (Exception ex)
@@ -4715,7 +4747,7 @@ namespace clinical
                     if (connection.State == ConnectionState.Closed) connection.Open();
 
                     string query = "UPDATE IssueExercise SET exerciseID = @exerciseID, " +
-                                   "patientID = @patientID, prescriptionID = @prescriptionID, " +
+                                   "patientID = @patientID, treatmentPlanID = @prescriptionID, " +
                                    "frequency = @frequency, notes = @notes " +
                                    "WHERE issueID = @issueID";
 
@@ -4724,13 +4756,13 @@ namespace clinical
                         command.Parameters.AddWithValue("@issueID", issueExercise.IssueID);
                         command.Parameters.AddWithValue("@exerciseID", issueExercise.ExerciseID);
                         command.Parameters.AddWithValue("@patientID", issueExercise.PatientID);
-                        command.Parameters.AddWithValue("@prescriptionID", issueExercise.PrescriptionID);
+                        command.Parameters.AddWithValue("@prescriptionID", issueExercise.TreatmentPlanID);
                         command.Parameters.AddWithValue("@frequency", issueExercise.Frequency);
                         command.Parameters.AddWithValue("@notes", issueExercise.Notes);
 
                         command.ExecuteNonQuery();
 
-                        MessageBox.Show("Issue exercise record updated successfully.");
+                        //MessageBox.Show("Issue exercise record updated successfully.");
                     }
                 }
                 catch (Exception ex)
@@ -4756,7 +4788,7 @@ namespace clinical
 
                         command.ExecuteNonQuery();
 
-                        MessageBox.Show("Issue exercise record deleted successfully.");
+                        //MessageBox.Show("Issue exercise record deleted successfully.");
                     }
                 }
                 catch (Exception ex)
@@ -4788,7 +4820,7 @@ namespace clinical
                                     Convert.ToInt32(reader["issueID"]),
                                     Convert.ToInt32(reader["exerciseID"]),
                                     Convert.ToInt32(reader["patientID"]),
-                                    Convert.ToInt32(reader["prescriptionID"]),
+                                    Convert.ToInt32(reader["treatmentPlanID"]),
                                     reader["frequency"].ToString(),
                                     reader["notes"].ToString()
                                 );
@@ -4805,7 +4837,7 @@ namespace clinical
             }
         }
 
-        public static List<IssueExercise> GetIssuedExercisesByPrescriptionID(int prescriptionID)
+        public static List<IssueExercise> GetIssuedExercisesByTreatmentPlanID(int planID)
         {
             List<IssueExercise> issuedExercises = new List<IssueExercise>();
 
@@ -4815,11 +4847,11 @@ namespace clinical
                 {
                     if (connection.State == ConnectionState.Closed) connection.Open();
 
-                    string query = "SELECT * FROM IssueExercise WHERE prescriptionID = @prescriptionID";
+                    string query = "SELECT * FROM IssueExercise WHERE treatmentPlanID = @prescriptionID";
 
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
-                        command.Parameters.AddWithValue("@prescriptionID", prescriptionID);
+                        command.Parameters.AddWithValue("@prescriptionID", planID);
 
                         using (MySqlDataReader reader = command.ExecuteReader())
                         {
@@ -4829,7 +4861,7 @@ namespace clinical
                                     Convert.ToInt32(reader["issueID"]),
                                     Convert.ToInt32(reader["exerciseID"]),
                                     Convert.ToInt32(reader["patientID"]),
-                                    Convert.ToInt32(reader["prescriptionID"]),
+                                    Convert.ToInt32(reader["treatmentPlanID"]),
                                     reader["frequency"].ToString(),
                                     reader["notes"].ToString()
                                 );
@@ -4872,7 +4904,7 @@ namespace clinical
                                     Convert.ToInt32(reader["issueID"]),
                                     Convert.ToInt32(reader["exerciseID"]),
                                     Convert.ToInt32(reader["patientID"]),
-                                    Convert.ToInt32(reader["prescriptionID"]),
+                                    Convert.ToInt32(reader["treatmentPlanID"]),
                                     reader["frequency"].ToString(),
                                     reader["notes"].ToString()
                                 );
@@ -4915,7 +4947,7 @@ namespace clinical
                                     Convert.ToInt32(reader["issueID"]),
                                     Convert.ToInt32(reader["exerciseID"]),
                                     Convert.ToInt32(reader["patientID"]),
-                                    Convert.ToInt32(reader["prescriptionID"]),
+                                    Convert.ToInt32(reader["treatmentPlanID"]),
                                     reader["frequency"].ToString(),
                                     reader["notes"].ToString()
                                 );
@@ -5142,7 +5174,7 @@ namespace clinical
 
         public static string GetSessionTime(int id)
         {
-            string time="";
+            string time = "";
 
             using (connection)
             {
@@ -5159,7 +5191,7 @@ namespace clinical
                         {
                             if (reader.Read())
                             {
-                                time=(reader["varValue"].ToString());
+                                time = (reader["varValue"].ToString());
                             }
                         }
                     }
@@ -5223,19 +5255,19 @@ namespace clinical
 
         public static void UpdateDefaultAppointmentTimeInMinutes(string val)
         {
-            UpdateGlobalVar(9,val);
+            UpdateGlobalVar(9, val);
         }
         public static void UpdateConsultationCost(string val)
         {
-            UpdateGlobalVar(10,val);
+            UpdateGlobalVar(10, val);
         }
         public static void UpdateFollowUpCost(string val)
         {
-            UpdateGlobalVar(11,val);
+            UpdateGlobalVar(11, val);
         }
         public static void UpdateExerciseCost(string val)
         {
-            UpdateGlobalVar(12,val);
+            UpdateGlobalVar(12, val);
         }
         public static void UpdateGlobalVar(int id, string val)
         {
@@ -5627,6 +5659,6 @@ namespace clinical
             }
         }
 
-
+        
     }
 }

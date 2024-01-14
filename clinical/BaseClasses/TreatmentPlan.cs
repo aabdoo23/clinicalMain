@@ -14,8 +14,12 @@ namespace clinical.BaseClasses
         public double Price { get; set; }
         public string Notes { get; set; }
         public int InjuryID { get;set; }
+        public int PatientID { get;set; }
+        public int VisitID { get;set; }
+        public string Keywords { get; set; }
+        public DateTime Timestamp {  get; set; }
 
-        public TreatmentPlan(int planID, string planName, int planTimeInWeeks, double price, string notes, int injuryID)
+        public TreatmentPlan(int planID, string planName, int planTimeInWeeks, double price, string notes, string keywords, int injuryID, int patientId, int visitId, DateTime timestamp)
         {
             PlanID = planID;
             PlanName = planName;
@@ -23,10 +27,14 @@ namespace clinical.BaseClasses
             Price = price;
             Notes = notes;
             InjuryID = injuryID;
+            PatientID = patientId;
+            VisitID = visitId;
+            Keywords = keywords;
+            Timestamp = timestamp;
         }
         override public string ToString()
         {
-            return "ID: " + PlanID.ToString() + ", " + PlanName;
+            return PlanName;
         }
 
     }

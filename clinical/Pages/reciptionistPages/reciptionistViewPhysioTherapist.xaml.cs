@@ -22,13 +22,19 @@ namespace clinical.Pages
             physician = physiotherapist;
             physicianNameMainTxt.Text = physician.FullName;
             nameTextBox.Text = physician.FullName;
+            emailTextBox.Text = physician.Email;
+            phoneTextBox.Text = physician.PhoneNumber;
+
+            List<Patient> patientList = DB.GetAllPatientsByPhysicianID(physician.UserID);
+
+            patientsDataGrid.ItemsSource = patientList;
 
             List<Visit> physicianUpcomingVisits = DB.GetFuturePhysicianVisits(physician.UserID);
             foreach (var i in physicianUpcomingVisits)
             {
                 upcomingAppointmentsStackPanel.Children.Add(globals.createAppointmentUIObject(i, viewVisit, viewPatient));
 
-                
+
             }
         }
 
@@ -37,7 +43,7 @@ namespace clinical.Pages
 
             if (patient != null)
             {
-                NavigationService.Navigate(new patientViewMainPage(patient));
+                new patientView(patient).Show();
             }
 
         }
@@ -45,19 +51,19 @@ namespace clinical.Pages
         {
             if (visit != null)
             {
-                NavigationService.Navigate(new visit(visit));
+                new patientView(visit).Show();
             }
         }
 
         private void viewPatientFromGrid(object sender, RoutedEventArgs e)
         {
-
+            viewPatient((Patient)patientsDataGrid.SelectedItem);
         }
 
         private void navigateBack(object sender, MouseButtonEventArgs e)
         {
             NavigationService.GoBack();
-            
+
         }
     }
 }

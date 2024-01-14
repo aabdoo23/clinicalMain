@@ -14,9 +14,6 @@ namespace clinical.BaseClasses
         public int PatientID { get; set; }
         public int UserID { get; set; }
         public int VisitID { get; set; }
-        public List<IssueDrug> IssuedDrugsIDs { get; set; }
-        public List<IssueExercise> IssuedExercisesIDs { get; set; }
-
 
         public Prescription() { }
         public Prescription(int prescriptionID, DateTime timeStamp, int patientID, int physiotherapistID, int visitID)
@@ -30,7 +27,7 @@ namespace clinical.BaseClasses
         }
         override public string ToString()
         {
-            return "ID: " + PrescriptionID.ToString() + ", Patient: " + DB.GetPatientById(PatientID).FirstName;
+            return "ID: " + PrescriptionID.ToString() + ", Patient: " + DB.GetPatientById(PatientID).FullName;
         }
     }
 }

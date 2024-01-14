@@ -11,13 +11,7 @@
       mc:Ignorable="av" d:DesignHeight="668" d:DesignWidth="1060">
 
 
-    <Border CornerRadius="20">
-        <Border.Background>
-            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
-                <GradientStop Color="#fefefe" Offset="0"/>
-                <GradientStop Color="#fefefe" Offset="1"/>
-            </LinearGradientBrush>
-        </Border.Background>
+    <Border CornerRadius="15" Background="{StaticResource lightFontColor}">
 
         <Grid>
             <Grid.RowDefinitions>
@@ -33,9 +27,10 @@
             <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Style="{StaticResource theBorder}" Margin="10" >
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="5*"/>
-                        <ColumnDefinition Width="90*"/>
-                        <ColumnDefinition Width="5*"/>
+                        <ColumnDefinition Width="50"/>
+                        <ColumnDefinition Width="75*"/>
+                        <ColumnDefinition Width="200"/>
+                        <ColumnDefinition Width="50"/>
                     </Grid.ColumnDefinitions>
 
                     <Icon:PackIconMaterial Kind="ArrowLeftBox" MouseDown="navigateBack" Width="35" Height="35" Foreground="{StaticResource lightFontColor}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -43,8 +38,12 @@
                         <TextBlock Text="Visit" Foreground="{StaticResource lightFontColor}" FontSize="12"/>
                         <TextBlock Name="patientNameMainTxt" Text="3alolo" Foreground="{StaticResource lightFontColor}" FontSize="20" FontWeight="Bold" VerticalAlignment="Center"/>
                     </StackPanel>
+                    <Border Style="{StaticResource theLinedBorder}" Background="{StaticResource lighterColor}" Margin="20 10 " CornerRadius="5" Grid.Column="2" MouseDown="markDoneUnDone">
+                        <TextBlock Name="markDoneTXT" Text="Mark Visit UnDone" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="16" FontWeight="Bold" Margin="0,-2,0,0"/>
+                    </Border>
+
                     <!--User Image-->
-                    <Icon:PackIconMaterial Kind="Account" Width="30" Height="30" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Center" Grid.Column="2"/>
+                    <Icon:PackIconMaterial Kind="Account" Width="30" Height="30" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Center" Grid.Column="3"/>
 
                 </Grid>
             </Border>
@@ -104,15 +103,30 @@
                                 <ColumnDefinition Width="90*"/>
                                 <ColumnDefinition Width="40"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="Cheif Complaint" FontSize="20" FontWeight="Bold" VerticalAlignment="Center" Foreground="{StaticResource lightFontColor}" Margin="12,0,28,0" Grid.Column="0"/>
-                            <Icon:PackIconMaterial Kind="ClipboardEdit" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Center" Width="25" Height="25" Margin="0" Grid.Column="1"/>
+                            <TextBlock Text="Treatment Plan" FontSize="20" FontWeight="Bold" VerticalAlignment="Center" Foreground="{StaticResource lightFontColor}" Margin="12,0,28,0" Grid.Column="0"/>
+                            <Icon:PackIconMaterial Kind="PlusBox" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Center" Width="25" Height="25" Margin="0" Grid.Column="1" MouseDown="newTreatmentPlan"/>
                         </Grid>
 
                         <Border Grid.Column="1" Background="{StaticResource lighterColor}" Grid.Row="1" CornerRadius="10" Margin="10 0 10 10">
-                            <StackPanel Name="StaPanel" Orientation="Vertical" Grid.Row="2" Background="Transparent" Margin="7" >
-                                <Border Background="{StaticResource lightFontColor}" CornerRadius="10" Margin="10 10 10 0" Height="60"/>
+                            <DataGrid Margin="10" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="treatmentDataGrid" Style="{DynamicResource DataGridStyle1}">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" Binding="{Binding PlanID}"/>
+                                    <DataGridTextColumn Header="TimeStamp" Binding="{Binding Timestamp}" IsReadOnly="True" Width="20*"/>
+                                    <DataGridTemplateColumn Header="Actions" IsReadOnly="True" Width="auto">
+                                        <DataGridTemplateColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Button Name="view" Style="{StaticResource gridEditButton}" Click="viewTreatmentPlan">
+                                                        <Icon:PackIconMaterial Kind="EyeCircleOutline" Style="{StaticResource gridButtonIcon}"/>
+                                                    </Button>
 
-                            </StackPanel>
+                                                </StackPanel>
+                                            </DataTemplate>
+                                        </DataGridTemplateColumn.CellTemplate>
+                                    </DataGridTemplateColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+
 
                         </Border>
                         <!--<uc:medicalRecordObject/>-->
@@ -292,26 +306,24 @@
                         </Grid.RowDefinitions>
                         <TextBlock Text="Prescription" Margin="10 5" VerticalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource lightFontColor}" FontSize="20"/>
                         <Icon:PackIconMaterial Kind="PlusBox" Foreground="{StaticResource lightFontColor}" MouseDown="newPrescription" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Width="25" Height="25" Margin="0 0 10 0"/>
-                        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-                            <DataGrid Margin="10" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="prescriptionsDataGrid" Style="{DynamicResource DataGridStyle1}">
-                                <DataGrid.Columns>
-                                    <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" Binding="{Binding PrescriptionID}"/>
-                                    <DataGridTextColumn Header="TimeStamp" Binding="{Binding TimeStamp}" IsReadOnly="True" Width="20*"/>
-                                    <DataGridTemplateColumn Header="Actions" IsReadOnly="True" Width="auto">
-                                        <DataGridTemplateColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <StackPanel Orientation="Horizontal">
-                                                    <Button Name="view" Style="{StaticResource gridEditButton}" Click="viewPrescription">
-                                                        <Icon:PackIconMaterial Kind="EyeCircleOutline" Style="{StaticResource gridButtonIcon}"/>
-                                                    </Button>
+                        <DataGrid Margin="10" ScrollViewer.CanContentScroll="True" ScrollViewer.VerticalScrollBarVisibility="Auto" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="prescriptionsDataGrid" Style="{DynamicResource DataGridStyle1}">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" Binding="{Binding PrescriptionID}"/>
+                                <DataGridTextColumn Header="TimeStamp" Binding="{Binding TimeStamp}" IsReadOnly="True" Width="20*"/>
+                                <DataGridTemplateColumn Header="Actions" IsReadOnly="True" Width="auto">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Button Name="view" Style="{StaticResource gridEditButton}" Click="viewPrescription">
+                                                    <Icon:PackIconMaterial Kind="EyeCircleOutline" Style="{StaticResource gridButtonIcon}"/>
+                                                </Button>
 
-                                                </StackPanel>
-                                            </DataTemplate>
-                                        </DataGridTemplateColumn.CellTemplate>
-                                    </DataGridTemplateColumn>
-                                </DataGrid.Columns>
-                            </DataGrid>
-                        </ScrollViewer>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
                     </Grid>
                 </Border>
 
@@ -354,7 +366,6 @@
 
 
             </Grid>
-
 
         </Grid>
     </Border>

@@ -41,11 +41,21 @@ namespace clinical.Pages
             visitDate.Text = currVisit.TimeStamp.DayOfWeek.ToString() + ", " + currVisit.TimeStamp.Date.ToString();
             physicianName.Text = currPatient.PhysicianName;
             hwborder.IsEnabled = false;
-
+            treatmentDataGrid.ItemsSource = DB.GetAllTreatmentPlansByPatientID(selectedVisit.PatientID);
             noteTXT.Text = currVisit.TherapistNotes;
             prescriptionsDataGrid.ItemsSource = DB.GetAllPrescriptionsByVisitID(currVisit.VisitID);
 
             List<EvaluationTestFeedBack> testFeedBacks = DB.GetFeedbackByVisit(selectedVisit.VisitID);
+
+            if (currVisit.IsDone)
+            {
+                markDoneTXT.Text = "Mark visit Undone";
+            }
+            else
+            {
+                markDoneTXT.Text = "Mark visit Done";
+
+            }
 
             foreach (EvaluationTestFeedBack fd in testFeedBacks)
             {
@@ -87,7 +97,11 @@ namespace clinical.Pages
             noteTXT.IsEnabled = !noteTXT.IsEnabled;
         }
 
-
+        private void newTreatmentPlan(object sender, MouseButtonEventArgs e)
+        {
+            prescriptionWindow window = new prescriptionWindow(currVisit, currPatient,true);
+            window.Show();
+        }
 
 
 
@@ -154,7 +168,7 @@ namespace clinical.Pages
                 radioButtonGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
 
                 Viewbox viewbox = new Viewbox();
-                RadioButton radioButton = new RadioButton {  GroupName = $"feedBack {testItems.IndexOf(newItem)}" };
+                RadioButton radioButton = new RadioButton { GroupName = $"feedBack {testItems.IndexOf(newItem)}" };
                 TextBlock textBlock = new TextBlock { Text = $"{i + 1}", TextAlignment = TextAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, FontSize = 18 };
                 if (i == 0) radioButton.IsChecked = true;
                 int rbsev = i + 1;
@@ -193,7 +207,7 @@ namespace clinical.Pages
             // Add the Border to the main UI
             feedbackStackPane.Children.Add(border);
 
-            
+
         }
 
         private void CreateTestItem(TestItem testFeedBack)
@@ -251,7 +265,7 @@ namespace clinical.Pages
 
                 Viewbox viewbox = new Viewbox();
                 RadioButton radioButton = new RadioButton { GroupName = $"feedBack {testItems.IndexOf(testFeedBack)}" };
-                int rbsev=i+1;
+                int rbsev = i + 1;
                 radioButton.Checked += (s, e) => UpdateTestItemRadioButton(testFeedBack, rbsev);
                 TextBlock textBlock = new TextBlock { Text = $"{i + 1}", TextAlignment = TextAlignment.Center, HorizontalAlignment = HorizontalAlignment.Center, FontSize = 18 };
                 if (sev == i + 1)
@@ -422,7 +436,7 @@ namespace clinical.Pages
                 {
 
                     int id = globals.generateNewTestFeedBackID(currVisit.VisitID, currPatient.PatientID);
-                    EvaluationTestFeedBack newFeedBack = new(id, test.Severity, currVisit.VisitID, currPatient.PatientID, test.TestID, test.Notes,currVisit.TimeStamp);
+                    EvaluationTestFeedBack newFeedBack = new(id, test.Severity, currVisit.VisitID, currPatient.PatientID, test.TestID, test.Notes, currVisit.TimeStamp);
                     DB.InsertFeedback(newFeedBack);
 
                 }
@@ -447,7 +461,28 @@ namespace clinical.Pages
             hwborder.IsEnabled = false;
 
             DB.UpdateVisit(currVisit);
-            DB.UpdatePatient(currPatient);
+            if (DB.GetMostRecentVisitByPatientID(currPatient.PatientID).VisitID == currVisit.VisitID) DB.UpdatePatient(currPatient);
+        }
+
+        private void markDoneUnDone(object sender, MouseButtonEventArgs e)
+        {
+            currVisit.IsDone = !currVisit.IsDone;
+            if (currVisit.IsDone)
+            {
+                markDoneTXT.Text = "Mark visit Undone";
+            }
+            else
+            {
+                markDoneTXT.Text = "Mark visit Done";
+
+            }
+            DB.UpdateVisit(currVisit);
+        }
+
+        private void viewTreatmentPlan(object sender, RoutedEventArgs e)
+        {
+            TreatmentPlan tp= (TreatmentPlan)treatmentDataGrid.SelectedItem;
+            new prescriptionWindow(tp).Show();
         }
     }
 }

@@ -31,7 +31,7 @@ namespace clinical
             {
                 foreach(User user2 in users)
                 {
-                    if (user1.UserID == user2.UserID) { continue; }
+                    if (user1.UserID == user2.UserID ||user1.UserID==0||user2.UserID==0) { continue; }
                     DB.InsertChatRoom(new ChatRoom(globals.generateNewChatRoomID(user1.UserID, user2.UserID), user1.UserID, user2.UserID, user2.FirstName,DateTime.Now));
 
                 }

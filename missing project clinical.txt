@@ -1,11 +1,22 @@
+kont b3ml eh 2bl ma anam:
+al reciptionistViewVisit, bos 3la number 1 fel unfinished bussiness, kont h3ml UI object lel prescription w UI object lel treatment plan gl
+
+
 random thoughts:
+
+-must do a treatment plan ui and a prescription ui
+
+-update visit
+
+-when switching packages, the system should calculate the difference based on how many sessions left, total price of session/number of sessions in package to get session price, discount that price from the new package
+
 -who can delete what:
 --admin can delete all
 --reciptionist request access before delete?
 
 -access request:
 --delete
---
+--view full visit or patient data
 
 -reciptionist can't view visit and patient as physician or admin
 
@@ -13,17 +24,19 @@ random thoughts:
 
 unfinished bussiness:
 
+-fix the treatmentplan, was prescription
+
+1- add a new class and table for prescriping a lab result or scan, prescription will be only those, and treatment plan has exercises
+
 1-add real data to all tables in db
 
-2-Al physician msh lazm y-add  
+2-meen byshof eh
 
 3-mark visit done in visit page (linked to 4)
 
 4-Yktb al modda mn al awl w y3addel b3dha law fe progress ahsn mn al motwk3
 
 5-delete buttons in settings grids with confirmation
-
-6-al appointment tb2a detailed , hyo3d ad eh  (has type, match)
 
 7-reminder lel syana bta3t al aghza w al equipment fl clinic 
 
@@ -33,15 +46,17 @@ unfinished bussiness:
 
 10- print the prescription properly
 
-12- plot height w weight of visits on patientview page
+11- salary and shit
 
-14- salary and shit
+12- preset treatment plans
+
+13- checkboxes for all grids to show and hide viewed series
+
+14- add new treatment plan with prescribed exercises suggestion
 
 not urgent:
 
--visitType class and table(id,name,time,cost), to be referenced in visit table
-
--when updating height and weight in a visit, only update the patient if it's the most recent visit
+-pop pages into separate window(with existing data is a bonus)
 
 -title windows
 
@@ -56,6 +71,7 @@ not urgent:
 - review all plots
 
 done:
+-visitType class and table(id,name,time,cost), to be referenced in visit table
 
 =Hydrotherapy
 
@@ -105,6 +121,14 @@ done:
 +- dicom viewer
 
 -Scheduling system
+
+- plot height w weight of visits on patientview page
+
+-when updating height and weight in a visit, only update the patient if it's the most recent visit
+
+
+
+6-al appointment tb2a detailed , hyo3d ad eh  (has type, match)
 
 ////////////////////
 

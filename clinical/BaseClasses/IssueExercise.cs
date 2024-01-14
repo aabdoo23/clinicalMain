@@ -11,17 +11,17 @@ namespace clinical.BaseClasses
         public int IssueID { get; set; }
         public int ExerciseID { get; set; }
         public int PatientID { get; set; }
-        public int PrescriptionID { get; set; }
+        public int TreatmentPlanID { get; set; }
         public string Frequency { get; set; }
         public string Notes { get; set; }
 
         // Constructor
-        public IssueExercise(int issueID, int exerciseID, int patientID, int prescriptionID, string frequency, string notes)
+        public IssueExercise(int issueID, int exerciseID, int patientID, int planID, string frequency, string notes)
         {
             IssueID = issueID;
             ExerciseID = exerciseID;
             PatientID = patientID;
-            PrescriptionID = prescriptionID;
+            TreatmentPlanID = planID;
             Frequency = frequency;
             Notes = notes;
         }

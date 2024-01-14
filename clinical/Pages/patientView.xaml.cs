@@ -39,6 +39,12 @@ namespace clinical
 
 
         }
+        public patientView(Visit viewPhysician)
+        {
+            InitializeComponent();
+            mainFrame.Navigate(new visit(viewPhysician));
+
+        }
 
         private void PackIconMaterial_MouseDown(object sender, MouseButtonEventArgs e){
             Window.GetWindow(this).Close();
@@ -53,10 +59,10 @@ namespace clinical
 
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            //if (e.ChangedButton == MouseButton.Left)
-            //{
-            //    this.DragMove();
-            //}
+            if (e.ChangedButton == MouseButton.Left)
+            {
+                this.DragMove();
+            }
         }
 
     }

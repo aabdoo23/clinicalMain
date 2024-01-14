@@ -7,35 +7,36 @@
       xmlns:av="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         xmlns:controls="clr-namespace:System.Windows.Controls;assembly=DotNetProjects.Input.Toolkit"
-        mc:Ignorable="av" Height="773" Width="654" 
+        mc:Ignorable="av" Height="723" Width="654" 
         Name="window"
-        MinHeight="400" MinWidth="600"
+        MinHeight="560" MinWidth="600"
         AllowsTransparency="True" WindowStyle="None" WindowStartupLocation="CenterScreen" Background="Transparent">
 
 
-    <Border Style="{StaticResource theBorder}" MouseDown="Border_MouseDown" BorderBrush="{StaticResource darkerColor}" BorderThickness="4">
+    <Border Style="{StaticResource theLinedBorder}" BorderThickness="4" >
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="50"/>
+                <RowDefinition Height="45"/>
                 <RowDefinition Height="1*"/>
 
             </Grid.RowDefinitions>
+            <Border Background="{StaticResource lighterColor}" CornerRadius="8 8 0 0 " MouseDown="Border_MouseDown" />
 
             <Label Name="formTitle" Content="Prescription" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{StaticResource lightFontColor}" FontSize="22" Margin="11,0,0,0"/>
-            <Icon:PackIconMaterial Kind="CloseBox" Width="30" Height="50" Margin="0 0 10 0" Foreground="{StaticResource lightFontColor}" HorizontalAlignment="Right" VerticalAlignment="Center" MouseDown="closeBTN"/>
-            <Icon:PackIconMaterial Kind="WindowMinimize" Width="25" Height="15" Margin="0 0 45 6" Foreground="{StaticResource lightFontColor}" HorizontalAlignment="Right" VerticalAlignment="Bottom" MouseDown="minimizeBTN"/>
+            <Icon:PackIconMaterial Kind="CloseBox" Width="30" Height="30" Margin="0 0 10 0" Foreground="{StaticResource lightFontColor}" HorizontalAlignment="Right" VerticalAlignment="Center" MouseDown="closeBTN"/>
+            <Icon:PackIconMaterial Kind="WindowMinimize" Width="25" Height="15" Margin="0,0,45,4" Foreground="{StaticResource lightFontColor}" HorizontalAlignment="Right" VerticalAlignment="Bottom" MouseDown="minimizeBTN"/>
             <Grid Grid.Row="1" Background="#FFA7AEB6" Margin="10">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="100"/>
-                    <RowDefinition Height="*"/>
                     <RowDefinition Height="80"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="60"/>
                 </Grid.RowDefinitions>
-                <Image Source="C:\Users\TOP\Desktop\clinicalK\clinical\images\topRosheta.jpg" Stretch="Fill" />
+                <Image Source="C:\Users\TOP\Desktop\clinicalMain\clinical\images\topRosheta.jpg" Stretch="Fill" />
                 <Grid Margin="10" Grid.Row="1">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="10*"/>
-                        <RowDefinition Height="80*"/>
-                        <RowDefinition Height="10*"/>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition/>
+                        <RowDefinition Height="50"/>
 
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
@@ -61,7 +62,6 @@
                                     <Grid Margin="5">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="20*"/>
-                                            <ColumnDefinition Width="8*"/>
                                             <ColumnDefinition Width="20*"/>
                                         </Grid.ColumnDefinitions>
                                         <Grid.RowDefinitions>
@@ -71,12 +71,9 @@
 
                                         <TextBlock TextWrapping="Wrap" Text="Excercise" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="18" FontWeight="Bold" Foreground="{StaticResource lightFontColor}"/>
 
-                                        <TextBlock TextWrapping="Wrap" Grid.Column="1" Text="Frequency" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="18" FontWeight="Bold" Foreground="{StaticResource lightFontColor}"/>
-
                                         <TextBlock TextWrapping="Wrap" Grid.Column="2" Text="Notes" Margin="0" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="18" FontWeight="Bold" Foreground="{StaticResource lightFontColor}"/>
                                         <TextBox Name="notesTXT" Grid.Column="2" Grid.Row="1" Margin="8"/>
                                         <controls:AutoCompleteBox Name="exerciseACT" Grid.Row="1" Margin="8"/>
-                                        <controls:AutoCompleteBox Name="frequencyACT" Grid.Row="1" Grid.Column="1" Margin="8"/>
                                         <Icon:PackIconMaterial MouseDown="removeSelected" Kind="MinusBox" HorizontalAlignment="Left" Foreground="{StaticResource lightFontColor}" Grid.Column="0" Margin="8,0,0,0" Width="25" Height="25" VerticalAlignment="Center"/>
 
                                     </Grid>
@@ -85,7 +82,7 @@
                             </StackPanel>
                         </ScrollViewer>
                         <Border Style="{StaticResource theBorder}" BorderBrush="{StaticResource darkerColor}" Width="250" BorderThickness="2" CornerRadius="5" Margin="10" MouseDown="newExcersice">
-                            <Label Content="Add New Exercise" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="16" FontWeight="Bold"/>
+                            <Label Content="Add New Test/Drug" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="16" FontWeight="Bold"/>
                         </Border>
 
                     </StackPanel>
@@ -101,9 +98,10 @@
                     </Border>
                 </Grid>
 
-                <Image Grid.Row="2" Source="C:\Users\TOP\Desktop\clinicalK\clinical\images\bottomRosheta.jpg" Stretch="Fill" />
+                <Image Grid.Row="2" Source="C:\Users\TOP\Desktop\clinicalMain\clinical\images\bottomRosheta.jpg" Stretch="Fill" />
 
             </Grid>
+            <Frame Name="mainFrame" Grid.Row="1" Grid.RowSpan="3" Visibility="Hidden"/>
 
         </Grid>
     </Border>

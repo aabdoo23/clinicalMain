@@ -23,7 +23,7 @@
             <!--Side Panel-->
             <Grid Grid.Column="0" Grid.Row="0" Grid.RowSpan="2">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="40*"/>
+                    <RowDefinition Height="45*"/>
                     <RowDefinition Height="30*"/>
                     <RowDefinition Height="30*"/>
 
@@ -39,7 +39,7 @@
                 <Border Background="{StaticResource darkerColor}" BorderThickness="2" CornerRadius="10" Margin="10 10 10 5 " Grid.Row="0" Grid.ColumnSpan="2">
                     <Grid Margin="10">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="35"/>
                             <RowDefinition Height="1*"/>
 
                         </Grid.RowDefinitions>
@@ -60,23 +60,31 @@
                                     <RowDefinition Height="1*"/>
                                     <RowDefinition Height="1*"/>
                                     <RowDefinition Height="1*"/>
+                                    <RowDefinition Height="1*"/>
+                                    <RowDefinition Height="1*"/>
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="100"/>
                                     <ColumnDefinition Width="1*"/>
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Text="ID:" Foreground="{StaticResource darkerColor}" FontSize="18" Grid.Row="0" Margin="5" FontWeight="Bold"/>
-                                <TextBlock Name="patientIDTxt" Text="123ID" Grid.Column="1" Foreground="{StaticResource darkerColor}" FontSize="18" Grid.Row="0" Margin="2" TextWrapping="Wrap"/>
-                                <TextBlock Text="Age:" Foreground="{StaticResource darkerColor}" FontSize="18" Grid.Row="3" Margin="5" FontWeight="Bold"/>
-                                <TextBlock Name="ageTxt" Text="25" Foreground="{StaticResource darkerColor}" FontSize="22" Grid.Row="3" Grid.Column="1" Margin="2" TextWrapping="Wrap"/>
-                                <TextBlock Text="Name:" Foreground="{StaticResource darkerColor}" TextWrapping="Wrap" FontSize="18" Grid.Row="1" Margin="5" FontWeight="Bold"/>
-                                <TextBlock Name="patientNameTxt" Grid.Column="1" Text="Ali M'l" Foreground="{StaticResource darkerColor}" FontSize="22" Grid.Row="1" Margin="2" TextWrapping="Wrap"/>
+                                <TextBlock Text="ID:" Foreground="{StaticResource darkerColor}" FontSize="16" Grid.Row="0" Margin="5" FontWeight="Bold" VerticalAlignment="Center"/>
+                                <TextBlock Name="patientIDTxt" Text="123ID" Grid.Column="1" Foreground="{StaticResource darkerColor}" FontSize="16" Grid.Row="0" VerticalAlignment="Center" Margin="2" TextWrapping="Wrap"/>
+                                <TextBlock Text="Age:" Foreground="{StaticResource darkerColor}" FontSize="16" Grid.Row="3" Margin="5" FontWeight="Bold" VerticalAlignment="Center"/>
+                                <TextBlock Name="ageTxt" Text="25" Foreground="{StaticResource darkerColor}"  FontSize="20" Grid.Row="3" Grid.Column="1" Margin="2" TextWrapping="Wrap" VerticalAlignment="Center"/>
+                                <TextBlock Text="Name:" Foreground="{StaticResource darkerColor}" TextWrapping="Wrap" FontSize="16" Grid.Row="1" Margin="5" FontWeight="Bold" VerticalAlignment="Center"/>
+                                <TextBlock Name="patientNameTxt" Grid.Column="1" Text="Ali M'l" Foreground="{StaticResource darkerColor}" FontSize="18" Grid.Row="1" Margin="2" TextWrapping="Wrap" VerticalAlignment="Center"/>
 
                                 <TextBlock Text="Contact info:" TextAlignment="Center"  VerticalAlignment="Center" Foreground="{StaticResource darkerColor}" TextWrapping="Wrap" FontSize="16" Grid.Row="2" Margin="1" FontWeight="Bold"/>
-                                <TextBlock Name="contactInfoTxt" Grid.Column="1" Text="+181007123123" Foreground="{StaticResource darkerColor}" VerticalAlignment="Center" FontSize="16" Grid.Row="2" Margin="2" TextWrapping="Wrap"/>
+                                <TextBlock Name="contactInfoTxt" Grid.Column="1" Text="+181007123123" Foreground="{StaticResource darkerColor}" FontSize="14" Grid.Row="2" Margin="2" TextWrapping="Wrap" VerticalAlignment="Center"/>
 
-                                <TextBlock Text="Referring:" Foreground="{StaticResource darkerColor}" TextWrapping="WrapWithOverflow" FontSize="19" Grid.Row="4" Margin="5" FontWeight="Bold"/>
-                                <TextBlock Name="referringTxt" Grid.Column="1" Text="Dr. Ibrahim" Foreground="{StaticResource darkerColor}" FontSize="18" Grid.Row="4" Margin="5" TextWrapping="Wrap"/>
+                                <TextBlock Text="Referring:" Foreground="{StaticResource darkerColor}" TextWrapping="WrapWithOverflow" FontSize="16" VerticalAlignment="Center" Grid.Row="4" Margin="5" FontWeight="Bold"/>
+                                <TextBlock Name="referringTxt" Grid.Column="1" Text="Dr. Ibrahim" Foreground="{StaticResource darkerColor}" FontSize="16" VerticalAlignment="Center" Grid.Row="4" Margin="5" TextWrapping="Wrap"/>
+
+                                <TextBlock Text="Height:" Foreground="{StaticResource darkerColor}" TextWrapping="WrapWithOverflow" FontSize="16" VerticalAlignment="Center" Grid.Row="5" Margin="5" FontWeight="Bold"/>
+                                <TextBlock Name="heightTxt" Grid.Column="1" Text="187" Foreground="{StaticResource darkerColor}" FontSize="16" VerticalAlignment="Center" Grid.Row="5" Margin="5" TextWrapping="Wrap"/>
+
+                                <TextBlock Text="Weight:" Foreground="{StaticResource darkerColor}" TextWrapping="WrapWithOverflow" FontSize="16" VerticalAlignment="Center" Grid.Row="6" Margin="5" FontWeight="Bold"/>
+                                <TextBlock Name="weightTxt" Grid.Column="1" Text="67" Foreground="{StaticResource darkerColor}" FontSize="16" VerticalAlignment="Center" Grid.Row="6" Margin="5" TextWrapping="Wrap"/>
 
                             </Grid>
                         </Border>
@@ -86,7 +94,7 @@
                 <Border Background="{StaticResource darkerColor}" BorderThickness="2" CornerRadius="10" Margin="10 5 10 5 " Grid.Row="1" Grid.ColumnSpan="2">
                     <Grid Margin="10">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="40"/>
+                            <RowDefinition Height="35"/>
                             <RowDefinition Height="1*"/>
 
                         </Grid.RowDefinitions>
@@ -95,13 +103,13 @@
                                 <ColumnDefinition Width="90*"/>
                                 <ColumnDefinition Width="15*"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="Chronic diseases" FontSize="20" FontWeight="Bold" Foreground="{StaticResource lightFontColor}"  Grid.Column="0"/>
-                            <Icon:PackIconMaterial MouseDown="newMedicalRecord" Kind="PlusBox" Foreground="{StaticResource lightFontColor}" Grid.Column="1" HorizontalAlignment="Center" Width="25" Height="26" Margin="0,4,0,0"/>
+                            <TextBlock Text="Chronic diseases" FontSize="20" FontWeight="Bold" Foreground="{StaticResource lightFontColor}"  Grid.Column="0" VerticalAlignment="Top"/>
+                            <Icon:PackIconMaterial MouseDown="newMedicalRecord" VerticalAlignment="Top" Kind="PlusBox" Foreground="{StaticResource lightFontColor}" Grid.Column="1" HorizontalAlignment="Center" Width="25" Height="25"/>
                         </Grid>
                         <Border Background="{StaticResource lightFontColor}" CornerRadius="5" Grid.Row="1">
                             <ScrollViewer VerticalScrollBarVisibility="Auto">
-                            <WrapPanel Name="chronicWrapPanel" Margin="5">
-                                <!--<Border Background="Chocolate" MinWidth="80" MinHeight="50" CornerRadius="5" Margin="10 10 0 0">
+                                <WrapPanel Name="chronicWrapPanel" Margin="5">
+                                    <!--<Border Background="Chocolate" MinWidth="80" MinHeight="50" CornerRadius="5" Margin="10 10 0 0">
                                     <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="Diabetes" Style="{StaticResource titleText}"/>
 
                                 </Border>
@@ -113,7 +121,7 @@
                                     <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="Blood Pressure" Style="{StaticResource titleText}"/>
 
                                 </Border>-->
-                            </WrapPanel>
+                                </WrapPanel>
                             </ScrollViewer>
                         </Border>
                     </Grid>
@@ -137,8 +145,8 @@
 
                         <Border Background="{StaticResource lightFontColor}" CornerRadius="5" Grid.Row="1">
                             <ScrollViewer VerticalScrollBarVisibility="Auto">
-                            <WrapPanel Name="injuriesWrapPanel" Margin="5">
-                                <!--<Border Background="LightPink"  MinWidth="80" MinHeight="50" CornerRadius="5" Margin="10 10 0 0">
+                                <WrapPanel Name="injuriesWrapPanel" Margin="5">
+                                    <!--<Border Background="LightPink"  MinWidth="80" MinHeight="50" CornerRadius="5" Margin="10 10 0 0">
                                     <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="Ankle" Style="{StaticResource titleText}"/>
 
                                 </Border>
@@ -150,7 +158,7 @@
                                     <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="Dead inside?" Style="{StaticResource titleText}"/>
 
                                 </Border>-->
-                            </WrapPanel>
+                                </WrapPanel>
                             </ScrollViewer>
                         </Border>
                     </Grid>
@@ -245,7 +253,7 @@
                             <RowDefinition Height="45"/>
                             <RowDefinition Height="90*"/>
                         </Grid.RowDefinitions>
-                        <TextBlock Text="Active visit" FontSize="18" Foreground="{StaticResource lightFontColor}" FontWeight="Bold" Margin="14,10,26,10" Grid.Row="0" Grid.Column="0"/>
+                        <TextBlock Text="Upcoming visits" FontSize="18" Foreground="{StaticResource lightFontColor}" FontWeight="Bold" Margin="14,10,26,10" Grid.Row="0" Grid.Column="0"/>
 
                         <Border Grid.Column="1" Background="{StaticResource lighterColor}" Grid.Row="1" CornerRadius="10" Margin="10 0 10 10">
                             <DataGrid Margin="5" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="currVisitsDataGrid" Style="{DynamicResource DataGridStyle1}">
@@ -409,7 +417,9 @@
                                 <lvc:DefaultTooltip Background="{StaticResource darkerColor}" Foreground="{StaticResource lightFontColor}" BulletSize="0"/>
                             </lvc:CartesianChart.ToolTip>
 
-                            --><!--X Axis--><!--
+                            -->
+                        <!--X Axis-->
+                        <!--
                             <lvc:CartesianChart.AxisX>
                                 <lvc:Axis Foreground="{StaticResource lighterColor}" FontSize="14" ShowLabels="True" Labels="Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec">
                                     <lvc:Axis.Separator>
@@ -418,7 +428,9 @@
                                 </lvc:Axis>
                             </lvc:CartesianChart.AxisX>
 
-                            --><!--Y Axis--><!--
+                            -->
+                        <!--Y Axis-->
+                        <!--
                             <lvc:CartesianChart.AxisY>
                                 <lvc:Axis Title="Severity" ShowLabels="False" MinValue="0" MaxValue="50">
                                     <lvc:Axis.Separator>
@@ -443,14 +455,14 @@
                         </lvc:CartesianChart>-->
 
 
-                        <lvc:CartesianChart Series="{Binding SeriesCollection}" LegendLocation="Right" Margin="10 50 10 10" >
+                        <lvc:CartesianChart Name="mainChart" Series="{Binding SeriesCollection}" LegendLocation="Top" Margin="10 50 10 10" >
                             <lvc:CartesianChart.ToolTip>
                                 <lvc:DefaultTooltip Background="{StaticResource darkerColor}" Foreground="{StaticResource lightFontColor}" BulletSize="0"/>
                             </lvc:CartesianChart.ToolTip>
                             <lvc:CartesianChart.AxisY>
-                                <lvc:Axis LabelFormatter="{Binding YFormatter}" MinValue="0" MaxValue="10">
+                                <lvc:Axis LabelFormatter="{Binding YFormatter}" MinValue="0">
                                     <lvc:Axis.Separator>
-                                        <lvc:Separator IsEnabled="False" Step="1"/>
+                                        <lvc:Separator IsEnabled="False"/>
                                     </lvc:Axis.Separator>
                                 </lvc:Axis>
                             </lvc:CartesianChart.AxisY>
