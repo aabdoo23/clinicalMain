@@ -31,7 +31,7 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="55"/>
                         <ColumnDefinition Width="90*"/>
-                        <ColumnDefinition Width="45"/>
+                        <ColumnDefinition Width="75"/>
                     </Grid.ColumnDefinitions>
 
                     <Icon:PackIconMaterial Name="goBackIcon" Kind="ArrowLeftBox" MouseDown="navigateBack" Width="35" Height="35" Foreground="{StaticResource lightFontColor}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -40,7 +40,9 @@
                         <TextBlock Name="mainTxt" Text="Abdelrahman, Follow-up, 12/12/2024 17:45PM" Foreground="{StaticResource lightFontColor}" FontSize="20" FontWeight="Bold" VerticalAlignment="Center"/>
                     </StackPanel>
                     <!--User Image-->
-
+                    <Border Style="{StaticResource theLinedBorder}" Background="{StaticResource lighterColor}" CornerRadius="5" Margin="10" Grid.Row="2" Grid.Column="5" MouseDown="markVisitDoneOrUnDone">
+                        <TextBlock Name="markDoneTB" Text="Mark Done" TextWrapping="Wrap" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="12" FontWeight="Bold" Margin="0"/>
+                    </Border>
                 </Grid>
             </Border>
 
@@ -54,16 +56,19 @@
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="80"/>
                         <ColumnDefinition Width="40"/>
                         <ColumnDefinition Width="40"/>
                     </Grid.ColumnDefinitions>
 
                     <TextBlock Text="Visit information" Margin="10 0" VerticalAlignment="Bottom" FontWeight="Bold" Foreground="{StaticResource lightFontColor}" FontSize="22"/>
+                    <Border Style="{StaticResource theLinedBorder}" Background="{StaticResource lighterColor}" CornerRadius="5" Margin="0,0,15,0" VerticalAlignment="Bottom"  Height="25" Grid.Column="1" MouseDown="cancelVisit">
+                        <TextBlock Text="Cancel" TextWrapping="Wrap" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="12" FontWeight="Bold" Margin="0"/>
+                    </Border>
+                    <Icon:PackIconMaterial Kind="ClipboardEdit" Width="25" Height="25" HorizontalAlignment="Left" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Bottom" Grid.Column="2" MouseDown="editVisitInfo"/>
+                    <Icon:PackIconMaterial Kind="SyncCircle" Width="25" Height="25" HorizontalAlignment="Left" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Bottom" Grid.Column="3" MouseDown="syncInfo"/>
 
-                    <Icon:PackIconMaterial Kind="ClipboardEdit" Width="25" Height="25" Margin="0 0 15 0" HorizontalAlignment="Right" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Bottom" Grid.Column="1" MouseDown="editPatientInfo"/>
-                    <Icon:PackIconMaterial Kind="SyncCircle" Width="25" Height="25" Margin="0 0 15 0" HorizontalAlignment="Right" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Bottom" Grid.Column="2" MouseDown="syncPatientInfo"/>
-
-                    <Grid Margin="10" Grid.Row="1" Grid.ColumnSpan="3" >
+                    <Grid Margin="10,10,10,10" Grid.Row="1" Grid.ColumnSpan="4" >
                         <Grid.RowDefinitions>
                             <RowDefinition Height="10*"/>
                             <RowDefinition Height="10*"/>
@@ -95,7 +100,7 @@
 
 
                         <TextBlock TextWrapping="Wrap" Grid.Row="3" Text="Date:" VerticalAlignment="Center" Margin="0" Foreground="{StaticResource lightFontColor}" FontSize="12" FontWeight="Bold"/>
-                        <DatePicker Name="dpDatePicker" Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                        <DatePicker Name="dpDatePicker" Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,10,0" SelectedDateChanged="dateChanged"/>
 
                         <TextBlock TextWrapping="Wrap" Grid.Row="2" Text="Physician Name:" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{StaticResource lightFontColor}" FontSize="12" FontWeight="Bold"  />
                         <TextBox Name="physicianTextBox" Text="Dr. Ahmed Mohsen" IsEnabled="False" FontSize="14" VerticalContentAlignment="Center" FontWeight="SemiBold" Background="Transparent" BorderBrush="Transparent" Foreground="{StaticResource lightFontColor}" Grid.Column="1" Grid.Row="2" Margin="5,5,10,5" Grid.ColumnSpan="2" />
@@ -104,7 +109,7 @@
                         </Border>
 
                         <TextBlock TextWrapping="Wrap" Grid.Row="3" Text="Time:" VerticalAlignment="Center" HorizontalAlignment="Right" Foreground="{StaticResource lightFontColor}" FontSize="12" FontWeight="Bold" Grid.Column="2"  />
-                        <ComboBox x:Name="timeCB" IsEnabled="False" FontSize="14" VerticalContentAlignment="Center" FontWeight="SemiBold" Background="Transparent" BorderBrush="Transparent" Foreground="{StaticResource darkerColor}" Grid.Column="4" Grid.Row="3" Margin="10,5,0,5" />
+                        <ComboBox x:Name="timeCB"  FontSize="14" VerticalContentAlignment="Center" FontWeight="SemiBold" Background="Transparent" BorderBrush="Transparent" Foreground="{StaticResource darkerColor}" Grid.Column="4" Grid.Row="3" Margin="10,5,0,5" SelectionChanged="timeChanged" />
 
                         <TextBlock TextWrapping="Wrap" Grid.Row="4" Text="Visit Type:" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{StaticResource lightFontColor}" FontSize="12" FontWeight="Bold"  />
                         <TextBox x:Name="typeTextBox" IsEnabled="False" Text="Dr. Ahmed Mohsen, +2010100110101" FontSize="14" VerticalContentAlignment="Center" FontWeight="SemiBold" Background="Transparent" BorderBrush="Transparent" Foreground="{StaticResource lightFontColor}" Grid.Column="1" Grid.Row="4" Margin="5,5,5,5" Grid.ColumnSpan="4" />
@@ -134,7 +139,7 @@
                     <TextBlock Text="Treatment Plans" Margin="10 5" VerticalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource lightFontColor}" FontSize="22"/>
                     <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
 
-                        <StackPanel Margin="5" Name="previousAppointmentsStackPanel" Grid.Row="1">
+                        <StackPanel Margin="5" Name="treatmentPlansStackPanel" Grid.Row="1">
 
                         </StackPanel>
                     </ScrollViewer>
@@ -156,8 +161,32 @@
                     <TextBlock Text="Prescriptions" Margin="10 5" VerticalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource lightFontColor}" FontSize="22"/>
                     <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
 
-                        <StackPanel Margin="5" Name="upcomingAppointmentsStackPanel" Grid.Row="1">
+                        <StackPanel Margin="5" Name="prescriptionsStackPanel" Grid.Row="1">
+                            <!--<Border Style="{StaticResource theLinedBorder}" Margin="5 5 5 0">
+                                <Grid ShowGridLines="True">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="72"/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock TextWrapping="Wrap" Grid.Row="0" Text="Physician Name:" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{StaticResource lightFontColor}" Margin="5 5 0 5" FontSize="12" FontWeight="SemiBold"  />
+                                    <TextBlock TextWrapping="Wrap" Grid.Row="1" Text="Timestamp:" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{StaticResource lightFontColor}" Margin="5 5 0 5" FontSize="12" FontWeight="SemiBold"  />
+                                    <TextBlock TextWrapping="Wrap" Grid.Row="2" Text="Prescriped:" VerticalAlignment="Top" HorizontalAlignment="Left" Foreground="{StaticResource lightFontColor}" Margin="5 7.5 0 5" FontSize="12" FontWeight="SemiBold"  />
+                                    <TextBlock Name="physicianNameTB" Text="Dr. Ahmed Mohsen" FontSize="12" FontWeight="Bold" Background="Transparent"  VerticalAlignment="Center" Foreground="{StaticResource lightFontColor}" Grid.Column="1" Grid.Row="0" Margin="5,0" />
+                                    <TextBlock Name="timestampTB" Text="Monday, 2024"  FontSize="12" FontWeight="Bold" Background="Transparent" VerticalAlignment="Center" Foreground="{StaticResource lightFontColor}" Grid.Column="1" Grid.Row="1" Margin="5,0" />
+                                    <StackPanel Grid.Row="2" Grid.Column="1" Margin="5">
+                                        <TextBlock TextWrapping="Wrap" Grid.Row="2" Text="-Name, Frequency, Notes" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{StaticResource lightFontColor}" Margin="2.5" FontSize="12" FontWeight="Bold"  />
+                                        <TextBlock TextWrapping="Wrap" Grid.Row="2" Text="-Name, Frequency, Notes" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{StaticResource lightFontColor}" Margin="2.5" FontSize="12" FontWeight="Bold"  />
+                                        <TextBlock TextWrapping="Wrap" Grid.Row="2" Text="-Name, Frequency, Notes" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{StaticResource lightFontColor}" Margin="2.5" FontSize="12" FontWeight="Bold"  />
+                                        <TextBlock TextWrapping="Wrap" Grid.Row="2" Text="-Name, Frequency, Notes" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{StaticResource lightFontColor}" Margin="2.5" FontSize="12" FontWeight="Bold"  />
 
+                                    </StackPanel>
+                                </Grid>
+                            </Border>-->
                         </StackPanel>
                     </ScrollViewer>
 

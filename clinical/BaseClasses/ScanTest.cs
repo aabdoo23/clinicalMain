@@ -20,5 +20,9 @@ namespace clinical.BaseClasses
             RecommendedLab = recommendedLab;
             Notes = notes;
         }
+        override public string ToString()
+        {
+            return ScanTestName;
+        }
     }
 }

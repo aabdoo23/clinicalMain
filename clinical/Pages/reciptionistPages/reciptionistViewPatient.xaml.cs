@@ -52,7 +52,7 @@ namespace clinical.Pages.reciptionistPages
                     physicianCB.SelectedIndex = i; break;
                 }
             }
-
+            dueTextBox.Text = patient.DueAmount.ToString();
 
             handleFinances();
             List<Package> allPackages = DB.GetAllPackages();
@@ -84,7 +84,7 @@ namespace clinical.Pages.reciptionistPages
         {
             if (visit != null)
             {
-                new patientView(visit).Show();
+                NavigationService.Navigate(new reciptionistViewVisit(visit));
             }
         }
 
@@ -164,8 +164,11 @@ namespace clinical.Pages.reciptionistPages
         }
 
 
+
         void handleFinances()
         {
+            
+
             if (patient != null) //selected a patient? YES
             {
                 Package selectedPackage = (Package)packageCB.SelectedItem;
@@ -203,9 +206,11 @@ namespace clinical.Pages.reciptionistPages
 
         private void packageSelectionChange(object sender, SelectionChangedEventArgs e)
         {
+
+
             Package selectedPackage = (Package)packageCB.SelectedItem;
 
-            if (payTextBox.Text != null && payTextBox.Text != "" && selectedPackage.PackageID!=patient.ActivePackageID)
+            if (payTextBox.Text != null && payTextBox.Text != "" &&selectedPackage!=null && selectedPackage.PackageID!=patient.ActivePackageID)
                 dueTextBox.Text = (selectedPackage.Price - Double.Parse(payTextBox.Text.Trim())).ToString();
             handleFinances();
             

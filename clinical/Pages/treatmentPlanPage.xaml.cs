@@ -1,23 +1,13 @@
 ﻿using clinical.BaseClasses;
-using clinical.Pages;
 using MahApps.Metro.IconPacks;
-using Org.BouncyCastle.Crypto.Signers;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Markup;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Xml;
 
 namespace clinical.Pages
@@ -78,7 +68,7 @@ namespace clinical.Pages
             patientAgeTextBox.Text = currentPatient.Age.ToString();
             List<Injury> injuries = DB.GetAllInjuries();
             injuriesCB.ItemsSource = injuries;
-            
+
             planTimeInWeeksTextBox.Text = treatmentPlan.PlanTimeInWeeks.ToString();
             planNameTextBox.ItemsSource = DB.GetAllTreatmentPlans();
             planNameTextBox.SelectedItem = treatmentPlan.PlanName;
@@ -646,7 +636,7 @@ namespace clinical.Pages
                     DB.UpdateTreatmentPlan(tp);
                     MessageBox.Show("Treatment Plan Updated, ID: " + planID.ToString());
                     List<IssueExercise> planIssuedExes = DB.GetIssuedExercisesByTreatmentPlanID(tp.PlanID); //updating issues (not good but gets job done?)
-                    foreach(var i in planIssuedExes)
+                    foreach (var i in planIssuedExes)
                     {
                         DB.DeleteIssueExercise(i.IssueID);
                     }
@@ -726,10 +716,10 @@ namespace clinical.Pages
         {
             //MessageBoxResult res = MessageBox.Show("Are you sure you want to discard all current modifications and retrieve all data from this plan?", "Confirmation", MessageBoxButton.YesNo);
             //if (res == MessageBoxResult.No) { planNameTextBox.SelectedItem = (TreatmentPlan)DB.GetTreatmentPlanByID(planID); return; }
-            
+
             string planName = planNameTextBox.Text;
 
-            TreatmentPlan selectedPlan= null;
+            TreatmentPlan selectedPlan = null;
             foreach (TreatmentPlan t in DB.GetAllTreatmentPlans()) //double check if they wrote the name of an existing plan (time complexity not good)
             {
                 if (t.PlanName.Trim().ToLower().Equals(planName.Trim().ToLower()) || t.PlanName.Trim().ToLower().Contains(planName.Trim().ToLower()))

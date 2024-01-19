@@ -35,16 +35,24 @@ namespace clinical.Pages
             currPatient = DB.GetPatientById(selectedVisit.PatientID);
             heightTB.Text = currVisit.Height.ToString();
             weightTB.Text = currVisit.Weight.ToString();
-            patientNameMainTxt.Text = currPatient.FirstName + " " + currPatient.LastName;
-            patientNameText.Text = currPatient.FirstName + " " + currPatient.LastName;
+            patientNameMainTxt.Text = currPatient.FullName;
+            patientNameText.Text = currPatient.FullName;
             visitIdText.Text = currVisit.VisitID.ToString();
-            visitDate.Text = currVisit.TimeStamp.DayOfWeek.ToString() + ", " + currVisit.TimeStamp.Date.ToString();
+            visitDate.Text = currVisit.TimeStamp.ToString("g");
             physicianName.Text = currPatient.PhysicianName;
             hwborder.IsEnabled = false;
-            treatmentDataGrid.ItemsSource = DB.GetAllTreatmentPlansByPatientID(selectedVisit.PatientID);
+            List<TreatmentPlan>treatmentPlans= DB.GetAllTreatmentPlansByVisitID(selectedVisit.VisitID);
+            foreach(TreatmentPlan tp in treatmentPlans)
+            {
+                treatmentPlansStackPanel.Children.Add(globals.CreateTreatmentPlanUI(tp));
+            }
             noteTXT.Text = currVisit.TherapistNotes;
-            prescriptionsDataGrid.ItemsSource = DB.GetAllPrescriptionsByVisitID(currVisit.VisitID);
-
+            List<Prescription>prescriptions = DB.GetAllPrescriptionsByVisitID(selectedVisit.VisitID);
+            foreach(Prescription p in prescriptions)
+            {
+                prescriptionsStackPanel.Children.Add(globals.CreatePrescriptionUI(p));
+            }
+            
             List<EvaluationTestFeedBack> testFeedBacks = DB.GetFeedbackByVisit(selectedVisit.VisitID);
 
             if (currVisit.IsDone)
@@ -70,11 +78,7 @@ namespace clinical.Pages
 
         }
 
-        private void viewPrescription(object sender, RoutedEventArgs e)
-        {
-            Prescription prescription = (Prescription)prescriptionsDataGrid.SelectedItem;
-            new prescriptionWindow(prescription).Show();
-        }
+       
 
         private void addTest(object sender, MouseButtonEventArgs e)
         {
@@ -83,7 +87,7 @@ namespace clinical.Pages
 
         private void navigateBack(object sender, MouseButtonEventArgs e)
         {
-            NavigationService.GoBack();
+            if(NavigationService.CanGoBack)NavigationService.GoBack();
         }
 
         private void newPrescription(object sender, MouseButtonEventArgs e)
@@ -479,10 +483,6 @@ namespace clinical.Pages
             DB.UpdateVisit(currVisit);
         }
 
-        private void viewTreatmentPlan(object sender, RoutedEventArgs e)
-        {
-            TreatmentPlan tp= (TreatmentPlan)treatmentDataGrid.SelectedItem;
-            new prescriptionWindow(tp).Show();
-        }
+        
     }
 }

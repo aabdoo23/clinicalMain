@@ -71,7 +71,7 @@
                                Margin="25 15 0 5" />
 
                     <!--Person Items-->
-                    <ScrollViewer VerticalScrollBarVisibility="Hidden" Margin="10 0 0 0" MinHeight="320">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="10 0 0 0" MinHeight="320">
                         <StackPanel Name="chatStack"/>
 
                     </ScrollViewer>
@@ -94,7 +94,8 @@
                 </Grid.RowDefinitions>
 
                 <!--Top Chat MenuBar-->
-                <Grid Background="{StaticResource lighterColor}">
+                <Border Background="{StaticResource lighterColor}" CornerRadius="10 10 0 0">
+                <Grid >
                     <Grid.Effect>
                         <DropShadowEffect ShadowDepth="1" Direction="-90" BlurRadius="20" Opacity="0.1"/>
                     </Grid.Effect>
@@ -117,7 +118,7 @@
 
                     </StackPanel>
                 </Grid>
-
+                </Border>
                 <!--Chats-->
                 <ScrollViewer Name="scrollViewer"  Grid.Row="1"
                             Margin="20 10 20 20" VerticalScrollBarVisibility="Hidden">

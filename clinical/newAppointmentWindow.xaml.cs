@@ -36,7 +36,7 @@ namespace clinical
         {
             InitializeComponent();
 
-            for(int i = 16; i <= 22; i++) //slots here
+            for(int i = DB.GetOpeningTime(); i <= DB.GetClosingTime(); i++) //slots here
             {
                 times.Add($"{i}:00");
                 times.Add($"{i}:30");

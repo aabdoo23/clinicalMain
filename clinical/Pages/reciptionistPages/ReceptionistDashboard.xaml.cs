@@ -42,6 +42,8 @@ namespace clinical.Pages
                 todayAppointmentsStackPanel.Children.Add(globals.createAppointmentUIObject(i, viewVisit, viewPatient));
             }
         }
+
+
         private void viewPatient(Patient patient)
         {
 
@@ -57,7 +59,17 @@ namespace clinical.Pages
         {
             if (visit != null)
             {
-                NavigationService.Navigate(new visit(visit));
+                if (globals.signedIn.isReciptionist)
+                {
+                    leftSideFrame.Navigate(new reciptionistViewVisit(visit));
+                    leftSideFrame.Visibility = Visibility.Visible;
+                    leftSideFrame.BringIntoView();
+                }
+                else
+                {
+                    NavigationService.Navigate(new visit(visit));
+
+                }
             }
         }
 
@@ -223,6 +235,8 @@ namespace clinical.Pages
 
         private void leftSideFrame_Navigated(object sender, NavigationEventArgs e)
         {
+            updateDayAppointments();
+            UpdateDayBorders();
             if (leftSideFrame.NavigationService.Equals(new DashBoardPage())) { leftSideFrame.Visibility = Visibility.Hidden; }
         }
     }

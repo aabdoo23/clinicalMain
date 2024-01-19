@@ -13,6 +13,7 @@ namespace clinical.BaseClasses
         public int SecondUserID { get; set; }
         public string ChatRoomName { get; set; }
         public DateTime LastVisit { get; set; }
+        public ChatMessage LastMessage { get { return DB.GetLastSentChatMessageByChatRoomID(ChatRoomID); } }
 
         // Constructor
         public ChatRoom(int chatRoomID, int firstUserID, int secondUserID, string chatRoomName, DateTime lastVisited)

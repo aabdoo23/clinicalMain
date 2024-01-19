@@ -126,8 +126,22 @@ namespace clinical.Pages
             
             
             DateTime dateTime = new DateTime(selectedDay.Year, selectedDay.Month, selectedDay.Day);
-            List<Visit> todayVisits = DB.GetPhysicianVisitsOnDate(globals.signedIn.UserID, dateTime);
-            List<CalendarEvent> calendarEvents = DB.GetCalendarEventsByUserIDAndDate(globals.signedIn.UserID,dateTime);
+
+            List<Visit> todayVisits = new List<Visit>();
+            List<CalendarEvent> calendarEvents = new List<CalendarEvent>();
+
+
+            if (globals.signedIn.isReciptionist)
+            {
+                todayVisits= DB.GetAllVisitsOnDate(dateTime);
+            }
+            else
+            {
+                todayVisits = DB.GetPhysicianVisitsOnDate(globals.signedIn.UserID, dateTime);
+            }
+            calendarEvents = DB.GetCalendarEventsByUserIDAndDate(globals.signedIn.UserID, dateTime);
+
+
             int collectedSize = todayVisits.Count + calendarEvents.Count;
             int doneTotal = 0;
 

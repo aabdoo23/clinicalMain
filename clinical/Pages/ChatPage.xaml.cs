@@ -40,7 +40,17 @@ namespace clinical.Pages
             foreach (ChatRoom chatRoom in chatRooms)
             {
                 chatItem item = new chatItem();
+                item.TagName = chatRoom.ChatRoomName.Substring(0,1);
                 item.Title = chatRoom.ChatRoomName;
+                if (chatRoom.LastMessage == null)
+                {
+                    item.Message = "No messages yet";
+                }
+                else
+                {
+
+                    item.Message = $"{DB.GetUserById(chatRoom.LastMessage.SenderID).FirstName}: {chatRoom.LastMessage.MessageContent}";
+                }
                 item.MouseDown += new MouseButtonEventHandler((s, e) => chatRoom_MouseDown(s, e, chatRoom));
                 chatStack.Children.Add(item);
             }

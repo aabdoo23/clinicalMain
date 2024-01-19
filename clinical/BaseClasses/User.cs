@@ -15,6 +15,7 @@ namespace clinical.BaseClasses
         public string Email { get; set; }
         public string NationalID { get; set; }
         public string FullName { get { return FirstName + " " + LastName;}}
+        public bool isReciptionist { get { return UserID.ToString().StartsWith('3'); } }
 
         public User(int userID, string firstName, string lastName, string gender, DateTime hireDate, DateTime birthdate, string address, string phoneNumber, string email, string nationalID)
         {

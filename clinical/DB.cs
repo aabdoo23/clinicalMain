@@ -1380,6 +1380,49 @@ namespace clinical
 
             return treatmentPlans;
         }
+        public static List<TreatmentPlan> GetAllTreatmentPlansByVisitID(int visitID)
+        {
+            List<TreatmentPlan> treatmentPlans = new List<TreatmentPlan>();
+
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+                    string query = "SELECT * FROM TreatmentPlan WHERE visitID=@pId";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection)) {
+                        command.Parameters.AddWithValue("@pId", visitID);
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                TreatmentPlan treatmentPlan = new TreatmentPlan(
+                                    Convert.ToInt32(reader["planID"]),
+                                    Convert.ToString(reader["planName"]),
+                                    Convert.ToInt32(reader["planTime"]),
+                                    Convert.ToDouble(reader["price"]),
+                                    Convert.ToString(reader["notes"]),
+                                    Convert.ToString(reader["keywords"]),
+                                    Convert.ToInt32(reader["injuryID"]),
+                                    Convert.ToInt32(reader["patientID"]),
+                                    Convert.ToInt32(reader["visitID"]),
+                                    Convert.ToDateTime(reader["timeStamp"])
+                                );
+
+                                treatmentPlans.Add(treatmentPlan);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+
+            return treatmentPlans;
+        }
 
         public static void UpdateTreatmentPlan(TreatmentPlan treatmentPlan)
         {
@@ -1875,6 +1918,44 @@ namespace clinical
                 }
 
                 return chatMessages;
+            }
+        }
+
+        public static ChatMessage GetLastSentChatMessageByChatRoomID(int chatRoomID)
+        {
+            using (connection)
+            {
+                try
+                {
+                    if (connection.State == ConnectionState.Closed) connection.Open();
+
+                    string query = "SELECT * FROM ChatMessage WHERE chatRoomID = @chatRoomID ORDER BY timeStamp DESC LIMIT 1";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@chatRoomID", chatRoomID);
+
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                return new ChatMessage(
+                                Convert.ToInt32(reader["messageID"]),
+                                Convert.ToInt32(reader["senderID"]),
+                                Convert.ToInt32(reader["chatRoomID"]),
+                                reader["messageContent"].ToString(),
+                                Convert.ToDateTime(reader["timeStamp"])
+                                );
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+
+                return null;
             }
         }
 
@@ -5212,13 +5293,13 @@ namespace clinical
         {
             return GetIntValueByID(10);
         }
-        public static double GetOpeningTime()
+        public static int GetOpeningTime()
         {
-            return GetIntValueByID(11);
+            return (int)GetIntValueByID(11);
         }
-        public static double GetClosingTime()
+        public static int GetClosingTime()
         {
-            return GetIntValueByID(12);
+            return (int)GetIntValueByID(12);
         }
         public static double GetIntValueByID(int id)
         {
@@ -5474,6 +5555,38 @@ namespace clinical
                     using (MySqlCommand cmd = new MySqlCommand(query, connection))
                     {
                         cmd.Parameters.AddWithValue("@userID", userID);
+                        cmd.Parameters.AddWithValue("@startDateTime", startDateTime);
+
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                CalendarEvent calendarEvent = MapCalendarEvent(reader);
+                                calendarEvents.Add(calendarEvent);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+
+            return calendarEvents;
+        }
+        public static List<CalendarEvent> GetCalendarEventsByDate(DateTime startDateTime)
+        {
+            List<CalendarEvent> calendarEvents = new List<CalendarEvent>();
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+                    string query = "SELECT * FROM calendarEvent WHERE DATE(startTime) = DATE(@startDateTime) ORDER BY startTime ASC";
+
+                    using (MySqlCommand cmd = new MySqlCommand(query, connection))
+                    {
                         cmd.Parameters.AddWithValue("@startDateTime", startDateTime);
 
                         using (MySqlDataReader reader = cmd.ExecuteReader())
