@@ -16,7 +16,7 @@ using System.Windows.Shapes;
 
 namespace clinical
 {
-    
+
     public partial class loginPage : Window
     {
         public loginPage()
@@ -25,22 +25,9 @@ namespace clinical
             InitializeComponent();
             new DB();
             txtEmail.Focus();
-            List<User> users = DB.GetAllUsers();
-            
-            foreach(User user1 in users)
-            {
-                foreach(User user2 in users)
-                {
-                    if (user1.UserID == user2.UserID ||user1.UserID==0||user2.UserID==0) { continue; }
-                    DB.InsertChatRoom(new ChatRoom(globals.generateNewChatRoomID(user1.UserID, user2.UserID), user1.UserID, user2.UserID, user2.FirstName,DateTime.Now));
-
-                }
-            }
-
-            
             
         }
-        private void Border_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void Border_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)
                 this.DragMove();
@@ -72,7 +59,7 @@ namespace clinical
 
         private void enter(object sender, KeyEventArgs e)
         {
-            if (e.Key==Key.Enter) { login(); }
+            if (e.Key == Key.Enter) { login(); }
         }
 
         void login()
@@ -80,13 +67,14 @@ namespace clinical
             User user = DB.GetUserById(Convert.ToInt32(txtEmail.Text));
             if (user != null)
             {
-                MessageBox.Show("Welcome, " + (user.UserID.ToString()[0]!='3'?"Dr. ":"") + user.FirstName);
+                MessageBox.Show("Welcome, " + (user.UserID.ToString()[0] != '3' ? "Dr. " : "") + user.FirstName);
                 int s;
                 if (txtEmail.Text.ToString().StartsWith("1")) s = 1;
                 else if (txtEmail.Text.ToString().StartsWith("2")) s = 2;
                 else s = 3;
-                MainWindow mainWindow = new MainWindow(s, user);
                 globals.signedIn = user;
+
+                MainWindow mainWindow = new MainWindow(s, user);
                 DB.InsertAttendanceRecord(new AttendanceRecord(globals.generateNewAttendanceRecordID(user.UserID), DateTime.Now, user.UserID, true));
                 mainWindow.Show();
                 this.Close();

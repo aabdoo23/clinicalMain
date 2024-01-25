@@ -51,7 +51,6 @@ CREATE TABLE AttendanceRecord (
 
 CREATE TABLE ChatGroup (
     chatGroupID INT NOT NULL ,
-    usersIDs TEXT NOT NULL,
     chatGroupName VARCHAR(100),
     PRIMARY KEY (chatGroupID)
 );
@@ -139,10 +138,8 @@ CREATE TABLE Exercise (
 );
 
 CREATE TABLE ChatGroupRelation (
-    groupMemberID INT NOT NULL,
     chatGroupID INT NOT NULL,
     userID int NOT NULL,
-    PRIMARY KEY (groupMemberID),
     FOREIGN KEY (chatGroupID) REFERENCES ChatGroup(chatGroupID),
     FOREIGN KEY (userID) REFERENCES User(userID)
 );

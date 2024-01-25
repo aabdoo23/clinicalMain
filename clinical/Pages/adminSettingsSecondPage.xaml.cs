@@ -109,5 +109,39 @@ namespace clinical.Pages
             AppointmentType ap = (AppointmentType)appointmentTypesDataGrid.SelectedItem;
             new newPatientForm(ap).Show();
         }
+
+        private void packagesDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void delete(object sender, RoutedEventArgs e)
+        {
+            if(packagesDataGrid.SelectedItem != null)
+            {
+                Package pack = (Package)packagesDataGrid.SelectedItem;
+                DB.DeletePackage(pack.PackageID);
+                packagesDataGrid.ItemsSource = DB.GetAllPackages();
+
+            }
+            else if (roomsDataGrid.SelectedItem != null)
+            {
+                Room room = (Room)roomsDataGrid.SelectedItem;
+                DB.DeleteRoom(room.RoomID);
+                roomsDataGrid.ItemsSource = DB.GetAllRooms();
+            }
+            else if (equipmentDataGrid.SelectedItem != null)
+            {
+                Equipment eq = (Equipment)equipmentDataGrid.SelectedItem;
+                DB.DeleteEquipment(eq.EquipmentID);
+                equipmentDataGrid.ItemsSource = DB.GetAllEquipment();
+            }
+            else if (appointmentTypesDataGrid.SelectedItem != null)
+            {
+                AppointmentType ap = (AppointmentType)appointmentTypesDataGrid.SelectedItem;
+                DB.DeleteAppointmentType(ap.TypeID);
+                appointmentTypesDataGrid.ItemsSource = DB.GetAllAppointmentTypes();
+            }
+        }
     }
 }

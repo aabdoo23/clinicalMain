@@ -1,5 +1,7 @@
 ﻿using clinical.BaseClasses;
 using clinical.Pages;
+using System.Collections.Generic;
+using System;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -21,6 +23,15 @@ namespace clinical
             homeBTN.Focus();
             settingsBtn.Visibility=Visibility.Hidden;
             which();
+            List<User> users = DB.GetAllUsers();
+
+
+            for (int j = 0; j < users.Count; j++)
+            {
+                if (globals.signedIn.UserID == users[j].UserID || globals.signedIn.UserID == 0 || users[j].UserID == 0) { continue; }
+                DB.InsertChatRoom(new ChatRoom(globals.generateNewChatRoomID(globals.signedIn.UserID, users[j].UserID), globals.signedIn.UserID, users[j].UserID, users[j].FirstName, DateTime.Now));
+
+            }
         }
 
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)

@@ -3,15 +3,12 @@ using clinical.Pages;
 using MahApps.Metro.IconPacks;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Media;
-using MySqlX.XDevAPI.Relational;
 using System.Windows.Input;
-using System.Windows.Navigation;
-using System.Runtime.CompilerServices;
-using System.Linq;
+using System.Windows.Media;
 
 namespace clinical
 {
@@ -21,7 +18,7 @@ namespace clinical
         {
         }
 
-        public static User signedIn=null;
+        public static User signedIn = null;
         public static DateTime CalculateBirthdate(int age)
         {
             DateTime currentDate = DateTime.Now;
@@ -36,10 +33,10 @@ namespace clinical
         public static int generateNewRecordID(int patientID)
         {
             DateTime dateTime = DateTime.Now;
-            string s="";
-            s += patientID.ToString().Substring(0,4);
+            string s = "";
+            s += patientID.ToString().Substring(0, 4);
             s += dateTime.DayOfYear.ToString();
-            
+
             return int.Parse(s);
 
         }
@@ -50,7 +47,7 @@ namespace clinical
             string s = "";
             s += userID.ToString().Substring(0, 2);
             s += dateTime.DayOfYear.ToString();
-            s += dateTime.Year.ToString().Substring(2,2);
+            s += dateTime.Year.ToString().Substring(2, 2);
 
             return int.Parse(s);
 
@@ -71,11 +68,11 @@ namespace clinical
             DateTime dateTime = DateTime.Now;
             string s = dateTime.DayOfYear.ToString();
             s += dateTime.Minute.ToString();
-            s += phoneNumber.Substring(3,3);
+            s += phoneNumber.Substring(3, 3);
             return int.Parse(s);
-            
+
         }
-        public static int generateNewPhysicianID(string nid )
+        public static int generateNewPhysicianID(string nid)
         {
             DateTime dateTime = DateTime.Now;
             string s = "2";
@@ -84,7 +81,7 @@ namespace clinical
             s += nid[12];
             s += nid[13];
             return Convert.ToInt32(s);
-            
+
         }
         public static int generateNewEmployeeID(string nid)
         {
@@ -95,18 +92,19 @@ namespace clinical
             s += nid[12];
             s += nid[13];
             return Convert.ToInt32(s);
-            
+
         }
         public static string generateNewAdminID()
         {
             string s = "1";
             Random rand = new Random();
-            s+=rand.Next(100).ToString();
+            s += rand.Next(100).ToString();
             return s;
 
         }
-        public static int generateNewVisitID(int patID, DateTime time) {
-            string s = patID.ToString().Substring(0, 3) + time.DayOfYear+time.Hour;
+        public static int generateNewVisitID(int patID, DateTime time)
+        {
+            string s = patID.ToString().Substring(0, 3) + time.DayOfYear + time.Hour;
             return Convert.ToInt32(s);
         }
         public static int generateNewPaymentID(int patID, DateTime time)
@@ -116,12 +114,12 @@ namespace clinical
         }
         public static int generateNewPrescriptionID(int visitID, DateTime time)
         {
-            string s = visitID.ToString().Substring(0, 2) + time.Day+time.Minute+time.Second;
+            string s = visitID.ToString().Substring(0, 2) + time.Day + time.Minute + time.Second;
             return Convert.ToInt32(s);
         }
-        public static int generateNewIssueExerciseID(int prescriptionID,int patientID)
+        public static int generateNewIssueExerciseID(int prescriptionID, int patientID)
         {
-            string s = prescriptionID.ToString().Substring(0, 2)+new Random().Next(99).ToString()+ patientID.ToString().Substring(0, 2)+ new Random().Next(99).ToString();
+            string s = prescriptionID.ToString().Substring(0, 2) + new Random().Next(99).ToString() + patientID.ToString().Substring(0, 2) + new Random().Next(99).ToString();
             return Convert.ToInt32(s);
         }
         public static int generateNewTestFeedBackID(int visitID, int patientID)
@@ -131,10 +129,10 @@ namespace clinical
         }
         public static int generateNewExerciseID()
         {
-            string s = new Random().Next(99).ToString() + new Random().Next(99).ToString()+ new Random().Next(81).ToString();
+            string s = new Random().Next(99).ToString() + new Random().Next(99).ToString() + new Random().Next(81).ToString();
             return Convert.ToInt32(s);
         }
-        public static int generateNewChatRoomID(int fID,int sID)
+        public static int generateNewChatRoomID(int fID, int sID)
         {
 
             string s = fID.ToString().Substring(0, 3) + sID.ToString().Substring(0, 3);
@@ -143,7 +141,7 @@ namespace clinical
         public static int generateNewChatMessageID(int senderID)
         {
 
-            string s = senderID.ToString().Substring(0, 1) + DateTime.Now.Second.ToString()+ DateTime.Now.Millisecond.ToString();
+            string s = senderID.ToString().Substring(0, 1) + DateTime.Now.Second.ToString() + DateTime.Now.Millisecond.ToString();
             return Convert.ToInt32(s);
         }
 
@@ -224,7 +222,7 @@ namespace clinical
                     Foreground = (Brush)Application.Current.Resources["lightFontColor"],
                     BorderBrush = (Brush)Application.Current.Resources["lightFontColor"],
                     BorderThickness = new Thickness(2),
-                    FontWeight=FontWeights.SemiBold,
+                    FontWeight = FontWeights.SemiBold,
                     Padding = new Thickness(5),
                 };
                 viewPlanBTN.Click += (sender, e) => viewPrescription(plan);
@@ -286,7 +284,7 @@ namespace clinical
             }
 
 
-            
+
             Grid.SetRow(stackPanel, 2);
             Grid.SetColumn(stackPanel, 1);
             Grid.SetRow(physicianNameTextBlock, 0);
@@ -303,7 +301,8 @@ namespace clinical
             Grid.SetColumn(stackPanel, 1);
 
 
-            if (!signedIn.isReciptionist) {
+            if (!signedIn.isReciptionist)
+            {
                 Button viewPrescriptionBTN = new Button
                 {
                     Content = "View Prescription",
@@ -320,7 +319,7 @@ namespace clinical
                 Grid.SetColumnSpan(viewPrescriptionBTN, 2);
                 grid.Children.Add(viewPrescriptionBTN);
             }
-            
+
 
 
 
@@ -367,12 +366,12 @@ namespace clinical
         }
 
 
-        public static Border createAppointmentUIObject(Visit visit, Action<Visit>viewVisit, Action<Patient> viewPatient)
+        public static Border createAppointmentUIObject(Visit visit, Action<Visit> viewVisit, Action<Patient> viewPatient)
         {
             if (visit == null) { return null; }
 
             Patient patient = DB.GetPatientById(visit.PatientID);
-            User physician= DB.GetUserById(visit.PhysiotherapistID);
+            User physician = DB.GetUserById(visit.PhysiotherapistID);
             if (patient == null) { return null; }
             Border border = new Border
             {
@@ -651,7 +650,7 @@ namespace clinical
                 Margin = new Thickness(10, 5, 0, 0)
             };
 
-            
+
 
             Border viewVisitButton = new Border
             {
@@ -681,7 +680,7 @@ namespace clinical
             viewVisitButton.MouseDown += (sender, e) => viewVisit(visit); ;
             buttonsPanel.Children.Add(viewVisitButton);
 
-            
+
 
             Grid.SetRow(visitTime, 0);
             Grid.SetRow(patientName, 1);
@@ -702,6 +701,91 @@ namespace clinical
         }
 
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="article"></param>
+        /// <returns></returns>
+        public static Border createArticleUIObject(Article article)
+        {
+
+            Border border = new Border
+            {
+                Style = (Style)Application.Current.FindResource("theLinedBorder"),
+                Margin = new Thickness(0, 0, 0, 5)
+            };
+
+            Grid grid = new Grid
+            {
+                Margin = new Thickness(5)
+            };
+
+            grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+            grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+            grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+
+            TextBlock title = new TextBlock
+            {
+                Text = $"{article.Title}",
+                Margin = new Thickness(5, 5, 5, 0),
+                TextWrapping = TextWrapping.Wrap,
+                VerticalAlignment = VerticalAlignment.Center,
+                FontWeight = FontWeights.Bold,
+                Foreground = (Brush)Application.Current.FindResource("lightFontColor"),
+                FontSize = 14
+            };
+            border.MouseLeftButtonDown += (sender, e) => viewArticle(article);
+            //make when mouse enter the cursor changes to pointer
+            border.MouseEnter+=(sender,e)=>border.Cursor=Cursors.Hand;
+            border.MouseLeave+=(sender,e)=>border.Cursor=Cursors.Arrow;
+            border.MouseLeave += (sender, e) => border.Background = (Brush)Application.Current.FindResource("darkerColor");
+            border.MouseEnter += (sender, e) => border.Background = (Brush)Application.Current.FindResource("lighterColor");
+
+
+            TextBlock typeAndDate = new TextBlock
+            {
+                Text = $"{article.ContentType} {article.Date}",
+                Margin = new Thickness(5, 3, 5, 3),
+                VerticalAlignment = VerticalAlignment.Center,
+                FontWeight = FontWeights.SemiBold,
+                Foreground = (Brush)Application.Current.FindResource("lightFontColor"),
+                FontSize = 12
+            };
+            Grid.SetRow(typeAndDate, 1);
+
+            TextBlock snippet = new TextBlock
+            {
+                Text = article.Snippet,
+                Margin = new Thickness(5, 5, 5, 0),
+                TextWrapping = TextWrapping.Wrap,
+                VerticalAlignment = VerticalAlignment.Center,
+                FontWeight = FontWeights.SemiBold,
+                Foreground = (Brush)Application.Current.FindResource("lightFontColor"),
+                FontSize = 12,
+
+            };
+            Grid.SetRow(snippet, 2);
+
+            grid.Children.Add(title);
+            grid.Children.Add(typeAndDate);
+            grid.Children.Add(snippet);
+
+            border.Child = grid;
+
+            return border;
+
+        }
+        static string mainUrl = "https://www.news-medical.net";
+
+        static void viewArticle(Article article)
+        {
+            if (!string.IsNullOrEmpty(article.Link))
+            {
+                Process.Start(new ProcessStartInfo(mainUrl + article.Link) { UseShellExecute = true });
+            }
+        }
+
+
 
         ///////////////////////////////////////////////
         ///Scheduling part
@@ -718,7 +802,7 @@ namespace clinical
                 MessageBox.Show("Can't Book in this time slot, change slot or select first available slot.");
             }
 
-               
+
         }
 
         static bool CanBookVisit(Visit visit)
@@ -727,7 +811,7 @@ namespace clinical
             Visit fakeVisit = visit;
             List<DateTime> proposedSlots = GenerateTimeSlots(visit.TimeStamp, fakeVisit.TimeStamp.AddMinutes(DB.GetAppointmentTypeByID(visit.AppointmentTypeID).TimeInMinutes), TimeSpan.FromMinutes(DB.GetSlotDuration()));
 
-            List<Visit> existingVisits = DB.GetFuturePhysicianVisits(visit.PhysiotherapistID);  
+            List<Visit> existingVisits = DB.GetFuturePhysicianVisits(visit.PhysiotherapistID);
 
 
             // Check for conflicts with existing visits
@@ -743,9 +827,9 @@ namespace clinical
         }
         public static DateTime FindFirstFreeSlot(int PhysiotherapistID, DateTime when)
         {
-            List<DateTime> availableSlots = FindAvailableTimeSlots(PhysiotherapistID,when);
+            List<DateTime> availableSlots = FindAvailableTimeSlots(PhysiotherapistID, when);
 
-            while(availableSlots.Count == 0)
+            while (availableSlots.Count == 0)
             {
                 when = when.AddDays(7);
                 availableSlots = FindAvailableTimeSlots(PhysiotherapistID, when);
@@ -771,7 +855,7 @@ namespace clinical
         {
             // Generate time slots for the selected day
             DateTime dayStartTime = selectedDay.Date.AddHours(DB.GetOpeningTime());
-            DateTime dayEndTime = selectedDay.Date.AddHours(DB.GetClosingTime()); 
+            DateTime dayEndTime = selectedDay.Date.AddHours(DB.GetClosingTime());
             TimeSpan slotDuration = TimeSpan.FromMinutes(DB.GetSlotDuration());
 
             List<DateTime> allSlots = GenerateTimeSlots(dayStartTime, dayEndTime, slotDuration);
@@ -786,7 +870,7 @@ namespace clinical
             // Find available slots by removing occupied slots
             List<DateTime> availableSlots = allSlots.Except(unavailableSlots).ToList();
             List<string> toReturn = new List<string>();
-            foreach(var i in availableSlots)
+            foreach (var i in availableSlots)
             {
                 toReturn.Add(i.ToString("HH:mm"));
             }
@@ -805,7 +889,7 @@ namespace clinical
             for (DateTime date = startDate; date <= endDate; date = date.AddDays(1))
             {
                 DateTime clinicStartTime = date.AddHours(DB.GetOpeningTime());
-                DateTime clinicEndTime = date.AddHours(DB.GetClosingTime());  
+                DateTime clinicEndTime = date.AddHours(DB.GetClosingTime());
 
                 for (DateTime time = clinicStartTime; time < clinicEndTime; time += slotDuration)
                 {

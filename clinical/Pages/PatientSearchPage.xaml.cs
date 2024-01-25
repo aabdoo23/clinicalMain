@@ -77,15 +77,18 @@ namespace clinical.Pages
             form.Show();
         }
 
-        private void allPatients(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void allPatients(object sender, MouseButtonEventArgs e)
         {
-            //patientsDataGrid.ItemsSource = DB.GetAllPatients();
+            patientsDataGrid.ItemsSource = DB.GetAllPatients();
+            patientsDataGrid.Items.Refresh();
+
 
         }
 
-        private void todaysPatients(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void todaysPatients(object sender, MouseButtonEventArgs e)
         {
-            //patientsDataGrid.ItemsSource = DB.GetAllPatientsToday();
+            patientsDataGrid.ItemsSource = DB.GetAllPatientsToday();
+            patientsDataGrid.Items.Refresh();
 
         }
     }

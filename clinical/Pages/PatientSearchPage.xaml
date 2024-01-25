@@ -25,14 +25,14 @@
         <!--Search Textbox-->
         
 
-        <!--Top Buttons--><!--
+        <!--Top Buttons-->
         <Button Style="{StaticResource topButton}" Margin="0 0 20 0" Background="#dcdcdc">
             <Icon:PackIconMaterial Kind="Cog"/>
         </Button>
 
         <Button Style="{StaticResource topButton}" Margin="0 0 55 0">
             <Icon:PackIconMaterial Kind="Bell"/>
-        </Button>-->
+        </Button>
 
         <!--Page Title-->
         <TextBlock Grid.Row="1" FontSize="32" FontWeight="SemiBold" Margin="0 20 0 0" Foreground="{StaticResource lightFontColor}" HorizontalAlignment="Left" Text="Patients"/>

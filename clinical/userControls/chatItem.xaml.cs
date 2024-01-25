@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FontAwesome.WPF;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -87,13 +88,13 @@ namespace clinical.userControls
         public static readonly DependencyProperty VisibleProperty = DependencyProperty.Register("Visible", typeof(Visibility), typeof(chatItem));
 
 
-        public ImageSource Image
+        public FontAwesomeIcon Icon
         {
-            get { return (ImageSource)GetValue(ImageProperty); }
-            set { SetValue(ImageProperty, value); }
+            get { return (FontAwesomeIcon)GetValue(IconProperty); }
+            set { SetValue(IconProperty, value); }
         }
 
-        public static readonly DependencyProperty ImageProperty = DependencyProperty.Register("Image", typeof(ImageSource), typeof(chatItem));
+        public static readonly DependencyProperty IconProperty = DependencyProperty.Register("Icon", typeof(FontAwesomeIcon), typeof(chatItem));
 
     }
 }

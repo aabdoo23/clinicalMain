@@ -56,14 +56,14 @@
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="80"/>
+                        <ColumnDefinition Width="120"/>
                         <ColumnDefinition Width="40"/>
                         <ColumnDefinition Width="40"/>
                     </Grid.ColumnDefinitions>
 
                     <TextBlock Text="Visit information" Margin="10 0" VerticalAlignment="Bottom" FontWeight="Bold" Foreground="{StaticResource lightFontColor}" FontSize="22"/>
                     <Border Style="{StaticResource theLinedBorder}" Background="{StaticResource lighterColor}" CornerRadius="5" Margin="0,0,15,0" VerticalAlignment="Bottom"  Height="25" Grid.Column="1" MouseDown="cancelVisit">
-                        <TextBlock Text="Cancel" TextWrapping="Wrap" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="12" FontWeight="Bold" Margin="0"/>
+                        <TextBlock Text="Cancel Visit" TextWrapping="Wrap" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="12" FontWeight="Bold" Margin="0"/>
                     </Border>
                     <Icon:PackIconMaterial Kind="ClipboardEdit" Width="25" Height="25" HorizontalAlignment="Left" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Bottom" Grid.Column="2" MouseDown="editVisitInfo"/>
                     <Icon:PackIconMaterial Kind="SyncCircle" Width="25" Height="25" HorizontalAlignment="Left" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Bottom" Grid.Column="3" MouseDown="syncInfo"/>

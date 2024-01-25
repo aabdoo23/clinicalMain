@@ -51,7 +51,7 @@
                                                 <Button Name="view" Style="{StaticResource gridEditButton}" Click="viewExercise">
                                                     <Icon:PackIconMaterial Kind="EyeCircleOutline" Style="{StaticResource gridButtonIcon}"/>
                                                 </Button>
-                                                <Button Margin="5 0 0 0" Style="{StaticResource gridRemoveButton}">
+                                                <Button Margin="5 0 0 0" Style="{StaticResource gridRemoveButton}" Click="delete">
                                                     <Icon:PackIconMaterial Kind="DeleteOutline" Style="{StaticResource gridButtonIcon}"/>
                                                 </Button>
                                             </StackPanel>
@@ -89,6 +89,9 @@
                                                 <Button Name="view" Margin="3 0" Style="{StaticResource gridEditButton}" Click="viewTreatmentPlan">
                                                     <Icon:PackIconMaterial Kind="EyeCircleOutline" Style="{StaticResource gridButtonIcon}"/>
                                                 </Button>
+                                                <Button Margin="5 0 0 0" Style="{StaticResource gridRemoveButton}" Click="delete">
+                                                    <Icon:PackIconMaterial Kind="DeleteOutline" Style="{StaticResource gridButtonIcon}"/>
+                                                </Button>
 
                                             </StackPanel>
                                         </DataTemplate>
@@ -125,7 +128,9 @@
                                                 <Button Margin="3 0" Style="{StaticResource gridEditButton}" Click="viewInjury">
                                                     <Icon:PackIconMaterial Kind="EyeCircleOutline" Style="{StaticResource gridButtonIcon}"/>
                                                 </Button>
-
+                                                <Button Margin="5 0 0 0" Style="{StaticResource gridRemoveButton}" Click="delete">
+                                                    <Icon:PackIconMaterial Kind="DeleteOutline" Style="{StaticResource gridButtonIcon}"/>
+                                                </Button>
                                             </StackPanel>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
@@ -158,7 +163,9 @@
                                                 <Button Name="view" Style="{StaticResource gridEditButton}" Click="viewChronic">
                                                     <Icon:PackIconMaterial Kind="EyeCircleOutline" Style="{StaticResource gridButtonIcon}"/>
                                                 </Button>
-
+                                                <Button Margin="5 0 0 0" Style="{StaticResource gridRemoveButton}" Click="delete">
+                                                    <Icon:PackIconMaterial Kind="DeleteOutline" Style="{StaticResource gridButtonIcon}"/>
+                                                </Button>
                                             </StackPanel>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
@@ -191,7 +198,7 @@
                                                 <Button Name="view" Style="{StaticResource gridEditButton}" Click="viewTest">
                                                     <Icon:PackIconMaterial Kind="EyeCircleOutline" Style="{StaticResource gridButtonIcon}"/>
                                                 </Button>
-                                                <Button Margin="5 0 0 0" Style="{StaticResource gridRemoveButton}">
+                                                <Button Margin="5 0 0 0" Style="{StaticResource gridRemoveButton}" Click="delete">
                                                     <Icon:PackIconMaterial Kind="DeleteOutline" Style="{StaticResource gridButtonIcon}"/>
                                                 </Button>
                                             </StackPanel>

@@ -1431,7 +1431,7 @@
         <Style x:Key="timeText" TargetType="TextBlock">
             <Setter Property="Foreground" Value="{StaticResource lightFontColor}" />
             <Setter Property="FontSize" Value="11" />
-            <Setter Property="Margin" Value="47 3 0 0" />
+            <Setter Property="Margin" Value="10 3 0 0" />
         </Style>
 
 

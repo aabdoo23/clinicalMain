@@ -1,6 +1,9 @@
 ﻿using clinical.BaseClasses;
-using System.Collections.Generic;
+using HtmlAgilityPack;
 using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -23,12 +26,13 @@ namespace clinical.Pages
             UpdateDayBorders();
             leftSideFrame.NavigationService.Navigate(new DashBoardPage());
             signedInTB.Text = $"Welcome, Dr. {therapist.FirstName}";
+            PopulateDataGrid();
 
         }
         void updateDayAppointments()
         {
             todayAppointmentsStackPanel.Children.Clear();
-            List<Visit> visits = DB.GetPhysicianVisitsOnDate(physician.UserID,currentDayIndex);
+            List<Visit> visits = DB.GetPhysicianVisitsOnDate(physician.UserID, currentDayIndex);
             numberOfAppointmentsTB.Text = visits.Count.ToString();
 
             foreach (var i in visits)
@@ -74,10 +78,10 @@ namespace clinical.Pages
 
             Border border = new Border
             {
-                Style = (Style)Application.Current.Resources["theBorder"],
+                Style = (Style)Application.Current.Resources["theLinedBorder"],
                 Background = (Brush)Application.Current.Resources["lighterColor"],
                 Margin = new Thickness(5),
-                Width = 55
+                Width = 45
             };
             if (date == currentDayIndex)
             {
@@ -87,8 +91,8 @@ namespace clinical.Pages
 
             Grid grid = new Grid();
 
-            grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(24) });
-            grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(40) });
+            grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(20) });
+            grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(35) });
 
             TextBlock dayTextBlock = new TextBlock
             {
@@ -97,7 +101,7 @@ namespace clinical.Pages
                 HorizontalAlignment = HorizontalAlignment.Center,
                 FontWeight = FontWeights.SemiBold,
                 Foreground = (Brush)Application.Current.Resources["lightFontColor"],
-                FontSize = 16
+                FontSize = 13
             };
 
             TextBlock dateTextBlock = new TextBlock
@@ -107,7 +111,7 @@ namespace clinical.Pages
                 HorizontalAlignment = HorizontalAlignment.Center,
                 FontWeight = FontWeights.Bold,
                 Foreground = (Brush)Application.Current.Resources["lightFontColor"],
-                FontSize = 24
+                FontSize = 22
             };
 
             grid.Children.Add(dayTextBlock);
@@ -142,22 +146,52 @@ namespace clinical.Pages
         private void UpdateDayBorders()
         {
 
+            List<Patient> patients = new List<Patient>();
+
             if (allPanelCB.IsChecked == true && (currentDayIndex.DayOfYear != DateTime.Now.DayOfYear))
             {
                 patientsDGTitleTB.Text = currentDayIndex.ToString("M") + "' Patients";
-                selectedDayTB.Text = currentDayIndex.ToString("D");
-                List<Patient> patients = DB.GetPatientsWithVisitsOnDateByPhysicianID(physician.UserID,currentDayIndex);
+                patients = DB.GetPatientsWithVisitsOnDateByPhysicianID(physician.UserID, currentDayIndex);
                 patientsDataGrid.ItemsSource = patients;
                 numberOfPhysiciansTB.Text = patients.Count.ToString();
+                if (patients.Count == 0)
+                {
+                    articlesTitleTB.Text = "General Articles";
+                }
+                else
+                {
+                    articlesTitleTB.Text = $"Articles Related To {currentDayIndex.ToString("M")}' Patients";
+                }
             }
             else
             {
                 patientsDGTitleTB.Text = "Today's Patients";
-                selectedDayTB.Text = currentDayIndex.ToString("M") + ", Today";
-                List<Patient> patients = DB.GetPatientsWithVisitsOnDateByPhysicianID(physician.UserID, DateTime.Now);
+                patients = DB.GetPatientsWithVisitsOnDateByPhysicianID(physician.UserID, DateTime.Now);
                 patientsDataGrid.ItemsSource = patients;
                 numberOfPhysiciansTB.Text = patients.Count.ToString();
+                articlesTitleTB.Text = "General Articles";
+            }
 
+            string injuriesOfDay = "";
+            foreach (var i in patients)
+            {
+                string patientInjuries = "";
+                List<Injury> injuries = DB.GetAllInjuriesByPatientID(i.PatientID);
+                foreach (var j in injuries)
+                {
+                    patientInjuries += j.InjuryName + " ";
+                }
+                injuriesOfDay += patientInjuries;
+            }
+            search(injuriesOfDay);
+
+            if (currentDayIndex.DayOfYear == DateTime.Now.DayOfYear)
+            {
+                selectedDayTB.Text = currentDayIndex.ToString("M") + ", Today";
+            }
+            else
+            {
+                selectedDayTB.Text = currentDayIndex.ToString("D");
             }
             if (dayStack != null)
                 dayStack.Children.Clear();
@@ -194,6 +228,124 @@ namespace clinical.Pages
         {
 
         }
-        
+
+        /// <summary>
+        /// article section
+        /// </summary>
+
+        //news-medical.net
+        private async void PopulateDataGrid()
+        {
+            articlesStackPanel.Children.Clear();
+
+            string baseUrl = "https://www.news-medical.net/medical/search?q=Physiotherapy&t=health&page=1";
+
+            List<Article> allArticles = await GetArticlesAsync(baseUrl);
+            foreach (var i in allArticles)
+            {
+                articlesStackPanel.Children.Add(globals.createArticleUIObject(i));
+            }
+        }
+
+        private async Task<List<Article>> GetArticlesAsync(string url)
+        {
+            List<Article> articles = new List<Article>();
+
+            using (HttpClient client = new HttpClient())
+            {
+                try
+                {
+                    HttpResponseMessage response = await client.GetAsync(url);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string htmlContent = await response.Content.ReadAsStringAsync();
+                        HtmlDocument htmlDocument = new HtmlDocument();
+                        htmlDocument.LoadHtml(htmlContent);
+
+                        var resultNodes = htmlDocument.DocumentNode.SelectNodes("//li[@class='result']");
+
+                        if (resultNodes != null)
+                        {
+                            foreach (var resultNode in resultNodes)
+                            {
+                                var titleNode = resultNode.SelectSingleNode(".//div[@class='resultTitle']/a");
+                                var contentTypeNode = resultNode.SelectSingleNode(".//div[@class='resultContentTypeDate']/span[@class='contentType']");
+                                var dateNode = resultNode.SelectSingleNode(".//div[@class='resultContentTypeDate']");
+                                var snippetNode = resultNode.SelectSingleNode(".//div[@class='snippet']");
+
+                                if (titleNode != null && contentTypeNode != null && dateNode != null && snippetNode != null)
+                                {
+                                    string title = titleNode.InnerText.Trim();
+                                    string contentType = contentTypeNode.InnerText.Trim();
+                                    string date = dateNode.InnerText.Trim().Replace(contentType, "").Trim();
+                                    string snippet = snippetNode.InnerText.Trim();
+                                    string link = titleNode.GetAttributeValue("href", "");
+
+                                    articles.Add(new Article
+                                    {
+                                        Title = title,
+                                        ContentType = contentType,
+                                        Date = date,
+                                        Snippet = snippet,
+                                        Link = link
+                                    });
+                                }
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("No articles found on the page.");
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Error: {response.StatusCode} - {response.ReasonPhrase}");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error: {ex.Message}");
+                }
+            }
+
+            return articles;
+        }
+
+
+
+        private async void articleSearchButton_Click(object sender, RoutedEventArgs e)
+        {
+
+            string query = articleSearchTB.Text;
+            search(query);
+        }
+
+        private async void search(string query)
+        {
+            articlesStackPanel.Children.Clear();
+
+            if (!string.IsNullOrEmpty(query))
+            {
+                string url = $"https://www.news-medical.net/medical/search?q={query}";
+                List<Article> articles = await GetArticlesAsync(url);
+                foreach (var i in articles)
+                {
+                    articlesStackPanel.Children.Add(globals.createArticleUIObject(i));
+                }
+            }
+            else PopulateDataGrid();
+        }
     }
+
+    public class Article
+    {
+        public string Title { get; set; }
+        public string ContentType { get; set; }
+        public string Date { get; set; }
+        public string Snippet { get; set; }
+        public string Link { get; set; }
+    }
+
 }
+

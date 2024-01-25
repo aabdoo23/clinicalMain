@@ -39,7 +39,7 @@
                 <TextBlock Text="Packages" Margin="5" VerticalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource lightFontColor}" FontSize="25"/>
                 <Icon:PackIconMaterial Kind="PlusBox" Foreground="{StaticResource lightFontColor}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Width="30" Height="30" Margin="0 0 10 0" MouseDown="newPackage"/>
 
-                <DataGrid Grid.Row="1" Margin="5" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="packagesDataGrid" Style="{DynamicResource DataGridStyle1}">
+                <DataGrid Grid.Row="1" Margin="5" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="packagesDataGrid" Style="{DynamicResource DataGridStyle1}" SelectionChanged="packagesDataGrid_SelectionChanged">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" Binding="{Binding PackageID}"/>
                         <DataGridTextColumn Header="Name" Binding="{Binding PackageName}" IsReadOnly="True" Width="*"/>
@@ -52,8 +52,11 @@
                                         <Button Name="view" Style="{StaticResource gridEditButton}" Click="viewPackage">
                                             <Icon:PackIconMaterial Kind="EyeCircleOutline" Style="{StaticResource gridButtonIcon}"/>
                                         </Button>
+                                            <Button Margin="5 0 0 0" Style="{StaticResource gridRemoveButton}" Click="delete">
+                                                <Icon:PackIconMaterial Kind="DeleteOutline" Style="{StaticResource gridButtonIcon}"/>
+                                            </Button>
 
-                                    </StackPanel>
+                                        </StackPanel>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
@@ -87,8 +90,11 @@
                                         <Button Name="view" Style="{StaticResource gridEditButton}" Click="viewAppointmentType">
                                             <Icon:PackIconMaterial Kind="EyeCircleOutline" Style="{StaticResource gridButtonIcon}"/>
                                         </Button>
+                                            <Button Margin="5 0 0 0" Style="{StaticResource gridRemoveButton}" Click="delete">
+                                                <Icon:PackIconMaterial Kind="DeleteOutline" Style="{StaticResource gridButtonIcon}"/>
+                                            </Button>
 
-                                    </StackPanel>
+                                        </StackPanel>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
@@ -159,8 +165,12 @@
                                         <Button Name="view" Style="{StaticResource gridEditButton}" Click="viewRoom">
                                             <Icon:PackIconMaterial Kind="EyeCircleOutline" Style="{StaticResource gridButtonIcon}"/>
                                         </Button>
+                                            <Button Margin="5 0 0 0" Style="{StaticResource gridRemoveButton}" Click="delete">
+                                                <Icon:PackIconMaterial Kind="DeleteOutline" Style="{StaticResource gridButtonIcon}"/>
+                                            </Button>
+                                        
 
-                                    </StackPanel>
+                                        </StackPanel>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
@@ -195,8 +205,11 @@
                                         <Button Name="view" Style="{StaticResource gridEditButton}" Click="viewEquipment">
                                             <Icon:PackIconMaterial Kind="EyeCircleOutline" Style="{StaticResource gridButtonIcon}"/>
                                         </Button>
+                                            <Button Margin="5 0 0 0" Style="{StaticResource gridRemoveButton}" Click="delete">
+                                                <Icon:PackIconMaterial Kind="DeleteOutline" Style="{StaticResource gridButtonIcon}"/>
+                                            </Button>
 
-                                    </StackPanel>
+                                        </StackPanel>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>

@@ -5,15 +5,15 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:clinical.Pages" xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
       mc:Ignorable="d" 
-      d:DesignHeight="768" d:DesignWidth="1160"
+      d:DesignHeight="680" d:DesignWidth="1126"
       Title="PatientSearchPage">
     <Page.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis"/>
     </Page.Resources>
     <Grid Margin="0 10 0 0">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="55*"/>
-            <ColumnDefinition Width="35*"/>
+            <ColumnDefinition Width="60*"/>
+            <ColumnDefinition Width="30*"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="15*"/>
@@ -31,8 +31,14 @@
                 <RowDefinition Height="15*"/>
                 <RowDefinition Height="35*"/>
             </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+
+            </Grid.ColumnDefinitions>
             <!--Top Left-->
-            <Border Grid.Row="0" Grid.RowSpan="2" Style="{StaticResource theLinedBorder}" >
+            <Border Grid.Row="0" Grid.RowSpan="2" Grid.ColumnSpan="2" Margin="5 0 5 5" Style="{StaticResource theLinedBorder}" >
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="60"/>
@@ -50,8 +56,8 @@
                                         <RowDefinition Height="*"/>
                                         <RowDefinition Height="*"/>
                                     </Grid.RowDefinitions>
-                                    <TextBlock Name="numberOfAppointmentsTB" Grid.Row="0" Text="66" Margin="20 5" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource lightFontColor}" FontSize="28"/>
-                                    <TextBlock Grid.Row="1" Text="Appointments" Margin="20 5" VerticalAlignment="Top"  FontWeight="SemiBold" Foreground="{StaticResource lightFontColor}" FontSize="18"/>
+                                    <TextBlock Name="numberOfAppointmentsTB" Grid.Row="0" Text="66" Margin="20 0" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource lightFontColor}" FontSize="28"/>
+                                    <TextBlock Grid.Row="1" Text="Appointments" Margin="20 0" VerticalAlignment="Top"  FontWeight="SemiBold" Foreground="{StaticResource lightFontColor}" FontSize="18"/>
 
                                 </Grid>
                             </StackPanel>
@@ -67,8 +73,8 @@
                                         <RowDefinition Height="*"/>
                                         <RowDefinition Height="*"/>
                                     </Grid.RowDefinitions>
-                                    <TextBlock Name="numberOfPhysiciansTB" Grid.Row="0" Text="66" Margin="20 5" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource lightFontColor}" FontSize="28"/>
-                                    <TextBlock Grid.Row="1" Text="Patients" Margin="20 5" VerticalAlignment="Top"  FontWeight="SemiBold" Foreground="{StaticResource lightFontColor}" FontSize="18"/>
+                                    <TextBlock Name="numberOfPhysiciansTB" Grid.Row="0" Text="66" Margin="20 0" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource lightFontColor}" FontSize="28"/>
+                                    <TextBlock Grid.Row="1" Text="Patients" Margin="20 0" VerticalAlignment="Top"  FontWeight="SemiBold" Foreground="{StaticResource lightFontColor}" FontSize="18"/>
 
                                 </Grid>
                             </StackPanel>
@@ -82,7 +88,7 @@
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="*"/>
                                     </Grid.RowDefinitions>
-                                    <TextBlock Grid.Row="1" TextWrapping="Wrap" Text="View My Account" Margin="20 5" VerticalAlignment="Center"  FontWeight="Bold" Foreground="{StaticResource lightFontColor}" FontSize="20"/>
+                                    <TextBlock Grid.Row="1" TextWrapping="Wrap" Text="View My Account" Margin="20 0" VerticalAlignment="Center"  FontWeight="Bold" Foreground="{StaticResource lightFontColor}" FontSize="20"/>
 
                                 </Grid>
                                 <Icon:PackIconMaterial Kind="AccountArrowRight" Margin="0 0 10 0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="35" Height="35" Foreground="{StaticResource lightFontColor}"/>
@@ -95,16 +101,16 @@
                 </Grid>
             </Border>
             <!--Patients-->
-            <Border Grid.Row="2" Grid.RowSpan="3" Margin="10" Style="{StaticResource theLinedBorder}">
-                <Grid Margin="10">
+            <Border Grid.Row="2" Grid.RowSpan="3" Margin="5" Style="{StaticResource theLinedBorder}">
+                <Grid Margin="5">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="40"/>
                         <RowDefinition Height="87*"/>
                     </Grid.RowDefinitions>
-                    <TextBlock Name="patientsDGTitleTB" Text="Today's Patients" Margin="5" VerticalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource lightFontColor}" FontSize="25"/>
+                    <TextBlock Name="patientsDGTitleTB" Text="Today's Patients" Margin="5" VerticalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource lightFontColor}" FontSize="23"/>
                     <Border Style="{StaticResource theBorder}" Grid.Row="1" CornerRadius="5"/>
 
-                    <DataGrid Margin="15" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="patientsDataGrid" Style="{DynamicResource DataGridStyle1}">
+                    <DataGrid Margin="5" RowStyle="{DynamicResource DataGridRowStyle1}" FontSize="12" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="patientsDataGrid" Style="{DynamicResource DataGridStyle1}">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" Binding="{Binding PatientID}"/>
                             <DataGridTextColumn Header="Name" Binding="{Binding FullName}" IsReadOnly="True" Width="*"/>
@@ -129,18 +135,69 @@
 
                 </Grid>
             </Border>
+            <!--Articles-->
+            <Border Grid.Row="2" Grid.Column="1" Grid.RowSpan="3" Margin="5" Style="{StaticResource theLinedBorder}">
+                <Grid Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="87*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock x:Name="articlesTitleTB" TextWrapping="Wrap" Text="Articles Related To June 15 Patients"  Margin="5,0,5,10" VerticalAlignment="Top" FontWeight="Bold" Foreground="{StaticResource lightFontColor}" FontSize="21"/>
+                    <Border Style="{StaticResource theLinedBorder}" Background="{StaticResource lighterColor}" Margin="0" Grid.Row="1" CornerRadius="5">
+                        <Grid Margin="5">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="40"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="75"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBox Name="articleSearchTB" Text="" Margin="5" VerticalAlignment="Center" VerticalContentAlignment="Center" FontWeight="SemiBold" Foreground="{StaticResource darkerColor}" FontSize="14"/>
+                            <Button Name="articleSearchButton" Style="{StaticResource gridEditButton}" BorderBrush="{StaticResource lightFontColor}" Background="{StaticResource selectedColor}" Grid.Column="1" Click="articleSearchButton_Click">
+                                <Icon:PackIconMaterial Kind="Magnify" Style="{StaticResource gridButtonIcon}"/>
+
+                            </Button>
+                            <ScrollViewer Grid.Row="1" Grid.ColumnSpan="2" VerticalScrollBarVisibility="Auto">
+                                <StackPanel Name="articlesStackPanel" Grid.Row="1" Grid.ColumnSpan="2" Margin="0 5 5 5" >
+                                <Border Style="{StaticResource theLinedBorder}" Margin="0 0 0 5">
+                                    <Grid Margin="5">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="auto"/>
+                                            <RowDefinition Height="auto"/>
+                                            <RowDefinition Height="auto"/>
+                                        </Grid.RowDefinitions>
+                                        <TextBlock Name="title" Text="Physiotherapy for Parkinson's Disease " Margin="5 5" TextWrapping="Wrap" VerticalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource lightFontColor}" FontSize="14"/>
+                                        <TextBlock Name="typeAndDate" Text="Health - 23 Feb 2023" Margin="5 2" VerticalAlignment="Center" FontWeight="SemiBold" Foreground="{StaticResource lightFontColor}" FontSize="12" Grid.Row="1"/>
+                                        <TextBlock Name="snippet" Text="Parkinson’s disease is one of the most prevalent neurodegenerative disorders affecting the motor and non-motor systems within the human brain." Margin="5 5" TextWrapping="Wrap" VerticalAlignment="Center" FontWeight="SemiBold" Foreground="{StaticResource lightFontColor}" FontSize="12" Grid.Row="3"/>
+                                        
+                                    </Grid>
+                                </Border>
+                            </StackPanel>
+                            </ScrollViewer>
+                            
+
+
+                        </Grid>
+                        
+
+                    </Border>
+
+                </Grid>
+            </Border>
         </Grid>
 
 
         <!--top right-->
-        <Border Grid.Row="0" Grid.RowSpan="2" Grid.Column="2" Style="{StaticResource theLinedBorder}" Margin="10,0,10,10">
+        <Border Grid.Row="0" Grid.RowSpan="2" Grid.Column="2" Style="{StaticResource theLinedBorder}" Margin="5,0,5,5">
             <Grid Margin="10">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="55"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="30"/>
                 </Grid.RowDefinitions>
-                <TextBlock Name="selectedDayTB" Text="Wednesday, 18 September 2024" Margin="10 5" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource lightFontColor}" FontSize="25"/>
+                <TextBlock Name="selectedDayTB" Text="Wednesday, 18 September 2024" Margin="10 5" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource lightFontColor}" FontSize="21"/>
                 <!--Year Selection-->
                 <Grid Grid.Row="1">
                     <Grid.ColumnDefinitions>
@@ -157,12 +214,12 @@
                     <StackPanel Grid.Column="1" Name="dayStack" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </Grid>
                 <StackPanel  Orientation="Horizontal" Grid.Row="4" Margin="10 0 0 0">
-                    <Viewbox Width="150" VerticalAlignment="Center">
-                        <CheckBox Name="allPanelCB" Content="Control All Panels" FontWeight="SemiBold" VerticalAlignment="Center" FontSize="16" Foreground="{StaticResource lightFontColor}" Checked="allPanelCBCheck" Unchecked="allPanelCBCheck"/>
+                    <Viewbox Width="120" VerticalAlignment="Center">
+                        <CheckBox Name="allPanelCB" Content="Control All Panels" FontWeight="SemiBold" VerticalAlignment="Center" FontSize="13" Foreground="{StaticResource lightFontColor}" Checked="allPanelCBCheck" Unchecked="allPanelCBCheck"/>
                     </Viewbox>
                     <Line Width="3" Margin="10 3" Stroke="{StaticResource lighterColor}" StrokeThickness="10" X1="1" X2="1" Y1="1" Y2="35" />
 
-                    <TextBlock Text="Pick date:" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="18" FontWeight="SemiBold"/>
+                    <TextBlock Text="Pick date:" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="14" FontWeight="SemiBold"/>
 
                     <DatePicker Name="dp" IsTodayHighlighted="True" Margin="10 0" VerticalAlignment="Center" SelectedDateChanged="dpDateChanged" />
                 </StackPanel>
@@ -170,11 +227,11 @@
         </Border>
 
         <!--Appointments-->
-        <Border Grid.Column="2" Grid.Row="2" Grid.RowSpan="3" Style="{StaticResource theLinedBorder}" Margin="10,10,10,10">
+        <Border Grid.Column="2" Grid.Row="2" Grid.RowSpan="3" Style="{StaticResource theLinedBorder}" Margin="5">
             <Grid Margin="10">
                 <Grid.RowDefinitions>
-                    
-                    <RowDefinition Height="55"/>
+
+                    <RowDefinition Height="45"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <TextBlock Name="appointmentsDGTitleTB" Text="Appointments" Margin="5" VerticalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource lightFontColor}" FontSize="25"/>

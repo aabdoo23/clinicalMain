@@ -28,50 +28,38 @@
         <!--Background-->
         <Border Style="{StaticResource theLinedBorder}"
                 Grid.Column="0"
-                Margin="10"
+                Margin="0 10 10 10"
                 Background="{StaticResource lightFontColor}"
                 Grid.ColumnSpan="2"
                 Grid.RowSpan="2" />
 
 
-        
+
 
         <!--Chat Items Section-->
         <Border Grid.Column="0"
-                Grid.Row="1">
+                Grid.Row="1" Margin="0 0 0 10">
             <Grid>
 
                 <!--Groups Items-->
                 <StackPanel>
-                    <StackPanel Margin="0 0 15 0">
+                    <StackPanel>
                         <TextBlock Text="Announcements Channel"
                                Style="{StaticResource textTitle}"
-                               Margin="25 0 0 5" />
+                               Margin="15 0 0 5" />
 
-                        <uc:chatItem Title="Announcements"
-                             Message="Okay, Cool!"
-                             Color="#73AFFF"
-                             TagName="A"
-                             MessageCount="2" />
+                        <uc:chatItem x:Name="announcementsChannelChatItem" Title="Announcements"
+                             Message="Dr. Ahmed: Okay, Cool!"
+                             Icon="Users" MouseDown="annoncementsChannelClick"/>
                     </StackPanel>
-                    <StackPanel>
-                        <TextBlock Text="Groups"
-                               Style="{StaticResource textTitle}"
-                               Margin="25 0 0 5" />
-
-                        <uc:chatItem Title="Doctors only"
-                             Message="Okay, Cool!"
-                             Color="#73AFFF"
-                             TagName="D"
-                             MessageCount="2" />
-                    </StackPanel>
+                    <StackPanel/>
 
                     <TextBlock Text="Chats"
                                Style="{StaticResource textTitle}"
-                               Margin="25 15 0 5" />
+                               Margin="15 15 0 5" />
 
                     <!--Person Items-->
-                    <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="10 0 0 0" MinHeight="320">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto"  MinHeight="320">
                         <StackPanel Name="chatStack"/>
 
                     </ScrollViewer>
@@ -94,65 +82,55 @@
                 </Grid.RowDefinitions>
 
                 <!--Top Chat MenuBar-->
-                <Border Background="{StaticResource lighterColor}" CornerRadius="10 10 0 0">
-                <Grid >
-                    <Grid.Effect>
-                        <DropShadowEffect ShadowDepth="1" Direction="-90" BlurRadius="20" Opacity="0.1"/>
-                    </Grid.Effect>
-
-                    <TextBlock Text="Announcements"
+                <Border Background="{StaticResource darkerColor}" CornerRadius="5 5 0 0">
+                    <Border.Effect>
+                        <DropShadowEffect ShadowDepth="1" Direction="-90" BlurRadius="20" Opacity="0.3"/>
+                    </Border.Effect>
+                    <Grid >
+                        <TextBlock Text="Announcements"
                                FontSize="16"
                                Margin="20 15"
                                Foreground="{StaticResource lightFontColor}"
                                HorizontalAlignment="Left" Name="roomName" />
 
-                    <StackPanel Orientation="Horizontal"
+                        <StackPanel Orientation="Horizontal"
                                 Margin="0 0 10 0"
-                                HorizontalAlignment="Right">
-
-                        <Button Style="{StaticResource textBoxButton}">
-                            <icon:PackIconMaterial Kind="DotsVertical"
-                                                   Width="14" Height="14"
-                                                   Foreground="{StaticResource lightFontColor}" />
-                        </Button>
-
-                    </StackPanel>
-                </Grid>
+                                HorizontalAlignment="Right"/>
+                    </Grid>
                 </Border>
                 <!--Chats-->
                 <ScrollViewer Name="scrollViewer"  Grid.Row="1"
                             Margin="20 10 20 20" VerticalScrollBarVisibility="Hidden">
-                <StackPanel Name="texts">
-                    <!--Messages-->
-                    <uc:chatSeperator Title="Yesterday" />
+                    <StackPanel Name="texts">
+                        <!--Messages-->
+                        <uc:chatSeperator Title="Yesterday" />
 
-                    <uc:MyMessageChat Message="ممكن حد يأبديت تحاليل العيان الفلاني؟" />
-                    <TextBlock Text="4:15 PM"
+                        <uc:MyMessageChat Message="ممكن حد يأبديت تحاليل العيان الفلاني؟" />
+                        <TextBlock Text="4:15 PM"
                                Style="{StaticResource timeTextRight}" />
 
-                    <uc:UserChat Username="Dr. Akram Tawfik"
-                                 Source="/images/akram tawfik.png" />
-                    <uc:MessageChat Color="{StaticResource darkerColor}"
+                        <uc:UserChat Username="Dr. Akram Tawfik"  />
+                        <uc:MessageChat Color="{StaticResource darkerColor}"
                                     Message="مش معايا غير العلاني" />
-                    <TextBlock Text="6:39 PM"
+                        <TextBlock Text="6:39 PM"
                                Style="{StaticResource timeText}" />
 
-                    <uc:chatSeperator Title="Today"
+                        <uc:chatSeperator Title="Today"
                                       Margin="0 5 0 0" />
 
-                    <uc:UserChat Username="Dr. Mohamed Magdy"
+                        <uc:UserChat Username="Dr. Mohamed Magdy"
                                  Source="/images/afsha.png" />
-                    <uc:MessageChat Color="#68CFA3"
+                        <uc:MessageChat Color="#68CFA3"
                                     Message="انا معايا كاني " />
-                    <uc:MessageChat Color="#68CFA3"
+                        <uc:MessageChat Color="#68CFA3"
                                     Message="تقريبا تبع دكتور ماني" />
-                    <TextBlock Text="3:25 PM"
+                        <TextBlock Text="3:25 PM"
                                Style="{StaticResource timeText}" />
 
-                    <uc:MyMessageChat Message="طب جامد" />
-                    <TextBlock Text="3:26 PM"
+                        <uc:MyMessageChat Message="طب جامد" />
+                        <TextBlock Text="3:26 PM"
                                Style="{StaticResource timeTextRight}" />
-                </StackPanel>
+                    </StackPanel>
                 </ScrollViewer>
                 <!--Message Bottom Section-->
                 <Grid Grid.Row="2"

@@ -55,7 +55,7 @@ namespace clinical.Pages
                 chatStack.Children.Add(item);
             }
 
-            selectedChatRoom = chatRooms[0];
+            selectedChatRoom = DB.GetChatRoomByID(0);
             Refresh();
             textBoxMessage.Focus();
 
@@ -90,6 +90,12 @@ namespace clinical.Pages
                 }
                 else
                 {
+                    if (ch.ChatRoomID == 0)
+                    {
+                        UserChat user = new UserChat();
+                        user.Username = DB.GetUserById(ch.SenderID).FullName;
+                        texts.Children.Add(user);
+                    }
                     MessageChat ms = new MessageChat();
                     ms.Message = ch.MessageContent;
                     ms.Color = (Brush)FindResource("darkerColor");
@@ -125,13 +131,20 @@ namespace clinical.Pages
                 }
                 else
                 {
+                    if (ch.ChatRoomID == 0)
+                    {
+                        UserChat user = new UserChat();
+                        user.Username = DB.GetUserById(ch.SenderID).FullName;
+                        texts.Children.Add(user);
+                    }
+                    
+
                     MessageChat ms = new MessageChat();
                     ms.Message = ch.MessageContent;
                     ms.Color = (Brush)FindResource("darkerColor");
                     TextBlock myTime = new TextBlock();
-                    myTime.Text = ch.TimeStamp.Hour.ToString("t");
+                    myTime.Text = ch.TimeStamp.ToString("t");
                     myTime.Style = FindResource("timeText") as Style;
-
                     texts.Children.Add(ms);
                     texts.Children.Add(myTime);
                 }
@@ -174,25 +187,26 @@ namespace clinical.Pages
             int id = globals.generateNewChatMessageID(loggedIn.UserID);
             int id2 = globals.generateNewChatMessageID(selectedChatRoom.SecondUserID);
             int chatRoomID = selectedChatRoom.ChatRoomID;
-            string ch = chatRoomID.ToString();
-            string ch1 = ch.ToString().Substring(0, 3);
-            string ch2 = ch.ToString().Substring(3, 3);
-
-
-            string ch22 = ch2 + ch1;
-
-            int secondChatRoomID = int.Parse(ch22);
+           
             ChatMessage message = new ChatMessage(id, loggedIn.UserID, chatRoomID, text, DateTime.Now);
-            ChatMessage message2 = new ChatMessage(id2, loggedIn.UserID, secondChatRoomID, text, DateTime.Now);
 
             DB.InsertChatMessage(message);
-            DB.InsertChatMessage(message2);
             textBoxMessage.Text = "";
         }
 
         private void enter(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter) { send(); }
+        }
+
+        private void annoncementsChannelClick(object sender, MouseButtonEventArgs e)
+        {
+            timer.Stop();
+            selectedChatRoom = DB.GetChatRoomByID(0);
+                        
+            Refresh();
+
+            timer.Start();
         }
     }
 }

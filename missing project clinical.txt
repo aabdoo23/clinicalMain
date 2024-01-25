@@ -23,26 +23,13 @@ random thoughts:
 
 
 
-
-
-
-
-
-
-
-
-
 /////////////////////////////////////////////////////////////////////////////////////////
 
 unfinished bussiness:
 
 1-add real data to all tables in db
 
-2-meen byshof eh
-
 3-Yktb al modda mn al awl w y3addel b3dha law fe progress ahsn mn al motwk3
-
-4-delete buttons in settings grids with confirmation
 
 5-reminder lel syana bta3t al aghza w al equipment fl clinic 
 
@@ -54,25 +41,23 @@ unfinished bussiness:
 
 9- salary and shit
 
-10- checkboxes for all grids to show and hide viewed series
-
-11- sh8al el chat group wel announcements
+10- checkboxes for all charts to show and hide viewed series
 
 12-NOTIFICATIONS
 
+13-Disease Ontology:
+all diseases implemented in the system must have a ontology id (instead of the original id and a link where when clicked refers to the relevant page in disease-ontology.org)
+https://disease-ontology.org/do
 
+14-refer to mol5s lec 5 on medical records
 
+15-HL7 is a great bonus
 
+-generating reports for everything
 
+-everything is printable
 
-
-
-
-
-
-
-
-
+-SOAP
 
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -93,15 +78,6 @@ not urgent:
 -border move only upper part (take from mainwindow line 24 and remove mousedown from main border)
 
 - review all plots
-
-
-
-
-
-
-
-
-
 
 
 
@@ -195,6 +171,12 @@ visit to have a done bool
 -how to schedule:
 for a doctor, get all future visits, if all his day appointments are booked, mark day off, if not check which slots are free and view these in the cb
 
+
+2-meen byshof eh
+
+-article retrieval for physicians, auto for patients of day, sure can be improved but not important
+
+11- sh8al el chat group wel announcements (no need for groups now)
 
 /////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////

@@ -11,7 +11,7 @@
       mc:Ignorable="av" d:DesignHeight="668" d:DesignWidth="1060">
 
 
-    <Border CornerRadius="15" Background="{StaticResource lightFontColor}">
+    <Border CornerRadius="15" Margin="0 10 10 10" Background="{StaticResource lightFontColor}">
 
         <Grid>
             <Grid.RowDefinitions>

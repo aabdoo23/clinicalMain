@@ -1,11 +1,8 @@
 ﻿using clinical.BaseClasses;
 using MySql.Data.MySqlClient;
-using Org.BouncyCastle.Utilities;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Data;
-using System.IO.Packaging;
 using System.Linq;
 using System.Windows;
 using Package = clinical.BaseClasses.Package;
@@ -1348,7 +1345,8 @@ namespace clinical
                     connection.Open();
                     string query = "SELECT * FROM TreatmentPlan WHERE patientID=@pId";
 
-                    using (MySqlCommand command = new MySqlCommand(query, connection)) {
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
                         command.Parameters.AddWithValue("@pId", patientID);
                         using (MySqlDataReader reader = command.ExecuteReader())
                         {
@@ -1391,7 +1389,8 @@ namespace clinical
                     connection.Open();
                     string query = "SELECT * FROM TreatmentPlan WHERE visitID=@pId";
 
-                    using (MySqlCommand command = new MySqlCommand(query, connection)) {
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
                         command.Parameters.AddWithValue("@pId", visitID);
                         using (MySqlDataReader reader = command.ExecuteReader())
                         {
@@ -1668,7 +1667,7 @@ namespace clinical
                 {
                     if (connection.State == ConnectionState.Closed) connection.Open();
 
-                    string query = "SELECT * FROM ChatRoom WHERE firstUserID = @userID";
+                    string query = "SELECT * FROM ChatRoom WHERE firstUserID = @userID OR secondUserID=@userID";
 
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
@@ -4081,7 +4080,6 @@ namespace clinical
                 }
             }
         }
-
         public static void UpdatePrescription(Prescription prescription)
         {
             using (connection)
@@ -4113,7 +4111,6 @@ namespace clinical
                 }
             }
         }
-
         public static void DeletePrescription(int prescriptionID)
         {
             using (connection)
@@ -4139,7 +4136,6 @@ namespace clinical
                 }
             }
         }
-
         public static Prescription GetPrescriptionByID(int prescriptionID)
         {
             using (connection)
@@ -4180,7 +4176,6 @@ namespace clinical
                 return null;
             }
         }
-
         public static List<Prescription> GetAllPrescriptions()
         {
             List<Prescription> prescriptionList = new List<Prescription>();
@@ -4220,7 +4215,6 @@ namespace clinical
                 return prescriptionList;
             }
         }
-
         public static List<Prescription> GetAllPrescriptionsByPatientID(int patientID)
         {
             List<Prescription> prescriptionList = new List<Prescription>();
@@ -4345,7 +4339,6 @@ namespace clinical
                 }
             }
         }
-
         public static void UpdateMedicalRecord(MedicalRecord medicalRecord)
         {
             using (connection)
@@ -4380,7 +4373,6 @@ namespace clinical
                 }
             }
         }
-
         public static void DeleteMedicalRecord(int recordID)
         {
             using (connection)
@@ -4406,7 +4398,6 @@ namespace clinical
                 }
             }
         }
-
         public static MedicalRecord GetMedicalRecordByID(int recordID)
         {
             using (connection)
@@ -4446,7 +4437,6 @@ namespace clinical
                 return null;
             }
         }
-
         public static List<MedicalRecord> GetAllMedicalRecords()
         {
             List<MedicalRecord> medicalRecordList = new List<MedicalRecord>();
@@ -4488,9 +4478,6 @@ namespace clinical
                 return medicalRecordList;
             }
         }
-
-
-
         public static List<MedicalRecord> GetAllPatientRecords(int patientID)
         {
             List<MedicalRecord> patientMedicalRecords = new List<MedicalRecord>();
@@ -4571,7 +4558,6 @@ namespace clinical
                 }
             }
         }
-
         public static List<IssueScan> GetAllIssueScans()
         {
             List<IssueScan> issueScans = new List<IssueScan>();
@@ -4686,7 +4672,6 @@ namespace clinical
 
             return issueScans;
         }
-
         public static IssueScan GetIssueScanById(int issueID)
         {
             using (connection)
@@ -4723,7 +4708,6 @@ namespace clinical
 
             return null; // Return null if the issue scan with the specified ID is not found
         }
-
         public static void UpdateIssueScan(IssueScan issueScan)
         {
             using (connection)
@@ -4756,7 +4740,6 @@ namespace clinical
                 }
             }
         }
-
         public static void DeleteIssueScan(int issueID)
         {
             using (connection)
@@ -5333,7 +5316,6 @@ namespace clinical
 
             return Double.Parse(time);
         }
-
         public static void UpdateDefaultAppointmentTimeInMinutes(string val)
         {
             UpdateGlobalVar(9, val);
@@ -5772,6 +5754,6 @@ namespace clinical
             }
         }
 
-        
+
     }
 }

@@ -117,5 +117,58 @@ namespace clinical.Pages
 
         }
 
+        private void delete(object sender, RoutedEventArgs e)
+        {
+            if(treatmentPlansDataGrid.SelectedItem != null)
+            {
+                MessageBoxResult result = MessageBox.Show("Are you sure you want to delete this treatment plan?", "Delete", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (result == MessageBoxResult.Yes)
+                {
+                    TreatmentPlan plan = (TreatmentPlan)treatmentPlansDataGrid.SelectedItem;
+                    DB.DeleteTreatmentPlan(plan.PlanID);
+                    treatmentPlansDataGrid.ItemsSource = DB.GetAllTreatmentPlans();
+                }
+            }
+            else if (chronicsDataGrid.SelectedItem != null)
+            {
+                MessageBoxResult result = MessageBox.Show("Are you sure you want to delete this chronic disease?", "Delete", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (result == MessageBoxResult.Yes)
+                {
+                    ChronicDisease chronic = (ChronicDisease)chronicsDataGrid.SelectedItem;
+                    DB.DeleteChronicDisease(chronic.ChronicDiseaseID);
+                    chronicsDataGrid.ItemsSource = DB.GetAllChronicDiseases();
+                }
+            }
+            else if (injuriesDataGrid.SelectedItem != null)
+            {
+                MessageBoxResult result = MessageBox.Show("Are you sure you want to delete this injury?", "Delete", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (result == MessageBoxResult.Yes)
+                {
+                    Injury inj = (Injury)injuriesDataGrid.SelectedItem;
+                    DB.DeleteInjury(inj.InjuryID);
+                    injuriesDataGrid.ItemsSource = DB.GetAllInjuries();
+                }
+            }
+            else if (exercisesDataGrid.SelectedItem != null)
+            {
+                MessageBoxResult result = MessageBox.Show("Are you sure you want to delete this exercise?", "Delete", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (result == MessageBoxResult.Yes)
+                {
+                    Exercise ex = (Exercise)exercisesDataGrid.SelectedItem;
+                    DB.DeleteExercise(ex.ExerciseID);
+                    exercisesDataGrid.ItemsSource = DB.GetAllExercises();
+                }
+            }
+            else if (testsDataGrid.SelectedItem != null)
+            {
+                MessageBoxResult result = MessageBox.Show("Are you sure you want to delete this test?", "Delete", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (result == MessageBoxResult.Yes)
+                {
+                    EvaluationTest test = (EvaluationTest)testsDataGrid.SelectedItem;
+                    DB.DeleteTest(test.TestID);
+                    testsDataGrid.ItemsSource = DB.GetAllTests();
+                }
+            }
+        }
     }
 }
