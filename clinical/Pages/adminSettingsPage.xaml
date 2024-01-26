@@ -153,9 +153,9 @@
                     <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Hidden">
                         <DataGrid Grid.Row="1" Margin="5" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="chronicsDataGrid" Style="{DynamicResource DataGridStyle1}">
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" Binding="{Binding ChronicDiseaseID}"/>
-                                <DataGridTextColumn Header="Disease Name" Binding="{Binding ChronicDiseaseName}" IsReadOnly="True" Width="*"/>
-                                <DataGridTextColumn Header="Description" Binding="{Binding Description}" IsReadOnly="True" Width="2*"/>
+                                <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" Binding="{Binding Id}"/>
+                                <DataGridTextColumn Header="Disease Name" Binding="{Binding Name}" IsReadOnly="True" Width="*"/>
+                                <DataGridTextColumn Header="Description" Binding="{Binding Def}" IsReadOnly="True" Width="2*"/>
                                 <DataGridTemplateColumn Header="" IsReadOnly="True" Width="auto">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
