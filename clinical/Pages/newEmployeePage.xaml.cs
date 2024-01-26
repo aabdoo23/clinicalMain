@@ -1,9 +1,11 @@
 ﻿using clinical.BaseClasses;
+using Org.BouncyCastle.Asn1.X509;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 
 namespace clinical.Pages
@@ -13,9 +15,13 @@ namespace clinical.Pages
     /// </summary>
     public partial class newEmployeePage : Page
     {
-        public newEmployeePage()
+        List<int> selectedDays = new List<int>();
+        bool IsPhysician;
+        public newEmployeePage(bool isPhysician)
         {
             InitializeComponent();
+
+            IsPhysician = isPhysician;
             bdDatePicker.SelectedDate = DateTime.Now;
             hiringDatePicker.SelectedDate = DateTime.Now;
             sundayCB.IsChecked = true;
@@ -29,7 +35,6 @@ namespace clinical.Pages
             selectedDays.Add(5);
             selectedDays.Add(6);
         }
-        List<int>selectedDays=new List<int>();
         private void save(object sender, MouseButtonEventArgs e)
         {
             string fn = firstNameTextBox.Text;
@@ -52,14 +57,59 @@ namespace clinical.Pages
 
             string nid = NIDTextBox.Text;
             string email = emailTextBox.Text;
+            string password = passwordBox.Password;
 
-            User user = new User(globals.generateNewEmployeeID(nid), fn.Trim(), ln.Trim(), gender.Trim(), hd, bd, address.Trim(), phone.Trim(), email.Trim(), nid.Trim());
+
+            if (fn == "" || ln == "" || address == "" || phone == "" || nid == "" || email == "")
+            {
+                MessageBox.Show("Please fill all the fields", "Error");
+                return;
+            }
+            if (nid.Length != 14)
+            {
+                MessageBox.Show("National ID must be 14 digits", "Error");
+                return;
+            }
+            if (phone.Length != 11)
+            {
+                MessageBox.Show("Phone Number must be 11 digits", "Error");
+                return;
+            }
+            if (email.Length < 5 || !email.Contains('@') || !email.Contains('.'))
+            {
+                MessageBox.Show("Invalid Email", "Error");
+                return;
+            }
+            if (DB.GetUserByNID(nid) != null)
+            {
+                MessageBox.Show("National ID already exists", "Error");
+                return;
+            }
+            if (password.Length < 8)
+            {
+                MessageBox.Show("Password must be at least 8 characters", "Error");
+                return;
+            }
+            if (password != passwordConfirmBox.Password)
+            {
+                MessageBox.Show("Passwords don't match", "Error");
+                return;
+            }
+            int id;
+
+            if (IsPhysician)
+            {
+                id = globals.generateNewPhysicianID(nid);
+            }
+            else id = globals.generateNewEmployeeID(nid);
+
+            User user = new User(id, fn.Trim(), ln.Trim(), gender.Trim(), hd, bd, address.Trim(), phone.Trim(), email.Trim(), nid.Trim(), password);
             DB.InsertUser(user);
-            selectedDays=selectedDays.Distinct().ToList();
+            selectedDays = selectedDays.Distinct().ToList();
             DB.updateUserWorkDays(user.UserID, selectedDays);
 
 
-            MessageBox.Show("Successfully added new Employee, ID: " + user.UserID, "Success");
+            MessageBox.Show("Successfully added new User, ID: " + user.UserID, "Success");
 
             Window.GetWindow(this).Close();
         }
@@ -78,28 +128,28 @@ namespace clinical.Pages
 
         private void selectDay(object sender, RoutedEventArgs e)
         {
-            
+
             if (((CheckBox)sender).Content == "Saturday")
             {
                 selectedDays.Add(1);
             }
-            else if(((CheckBox)sender).Content == "Sunday")
+            else if (((CheckBox)sender).Content == "Sunday")
             {
                 selectedDays.Add(2);
             }
-            else if(((CheckBox)sender).Content == "Monday")
+            else if (((CheckBox)sender).Content == "Monday")
             {
                 selectedDays.Add(3);
             }
-            else if(((CheckBox)sender).Content == "Tuesday")
+            else if (((CheckBox)sender).Content == "Tuesday")
             {
                 selectedDays.Add(4);
             }
-            else if(((CheckBox)sender).Content == "Wednesday")
+            else if (((CheckBox)sender).Content == "Wednesday")
             {
                 selectedDays.Add(5);
             }
-            else if(((CheckBox)sender).Content == "Thursday")
+            else if (((CheckBox)sender).Content == "Thursday")
             {
                 selectedDays.Add(6);
             }
@@ -140,6 +190,44 @@ namespace clinical.Pages
                 selectedDays.Remove(7);
             }
 
+        }
+
+        private void TogglePassword(object sender, MouseButtonEventArgs e)
+        {
+
+
+            if (passwordBox.Visibility == Visibility.Hidden)
+            {
+                passwordConfirmBox.Password = passwordConfirmTB.Text;
+                passwordBox.Password = passwordTB.Text;
+                passwordBox.Visibility = Visibility.Visible;
+                passwordConfirmBox.Visibility = Visibility.Visible;
+                passwordTB.Visibility = Visibility.Hidden;
+                passwordConfirmTB.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                passwordTB.Text = passwordBox.Password;
+                passwordConfirmTB.Text = passwordConfirmBox.Password;
+                passwordBox.Visibility = Visibility.Hidden;
+                passwordConfirmBox.Visibility = Visibility.Hidden;
+                passwordTB.Visibility = Visibility.Visible;
+                passwordConfirmTB.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void mathcingPassword(object sender, RoutedEventArgs e)
+        {
+            if (passwordBox.Password == passwordConfirmBox.Password && passwordBox.Password.Length != 0)
+            {
+                correctPassIcon.Visibility = Visibility.Visible;
+                wrongPassIcon.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                correctPassIcon.Visibility = Visibility.Hidden;
+                wrongPassIcon.Visibility = Visibility.Visible;
+            }
         }
     }
 }

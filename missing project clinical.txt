@@ -29,35 +29,35 @@ unfinished bussiness:
 
 1-add real data to all tables in db
 
-3-Yktb al modda mn al awl w y3addel b3dha law fe progress ahsn mn al motwk3
+2-Yktb al modda mn al awl w y3addel b3dha law fe progress ahsn mn al motwk3
 
-5-reminder lel syana bta3t al aghza w al equipment fl clinic 
+3-reminder lel syana bta3t al aghza w al equipment fl clinic 
 
-6-chat bot
+4-chat bot
 
-7-ML and Desicion support
+5-ML and Desicion support
 
-8- print the prescription properly
+6- print the prescription properly
 
-9- salary and shit
+7- salary and shit
 
-10- checkboxes for all charts to show and hide viewed series
+8- checkboxes for all charts to show and hide viewed series
 
-12-NOTIFICATIONS
+9-NOTIFICATIONS
 
-13-Disease Ontology:
+10-Disease Ontology:
 all diseases implemented in the system must have a ontology id (instead of the original id and a link where when clicked refers to the relevant page in disease-ontology.org)
 https://disease-ontology.org/do
 
-14-refer to mol5s lec 5 on medical records
+11-refer to mol5s lec 5 on medical records
 
-15-HL7 is a great bonus
+12-HL7 is a great bonus
 
--generating reports for everything
+13-generating reports for everything
 
--everything is printable
+14-everything is printable
 
--SOAP
+15-SOAP
 
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -177,6 +177,8 @@ for a doctor, get all future visits, if all his day appointments are booked, mar
 -article retrieval for physicians, auto for patients of day, sure can be improved but not important
 
 11- sh8al el chat group wel announcements (no need for groups now)
+
+4-delete buttons in settings grids with confirmation
 
 /////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////

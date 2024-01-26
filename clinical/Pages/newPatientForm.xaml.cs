@@ -21,17 +21,17 @@ namespace clinical.Pages
             }
             else if (type == 1) //new physiotherapist
             {
-                window.Height = 421;
+                window.Height = 440;    
 
                 formTitle.Content = "New Physio Therapist";
-                mainFrame.Navigate(new newPhysioTherapistPage());
+                mainFrame.Navigate(new newEmployeePage(true));
             }
             else if (type == 2) //new employee
             {
-                window.Height = 421;
+                window.Height = 440;
 
                 formTitle.Content = "New Employee";
-                mainFrame.Navigate(new newEmployeePage());
+                mainFrame.Navigate(new newEmployeePage(false));
             }
             else if (type == 3) //new package
             {

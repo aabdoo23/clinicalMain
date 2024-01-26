@@ -32,11 +32,7 @@ namespace clinical.Pages
             InitializeComponent();
             loggedIn = user;
             List<ChatRoom> chatRooms=DB.GetChatRoomsByUserID(user.UserID);
-            //<uc:chatItem Title="Dr. Mohamed Magdy"
-            //Image = "/images/afsha.png"
-            //                 Message = "Okay, Nice work"
-            //                 Color = "#73AFFF"
-            //                 MessageCount = "2" />
+            
             foreach (ChatRoom chatRoom in chatRooms)
             {
                 chatItem item = new chatItem();

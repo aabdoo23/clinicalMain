@@ -7,6 +7,7 @@ CREATE TABLE User (
     lastname varchar (30) not null,
     userID int not null primary key,
     gender boolean,
+    password text,
 	  hireDate date,
     birthdate date,
     address text,
@@ -326,6 +327,9 @@ CREATE TABLE calendarEvent(
 #11 cost for follow-up
 #12 cost for exercise session
  
+CREATE USER 'root'@'%' identified by 'root';
+grant all privileges on *.* to 'root'@'%' with grant option;
+flush privileges;
 
 CREATE TABLE globalVars(
 	varID int,

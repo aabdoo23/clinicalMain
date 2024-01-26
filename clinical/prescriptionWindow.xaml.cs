@@ -43,9 +43,6 @@ namespace clinical
         int prescriptionID;
 
         List<dataObj> ObjectsList = new List<dataObj>();
-
-        List<string> commonFreq = new List<string> { "2 times a day", "3 times a week", "4 times a life" };
-
         public prescriptionWindow(Visit currVisit, Patient currPatient)
         {
             InitializeComponent();
@@ -577,16 +574,6 @@ namespace clinical
                 CreateNewIssueExerciseUI(dataObj);
             }
         }
-
-
-
-
-
-
-
-
-
-
 
 
 

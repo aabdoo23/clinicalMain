@@ -14,10 +14,13 @@ namespace clinical.BaseClasses
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
         public string NationalID { get; set; }
+        public string Password { get; set; }
         public string FullName { get { return FirstName + " " + LastName;}}
         public bool isReciptionist { get { return UserID.ToString().StartsWith('3'); } }
+        public bool isEmployee { get { return UserID.ToString().StartsWith('2'); } }
+        public bool isAdmin { get { return UserID.ToString().StartsWith('1'); } }
 
-        public User(int userID, string firstName, string lastName, string gender, DateTime hireDate, DateTime birthdate, string address, string phoneNumber, string email, string nationalID)
+        public User(int userID, string firstName, string lastName, string gender, DateTime hireDate, DateTime birthdate, string address, string phoneNumber, string email, string nationalID, string password)
         {
             UserID = userID;
             FirstName = firstName;
@@ -29,6 +32,7 @@ namespace clinical.BaseClasses
             PhoneNumber = phoneNumber;
             Email = email;
             NationalID = nationalID;
+            Password = password;
         }
         override public string ToString()
         {

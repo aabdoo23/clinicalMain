@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Security.RightsManagement;
 using System.Windows;
 using Package = clinical.BaseClasses.Package;
 
@@ -42,7 +43,7 @@ namespace clinical
                 {
                     if (connection.State == ConnectionState.Closed) connection.Open();
 
-                    using (MySqlCommand cmd = new MySqlCommand("INSERT INTO User (userID, firstName, lastName, gender, hireDate, birthdate, address, phoneNumber, email, nationalID) VALUES (@userID, @firstName, @lastName, @gender, @hireDate, @birthdate, @address, @phoneNumber, @email, @nationalID)", connection))
+                    using (MySqlCommand cmd = new MySqlCommand("INSERT INTO User (userID, firstName, lastName, gender, hireDate, birthdate, address, phoneNumber, email, nationalID, password) VALUES (@userID, @firstName, @lastName, @gender, @hireDate, @birthdate, @address, @phoneNumber, @email, @nationalID, @password)", connection))
                     {
                         cmd.Parameters.AddWithValue("@userID", user.UserID);
                         cmd.Parameters.AddWithValue("@firstName", user.FirstName);
@@ -54,6 +55,7 @@ namespace clinical
                         cmd.Parameters.AddWithValue("@phoneNumber", user.PhoneNumber);
                         cmd.Parameters.AddWithValue("@email", user.Email);
                         cmd.Parameters.AddWithValue("@nationalID", user.NationalID);
+                        cmd.Parameters.AddWithValue("@password", user.Password);
 
                         cmd.ExecuteNonQuery();
                     }
@@ -291,7 +293,41 @@ namespace clinical
             return patients;
         }
 
+        public static User GetUserByNID(string nid)
+        {
+            using(connection)
+            {
+                User user = null;
+                try
+                {
+                    if (connection.State == ConnectionState.Closed) connection.Open();
 
+                    string query = "SELECT * FROM User WHERE nationalID LIKE @userID";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@userID", nid);
+
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            //MessageBox.Show(reader.Read().ToString());
+
+                            if (reader.Read())
+                            {
+                                user = MapUser(reader);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+
+                return user;
+
+            }
+        }
 
         private static User MapUser(MySqlDataReader reader)
         {
@@ -305,7 +341,8 @@ namespace clinical
                 reader["address"].ToString(),
                 reader["phoneNumber"].ToString(),
                 reader["email"].ToString(),
-                reader["nationalID"].ToString()
+                reader["nationalID"].ToString(),
+                reader["password"].ToString()
             );
         }
 
@@ -5754,6 +5791,6 @@ namespace clinical
             }
         }
 
-
+        
     }
 }

@@ -6,7 +6,7 @@
       xmlns:uc="clr-namespace:clinical.userControls"
       xmlns:av="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      mc:Ignorable="av" Height="421" Width="600" 
+      mc:Ignorable="av" Height="440" Width="600" 
         Name="window"
         MinHeight="200" MinWidth="300"
         AllowsTransparency="True" WindowStyle="None" WindowStartupLocation="CenterScreen" Background="Transparent">
