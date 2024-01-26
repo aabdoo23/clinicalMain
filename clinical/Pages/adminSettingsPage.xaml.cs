@@ -14,8 +14,8 @@ namespace clinical.Pages
         {
             InitializeComponent();
             treatmentPlansDataGrid.ItemsSource = DB.GetAllTreatmentPlans();
-            
-            chronicsDataGrid.ItemsSource = DB.GetAllChronicDiseases();
+            ontology oi = new ontology();
+            chronicsDataGrid.ItemsSource = oi.GetFirstTenOntologies();
             injuriesDataGrid.ItemsSource = DB.GetAllInjuries();
             exercisesDataGrid.ItemsSource = DB.GetAllExercises();
             testsDataGrid.ItemsSource=DB.GetAllTests();

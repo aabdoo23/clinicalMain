@@ -14,7 +14,7 @@ namespace clinical
         static MySqlConnection connection;
         public DB()
         {
-            string connectionString = "server=localhost;database=clinical;user=root;password=root;";
+            string connectionString = "server=192.168.1.104;database=clinical;user=root;password=root;";
 
             using (connection = new MySqlConnection(connectionString))
             {
@@ -5754,6 +5754,7 @@ namespace clinical
             }
         }
 
+        
 
     }
 }
