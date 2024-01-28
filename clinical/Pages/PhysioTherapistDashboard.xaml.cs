@@ -27,6 +27,9 @@ namespace clinical.Pages
             leftSideFrame.NavigationService.Navigate(new DashBoardPage());
             signedInTB.Text = $"Welcome, Dr. {therapist.FirstName}";
             PopulateDataGrid();
+            PopulateOntology();
+            PopulateOntlogyFilters();
+
 
         }
         void updateDayAppointments()
@@ -150,9 +153,7 @@ namespace clinical.Pages
 
             if (allPanelCB.IsChecked == true && (currentDayIndex.DayOfYear != DateTime.Now.DayOfYear))
             {
-                patientsDGTitleTB.Text = currentDayIndex.ToString("M") + "' Patients";
                 patients = DB.GetPatientsWithVisitsOnDateByPhysicianID(physician.UserID, currentDayIndex);
-                patientsDataGrid.ItemsSource = patients;
                 numberOfPhysiciansTB.Text = patients.Count.ToString();
                 if (patients.Count == 0)
                 {
@@ -165,9 +166,7 @@ namespace clinical.Pages
             }
             else
             {
-                patientsDGTitleTB.Text = "Today's Patients";
                 patients = DB.GetPatientsWithVisitsOnDateByPhysicianID(physician.UserID, DateTime.Now);
-                patientsDataGrid.ItemsSource = patients;
                 numberOfPhysiciansTB.Text = patients.Count.ToString();
                 articlesTitleTB.Text = "General Articles";
             }
@@ -335,6 +334,86 @@ namespace clinical.Pages
                 }
             }
             else PopulateDataGrid();
+        }
+
+
+        ///ontology section
+        void PopulateOntology()
+        {
+            List<OntologyTerm> terms = DB.GetAllTerms();
+            foreach (var i in terms)
+            {
+                ontologiesStackPanel.Children.Add(globals.CreateOntologyUIObject(i));
+            }
+        }
+        void PopulateOntlogyFilters()
+        {
+            List<string> filters = new()
+            {
+                "DOID",
+                "Name",
+                "Def. Keywords",
+                "Parent",
+                "Synonyms"
+            };
+            ontologyFilters.ItemsSource = filters;
+            ontologyFilters.SelectedIndex = 0;
+        }
+
+        private void ontologySearchButton_Click(object sender, RoutedEventArgs e)
+        {
+            int filter= ontologyFilters.SelectedIndex;
+            string query = ontologySearchTB.Text;
+            searchOntology(query, filter);
+        }
+
+        private void searchOntology(string query, int filter)
+        {
+            if(filter == 0)
+            {
+                ontologiesStackPanel.Children.Clear();
+                List<OntologyTerm> terms = DB.GetTermsLikeID(query);
+                foreach (var i in terms)
+                {
+                    ontologiesStackPanel.Children.Add(globals.CreateOntologyUIObject(i));
+                }
+            }
+            else if(filter == 1)
+            {
+                ontologiesStackPanel.Children.Clear();
+                List<OntologyTerm> terms = DB.GetTermsLikeName(query);
+                foreach (var i in terms)
+                {
+                    ontologiesStackPanel.Children.Add(globals.CreateOntologyUIObject(i));
+                }
+            }
+            else if(filter == 2)
+            {
+                ontologiesStackPanel.Children.Clear();
+                List<OntologyTerm> terms = DB.GetTermsLikeDef(query);
+                foreach (var i in terms)
+                {
+                    ontologiesStackPanel.Children.Add(globals.CreateOntologyUIObject(i));
+                }
+            }
+            else if(filter == 3)
+            {
+                ontologiesStackPanel.Children.Clear();
+                List<OntologyTerm> terms = DB.GetTermsLikeParent(query);
+                foreach (var i in terms)
+                {
+                    ontologiesStackPanel.Children.Add(globals.CreateOntologyUIObject(i));
+                }
+            }
+            else if(filter == 4)
+            {
+                ontologiesStackPanel.Children.Clear();
+                List<OntologyTerm> terms = DB.GetTermsLikeSynonyms(query);
+                foreach (var i in terms)
+                {
+                    ontologiesStackPanel.Children.Add(globals.CreateOntologyUIObject(i));
+                }
+            }
         }
     }
 

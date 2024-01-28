@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using static clinical.BaseClasses.ontology;
 
 namespace clinical.Pages
 {
@@ -35,13 +36,6 @@ namespace clinical.Pages
             newPatientForm form = new newPatientForm(9);
             form.Show();
         }
-
-        private void newChronicDisease(object sender, MouseButtonEventArgs e)
-        {
-            newPatientForm form = new newPatientForm(8);
-            form.Show();
-        }
-
         
 
         private void newInjury(object sender, MouseButtonEventArgs e)
@@ -59,14 +53,6 @@ namespace clinical.Pages
         ///////////////////////////////////////////////////////////////////
         ///////////////////////////////////////////////////////////////////
         ///////////////////////////////////////////////////////////////////
-
-
-        private void viewChronic(object sender, RoutedEventArgs e)
-        {
-            ChronicDisease chronic = (ChronicDisease)chronicsDataGrid.SelectedItem;
-            newPatientForm form = new newPatientForm(chronic);
-            form.Show();
-        }
 
         private void viewExercise(object sender, RoutedEventArgs e)
         {
@@ -108,12 +94,12 @@ namespace clinical.Pages
         private void Refresh(object sender, MouseButtonEventArgs e)
         {
             InitializeComponent();
-            treatmentPlansDataGrid.ItemsSource = DB.GetAllTreatmentPlans();
+            treatmentPlansDataGrid.Items.Refresh();
 
-            chronicsDataGrid.ItemsSource = DB.GetAllChronicDiseases();
-            injuriesDataGrid.ItemsSource = DB.GetAllInjuries();
+            chronicsDataGrid.Items.Refresh();
+            injuriesDataGrid.Items.Refresh();
             exercisesDataGrid.ItemsSource = DB.GetAllExercises();
-            testsDataGrid.ItemsSource = DB.GetAllTests();
+            testsDataGrid.Items.Refresh();
 
         }
 
@@ -126,17 +112,7 @@ namespace clinical.Pages
                 {
                     TreatmentPlan plan = (TreatmentPlan)treatmentPlansDataGrid.SelectedItem;
                     DB.DeleteTreatmentPlan(plan.PlanID);
-                    treatmentPlansDataGrid.ItemsSource = DB.GetAllTreatmentPlans();
-                }
-            }
-            else if (chronicsDataGrid.SelectedItem != null)
-            {
-                MessageBoxResult result = MessageBox.Show("Are you sure you want to delete this chronic disease?", "Delete", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                if (result == MessageBoxResult.Yes)
-                {
-                    ChronicDisease chronic = (ChronicDisease)chronicsDataGrid.SelectedItem;
-                    DB.DeleteChronicDisease(chronic.ChronicDiseaseID);
-                    chronicsDataGrid.ItemsSource = DB.GetAllChronicDiseases();
+                    treatmentPlansDataGrid.Items.Refresh();
                 }
             }
             else if (injuriesDataGrid.SelectedItem != null)
@@ -146,7 +122,7 @@ namespace clinical.Pages
                 {
                     Injury inj = (Injury)injuriesDataGrid.SelectedItem;
                     DB.DeleteInjury(inj.InjuryID);
-                    injuriesDataGrid.ItemsSource = DB.GetAllInjuries();
+                    injuriesDataGrid.Items.Refresh();
                 }
             }
             else if (exercisesDataGrid.SelectedItem != null)
@@ -156,7 +132,7 @@ namespace clinical.Pages
                 {
                     Exercise ex = (Exercise)exercisesDataGrid.SelectedItem;
                     DB.DeleteExercise(ex.ExerciseID);
-                    exercisesDataGrid.ItemsSource = DB.GetAllExercises();
+                    exercisesDataGrid.Items.Refresh();
                 }
             }
             else if (testsDataGrid.SelectedItem != null)
@@ -166,7 +142,7 @@ namespace clinical.Pages
                 {
                     EvaluationTest test = (EvaluationTest)testsDataGrid.SelectedItem;
                     DB.DeleteTest(test.TestID);
-                    testsDataGrid.ItemsSource = DB.GetAllTests();
+                    testsDataGrid.Items.Refresh();
                 }
             }
         }

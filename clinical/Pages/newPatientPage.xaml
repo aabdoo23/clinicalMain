@@ -102,11 +102,10 @@
                     <TextBox Name="searchChronicDiseaseTXTBOX" Foreground="{StaticResource darkerColor}" Grid.Column="0" Grid.Row="1" Margin="5" Background="{StaticResource lightFontColor}" />
 
                     <Border Style="{StaticResource theBorder}"  BorderBrush="{StaticResource lighterColor}" BorderThickness="2" CornerRadius="5" Margin="3" Grid.Row="2" Grid.ColumnSpan="3" Grid.RowSpan="4" Grid.Column="0">
-                        <ScrollViewer VerticalScrollBarVisibility="Auto">
-                            <DataGrid Grid.Row="2" Grid.RowSpan="6" Grid.ColumnSpan="2" Margin="10" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" Name="allChronicsDataGrid" Style="{DynamicResource DataGridStyle1}">
+                            <DataGrid Grid.Row="2" VerticalScrollBarVisibility="Auto" Grid.RowSpan="6" Grid.ColumnSpan="2" Margin="2" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" Name="allChronicsDataGrid" Style="{DynamicResource DataGridStyle1}">
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" Binding="{Binding ChronicDiseaseID}"/>
-                                    <DataGridTextColumn Header="Name" Binding="{Binding ChronicDiseaseName}" IsReadOnly="True" Width="*"/>
+                                    <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" Binding="{Binding Id}"/>
+                                    <DataGridTextColumn Header="Name" Binding="{Binding Name}" IsReadOnly="True" Width="*"/>
                                     <DataGridTemplateColumn Header="Action" IsReadOnly="True" Width="auto">
                                         <DataGridTemplateColumn.CellTemplate>
                                             <DataTemplate>
@@ -120,11 +119,10 @@
                                     </DataGridTemplateColumn>
                                 </DataGrid.Columns>
                             </DataGrid>
-                        </ScrollViewer>
                     </Border>
                     <Border Style="{StaticResource theBorder}"  BorderBrush="{StaticResource lighterColor}" BorderThickness="2" CornerRadius="5" Margin="3" Grid.Row="7" Grid.ColumnSpan="3" Grid.RowSpan="6" Grid.Column="0">
                         <ScrollViewer VerticalScrollBarVisibility="Auto">
-                            <DataGrid Grid.Row="2" Grid.RowSpan="6" Grid.ColumnSpan="2" Margin="10" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" Name="selectedChronicsDataGrid" Style="{DynamicResource DataGridStyle1}">
+                            <DataGrid Grid.Row="2" Grid.RowSpan="6" Grid.ColumnSpan="2" Margin="2" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" Name="selectedChronicsDataGrid" Style="{DynamicResource DataGridStyle1}">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" Binding="{Binding ChronicDiseaseID}"/>
                                     <DataGridTextColumn Header="Name" Binding="{Binding ChronicDiseaseName}" IsReadOnly="True" Width="*"/>
@@ -190,7 +188,7 @@
 
                     <Border Style="{StaticResource theBorder}"  BorderBrush="{StaticResource lighterColor}" BorderThickness="2" CornerRadius="5" Margin="3" Grid.Row="2" Grid.ColumnSpan="3" Grid.RowSpan="4" Grid.Column="0">
                         <ScrollViewer VerticalScrollBarVisibility="Auto">
-                            <DataGrid Grid.Row="2" Grid.RowSpan="6" Grid.ColumnSpan="2" Margin="10" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" Name="allInjuriesDataGrid" Style="{DynamicResource DataGridStyle1}">
+                            <DataGrid Grid.Row="2" Grid.RowSpan="6" Grid.ColumnSpan="2" Margin="2" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" Name="allInjuriesDataGrid" Style="{DynamicResource DataGridStyle1}">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" Binding="{Binding InjuryID}"/>
                                     <DataGridTextColumn Header="Name" Binding="{Binding InjuryName}" IsReadOnly="True" Width="*"/>
@@ -211,7 +209,7 @@
                     </Border>
                     <Border Style="{StaticResource theBorder}"  BorderBrush="{StaticResource lighterColor}" BorderThickness="2" CornerRadius="5" Margin="3" Grid.Row="7" Grid.ColumnSpan="3" Grid.RowSpan="6" Grid.Column="0">
                         <ScrollViewer VerticalScrollBarVisibility="Auto">
-                            <DataGrid Grid.Row="2" Grid.RowSpan="6" Grid.ColumnSpan="2" Margin="10" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" Name="selectedInjuriesDataGrid" Style="{DynamicResource DataGridStyle1}">
+                            <DataGrid Grid.Row="2" Grid.RowSpan="6" Grid.ColumnSpan="2" Margin="2" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" Name="selectedInjuriesDataGrid" Style="{DynamicResource DataGridStyle1}">
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" Binding="{Binding InjuryID}"/>
                                     <DataGridTextColumn Header="Name" Binding="{Binding InjuryName}" IsReadOnly="True" Width="*"/>

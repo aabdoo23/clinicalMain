@@ -1,5 +1,6 @@
 kont b3ml eh 2bl ma anam:
-b3yt w bzbt el prescription 3shan fe moshkla fel saving wel updating bs msh mohma awi
+
+ontologies, pushed to db, search in new patient only by searching first 4 letters of the name, number of ontologies viewed at first only 1000 limited in db function
 
 random thoughts:
 
@@ -79,7 +80,7 @@ not urgent:
 
 - review all plots
 
-
+b3yt w bzbt el prescription 3shan fe moshkla fel saving wel updating bs msh mohma awi
 
 
 
@@ -198,4 +199,32 @@ for a doctor, get all future visits, if all his day appointments are booked, mar
 
 
 
+features:
+1-patient management system//
+2-clinic management system//
+3-financial system of clinic//
+4-efficent appointment management// 
+5-Medical Record management//
+6-Accessibility Constrictions//
+7-OCR //
+8-Live medical help resources access//
+9-Chat system//
+10-Disease Ontology integration//
+11-treatment plan //
+12-prescription//
+13-patient progress data analysis and monitoring//
+14-customized dashboard and different views// 
+15-facilitated data entry//
+16-dicom viewer//
+17-treatment plan and prescription printing
+
+
+//bugs
+new record page uri for new dicom
+dicom not fully functional
+treatment plan addition not showing
+prescription editing
+when entering money in new visit cant handle special characters
+adding chronics in new patient
+adding chronics and injuries in existing patient
 

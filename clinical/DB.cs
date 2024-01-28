@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Windows;
+using static clinical.BaseClasses.ontology;
 using Package = clinical.BaseClasses.Package;
 
 namespace clinical
@@ -839,17 +840,15 @@ namespace clinical
             }
         }
 
-        public static List<ChronicDisease> GetAllChronicDiseasesByPatientID(int patientID)
+        public static List<OntologyTerm> GetAllDiseasesByPatientID(int patientID)
         {
-            List<ChronicDisease> chronicDiseases = new List<ChronicDisease>();
+            List<OntologyTerm> chronicDiseases = new List<OntologyTerm>();
 
             using (connection)
             {
                 connection.Open();
 
-                string query = "SELECT pc.patientID, pc.chronicID, cd.chronicDiseaseID, cd.chronicDiseaseName, cd.description " +
-                               "FROM patientChronicRelation pc " +
-                               "JOIN ChronicDisease cd ON pc.chronicID = cd.chronicDiseaseID WHERE pc.patientID=@patientID";
+                string query = "SELECT diseaseName FROM patientChronicRelation WHERE patientID=@patientID";
 
                 using (MySqlCommand cmd = new MySqlCommand(query, connection))
                 {
@@ -859,14 +858,10 @@ namespace clinical
                     {
                         while (reader.Read())
                         {
-                            ChronicDisease chronicDisease = new ChronicDisease(
-                                Convert.ToInt32(reader["chronicDiseaseID"]),
-                                Convert.ToString(reader["chronicDiseaseName"]),
-                                Convert.ToString(reader["description"])
-
-                            );
-
-                            chronicDiseases.Add(chronicDisease);
+                            OntologyTerm term = searchForTerm(reader["diseaseName"].ToString());
+                        
+                            if(term!=null)
+                                chronicDiseases.Add(term);
                         }
                     }
                 }
@@ -874,7 +869,7 @@ namespace clinical
 
             return chronicDiseases;
         }
-        public static void InsertPatientChronicDiseases(int chronicID, int patientID)
+        public static void InsertPatientDiseases(string diseaseName, int patientID)
         {
             using (connection)
             {
@@ -882,12 +877,12 @@ namespace clinical
                 {
                     if (connection.State == ConnectionState.Closed) connection.Open();
                     using (MySqlCommand cmd = new MySqlCommand(
-                        "INSERT INTO patientChronicRelation (chronicID, patientID) " +
+                        "INSERT INTO patientChronicRelation (diseaseName, patientID) " +
                         "VALUES (@chronicID, @chronicDiseaseName)",
                         connection))
                     {
 
-                        cmd.Parameters.AddWithValue("@chronicID", chronicID);
+                        cmd.Parameters.AddWithValue("@chronicID", diseaseName);
                         cmd.Parameters.AddWithValue("@chronicDiseaseName", patientID);
 
                         cmd.ExecuteNonQuery();
@@ -903,89 +898,89 @@ namespace clinical
         }
 
 
-        ///ChronicDisease
-        ////////////////////////////////////////////////////////
-        ///
+        /////ChronicDisease
+        //////////////////////////////////////////////////////////
+        /////
 
-        public static ChronicDisease GetChronicDiseaseById(int chronicDiseaseID)
-        {
-            using (connection)
-            {
-                try
-                {
-                    if (connection.State == ConnectionState.Closed) connection.Open();
-                    using (MySqlCommand cmd = new MySqlCommand("SELECT * FROM ChronicDisease WHERE chronicDiseaseID = @chronicDiseaseID", connection))
-                    {
-                        cmd.Parameters.AddWithValue("@chronicDiseaseID", chronicDiseaseID);
+        //public static ChronicDisease GetChronicDiseaseById(int chronicDiseaseID)
+        //{
+        //    using (connection)
+        //    {
+        //        try
+        //        {
+        //            if (connection.State == ConnectionState.Closed) connection.Open();
+        //            using (MySqlCommand cmd = new MySqlCommand("SELECT * FROM ChronicDisease WHERE chronicDiseaseID = @chronicDiseaseID", connection))
+        //            {
+        //                cmd.Parameters.AddWithValue("@chronicDiseaseID", chronicDiseaseID);
 
-                        using (MySqlDataReader reader = cmd.ExecuteReader())
-                        {
-                            if (reader.Read())
-                            {
-                                return MapChronicDisease(reader);
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    // Handle exception (log, throw, etc.)
-                    MessageBox.Show(ex.Message);
-                }
-            }
+        //                using (MySqlDataReader reader = cmd.ExecuteReader())
+        //                {
+        //                    if (reader.Read())
+        //                    {
+        //                        return MapChronicDisease(reader);
+        //                    }
+        //                }
+        //            }
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            // Handle exception (log, throw, etc.)
+        //            MessageBox.Show(ex.Message);
+        //        }
+        //    }
 
-            return null;
-        }
+        //    return null;
+        //}
 
-        public static List<ChronicDisease> GetAllChronicDiseases()
-        {
-            List<ChronicDisease> chronicDiseases = new List<ChronicDisease>();
-            using (connection)
-            {
-                try
-                {
-                    if (connection.State == ConnectionState.Closed) connection.Open();
-                    using (MySqlCommand cmd = new MySqlCommand("SELECT * FROM ChronicDisease", connection))
-                    {
-                        using (MySqlDataReader reader = cmd.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                ChronicDisease chronicDisease = MapChronicDisease(reader);
-                                chronicDiseases.Add(chronicDisease);
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    // Handle exception (log, throw, etc.)
-                    MessageBox.Show(ex.Message);
-                }
-            }
+        //public static List<ChronicDisease> GetAllChronicDiseases()
+        //{
+        //    List<ChronicDisease> chronicDiseases = new List<ChronicDisease>();
+        //    using (connection)
+        //    {
+        //        try
+        //        {
+        //            if (connection.State == ConnectionState.Closed) connection.Open();
+        //            using (MySqlCommand cmd = new MySqlCommand("SELECT * FROM ChronicDisease", connection))
+        //            {
+        //                using (MySqlDataReader reader = cmd.ExecuteReader())
+        //                {
+        //                    while (reader.Read())
+        //                    {
+        //                        ChronicDisease chronicDisease = MapChronicDisease(reader);
+        //                        chronicDiseases.Add(chronicDisease);
+        //                    }
+        //                }
+        //            }
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            // Handle exception (log, throw, etc.)
+        //            MessageBox.Show(ex.Message);
+        //        }
+        //    }
 
-            return chronicDiseases;
-        }
-        public static void DeleteChronicDisease(int chronicDiseaseID)
-        {
-            using (connection)
-            {
-                try
-                {
-                    if (connection.State == ConnectionState.Closed) connection.Open();
-                    using (MySqlCommand cmd = new MySqlCommand("DELETE FROM ChronicDisease WHERE chronicDiseaseID = @chronicDiseaseID", connection))
-                    {
-                        cmd.Parameters.AddWithValue("@chronicDiseaseID", chronicDiseaseID);
-                        cmd.ExecuteNonQuery();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    // Handle exception (log, throw, etc.)
-                    MessageBox.Show(ex.Message);
-                }
-            }
-        }
+        //    return chronicDiseases;
+        //}
+        //public static void DeleteChronicDisease(int chronicDiseaseID)
+        //{
+        //    using (connection)
+        //    {
+        //        try
+        //        {
+        //            if (connection.State == ConnectionState.Closed) connection.Open();
+        //            using (MySqlCommand cmd = new MySqlCommand("DELETE FROM ChronicDisease WHERE chronicDiseaseID = @chronicDiseaseID", connection))
+        //            {
+        //                cmd.Parameters.AddWithValue("@chronicDiseaseID", chronicDiseaseID);
+        //                cmd.ExecuteNonQuery();
+        //            }
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            // Handle exception (log, throw, etc.)
+        //            MessageBox.Show(ex.Message);
+        //        }
+        //    }
+        //}
 
         public static void DeletePatientsChronicDiseases(int patientID)
         {
@@ -1007,90 +1002,90 @@ namespace clinical
                 }
             }
         }
-        public static void DeletePatientsInjuries(int patientID)
-        {
-            using (connection)
-            {
-                try
-                {
-                    if (connection.State == ConnectionState.Closed) connection.Open();
-                    using (MySqlCommand cmd = new MySqlCommand("DELETE FROM patientInjuryRelation WHERE patientID = @chronicDiseaseID", connection))
-                    {
-                        cmd.Parameters.AddWithValue("@chronicDiseaseID", patientID);
-                        cmd.ExecuteNonQuery();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    // Handle exception (log, throw, etc.)
-                    MessageBox.Show(ex.Message);
-                }
-            }
-        }
+        //public static void DeletePatientsInjuries(int patientID)
+        //{
+        //    using (connection)
+        //    {
+        //        try
+        //        {
+        //            if (connection.State == ConnectionState.Closed) connection.Open();
+        //            using (MySqlCommand cmd = new MySqlCommand("DELETE FROM patientInjuryRelation WHERE patientID = @chronicDiseaseID", connection))
+        //            {
+        //                cmd.Parameters.AddWithValue("@chronicDiseaseID", patientID);
+        //                cmd.ExecuteNonQuery();
+        //            }
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            // Handle exception (log, throw, etc.)
+        //            MessageBox.Show(ex.Message);
+        //        }
+        //    }
+        //}
 
-        public static void InsertChronicDisease(ChronicDisease chronicDisease)
-        {
-            using (connection)
-            {
-                try
-                {
-                    if (connection.State == ConnectionState.Closed) connection.Open();
-                    using (MySqlCommand cmd = new MySqlCommand(
-                        "INSERT INTO ChronicDisease (chronicDiseaseID, chronicDiseaseName, description) " +
-                        "VALUES (@chronicDiseaseID, @chronicDiseaseName, @description)",
-                        connection))
-                    {
-                        cmd.Parameters.AddWithValue("@chronicDiseaseID", chronicDisease.ChronicDiseaseID);
-                        cmd.Parameters.AddWithValue("@chronicDiseaseName", chronicDisease.ChronicDiseaseName);
-                        cmd.Parameters.AddWithValue("@description", chronicDisease.Description);
+        //public static void InsertChronicDisease(ChronicDisease chronicDisease)
+        //{
+        //    using (connection)
+        //    {
+        //        try
+        //        {
+        //            if (connection.State == ConnectionState.Closed) connection.Open();
+        //            using (MySqlCommand cmd = new MySqlCommand(
+        //                "INSERT INTO ChronicDisease (chronicDiseaseID, chronicDiseaseName, description) " +
+        //                "VALUES (@chronicDiseaseID, @chronicDiseaseName, @description)",
+        //                connection))
+        //            {
+        //                cmd.Parameters.AddWithValue("@chronicDiseaseID", chronicDisease.ChronicDiseaseID);
+        //                cmd.Parameters.AddWithValue("@chronicDiseaseName", chronicDisease.ChronicDiseaseName);
+        //                cmd.Parameters.AddWithValue("@description", chronicDisease.Description);
 
-                        cmd.ExecuteNonQuery();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    // Handle exception (log, throw, etc.)
-                    MessageBox.Show(ex.Message);
-                }
-            }
-        }
+        //                cmd.ExecuteNonQuery();
+        //            }
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            // Handle exception (log, throw, etc.)
+        //            MessageBox.Show(ex.Message);
+        //        }
+        //    }
+        //}
 
 
 
-        internal static void updateChronicDisease(ChronicDisease ch)
-        {
-            using (connection)
-            {
-                try
-                {
-                    if (connection.State == ConnectionState.Closed) connection.Open();
-                    using (MySqlCommand cmd = new MySqlCommand(
-                        "UPDATE ChronicDisease SET chronicDiseaseName= @chronicDiseaseName, description=@description WHERE chronicDiseaseID=@chronicDiseaseID",
-                    connection))
-                    {
-                        cmd.Parameters.AddWithValue("@chronicDiseaseID", ch.ChronicDiseaseID);
-                        cmd.Parameters.AddWithValue("@chronicDiseaseName", ch.ChronicDiseaseName);
-                        cmd.Parameters.AddWithValue("@description", ch.Description);
+        //internal static void updateChronicDisease(ChronicDisease ch)
+        //{
+        //    using (connection)
+        //    {
+        //        try
+        //        {
+        //            if (connection.State == ConnectionState.Closed) connection.Open();
+        //            using (MySqlCommand cmd = new MySqlCommand(
+        //                "UPDATE ChronicDisease SET chronicDiseaseName= @chronicDiseaseName, description=@description WHERE chronicDiseaseID=@chronicDiseaseID",
+        //            connection))
+        //            {
+        //                cmd.Parameters.AddWithValue("@chronicDiseaseID", ch.ChronicDiseaseID);
+        //                cmd.Parameters.AddWithValue("@chronicDiseaseName", ch.ChronicDiseaseName);
+        //                cmd.Parameters.AddWithValue("@description", ch.Description);
 
-                        cmd.ExecuteNonQuery();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    // Handle exception (log, throw, etc.)
-                    MessageBox.Show(ex.Message);
-                }
-            }
-        }
+        //                cmd.ExecuteNonQuery();
+        //            }
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            // Handle exception (log, throw, etc.)
+        //            MessageBox.Show(ex.Message);
+        //        }
+        //    }
+        //}
 
-        private static ChronicDisease MapChronicDisease(MySqlDataReader reader)
-        {
-            return new ChronicDisease(
-                reader.GetInt32("chronicDiseaseID"),
-                reader.GetString("chronicDiseaseName"),
-                reader.IsDBNull("description") ? null : reader.GetString("description")
-            );
-        }
+        //private static ChronicDisease MapChronicDisease(MySqlDataReader reader)
+        //{
+        //    return new ChronicDisease(
+        //        reader.GetInt32("chronicDiseaseID"),
+        //        reader.GetString("chronicDiseaseName"),
+        //        reader.IsDBNull("description") ? null : reader.GetString("description")
+        //    );
+        //}
 
 
 
@@ -5788,6 +5783,326 @@ namespace clinical
                     MessageBox.Show($"Error: {ex.Message}");
                 }
             }
+        }
+
+        ///OntologyTerm
+        /////////////////////////////////////////////////////////////
+        ///
+        public static void InsertTerm(OntologyTerm term)
+        {
+            using (connection)
+            {
+                try
+                {
+                    if (connection.State == ConnectionState.Closed) connection.Open();
+
+                    using (MySqlCommand cmd = new MySqlCommand("INSERT INTO Ontology (ID, Name, Def, Urls, Synonyms, Parent) VALUES (@ID, @Name, @Def, @Urls, @Synonyms, @Parent)", connection))
+                    {
+                        cmd.Parameters.AddWithValue("@ID", term.Id);
+                        cmd.Parameters.AddWithValue("@Name", term.Name);
+                        cmd.Parameters.AddWithValue("@Def", term.Def);
+                        cmd.Parameters.AddWithValue("@Urls", ConvertListToString(term.Urls));
+                        cmd.Parameters.AddWithValue("@Synonyms", ConvertListToString(term.Synonyms));
+                        cmd.Parameters.AddWithValue("@Parent", term.Parent);
+
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                    // Handle exception as needed
+                }
+            }
+        }
+
+        public static OntologyTerm GetTermByName(string name)
+        {
+            using (connection)
+            {
+                try
+                {
+                    if (connection.State == ConnectionState.Closed) connection.Open();
+
+                    using (MySqlCommand cmd = new MySqlCommand("SELECT * FROM Ontology WHERE Name = @ID", connection))
+                    {
+                        cmd.Parameters.AddWithValue("@ID", "name");
+
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                return MapReaderToTerm(reader);
+                            }
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message);
+                    // Handle exception as needed
+                }
+
+                return null;
+            }
+        }
+
+        public static List<OntologyTerm> GetTermsLikeName(string name)
+        {
+            List<OntologyTerm> terms=new List<OntologyTerm>();
+            using (connection)
+            {
+                try
+                {
+                    if (connection.State == ConnectionState.Closed) connection.Open();
+
+                    using (MySqlCommand cmd = new MySqlCommand("SELECT * FROM Ontology WHERE Name LIKE @ID", connection))
+                    {
+                        cmd.Parameters.AddWithValue("@ID", $"%{name}%");
+
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                terms.Add(MapReaderToTerm(reader));
+                            }
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message);
+                }
+
+            }
+            return terms;
+
+        }
+        public static List<OntologyTerm> GetTermsLikeID(string query)
+        {
+            List<OntologyTerm> terms = new List<OntologyTerm>();
+            using (connection)
+            {
+                try
+                {
+                    if (connection.State == ConnectionState.Closed) connection.Open();
+
+                    using (MySqlCommand cmd = new MySqlCommand("SELECT * FROM Ontology WHERE ID LIKE @ID OR ID = @cID LIMIT 0,200", connection))
+                    {
+                        cmd.Parameters.AddWithValue("@ID", $"%{query}%");
+                        cmd.Parameters.AddWithValue("@cID", query);
+
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                terms.Add(MapReaderToTerm(reader));
+                            }
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message);
+                }
+
+            }
+            return terms;
+        }
+        public static List<OntologyTerm> GetTermsLikeDef(string query)
+        {
+            List<OntologyTerm> terms = new List<OntologyTerm>();
+            using (connection)
+            {
+                try
+                {
+                    if (connection.State == ConnectionState.Closed) connection.Open();
+
+                    using (MySqlCommand cmd = new MySqlCommand("SELECT * FROM Ontology WHERE Def LIKE @ID LIMIT 0,200", connection))
+                    {
+                        cmd.Parameters.AddWithValue("@ID", $"%{query}%");
+
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                terms.Add(MapReaderToTerm(reader));
+                            }
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message);
+                }
+
+            }
+            return terms;
+        }
+        public static List<OntologyTerm> GetTermsLikeParent(string query)
+        {
+            List<OntologyTerm> terms = new List<OntologyTerm>();
+            using (connection)
+            {
+                try
+                {
+                    if (connection.State == ConnectionState.Closed) connection.Open();
+
+                    using (MySqlCommand cmd = new MySqlCommand("SELECT * FROM Ontology WHERE Parent LIKE @ID LIMIT 0,200", connection))
+                    {
+                        cmd.Parameters.AddWithValue("@ID", $"%{query}%");
+
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                terms.Add(MapReaderToTerm(reader));
+                            }
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message);
+                }
+
+            }
+            return terms;
+        }
+        public static List<OntologyTerm> GetTermsLikeSynonyms(string query)
+        {
+            List<OntologyTerm> terms = new List<OntologyTerm>();
+            using (connection)
+            {
+                try
+                {
+                    if (connection.State == ConnectionState.Closed) connection.Open();
+
+                    using (MySqlCommand cmd = new MySqlCommand("SELECT * FROM Ontology WHERE Synonyms LIKE @ID LIMIT 0,200", connection))
+                    {
+                        cmd.Parameters.AddWithValue("@ID", $"%{query}%");
+
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                terms.Add(MapReaderToTerm(reader));
+                            }
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show(e.Message);
+                }
+
+            }
+            return terms;
+        }
+
+        public static List<OntologyTerm> GetAllTerms()
+        {
+            List<OntologyTerm> terms = new List<OntologyTerm>();
+
+            using (connection)
+            {
+                try
+                {
+                    if (connection.State == ConnectionState.Closed) connection.Open();
+
+                    using (MySqlCommand cmd = new MySqlCommand("SELECT * FROM Ontology LIMIT 0,50", connection))
+                    {
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                terms.Add(MapReaderToTerm(reader));
+                            }
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                    // Handle exception as needed
+                }
+            }
+
+            return terms;
+        }
+
+        public static void UpdateTerm(OntologyTerm term)
+        {
+            using (connection)
+            {
+                try
+                {
+                    if (connection.State == ConnectionState.Closed) connection.Open();
+
+                    using (MySqlCommand cmd = new MySqlCommand("UPDATE Ontology SET Name = @Name, Def = @Def, Urls = @Urls, Synonyms = @Synonyms, Parent = @Parent WHERE ID = @ID", connection))
+                    {
+                        cmd.Parameters.AddWithValue("@ID", term.Id);
+                        cmd.Parameters.AddWithValue("@Name", term.Name);
+                        cmd.Parameters.AddWithValue("@Def", term.Def);
+                        cmd.Parameters.AddWithValue("@Urls", ConvertListToString(term.Urls));
+                        cmd.Parameters.AddWithValue("@Synonyms", ConvertListToString(term.Synonyms));
+                        cmd.Parameters.AddWithValue("@Parent", term.Parent);
+
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                    // Handle exception as needed
+                }
+            }
+        }
+
+        public static void DeleteTerm(string id)
+        {
+            using (connection)
+            {
+                try
+                {
+                    if (connection.State == ConnectionState.Closed) connection.Open();
+
+                    using (MySqlCommand cmd = new MySqlCommand("DELETE FROM Ontology WHERE ID = @ID", connection))
+                    {
+                        cmd.Parameters.AddWithValue("@ID", id);
+
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                    // Handle exception as needed
+                }
+            }
+        }
+
+        private static string ConvertListToString(List<string> list)
+        {
+            return list != null ? string.Join(",", list) : null;
+        }
+
+        private static List<string> ConvertStringToList(string value)
+        {
+            return !string.IsNullOrEmpty(value) ? new List<string>(value.Split(',')) : null;
+        }
+
+        private static OntologyTerm MapReaderToTerm(MySqlDataReader reader)
+        {
+            return new OntologyTerm
+            {
+                Id = reader["ID"].ToString(),
+                Name = reader["Name"].ToString(),
+                Def = reader["Def"] != DBNull.Value ? reader["Def"].ToString() : null,
+                Urls = ConvertStringToList(reader["Urls"].ToString()),
+                Synonyms = ConvertStringToList(reader["Synonyms"].ToString()),
+                Parent = reader["Parent"] != DBNull.Value ? reader["Parent"].ToString() : null
+            };
         }
 
         

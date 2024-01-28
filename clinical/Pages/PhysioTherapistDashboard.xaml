@@ -104,34 +104,64 @@
             <Border Grid.Row="2" Grid.RowSpan="3" Margin="5" Style="{StaticResource theLinedBorder}">
                 <Grid Margin="5">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="40"/>
+                        <RowDefinition Height="60"/>
                         <RowDefinition Height="87*"/>
                     </Grid.RowDefinitions>
-                    <TextBlock Name="patientsDGTitleTB" Text="Today's Patients" Margin="5" VerticalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource lightFontColor}" FontSize="23"/>
-                    <Border Style="{StaticResource theBorder}" Grid.Row="1" CornerRadius="5"/>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="24*"/>
+                        <ColumnDefinition Width="20*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="Ontology Explorer" TextWrapping="Wrap" Margin="5,0,5,0" VerticalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource lightFontColor}" FontSize="22"/>
+                    <Line Width="2" Margin="0 4" HorizontalAlignment="Right" Stroke="{StaticResource lighterColor}" StrokeThickness="10" X1="1" X2="1" Y1="1" Y2="100" />
 
-                    <DataGrid Margin="5" RowStyle="{DynamicResource DataGridRowStyle1}" FontSize="12" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="patientsDataGrid" Style="{DynamicResource DataGridStyle1}">
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" Binding="{Binding PatientID}"/>
-                            <DataGridTextColumn Header="Name" Binding="{Binding FullName}" IsReadOnly="True" Width="*"/>
-                            <DataGridTextColumn Header="Age" Binding="{Binding Age}" IsReadOnly="True" Width="*"/>
-                            <DataGridTextColumn Header="Phone Number" Binding="{Binding PhoneNumber}" IsReadOnly="True" Width="*"/>
-                            <DataGridTemplateColumn Header="Details" IsReadOnly="True" Width="auto">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Orientation="Horizontal">
-                                            <Button Name="view" Style="{StaticResource gridEditButton}" Click="view_Click">
-                                                <Icon:PackIconMaterial Kind="EyeCircleOutline" Style="{StaticResource gridButtonIcon}"/>
-                                            </Button>
-                                            <!--<Button Margin="5 0 0 0" Style="{StaticResource gridRemoveButton}">
-                            <Icon:PackIconMaterial Kind="DeleteOutline" Style="{StaticResource gridButtonIcon}"/>
-                        </Button>-->
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-                        </DataGrid.Columns>
-                    </DataGrid>
+                    <StackPanel Orientation="Vertical" Grid.Column="1" Margin="0">
+
+                        <TextBlock Text="Filter By:" Width="auto" Margin="5" VerticalAlignment="Center" FontWeight="SemiBold" Foreground="{StaticResource lightFontColor}" FontSize="16" Grid.Column="1"/>
+                        <ComboBox Name="ontologyFilters" Margin="6 0"  VerticalAlignment="Center" />
+                    </StackPanel>
+                    <Border Style="{StaticResource theLinedBorder}" Margin="5" Background="{StaticResource lighterColor}" Grid.Row="1" Grid.ColumnSpan="2" CornerRadius="5">
+                        <Grid Margin="5">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="40"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="75"/>
+                            </Grid.ColumnDefinitions>
+
+                            <TextBox Name="ontologySearchTB" Text="" Margin="5" VerticalAlignment="Center" VerticalContentAlignment="Center" FontWeight="SemiBold" Foreground="{StaticResource darkerColor}" FontSize="14"/>
+                            <Button Name="ontologySearchButton" Style="{StaticResource gridEditButton}" BorderBrush="{StaticResource lightFontColor}" Background="{StaticResource selectedColor}" Grid.Column="1" Click="ontologySearchButton_Click">
+                                <Icon:PackIconMaterial Kind="Magnify" Style="{StaticResource gridButtonIcon}"/>
+
+                            </Button>
+                            <TextBlock Text="*Showing only first 200 results" Foreground="{StaticResource lightFontColor}" FontSize="7" VerticalAlignment="Bottom" Margin="5 0 "/>
+                            <ScrollViewer Grid.Row="1" Grid.ColumnSpan="2" VerticalScrollBarVisibility="Auto">
+                                <StackPanel Name="ontologiesStackPanel" Grid.Row="1" Grid.ColumnSpan="2" Margin="0 5 5 5" >
+                                    <Border Style="{StaticResource theLinedBorder}" Margin="0 0 0 5">
+                                        <Grid Margin="5">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                            </Grid.RowDefinitions>
+                                            <TextBlock Name="DOID" Text="DOID:0040001" Margin="5 0" TextWrapping="Wrap" VerticalAlignment="Center" FontWeight="SemiBold" Foreground="{StaticResource lightFontColor}" FontSize="12"/>
+                                            <TextBlock Name="ontologyTitle" Text="shrimp allergy" Margin="5 3" TextWrapping="Wrap" VerticalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource lightFontColor}" FontSize="14" Grid.Row="1"/>
+                                            <TextBlock Name="ontologyDef" Text="A crustacean allergy that has_allergic_trigger shrimp." Margin="5 2" TextWrapping="Wrap" VerticalAlignment="Center" FontWeight="SemiBold" Foreground="{StaticResource lightFontColor}" FontSize="12" Grid.Row="2"/>
+                                            <TextBlock Name="ontologySynonyms" Text="Synonyms: California Encephalitis,California virus encephalitis,Neuroinvasive California encephalitis virus infection, Parent:  viral infectious disease" Margin="5 5" TextWrapping="Wrap" VerticalAlignment="Center" FontWeight="SemiBold" Foreground="{StaticResource lightFontColor}" FontSize="12" Grid.Row="3"/>
+
+                                        </Grid>
+                                    </Border>
+                                </StackPanel>
+                            </ScrollViewer>
+
+
+
+                        </Grid>
+
+
+                    </Border>
 
                 </Grid>
             </Border>
@@ -153,6 +183,7 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="75"/>
                             </Grid.ColumnDefinitions>
+                            <TextBlock Text="*Showing only first 10 results" Foreground="{StaticResource lightFontColor}" FontSize="7" VerticalAlignment="Bottom" Margin="5 0 "/>
 
                             <TextBox Name="articleSearchTB" Text="" Margin="5" VerticalAlignment="Center" VerticalContentAlignment="Center" FontWeight="SemiBold" Foreground="{StaticResource darkerColor}" FontSize="14"/>
                             <Button Name="articleSearchButton" Style="{StaticResource gridEditButton}" BorderBrush="{StaticResource lightFontColor}" Background="{StaticResource selectedColor}" Grid.Column="1" Click="articleSearchButton_Click">
@@ -161,26 +192,26 @@
                             </Button>
                             <ScrollViewer Grid.Row="1" Grid.ColumnSpan="2" VerticalScrollBarVisibility="Auto">
                                 <StackPanel Name="articlesStackPanel" Grid.Row="1" Grid.ColumnSpan="2" Margin="0 5 5 5" >
-                                <Border Style="{StaticResource theLinedBorder}" Margin="0 0 0 5">
-                                    <Grid Margin="5">
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="auto"/>
-                                            <RowDefinition Height="auto"/>
-                                            <RowDefinition Height="auto"/>
-                                        </Grid.RowDefinitions>
-                                        <TextBlock Name="title" Text="Physiotherapy for Parkinson's Disease " Margin="5 5" TextWrapping="Wrap" VerticalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource lightFontColor}" FontSize="14"/>
-                                        <TextBlock Name="typeAndDate" Text="Health - 23 Feb 2023" Margin="5 2" VerticalAlignment="Center" FontWeight="SemiBold" Foreground="{StaticResource lightFontColor}" FontSize="12" Grid.Row="1"/>
-                                        <TextBlock Name="snippet" Text="Parkinson’s disease is one of the most prevalent neurodegenerative disorders affecting the motor and non-motor systems within the human brain." Margin="5 5" TextWrapping="Wrap" VerticalAlignment="Center" FontWeight="SemiBold" Foreground="{StaticResource lightFontColor}" FontSize="12" Grid.Row="3"/>
-                                        
-                                    </Grid>
-                                </Border>
-                            </StackPanel>
+                                    <Border Style="{StaticResource theLinedBorder}" Margin="0 0 0 5">
+                                        <Grid Margin="5">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                            </Grid.RowDefinitions>
+                                            <TextBlock Name="title" Text="Physiotherapy for Parkinson's Disease " Margin="5 5" TextWrapping="Wrap" VerticalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource lightFontColor}" FontSize="14"/>
+                                            <TextBlock Name="typeAndDate" Text="Health - 23 Feb 2023" Margin="5 2" VerticalAlignment="Center" FontWeight="SemiBold" Foreground="{StaticResource lightFontColor}" FontSize="12" Grid.Row="1"/>
+                                            <TextBlock Name="snippet" Text="Parkinson’s disease is one of the most prevalent neurodegenerative disorders affecting the motor and non-motor systems within the human brain." Margin="5 5" TextWrapping="Wrap" VerticalAlignment="Center" FontWeight="SemiBold" Foreground="{StaticResource lightFontColor}" FontSize="12" Grid.Row="3"/>
+
+                                        </Grid>
+                                    </Border>
+                                </StackPanel>
                             </ScrollViewer>
-                            
+
 
 
                         </Grid>
-                        
+
 
                     </Border>
 

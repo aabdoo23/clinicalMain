@@ -93,7 +93,7 @@ namespace clinical.Pages
 
             Image image = new Image();
             if (Path.GetExtension(filePath)?.ToLower() == ".dcm") {
-                image.Source = new BitmapImage(new Uri("E:\\STUDY\\5th semester\\BMD302\\screenShots\\dicom.JPG"));////
+                image.Source = new BitmapImage(new Uri("C:\\Users\\TOP\\Desktop\\clinicalMain\\clinical\\images\\dicom.JPG"));////
 
             }
             else

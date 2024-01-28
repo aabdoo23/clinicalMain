@@ -16,6 +16,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Navigation;
+using static clinical.BaseClasses.ontology;
 
 namespace clinical.Pages
 {
@@ -43,8 +44,8 @@ namespace clinical.Pages
 
             LoadChart();
 
-            List<ChronicDisease> patientChronics = DB.GetAllChronicDiseasesByPatientID(currPatient.PatientID);
-            foreach (ChronicDisease ch in patientChronics)
+            List<OntologyTerm> patientChronics = DB.GetAllDiseasesByPatientID(currPatient.PatientID);
+            foreach (OntologyTerm ch in patientChronics)
             {
                 CreateChronicBorder(ch);
             }
@@ -55,8 +56,10 @@ namespace clinical.Pages
                 CreateInjuryBorder(inj);
             }
 
-            previousVisitsDataGrid.ItemsSource = DB.GetPatientPrevVisits(patient.PatientID);
-            currVisitsDataGrid.ItemsSource = DB.GetPatientTodayVisits(patient.PatientID);
+            foreach (var i in DB.GetPatientPrevVisits(patient.PatientID))
+            {
+                prevVisitsStackPanel.Children.Add(globals.createAppointmentUIObject(i,viewVisit));
+            }
 
             medicalRecordsDataGrid.ItemsSource = DB.GetAllPatientRecords(patient.PatientID);
 
@@ -69,11 +72,9 @@ namespace clinical.Pages
             NavigationService.Navigate(new newRecordPage(record));
         }
 
-        private void viewVisitClick(object sender, RoutedEventArgs e)
+        private void viewVisit(Visit vis)
         {
-            Visit vis = (Visit)previousVisitsDataGrid.SelectedItem;
-            if (vis == null) vis = (Visit)currVisitsDataGrid.SelectedItem;
-            NavigationService.Navigate(new visit(vis));
+            if(vis!=null) NavigationService.Navigate(new visit(vis));
 
         }
 
@@ -215,8 +216,8 @@ namespace clinical.Pages
         {
             displayMonths = !displayMonths;
             UpdateChart();
-            if (displayMonths) monthlyWeeklyTB.Text = "Monthly";
-            else monthlyWeeklyTB.Text = "Weekly";
+            //if (displayMonths) monthlyWeeklyTB.Text = "Monthly";
+            //else monthlyWeeklyTB.Text = "Weekly";
 
         }
 
@@ -225,7 +226,7 @@ namespace clinical.Pages
         public Func<double, double> YFormatter { get; set; }
 
 
-        public void CreateChronicBorder(ChronicDisease chronic)
+        public void CreateChronicBorder(OntologyTerm chronic)
         {
             Border border = new Border
             {
@@ -238,14 +239,14 @@ namespace clinical.Pages
             {
                 HorizontalAlignment = System.Windows.HorizontalAlignment.Center,
                 VerticalAlignment = System.Windows.VerticalAlignment.Center,
-                Text = chronic.ChronicDiseaseName,
+                Text = chronic.Name,
                 Style = (Style)Application.Current.Resources["titleText"],
                 TextWrapping = TextWrapping.Wrap
             };
 
             double maxBorderWidth = chronicWrapPanel.ActualWidth;
 
-            double desiredWidth = MeasureTextWidth(chronic.ChronicDiseaseName, textBlock.FontSize) + 100;
+            double desiredWidth = MeasureTextWidth(chronic.Name, textBlock.FontSize) + 100;
 
             border.MinWidth = Math.Min(desiredWidth, maxBorderWidth);
 

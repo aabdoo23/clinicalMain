@@ -30,7 +30,7 @@
 
                     </Grid.ColumnDefinitions>
                     <icon:PackIconMaterial Kind="WheelchairAccessibility" Width="32" Height="32" Margin="15,11,0,0" Foreground="{StaticResource darkerColor}" Grid.Column="1" />
-                    <TextBlock Text="Recovery360" Foreground="{StaticResource darkerColor}" Style="{StaticResource TitleText}" Grid.Column="1" Margin="36,0,0,10" />
+                    <TextBlock Text="Recover360" Foreground="{StaticResource darkerColor}" Style="{StaticResource TitleText}" Grid.Column="1" Margin="36,0,0,10" />
 
                 </Grid>
 
@@ -48,8 +48,22 @@
                         <TextBox Name="txtEmail" TextChanged="txtEmail_TextChanged" KeyDown="enter" Style="{StaticResource textBox}" />
                     </Grid>
                 </Border>
+                <Border BorderBrush="#ACB0AF" BorderThickness="1" Margin="70 7" CornerRadius="5">
+                    <Grid Margin="7 9">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
 
-                <CheckBox HorizontalAlignment="Center" Content="Remember Me" Foreground="{StaticResource darkerColor}" FontSize="14" Margin="5"/>
+                        <icon:PackIconMaterial Kind="FormTextboxPassword"
+           Width="15"
+           Foreground="{StaticResource darkerColor}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        <TextBlock x:Name="passwordHint" MouseDown="passwordHint_MouseDown" Text="Password" Style="{StaticResource textHint}" />
+                        <PasswordBox Name="passwordTB" PasswordChanged="txtPassword_TextChanged" KeyDown="enter" Style="{StaticResource textBox}" />
+                    </Grid>
+                </Border>
+
+                <!--<CheckBox HorizontalAlignment="Center" Content="Remember Me" Foreground="{StaticResource darkerColor}" FontSize="14" Margin="5"/>-->
 
                 <Button Content="Log In" Name="logInBTN" Style="{StaticResource mainButton}" FontFamily="Arial" FontSize="20" Click="logInBTN_Click" />
             </StackPanel>

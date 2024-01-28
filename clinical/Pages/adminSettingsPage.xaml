@@ -149,24 +149,25 @@
                         <RowDefinition Height="87*"/>
                     </Grid.RowDefinitions>
                     <TextBlock Text="Chronic Diseases" Margin="5" VerticalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource lightFontColor}" FontSize="25"/>
-                    <Icon:PackIconMaterial Kind="PlusBox" Foreground="{StaticResource lightFontColor}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Width="30" Height="30" Margin="0 0 10 0" MouseDown="newChronicDisease"/>
+                    <!--<Icon:PackIconMaterial Kind="PlusBox" Foreground="{StaticResource lightFontColor}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Width="30" Height="30" Margin="0 0 10 0" MouseDown="newChronicDisease"/>-->
                     <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Hidden">
                         <DataGrid Grid.Row="1" Margin="5" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="chronicsDataGrid" Style="{DynamicResource DataGridStyle1}">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" Binding="{Binding Id}"/>
-                                <DataGridTextColumn Header="Disease Name" Binding="{Binding Name}" IsReadOnly="True" Width="*"/>
-                                <DataGridTextColumn Header="Description" Binding="{Binding Def}" IsReadOnly="True" Width="2*"/>
+                                <DataGridTextColumn Header="Disease Name" Binding="{Binding Name}" IsReadOnly="True" Width="auto"/>
+                                <DataGridTextColumn Header="Parent" Binding="{Binding Parent}" IsReadOnly="True" Width="auto"/>
+                                <DataGridTextColumn Header="Definition" Binding="{Binding Def}" IsReadOnly="True" Width="*"/>
                                 <DataGridTemplateColumn Header="" IsReadOnly="True" Width="auto">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <StackPanel Orientation="Horizontal">
+                                            <!--<StackPanel Orientation="Horizontal">
                                                 <Button Name="view" Style="{StaticResource gridEditButton}" Click="viewChronic">
                                                     <Icon:PackIconMaterial Kind="EyeCircleOutline" Style="{StaticResource gridButtonIcon}"/>
                                                 </Button>
                                                 <Button Margin="5 0 0 0" Style="{StaticResource gridRemoveButton}" Click="delete">
                                                     <Icon:PackIconMaterial Kind="DeleteOutline" Style="{StaticResource gridButtonIcon}"/>
                                                 </Button>
-                                            </StackPanel>
+                                            </StackPanel>-->
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>

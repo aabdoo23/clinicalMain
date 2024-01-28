@@ -26,13 +26,13 @@
         
 
         <!--Top Buttons-->
-        <Button Style="{StaticResource topButton}" Margin="0 0 20 0" Background="#dcdcdc">
+        <!--<Button Style="{StaticResource topButton}" Margin="0 0 20 0" Background="#dcdcdc">
             <Icon:PackIconMaterial Kind="Cog"/>
         </Button>
 
         <Button Style="{StaticResource topButton}" Margin="0 0 55 0">
             <Icon:PackIconMaterial Kind="Bell"/>
-        </Button>
+        </Button>-->
 
         <!--Page Title-->
         <TextBlock Grid.Row="1" FontSize="32" FontWeight="SemiBold" Margin="0 20 0 0" Foreground="{StaticResource lightFontColor}" HorizontalAlignment="Left" Text="Patients"/>
@@ -44,12 +44,12 @@
                 <TextBlock Text="Add New Patient"/>
             </StackPanel>
         </Button>
-        <Button Style="{StaticResource addButton}" Click="newAppointment" Margin="0,0,155,0" Grid.Row="1">
+        <!--<Button Style="{StaticResource addButton}" Click="newAppointment" Margin="0,0,155,0" Grid.Row="1">
                 <StackPanel Orientation="Horizontal">
                     <Icon:PackIconMaterial Kind="Plus" VerticalAlignment="Center" Margin="0 1 8 0" Width="11" Height="11"/>
                     <TextBlock Text="Add new visit"/>
                 </StackPanel>
-            </Button>
+            </Button>-->
 
             <!--Seprator-->
         <Separator Height="1" Grid.Row="3" Background="#DAE2EA" Margin="0 -1 0 10"/>
@@ -62,7 +62,7 @@
         </StackPanel>
 
         <!--Counter Title-->
-        <TextBlock Text="Today's Patients" Grid.Row="4" FontSize="18" FontWeight="SemiBold" Foreground="{StaticResource lightFontColor}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        <TextBlock Text="All Patients" Grid.Row="4" FontSize="18" FontWeight="SemiBold" Foreground="{StaticResource lightFontColor}" HorizontalAlignment="Left" VerticalAlignment="Center"/>
 
         <TextBlock Text="Search for patient: " Grid.Row="4" FontSize="16" FontWeight="SemiBold" Margin="0 0 315 0" Foreground="{StaticResource lightFontColor}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
 
@@ -79,8 +79,6 @@
                 <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" Binding="{Binding PatientID}"/>
                 <DataGridTextColumn Header="Name" Binding="{Binding FirstName}" IsReadOnly="True" Width="*"/>
                 <DataGridTextColumn Header="Address" Binding="{Binding Address}" IsReadOnly="True" Width="*"/>
-                <DataGridTextColumn Header="Physician" Binding="{Binding PhysicianName}" IsReadOnly="True" Width="*"/>
-                <DataGridTextColumn Header="Age" Binding="{Binding age}" IsReadOnly="True" Width="*"/>
                 <DataGridTextColumn Header="Phone Number" Binding="{Binding PhoneNumber}" IsReadOnly="True" Width="*"/>
                 <DataGridTemplateColumn Header="Details" IsReadOnly="True" Width="auto">
                     <DataGridTemplateColumn.CellTemplate>

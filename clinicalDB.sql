@@ -123,11 +123,13 @@ CREATE TABLE Patient (
     PRIMARY KEY (patientID)
 );
 
-CREATE TABLE ChronicDisease (
-    chronicDiseaseID INT NOT NULL ,
-    chronicDiseaseName VARCHAR(100) NOT NULL,
-    description TEXT,
-    PRIMARY KEY (chronicDiseaseID)
+CREATE TABLE Ontology(
+	ID varchar(50) not null,
+	Name Text not null,
+	Def Text,
+	Urls Text,
+	Synonyms Text,
+	Parent Text
 );
 
 CREATE TABLE Exercise (
@@ -279,8 +281,7 @@ CREATE TABLE testFeedBack (
 CREATE TABLE patientChronicRelation (
     patientID INT NOT NULL,
     chronicID INT NOT NULL,
-    FOREIGN KEY (patientID) REFERENCES Patient(patientID) ON DELETE CASCADE,
-    FOREIGN KEY (chronicID) REFERENCES ChronicDisease(chronicDiseaseID) ON DELETE CASCADE
+    FOREIGN KEY (patientID) REFERENCES Patient(patientID) ON DELETE CASCADE
     );
 
 

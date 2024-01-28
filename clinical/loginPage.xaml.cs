@@ -25,6 +25,11 @@ namespace clinical
             InitializeComponent();
             new DB();
             txtEmail.Focus();
+            //ontology oi = new ontology();
+            //foreach(var i in oi.GetAllOntologies())
+            //{
+            //    DB.InsertTerm(i);
+            //}
             
         }
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)
@@ -64,27 +69,65 @@ namespace clinical
 
         void login()
         {
-            User user = DB.GetUserById(Convert.ToInt32(txtEmail.Text));
+            if (passwordTB.Password.Length == 0 || txtEmail.Text.Length == 0)
+            {
+                MessageBox.Show("Please fill all the fields", "Error");
+                return;
+            }
+            int id;
+            try
+            {
+                id = Convert.ToInt32(txtEmail.Text);
+            }
+            catch
+            {
+                MessageBox.Show("Please enter a valid ID", "Error");
+                return;
+            }
+
+
+            User user = DB.GetUserById(id);
             if (user != null)
             {
-                MessageBox.Show("Welcome, " + (user.UserID.ToString()[0] != '3' ? "Dr. " : "") + user.FirstName);
-                int s;
-                if (txtEmail.Text.ToString().StartsWith("1")) s = 1;
-                else if (txtEmail.Text.ToString().StartsWith("2")) s = 2;
-                else s = 3;
-                globals.signedIn = user;
-
-                MainWindow mainWindow = new MainWindow(s, user);
-                DB.InsertAttendanceRecord(new AttendanceRecord(globals.generateNewAttendanceRecordID(user.UserID), DateTime.Now, user.UserID, true));
-                mainWindow.Show();
-                this.Close();
-
+                string password = passwordTB.Password;
+                if (password != user.Password)
+                {
+                    MessageBox.Show("Wrong Password");
+                    return;
+                }
 
             }
-            else if (user == null)
+            else
             {
                 MessageBox.Show("Invalid ID");
+                return;
             }
+
+            MessageBox.Show("Welcome, " + (user.UserID.ToString()[0] != '3' ? "Dr. " : "") + user.FirstName);
+            int s;
+            if (txtEmail.Text.ToString().StartsWith("1")) s = 1;
+            else if (txtEmail.Text.ToString().StartsWith("2")) s = 2;
+            else s = 3;
+            globals.signedIn = user;
+
+            MainWindow mainWindow = new MainWindow(s, user);
+            DB.InsertAttendanceRecord(new AttendanceRecord(globals.generateNewAttendanceRecordID(user.UserID), DateTime.Now, user.UserID, true));
+            mainWindow.Show();
+            this.Close();
+        }
+
+        private void passwordHint_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            passwordTB.Focus();
+
+        }
+
+        private void txtPassword_TextChanged(object sender, RoutedEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(passwordTB.Password) && passwordTB.Password.Length > 0)
+                passwordHint.Visibility = Visibility.Collapsed;
+            else
+                passwordHint.Visibility = Visibility.Visible;
         }
     }
 

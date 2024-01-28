@@ -1,6 +1,7 @@
 ﻿using clinical.BaseClasses;
 using clinical.Pages;
 using MahApps.Metro.IconPacks;
+using Org.BouncyCastle.Tls;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -157,7 +158,136 @@ namespace clinical
         /// creating ui
         //////////////////////////////////////////
 
+        public static void makeItLookClickable(Border border)
+        {
+            Brush original = border.Background;
+            border.MouseEnter += (sender, e) => border.Cursor = Cursors.Hand;
+            border.MouseLeave += (sender, e) => border.Cursor = Cursors.Arrow;
+            border.MouseLeave += (sender, e) => border.Background = original;
+            border.MouseEnter += (sender, e) => border.Background = (Brush)Application.Current.FindResource("lighterColor");
+        }
+        public static void makeItLookClickableReverseColors(Border border)
+        {
+            Brush original=border.Background;
+            border.MouseEnter += (sender, e) => border.Cursor = Cursors.Hand;
+            border.MouseLeave += (sender, e) => border.Cursor = Cursors.Arrow;
+            border.MouseLeave += (sender, e) => border.Background = original;
+            border.MouseEnter += (sender, e) => border.Background = (Brush)Application.Current.FindResource("darkerColor");
+        }
+        public static void makeTextBlockLookLikeHyperLink(TextBlock tb)
+        {
+            tb.MouseEnter += (sender, e) => tb.Cursor = Cursors.Hand;
+            tb.MouseLeave += (sender, e) => tb.Cursor = Cursors.Arrow;
+            tb.MouseEnter += (sender, e) => tb.TextDecorations = TextDecorations.Underline;
+            tb.MouseLeave += (sender, e) => tb.TextDecorations = null;
+        }
+        public static Border CreateOntologyUIObject(OntologyTerm oi)
+        {
+            Border border = new Border
+            {
+                Style = (Style)Application.Current.FindResource("theLinedBorder"),
+                Margin = new Thickness(0, 0, 0, 5)
+            };
 
+            Grid grid = new Grid
+            {
+                Margin = new Thickness(5)
+            };
+
+            grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+            grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+            grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+            grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+
+            TextBlock DOID = new TextBlock
+            {
+                Text = $"{oi.Id}",
+                Margin = new Thickness(5, 0, 5, 0),
+                TextWrapping = TextWrapping.Wrap,
+                VerticalAlignment = VerticalAlignment.Center,
+                FontWeight = FontWeights.SemiBold,
+                Foreground = (Brush)Application.Current.FindResource("lightFontColor"),
+                FontSize = 12
+            };
+            makeTextBlockLookLikeHyperLink(DOID);
+            TextBlock ontologyTitle = new TextBlock
+            {
+                Text = $"{oi.Name}",
+                Margin = new Thickness(5, 3, 5, 0),
+                TextWrapping = TextWrapping.Wrap,
+                VerticalAlignment = VerticalAlignment.Center,
+                FontWeight = FontWeights.Bold,
+                Foreground = (Brush)Application.Current.FindResource("lightFontColor"),
+                FontSize = 14,
+            };
+            //makeTextBlockLookLikeHyperLink(on)
+            TextBlock ontologyDef = new TextBlock
+            {
+                Text = $"{oi.Def}",
+                Margin = new Thickness(5, 2, 5, 0),
+                TextWrapping = TextWrapping.Wrap,
+                VerticalAlignment = VerticalAlignment.Center,
+                FontWeight = FontWeights.SemiBold,
+                Foreground = (Brush)Application.Current.FindResource("lightFontColor"),
+                FontSize = 12,
+            };
+
+            TextBlock ontologySynonyms = new TextBlock
+            {
+                Margin = new Thickness(5, 5, 5, 0),
+                TextWrapping = TextWrapping.Wrap,
+                VerticalAlignment = VerticalAlignment.Center,
+                FontWeight = FontWeights.SemiBold,
+                Foreground = (Brush)Application.Current.FindResource("lightFontColor"),
+                FontSize = 12,
+            };
+            if (oi.Synonyms != null && oi.Synonyms.Count > 0)
+            {
+                ontologySynonyms.Text = $"Synonyms: {oi.Synonyms},\n Parent: {oi.Parent}";
+
+            }
+            else if (oi.Parent != null && oi.Parent != "")
+            {
+                ontologySynonyms.Text = $"Parent: {oi.Parent}";
+            }
+
+
+            Grid.SetRow(DOID, 0);
+            Grid.SetRow(ontologyTitle, 1);
+            Grid.SetRow(ontologyDef, 2);
+            Grid.SetRow(ontologySynonyms, 3);
+
+            grid.Children.Add(DOID);
+            grid.Children.Add(ontologyTitle);
+            grid.Children.Add(ontologyDef);
+            grid.Children.Add(ontologySynonyms);
+            DOID.MouseDown += (sender, e) => ViewOntologyTermByDOID(oi);
+            border.Child = grid;
+            if (oi.Urls != null && oi.Urls.Count > 0)
+            {
+                makeItLookClickable(border);
+                border.MouseDown += (sender, e) => ViewOntologyTerm(oi);
+            }
+            return border;
+        }
+
+        private static void ViewOntologyTermByDOID(OntologyTerm oi)
+        {
+            oi.Id=oi.Id.Replace(":", "_");
+            //string s1 = $"https://disease-ontology.org/?id={oi.Id}";
+            string s2= $"https://www.ebi.ac.uk/ols/ontologies/doid/terms?iri=http%3A%2F%2Fpurl.obolibrary.org%2Fobo%2F{oi.Id}";
+            //Process.Start(new ProcessStartInfo(s1) { UseShellExecute = true });
+            Process.Start(new ProcessStartInfo(s2) { UseShellExecute = true });
+
+        }
+
+        private static void ViewOntologyTerm(OntologyTerm oi)
+        {
+            string s = oi.Urls[0];
+            s=s.Replace("http\\:", "http:").Replace("https\\:", "https:");
+            Process.Start(new ProcessStartInfo(s) { UseShellExecute = true });
+
+        }
 
         public static Border CreateTreatmentPlanUI(TreatmentPlan plan)
         {
@@ -382,7 +512,6 @@ namespace clinical
                 Background = (Brush)Application.Current.Resources["lighterColor"],
                 Height = 188
             };
-
             Grid grid = new Grid
             {
                 Margin = new Thickness(10)
@@ -492,6 +621,7 @@ namespace clinical
                 FontWeight = FontWeights.Bold,
                 Margin = new Thickness(10, 5, 10, 5)
             };
+            makeItLookClickable(patientProfileButton);
 
             Border viewVisitButton = new Border
             {
@@ -517,6 +647,7 @@ namespace clinical
                 FontWeight = FontWeights.Bold
             };
             viewVisitButton.Child = viewVisitText;
+            makeItLookClickable(viewVisitButton);
 
             patientProfileButton.MouseDown += (sender, e) => viewPatient(patient);
             viewVisitButton.MouseDown += (sender, e) => viewVisit(visit); ;
@@ -562,7 +693,6 @@ namespace clinical
                 Background = (Brush)Application.Current.Resources["lighterColor"],
                 Height = 188
             };
-
             Grid grid = new Grid
             {
                 Margin = new Thickness(10)
@@ -675,6 +805,7 @@ namespace clinical
                 TextAlignment = TextAlignment.Center,
                 FontWeight = FontWeights.Bold
             };
+            makeItLookClickable(viewVisitButton);
             viewVisitButton.Child = viewVisitText;
 
             viewVisitButton.MouseDown += (sender, e) => viewVisit(visit); ;
@@ -736,10 +867,7 @@ namespace clinical
             };
             border.MouseLeftButtonDown += (sender, e) => viewArticle(article);
             //make when mouse enter the cursor changes to pointer
-            border.MouseEnter+=(sender,e)=>border.Cursor=Cursors.Hand;
-            border.MouseLeave+=(sender,e)=>border.Cursor=Cursors.Arrow;
-            border.MouseLeave += (sender, e) => border.Background = (Brush)Application.Current.FindResource("darkerColor");
-            border.MouseEnter += (sender, e) => border.Background = (Brush)Application.Current.FindResource("lighterColor");
+            makeItLookClickable(border);
 
 
             TextBlock typeAndDate = new TextBlock
@@ -791,7 +919,7 @@ namespace clinical
         ///Scheduling part
         ///////////////////////////////////////////////
         ///
-
+        
 
         public static void ScheduleVisit(Visit newVisit)
         {

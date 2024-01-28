@@ -49,32 +49,25 @@
                                 </Button>
 
 
-                                <Separator Background="{StaticResource lighterColor}" Margin="20 0 20 10" Height="0.8"/>
+                                <Separator Background="{StaticResource darkerColor}" Margin="20 0 20 10" Height="0.8"/>
 
+                                
+                                <Border BorderThickness="2" Width="50" Height="50" Margin="0 5" Name="homeBTN" MouseDown="homeBTN_Click" CornerRadius="15">
+                                    <Icon:PackIconMaterial Kind="HomeVariant" HorizontalAlignment="Center" VerticalAlignment="Center" Width="17" Height="17" Foreground="{StaticResource lightFontColor}"/>
+                                </Border>
+                                <Border BorderThickness="2" Width="50" Height="50" Margin="0 5" Name="patientSearchBTN" MouseDown="patientSearchBTN_Click" CornerRadius="15">
+                                    <Icon:PackIconMaterial Kind="TableSearch" HorizontalAlignment="Center" VerticalAlignment="Center" Width="17" Height="17" Foreground="{StaticResource lightFontColor}"/>
+                                </Border>
+                                <Border BorderThickness="2" Width="50" Height="50" Margin="0 5" Name="calendarBtn" MouseDown="calendarBtn_Click" CornerRadius="15">
+                                    <Icon:PackIconMaterial Kind="Calendar" HorizontalAlignment="Center" VerticalAlignment="Center" Width="17" Height="17" Foreground="{StaticResource lightFontColor}"/>
+                                </Border>
+                                <Border BorderThickness="2" Width="50" Height="50" Margin="0 5" Name="chatBtn" MouseDown="chatBtn_Click" CornerRadius="15">
+                                    <Icon:PackIconMaterial Kind="MessageText" HorizontalAlignment="Center" VerticalAlignment="Center" Width="17" Height="17" Foreground="{StaticResource lightFontColor}"/>
+                                </Border>
+                                <Border BorderThickness="2" Width="50" Height="50" Margin="0 5" Name="settingsBtn" MouseDown="settingsBtn_Click" CornerRadius="15">
+                                    <Icon:PackIconMaterial Kind="Cog" HorizontalAlignment="Center" VerticalAlignment="Center" Width="17" Height="17" Foreground="{StaticResource lightFontColor}"/>
+                                </Border>
 
-                                <Button Style="{StaticResource menuButton}"  Name="homeBTN" Click="homeBTN_Click">
-                                    <Icon:PackIconMaterial Kind="HomeVariant" Style="{StaticResource menuButtonIcon}"/>
-                                </Button>
-
-
-                                <Button Style="{StaticResource menuButton}"  Name="patientSearchBTN" Click="patientSearchBTN_Click">
-                                    <Icon:PackIconMaterial Kind="TableSearch" Style="{StaticResource menuButtonIcon}"/>
-                                </Button>
-
-
-                                <Button Style="{StaticResource menuButton}" Name="calendarBtn" Click="calendarBtn_Click">
-                                    <Icon:PackIconMaterial Kind="Calendar" Style="{StaticResource menuButtonIcon}"/>
-                                </Button>
-
-
-                                <Button Style="{StaticResource menuButton}" Name="chatBtn" Click="chatBtn_Click" >
-                                    <Icon:PackIconMaterial Kind="MessageText" Style="{StaticResource menuButtonIcon}"/>
-                                </Button>
-
-
-                                <Button Style="{StaticResource menuButton}" Name="settingsBtn" Click="settingsBtn_Click">
-                                    <Icon:PackIconMaterial Kind="Cog" Style="{StaticResource menuButtonIcon}"/>
-                                </Button>
 
                             </StackPanel>
                         </Grid>

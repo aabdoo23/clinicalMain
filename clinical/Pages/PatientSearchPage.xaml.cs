@@ -20,12 +20,15 @@ namespace clinical.Pages
         public PatientSearchPage()
         {
             InitializeComponent();
-            List<Patient> list = DB.GetAllPatients();
-            foreach (Patient pat in list) {
-                User phys = DB.GetUserById(pat.PhysicianID);
-                pat.PhysicianName = phys.FirstName+" "+phys.LastName; 
+            if (globals.signedIn.isReciptionist|| globals.signedIn.isAdmin)
+            {
+                patientsDataGrid.ItemsSource = DB.GetAllPatients();
             }
-            patientsDataGrid.ItemsSource = list;
+            else
+            {
+                patientsDataGrid.ItemsSource = DB.GetAllPatientsByPhysicianID(globals.signedIn.UserID);
+            }
+            
             dataView = CollectionViewSource.GetDefaultView(patientsDataGrid.ItemsSource);
             textBoxFilter.TextChanged += SearchTextBox_TextChanged;
         }

@@ -73,14 +73,14 @@ namespace clinical.Pages
                 formTitle.Content = "New Equipment Device";
                 mainFrame.Navigate(new newEquipment());
             }
-            else if(type == 8) //new chronic
-            {
-                window.Height = 271;
-                window.Width = 400;
+            //else if(type == 8) //new chronic
+            //{
+            //    window.Height = 271;
+            //    window.Width = 400;
 
-                formTitle.Content = "New Chronic Disease";
-                mainFrame.Navigate(new newChronic());
-            }
+            //    formTitle.Content = "New Chronic Disease";
+            //    mainFrame.Navigate(new newChronic());
+            //}
             else if (type == 9)//new exercise
             {
                 window.Height = 251;
@@ -164,14 +164,14 @@ namespace clinical.Pages
         }
 
         //view Chronic
-        public newPatientForm(ChronicDisease toView)
-        {
-            InitializeComponent();
-            window.Height = 301;
-            window.Width = 400;
-            formTitle.Content = "View Chronic Disease";
-            mainFrame.Navigate(new newChronic(toView));
-        }
+        //public newPatientForm(ChronicDisease toView)
+        //{
+        //    InitializeComponent();
+        //    window.Height = 301;
+        //    window.Width = 400;
+        //    formTitle.Content = "View Chronic Disease";
+        //    mainFrame.Navigate(new newChronic(toView));
+        //}
         
         //view Appointment Type
         public newPatientForm(AppointmentType toView)

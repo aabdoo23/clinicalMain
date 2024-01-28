@@ -1,4 +1,5 @@
 ﻿using clinical.BaseClasses;
+using CommunityToolkit.HighPerformance;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -6,7 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
-
+using static clinical.BaseClasses.ontology;
 
 namespace clinical.Pages
 {
@@ -17,7 +18,7 @@ namespace clinical.Pages
     {
         bool edit = false;
         Patient patient;
-        List<ChronicDisease> selectedChronics = new List<ChronicDisease>();
+        List<OntologyTerm> selectedChronics = new List<OntologyTerm>();
         static List<Package> packages = DB.GetAllPackages();
         List<Injury> selectedInjuries = new List<Injury>();
 
@@ -47,7 +48,8 @@ namespace clinical.Pages
             InitializeComponent();
 
             assignedPhys.ItemsSource = DB.GetAllPhysiotherapists();
-            allChronicsDataGrid.ItemsSource = DB.GetAllChronicDiseases();
+            ontology oi=new ontology();
+            allChronicsDataGrid.ItemsSource = oi.GetFirstTenOntologies();
             allInjuriesDataGrid.ItemsSource = DB.GetAllInjuries();
             packagesCB.ItemsSource = packages;
             assignedPhys.SelectedIndex = 0;
@@ -65,8 +67,7 @@ namespace clinical.Pages
             injuryDataView = CollectionViewSource.GetDefaultView(allInjuriesDataGrid.ItemsSource);
             searchInjuriesTXTBOX.TextChanged += SearchInjuryTextBox_TextChanged;
 
-
-            chronicDataView = CollectionViewSource.GetDefaultView(allChronicsDataGrid.ItemsSource);
+            chronicDataView = CollectionViewSource.GetDefaultView(DB.GetAllTerms());
             searchChronicDiseaseTXTBOX.TextChanged += SearchChronicTextBox_TextChanged;
 
 
@@ -74,7 +75,12 @@ namespace clinical.Pages
 
         private void SearchChronicTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            chronicDataView.Filter = item => FilterItem(item, searchChronicDiseaseTXTBOX.Text);
+            if (searchChronicDiseaseTXTBOX.Text.Length < 4)
+            {
+                return;
+            }
+            allChronicsDataGrid.ItemsSource = DB.GetTermsLikeName(searchChronicDiseaseTXTBOX.Text);
+            //chronicDataView.Filter = item => FilterItem(item, searchChronicDiseaseTXTBOX.Text);
 
         }
 
@@ -185,7 +191,7 @@ namespace clinical.Pages
 
             foreach (var ch in selectedChronics)
             {
-                DB.InsertPatientChronicDiseases(ch.ChronicDiseaseID, newPatient.PatientID);
+                DB.InsertPatientDiseases(ch.Name, newPatient.PatientID);
             }
 
             foreach (var inj in selectedInjuries)
@@ -223,14 +229,14 @@ namespace clinical.Pages
 
         private void removeChronic(object sender, RoutedEventArgs e)
         {
-            selectedChronics.Remove((ChronicDisease)selectedChronicsDataGrid.SelectedItem);
+            selectedChronics.Remove((OntologyTerm)selectedChronicsDataGrid.SelectedItem);
             refresh();
 
         }
 
         private void addChronic(object sender, RoutedEventArgs e)
         {
-            ChronicDisease selectedChronic = (ChronicDisease)allChronicsDataGrid.SelectedItem;
+            OntologyTerm selectedChronic = (OntologyTerm)allChronicsDataGrid.SelectedItem;
             if (!selectedChronics.Contains(selectedChronic)) selectedChronics.Add(selectedChronic);
             refresh();
         }
