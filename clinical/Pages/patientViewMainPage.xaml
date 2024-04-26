@@ -104,7 +104,7 @@
                                 <ColumnDefinition Width="15*"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock Text="Chronic diseases" FontSize="20" FontWeight="Bold" Foreground="{StaticResource lightFontColor}"  Grid.Column="0" VerticalAlignment="Top"/>
-                            <Icon:PackIconMaterial MouseDown="newMedicalRecord" VerticalAlignment="Top" Kind="PlusBox" Foreground="{StaticResource lightFontColor}" Grid.Column="1" HorizontalAlignment="Center" Width="25" Height="25"/>
+                            <!--<Icon:PackIconMaterial MouseDown="newMedicalRecord" VerticalAlignment="Top" Kind="PlusBox" Foreground="{StaticResource lightFontColor}" Grid.Column="1" HorizontalAlignment="Center" Width="25" Height="25"/>-->
                         </Grid>
                         <Border Background="{StaticResource lightFontColor}" CornerRadius="5" Grid.Row="1">
                             <ScrollViewer VerticalScrollBarVisibility="Auto">
@@ -140,7 +140,7 @@
                                 <ColumnDefinition Width="15*"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock Text="Previous Injuries" FontSize="20" FontWeight="Bold" Foreground="{StaticResource lightFontColor}"  Grid.Column="0"/>
-                            <Icon:PackIconMaterial MouseDown="newMedicalRecord" Kind="PlusBox" Foreground="{StaticResource lightFontColor}" Grid.Column="1" HorizontalAlignment="Center" Width="25" Height="26" Margin="0,4,0,0"/>
+                            <!--<Icon:PackIconMaterial MouseDown="newMedicalRecord" Kind="PlusBox" Foreground="{StaticResource lightFontColor}" Grid.Column="1" HorizontalAlignment="Center" Width="25" Height="26" Margin="0,4,0,0"/>-->
                         </Grid>
 
                         <Border Background="{StaticResource lightFontColor}" CornerRadius="5" Grid.Row="1">
@@ -296,12 +296,13 @@
                                     <ColumnDefinition Width="15*"/>
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Text="Active treatment plan" FontSize="19" Foreground="{StaticResource lightFontColor}" FontWeight="Bold" Margin="18 10" Grid.Column="0"/>
-                                <Icon:PackIconMaterial Kind="FileEdit" Foreground="{StaticResource lightFontColor}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Width="25" Height="25"/>
+                                <!--<Icon:PackIconMaterial Kind="FileEdit" Foreground="{StaticResource lightFontColor}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Width="25" Height="25"/>-->
                             </Grid>
 
                             <Border Grid.Column="1" Background="{StaticResource lighterColor}" Grid.Row="1" CornerRadius="10" Margin="10 0 10 10">
-                                <StackPanel Name="StackPanel" Orientation="Vertical" Grid.Row="2" Background="Transparent" Margin="7" />
-
+                                <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="4">
+                                <StackPanel Name="treatmentPlanStackPanel" Orientation="Vertical" Grid.Row="2" Background="Transparent" Margin="5" />
+                                </ScrollViewer>
                             </Border>
                         </Grid>
                     </Border>

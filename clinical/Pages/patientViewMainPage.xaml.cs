@@ -1,10 +1,8 @@
 ﻿using clinical.BaseClasses;
 using LiveCharts;
-using LiveCharts.Defaults;
 using LiveCharts.Wpf;
 using PdfSharp.Charting;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
@@ -12,11 +10,9 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Navigation;
-using static clinical.BaseClasses.ontology;
 
 namespace clinical.Pages
 {
@@ -30,7 +26,7 @@ namespace clinical.Pages
         public patientViewMainPage(Patient patient)
         {
             InitializeComponent();
-            
+            globals.selectedPatient = patient;
             this.currPatient = patient;
             patientIDTxt.Text = patient.PatientID.ToString();
             patientNameMainTxt.Text = patient.FirstName + " " + patient.LastName;
@@ -58,11 +54,13 @@ namespace clinical.Pages
 
             foreach (var i in DB.GetPatientPrevVisits(patient.PatientID))
             {
-                prevVisitsStackPanel.Children.Add(globals.createAppointmentUIObject(i,viewVisit));
+                prevVisitsStackPanel.Children.Add(globals.createAppointmentUIObject(i, viewVisit));
             }
 
             medicalRecordsDataGrid.ItemsSource = DB.GetAllPatientRecords(patient.PatientID);
-
+            TreatmentPlan mostRecent = DB.GetMostRecentTreatmentPlanByPatientID(patient.PatientID);
+            if (mostRecent != null)
+                treatmentPlanStackPanel.Children.Add(globals.CreateTreatmentPlanUI(mostRecent));
 
         }
 
@@ -74,7 +72,7 @@ namespace clinical.Pages
 
         private void viewVisit(Visit vis)
         {
-            if(vis!=null) NavigationService.Navigate(new visit(vis));
+            if (vis != null) NavigationService.Navigate(new visit(vis));
 
         }
 

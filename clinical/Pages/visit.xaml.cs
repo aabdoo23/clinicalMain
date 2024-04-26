@@ -465,7 +465,11 @@ namespace clinical.Pages
             hwborder.IsEnabled = false;
 
             DB.UpdateVisit(currVisit);
-            if (DB.GetMostRecentVisitByPatientID(currPatient.PatientID).VisitID == currVisit.VisitID) DB.UpdatePatient(currPatient);
+            Visit mostRecent= DB.GetMostRecentVisitByPatientID(currPatient.PatientID);
+            if (mostRecent == null || mostRecent.VisitID==currVisit.VisitID)
+            {
+                DB.UpdatePatient(currPatient);
+            }
         }
 
         private void markDoneUnDone(object sender, MouseButtonEventArgs e)

@@ -14,6 +14,10 @@ namespace clinical.BaseClasses
         public string Report { get; set; }
         public List<string> Images { get; set; }
         public int PatientID { get; set; }
+        public string PatientName { get
+            {
+                return DB.GetPatientById(PatientID).FullName;
+            } }
         public string PhysicianNotes { get; set; }
 
         // Constructor

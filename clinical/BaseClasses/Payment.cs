@@ -13,6 +13,7 @@ namespace clinical.BaseClasses
         public DateTime TimeStamp { get; set; }
         public int PhysicianID {  get; set; }
         public int PatientID {  get; set; }
+        public string PatientName { get { return DB.GetPatientById(PatientID).FullName; } }
         public Payment(int paymentID, double amount, DateTime timeStamp, int physicianID, int patientID)
         {
             PaymentID = paymentID;

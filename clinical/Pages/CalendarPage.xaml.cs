@@ -66,15 +66,15 @@ namespace clinical.Pages
             }            
 
 
-            List<string>hours = new List<string>();
-            List<string>minutes = new List<string>();
-            for(int i = 1; i <= 23; i++)
+            List<int>hours = new List<int>();
+            List<int>minutes = new List<int>();
+            for(int i = 0; i <= 23; i++)
             {
-                hours.Add(i.ToString("D2"));
+                hours.Add(i);
             }
-            for(int i = 1;i <= 59; i++)
+            for(int i = 0;i <= 59; i++)
             {
-                minutes.Add(i.ToString("D2"));
+                minutes.Add(i);
             }
             fromHrCB.ItemsSource=hours;
             toHrCB.ItemsSource = hours;

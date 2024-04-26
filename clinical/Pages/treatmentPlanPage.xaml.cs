@@ -505,47 +505,10 @@ namespace clinical.Pages
 
         private void print(object sender, MouseButtonEventArgs e)
         {
-            // Create a PrintDialog
-            PrintDialog printDialog = new PrintDialog();
-
-            if (printDialog.ShowDialog() == true)
-            {
-                // Print the visual representation of the current page
-                printDialog.PrintVisual(this, "Print Job");
-            }
-            //// Create a PrintDialog
-            //PrintDialog printDialog = new PrintDialog();
-
-            //if (printDialog.ShowDialog() == true)
-            //{
-            //    // Create a Grid to host a copy of the current UI
-            //    Grid printGrid = new Grid();
-            //    printGrid.Background = Brushes.White;
-            //    printGrid.Children.Add((UIElement)Content);
-
-            //    // Set the layout size to the printed area
-            //    printGrid.Measure(new Size(printDialog.PrintableAreaWidth, printDialog.PrintableAreaHeight));
-            //    printGrid.Arrange(new Rect(new Point(0, 0), printGrid.DesiredSize));
-
-            //    // Print the UI
-            //    printDialog.PrintVisual(printGrid, "Print Job");
-            //}
+            MessageBox.Show("Please make sure to save before printing.");
+            globals.PrintPage(new PrintingPage(DB.GetTreatmentPlanByID(planID)));
         }
 
-        private UIElement CloneVisual(UIElement element)
-        {
-            // Clone the visual element to avoid the "already the logical child" error
-            if (element is FrameworkElement frameworkElement)
-            {
-                // Use XamlLoader to clone the element
-                string elementXaml = XamlWriter.Save(frameworkElement);
-                StringReader stringReader = new StringReader(elementXaml);
-                XmlReader xmlReader = XmlReader.Create(stringReader);
-                UIElement clonedElement = (UIElement)XamlReader.Load(xmlReader);
-                return clonedElement;
-            }
-            return null;
-        }
         private void save(object sender, MouseButtonEventArgs e)
         {
             bool pending = false;
@@ -712,6 +675,7 @@ namespace clinical.Pages
         ///printing
         /////////////////////////////////////////////////
         ///
+
         private void planNameACSelectedPlanChanged(object sender, SelectionChangedEventArgs e)
         {
             //MessageBoxResult res = MessageBox.Show("Are you sure you want to discard all current modifications and retrieve all data from this plan?", "Confirmation", MessageBoxButton.YesNo);

@@ -20,9 +20,11 @@ namespace clinical.Pages
         public PatientSearchPage()
         {
             InitializeComponent();
+            newPatientButton.Visibility = Visibility.Hidden;
             if (globals.signedIn.isReciptionist|| globals.signedIn.isAdmin)
             {
                 patientsDataGrid.ItemsSource = DB.GetAllPatients();
+                newPatientButton.Visibility = Visibility.Visible;
             }
             else
             {

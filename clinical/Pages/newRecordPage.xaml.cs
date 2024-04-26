@@ -185,13 +185,14 @@ namespace clinical.Pages
         {
             try
             {
-                using (var engine = new TesseractEngine("C:\\Users\\TOP\\Desktop\\clinicalK\\clinical\\tessdata", "eng", EngineMode.Default))
+                using (var engine = new TesseractEngine("C:\\Users\\TOP\\Desktop\\clinicalMain\\clinical\\tessdata", "eng", EngineMode.Default))
                 {
                     using (var img = Pix.LoadFromFile(imagePath))
                     {
                         using (var page = engine.Process(img))
                         {
                             var text = page.GetText();
+                            
                             return text;
                         }
                     }
@@ -249,6 +250,7 @@ namespace clinical.Pages
 
         private void goBackPage(object sender, MouseButtonEventArgs e)
         {
+            if(NavigationService.CanGoBack)
             NavigationService.GoBack();
 
         }

@@ -100,7 +100,7 @@
                     </StackPanel>
                 </Grid>
             </Border>
-            <!--Patients-->
+            <!--Ontology-->
             <Border Grid.Row="2" Grid.RowSpan="3" Margin="5" Style="{StaticResource theLinedBorder}">
                 <Grid Margin="5">
                     <Grid.RowDefinitions>

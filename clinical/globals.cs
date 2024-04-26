@@ -2,14 +2,22 @@
 using clinical.Pages;
 using MahApps.Metro.IconPacks;
 using Org.BouncyCastle.Tls;
+using PdfSharp.Drawing;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO.Packaging;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Markup;
 using System.Windows.Media;
+using System.Windows.Xps.Packaging;
+using System.Xml;
+using PdfSharp.Pdf;
 
 namespace clinical
 {
@@ -20,6 +28,7 @@ namespace clinical
         }
 
         public static User signedIn = null;
+        public static Patient selectedPatient = null;
         public static DateTime CalculateBirthdate(int age)
         {
             DateTime currentDate = DateTime.Now;
@@ -914,12 +923,62 @@ namespace clinical
         }
 
 
+        //printing
+        public static void PrintPage(Page page)
+        {
+            PrintDialog printDialog = new PrintDialog();
+
+            if (printDialog.ShowDialog() == true)
+            {
+                // Set content properties
+                page.Measure(new Size(printDialog.PrintableAreaWidth, printDialog.PrintableAreaHeight));
+                page.Arrange(new Rect(new Point(0, 0), page.DesiredSize));
+
+                // Print the visual content of the Page directly
+                printDialog.PrintVisual(page, "Print Document");
+            }
+        }
+
+
+        //private static void SaveAsPdf(FixedDocument fixedDoc, string outputPath)
+        //{
+        //    using (FileStream fs = new FileStream(outputPath, FileMode.Create))
+        //    {
+        //        PdfDocument pdfDocument = new PdfDocument();
+        //        pdfDocument.Info.Title = "Printed Document";
+
+        //        // Iterate through each page of the FixedDocument and add it to the PdfDocument
+        //        foreach (PageContent pageContent in fixedDoc.Pages)
+        //        {
+        //            var page = new PdfPage();
+        //            var content = new PdfPageContent();
+        //            var stream = new MemoryStream();
+
+        //            var xpsDocument = new XpsDocument(pageContent.SourceDocument, FileAccess.Read);
+        //            var package = System.IO.Packaging.Package.Open(stream, FileMode.Create, FileAccess.ReadWrite);
+        //            var xpsPackage = (IXpsFixedDocumentSequenceReader)XpsDocument.OpenXpsDocumentReader(xpsDocument).FixedDocumentSequenceReader;
+
+        //            var paginator = xpsPackage.FixedDocuments[0].Paginator;
+        //            paginator.SaveAsXaml(XmlWriter.Create(package.GetPart(new Uri("/Documents/1/FixedDoc.fdoc", UriKind.Relative), CompressionOption.Maximum).GetStream(FileMode.Create, FileAccess.Write)));
+
+        //            package.Close();
+        //            stream.Seek(0, SeekOrigin.Begin);
+
+        //            page.AddImage(XImage.FromStream(stream));
+        //            pdfDocument.Pages.Add(page);
+        //        }
+
+        //        // Save the PdfDocument to the specified path
+        //        pdfDocument.Save(fs);
+        //    }
+        //}
+
 
         ///////////////////////////////////////////////
         ///Scheduling part
         ///////////////////////////////////////////////
         ///
-        
+
 
         public static void ScheduleVisit(Visit newVisit)
         {

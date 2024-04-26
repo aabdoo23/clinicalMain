@@ -238,12 +238,11 @@ namespace clinical.BaseClasses
                     {
                         // Extract the def value and assign it to the current term
                         currentTerm.Def = line.Substring(6, line.IndexOf('[') - 7);
-
                         // Extract the urls from the def value and add them to the current term
-                        foreach (var url in line.Substring(line.IndexOf('[') + 1, line.IndexOf(']') - line.IndexOf('[') - 1).Split(','))
-                        {
-                            currentTerm.Urls.Add(url.Trim().Substring(4));
-                        }
+                        //foreach (var url in line.Substring(line.IndexOf('[') + 1, line.IndexOf(']') - line.IndexOf('[') - 1).Split(','))
+                        //{
+                        //    currentTerm.Urls.Add(url.Trim().Substring(4));
+                        //}
                     }
                     // Check if the line starts with a synonym tag
                     else if (line.StartsWith("synonym: "))

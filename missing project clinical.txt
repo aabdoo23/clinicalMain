@@ -1,7 +1,5 @@
 kont b3ml eh 2bl ma anam:
 
-ontologies, pushed to db, search in new patient only by searching first 4 letters of the name, number of ontologies viewed at first only 1000 limited in db function
-
 random thoughts:
 
 -follow-up during allowed time, if exceeded new consultation
@@ -180,6 +178,10 @@ for a doctor, get all future visits, if all his day appointments are booked, mar
 11- sh8al el chat group wel announcements (no need for groups now)
 
 4-delete buttons in settings grids with confirmation
+
+
+ontologies, pushed to db, search in new patient only by searching first 4 letters of the name, number of ontologies viewed at first only 1000 limited in db function
+
 
 /////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////

@@ -26,7 +26,7 @@ namespace clinical.Pages
             UpdateDayBorders();
             leftSideFrame.NavigationService.Navigate(new DashBoardPage());
             signedInTB.Text = $"Welcome, Dr. {therapist.FirstName}";
-            PopulateDataGrid();
+            PopulateArticleDataGrid();
             PopulateOntology();
             PopulateOntlogyFilters();
 
@@ -233,7 +233,7 @@ namespace clinical.Pages
         /// </summary>
 
         //news-medical.net
-        private async void PopulateDataGrid()
+        private async void PopulateArticleDataGrid()
         {
             articlesStackPanel.Children.Clear();
 
@@ -333,7 +333,7 @@ namespace clinical.Pages
                     articlesStackPanel.Children.Add(globals.createArticleUIObject(i));
                 }
             }
-            else PopulateDataGrid();
+            else PopulateArticleDataGrid();
         }
 
 

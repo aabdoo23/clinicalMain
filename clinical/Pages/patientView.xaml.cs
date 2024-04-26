@@ -29,7 +29,15 @@ namespace clinical
             InitializeComponent();
             selectedPatient= patient;
             mainFrame.Navigate(new patientViewMainPage(selectedPatient));
+            sideFrame.Navigate(new PhysiotherapistSideBar());
 
+        }
+        public patientView(MedicalRecord medicalRecord)
+        {
+            InitializeComponent();
+            selectedPatient=DB.GetPatientById(medicalRecord.PatientID);
+            mainFrame.Navigate(new newRecordPage(medicalRecord));
+            sideFrame.Navigate(new PhysiotherapistSideBar());
 
         }
         public patientView(User viewPhysician)
@@ -37,12 +45,14 @@ namespace clinical
             InitializeComponent();
             mainFrame.Navigate(new reciptionistViewPhysioTherapist(viewPhysician));
 
+            sideFrame.Navigate(new PhysiotherapistSideBar());
 
         }
         public patientView(Visit viewPhysician)
         {
             InitializeComponent();
             mainFrame.Navigate(new visit(viewPhysician));
+            sideFrame.Navigate(new PhysiotherapistSideBar());
 
         }
 
@@ -65,5 +75,20 @@ namespace clinical
             }
         }
 
+        private void Grid_MouseEnter(object sender, MouseEventArgs e)
+        {
+            //MinWidth="90"
+            //MaxWidth = "680"
+            sideGrid.Width = 680;
+            Width = 1380;
+        }
+
+        private void Grid_MouseLeave(object sender, MouseEventArgs e)
+        {
+            sideGrid.Width = 90;
+            Width = 1180;
+
+
+        }
     }
 }

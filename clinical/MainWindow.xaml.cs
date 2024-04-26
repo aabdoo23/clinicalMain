@@ -103,7 +103,11 @@ namespace clinical
             }
             
             else if (state == 2)
+            {
                 mainFrame.Navigate(new PhysioTherapistDashboard(loggedIn));
+                //new SideBarWindow().Show();
+                    
+            }
             else mainFrame.Navigate(new ReceptionistDashboard(loggedIn));
         }
         private void homeBTN_Click(object sender, MouseButtonEventArgs e)

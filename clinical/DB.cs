@@ -1409,6 +1409,50 @@ namespace clinical
 
             return treatmentPlans;
         }
+        public static TreatmentPlan GetMostRecentTreatmentPlanByPatientID(int patientID)
+        {
+
+            using (connection)
+            {
+                try
+                {
+                    connection.Open();
+                    string query = "SELECT * FROM TreatmentPlan WHERE patientID=@pId ORDER BY timeStamp DESC LIMIT 1;";
+
+                    using (MySqlCommand command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@pId", patientID);
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (reader.Read())
+                            {
+                                return new TreatmentPlan(
+                                    Convert.ToInt32(reader["planID"]),
+                                    Convert.ToString(reader["planName"]),
+                                    Convert.ToInt32(reader["planTime"]),
+                                    Convert.ToDouble(reader["price"]),
+                                    Convert.ToString(reader["notes"]),
+                                    Convert.ToString(reader["keywords"]),
+                                    Convert.ToInt32(reader["injuryID"]),
+                                    Convert.ToInt32(reader["patientID"]),
+                                    Convert.ToInt32(reader["visitID"]),
+                                    Convert.ToDateTime(reader["timeStamp"])
+                                );
+
+
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error: {ex.Message}");
+                }
+            }
+
+            return null;
+        }
+
         public static List<TreatmentPlan> GetAllTreatmentPlansByVisitID(int visitID)
         {
             List<TreatmentPlan> treatmentPlans = new List<TreatmentPlan>();
