@@ -27,7 +27,7 @@ namespace clinical.Pages
         }
         public void refresh()
         {
-            physiciansDataGrid.ItemsSource = DB.GetAllPhysiotherapists();
+            DoctorsDataGrid.ItemsSource = DB.GetAllDoctors();
             employeesDataGrid.ItemsSource= DB.GetAllEmployees();
             hereNowDataGrid.ItemsSource=DB.GetAllUserswRecordsByDate(DateTime.Now);
             List<Visit> todayVisits = DB.GetTodayVisits();
@@ -62,18 +62,18 @@ namespace clinical.Pages
             SeriesCollection s = new LiveCharts.SeriesCollection();
             financesChart.Series = s; // Set the series collection for the specific chart
 
-            var distinctPhysicianIds = payments.Select(payment => payment.PhysicianID).Distinct();
+            var distinctDoctorIds = payments.Select(payment => payment.DoctorID).Distinct();
             List<Brush> barColors = new List<Brush> { (Brush)Application.Current.Resources["lightFontColor"], (Brush)Application.Current.Resources["lighterColor"], (Brush)Application.Current.Resources["selectedColor"], Brushes.AntiqueWhite};
             int colorInd=0;
 
-            foreach (var physicianId in distinctPhysicianIds)
+            foreach (var DoctorId in distinctDoctorIds)
             {
-                var paymentsForPhysician = payments.Where(payment => payment.PhysicianID == physicianId);
+                var paymentsForDoctor = payments.Where(payment => payment.DoctorID == DoctorId);
 
                 ColumnSeries columnSeries = new ColumnSeries
                 {
-                    Title = $"Dr. {DB.GetUserById(physicianId).FullName}",
-                    Values = new ChartValues<double> { paymentsForPhysician.Sum(payment => payment.Amount) },
+                    Title = $"Dr. {DB.GetUserById(DoctorId).FullName}",
+                    Values = new ChartValues<double> { paymentsForDoctor.Sum(payment => payment.Amount) },
                     LabelPoint = point => point.Y.ToString("C"),
                     Fill = barColors[colorInd] // Customize the color if needed
                 };
@@ -81,8 +81,8 @@ namespace clinical.Pages
                 s.Add(columnSeries);
             }
 
-            // Set the X-axis labels dynamically based on physician IDs
-            financesChart.AxisX[0].Labels = distinctPhysicianIds.Select(id => $"Dr. {DB.GetUserById(id).FullName}").ToArray();
+            // Set the X-axis labels dynamically based on Doctor IDs
+            financesChart.AxisX[0].Labels = distinctDoctorIds.Select(id => $"Dr. {DB.GetUserById(id).FullName}").ToArray();
             financesChart.AxisY[0].LabelFormatter = value => value.ToString("C"); // Use currency format if applicable
 
 
@@ -100,7 +100,7 @@ namespace clinical.Pages
             window.Show();
         }
 
-        private void newPhysician(object sender, MouseButtonEventArgs e)
+        private void newDoctor(object sender, MouseButtonEventArgs e)
         {
             newPatientForm window = new newPatientForm(1);
             window.Show();
@@ -111,9 +111,9 @@ namespace clinical.Pages
 
         }
 
-        private void viewPhysician(object sender, RoutedEventArgs e)
+        private void viewDoctor(object sender, RoutedEventArgs e)
         {
-            new viewUser((User)physiciansDataGrid.SelectedItem).Show();
+            new viewUser((User)DoctorsDataGrid.SelectedItem).Show();
         }
 
         private void startVisitClick(object sender, RoutedEventArgs e)
@@ -133,7 +133,7 @@ namespace clinical.Pages
             User selectedUser=(User)employeesDataGrid.SelectedItem;
             if (selectedUser == null)
             {
-                selectedUser = (User)physiciansDataGrid.SelectedItem;
+                selectedUser = (User)DoctorsDataGrid.SelectedItem;
             }
             MessageBoxResult result=MessageBox.Show($"Are you sure you want to delete {selectedUser.FirstName} {selectedUser.LastName} ?","Delete User",MessageBoxButton.YesNoCancel);
             if (result == MessageBoxResult.Yes)

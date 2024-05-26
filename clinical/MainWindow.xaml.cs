@@ -104,7 +104,7 @@ namespace clinical
             
             else if (state == 2)
             {
-                mainFrame.Navigate(new PhysioTherapistDashboard(loggedIn));
+                mainFrame.Navigate(new DoctorDashboard(loggedIn));
                 //new SideBarWindow().Show();
                     
             }

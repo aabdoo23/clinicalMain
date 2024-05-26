@@ -137,7 +137,7 @@ namespace clinical.Pages
             }
             else
             {
-                todayVisits = DB.GetPhysicianVisitsOnDate(globals.signedIn.UserID, dateTime);
+                todayVisits = DB.GetDoctorVisitsOnDate(globals.signedIn.UserID, dateTime);
             }
             calendarEvents = DB.GetCalendarEventsByUserIDAndDate(globals.signedIn.UserID, dateTime);
 

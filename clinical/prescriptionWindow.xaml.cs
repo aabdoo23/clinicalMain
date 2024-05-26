@@ -71,21 +71,7 @@ namespace clinical
             }
         }
 
-        public prescriptionWindow(Visit currVisit, Patient currPatient,bool isTP)
-        {
-
-            InitializeComponent();
-            mainFrame.Visibility = Visibility.Visible;
-            formTitle.Content = "Treatment Plan";
-            mainFrame.NavigationService.Navigate(new treatmentPlanPage(currVisit,currPatient));
-        }
-        public prescriptionWindow(TreatmentPlan plan)
-        {
-            InitializeComponent();
-            mainFrame.Visibility = Visibility.Visible;
-            formTitle.Content = "Treatment Plan";
-            mainFrame.NavigationService.Navigate(new treatmentPlanPage(plan));
-        }
+        
         private void CreateNewIssueExerciseUI()
         {
 
@@ -522,7 +508,7 @@ namespace clinical
 
             if (!pending)
             {
-                Prescription prescription = new Prescription(prescriptionID, DateTime.Now, currentPatient.PatientID, currentVisit.PhysiotherapistID, currentVisit.VisitID);
+                Prescription prescription = new Prescription(prescriptionID, DateTime.Now, currentPatient.PatientID, currentVisit.DoctorID, currentVisit.VisitID);
                 DB.InsertPrescription(prescription);
                 foreach (dataObj obj in ObjectsList)
                 {

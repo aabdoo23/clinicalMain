@@ -24,17 +24,17 @@
             <RowDefinition Height="10*"/>
             <RowDefinition Height="20*"/>
         </Grid.RowDefinitions>
-        <!--Physicians-->
+        <!--Doctors-->
         <Border Style="{StaticResource theBorder}" Grid.RowSpan="2">
             <Grid Margin="10">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="45"/>
                     <RowDefinition Height="87*"/>
                 </Grid.RowDefinitions>
-                <TextBlock Text="Physicians" Margin="5" VerticalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource lightFontColor}" FontSize="25"/>
-                <Icon:PackIconMaterial Kind="PlusBox" Foreground="{StaticResource lightFontColor}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Width="30" Height="30" Margin="0 0 10 0" MouseDown="newPhysician"/>
+                <TextBlock Text="Doctors" Margin="5" VerticalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource lightFontColor}" FontSize="25"/>
+                <Icon:PackIconMaterial Kind="PlusBox" Foreground="{StaticResource lightFontColor}" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Right" Width="30" Height="30" Margin="0 0 10 0" MouseDown="newDoctor"/>
 
-                <DataGrid Grid.Row="1" ScrollViewer.VerticalScrollBarVisibility="Hidden" Margin="10" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="physiciansDataGrid" Style="{DynamicResource DataGridStyle1}">
+                <DataGrid Grid.Row="1" ScrollViewer.VerticalScrollBarVisibility="Hidden" Margin="10" RowStyle="{DynamicResource DataGridRowStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" x:Name="DoctorsDataGrid" Style="{DynamicResource DataGridStyle1}">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" Binding="{Binding UserID}"/>
                         <DataGridTextColumn Header="Name" Binding="{Binding FirstName}" IsReadOnly="True" Width="*"/>
@@ -43,7 +43,7 @@
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
-                                        <Button Name="view" Style="{StaticResource gridEditButton}" Click="viewPhysician">
+                                        <Button Name="view" Style="{StaticResource gridEditButton}" Click="viewDoctor">
                                             <Icon:PackIconMaterial Kind="EyeCircleOutline" Style="{StaticResource gridButtonIcon}"/>
                                         </Button>
                                         <Button Margin="5 0 0 0" Style="{StaticResource gridRemoveButton}" Click="deleteUser">
@@ -58,7 +58,7 @@
 
             </Grid>
         </Border>
-        <!--Physicians-->
+        <!--Doctors-->
         <Border Grid.Row="2" Margin="10" Grid.RowSpan="2" Style="{StaticResource theBorder}">
             <Grid Margin="10">
                 <Grid.RowDefinitions>

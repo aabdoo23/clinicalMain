@@ -26,7 +26,7 @@ namespace clinical
             InitializeComponent();
             if (globals.signedIn.UserID.ToString().StartsWith('1'))
             {
-                mainFrame.Navigate(new viewPhysiotherapist(user));
+                mainFrame.Navigate(new viewDoctor(user));
             }
         }
 

@@ -83,36 +83,12 @@
                                 <TextBlock Name="patientNameText" Text="3alolo" FontWeight="Bold" Grid.Row="0" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Center" Margin="10" FontSize="22"/>
                                 <TextBlock Name="visitIdText" Text="1232" Grid.Row="1" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Center" Margin="10" FontSize="18"/>
                                 <TextBlock Name="visitDate" Text="Monday, 6/10/2020" Grid.Row="2" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Center" Margin="10" FontSize="18"/>
-                                <TextBlock x:Name="physicianName" Text="Dr. Yasser Batawy" Grid.Row="3" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Center" Margin="10" FontSize="18"/>
+                                <TextBlock x:Name="DoctorName" Text="Dr. Yasser Batawy" Grid.Row="3" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Center" Margin="10" FontSize="18"/>
                                 <!--<TextBlock Text="Monday, 6/10/2020" Grid.Row="4" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Center" Margin="10" FontSize="30"/>
                             <TextBlock Text="Monday, 6/10/2020" Grid.Row="5" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Center" Margin="10" FontSize="30"/>-->
 
                             </Grid>
                         </Border>
-
-                    </Grid>
-                </Border>
-                <Border Style="{StaticResource theBorder}" Grid.Column="0"  Grid.Row="2" >
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="50"/>
-                            <RowDefinition Height="80*"/>
-                        </Grid.RowDefinitions>
-                        <Grid Grid.Row="0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="90*"/>
-                                <ColumnDefinition Width="40"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Text="Treatment Plan" FontSize="20" FontWeight="Bold" VerticalAlignment="Center" Foreground="{StaticResource lightFontColor}" Margin="12,0,28,0" Grid.Column="0"/>
-                            <Icon:PackIconMaterial Kind="PlusBox" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Center" Width="25" Height="25" Margin="0" Grid.Column="1" MouseDown="newTreatmentPlan"/>
-                        </Grid>
-                        <Border Style="{StaticResource theBorder}" Background="{StaticResource lighterColor}" Grid.Row="1" >
-                            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="5">
-                                <StackPanel Name="treatmentPlansStackPanel" Margin="5"/>
-                            </ScrollViewer>
-                        </Border>
-                        
-                        <!--<uc:medicalRecordObject/>-->
 
                     </Grid>
                 </Border>

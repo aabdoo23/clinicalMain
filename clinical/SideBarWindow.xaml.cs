@@ -13,7 +13,7 @@ namespace clinical
         {
             InitializeComponent();
             WindowStartupLocation = WindowStartupLocation.Manual;
-            mainFrame.Navigate(new PhysiotherapistSideBar());
+            mainFrame.Navigate(new DoctorSideBar());
 
             double screenWidth = SystemParameters.PrimaryScreenWidth;
             double screenHeight = SystemParameters.PrimaryScreenHeight;

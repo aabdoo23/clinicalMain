@@ -22,11 +22,11 @@ using System.Windows.Shapes;
 namespace clinical.Pages
 {
     /// <summary>
-    /// Interaction logic for PhysiotherapistSideBar.xaml
+    /// Interaction logic for DoctorSideBar.xaml
     /// </summary>
-    public partial class PhysiotherapistSideBar : Page
+    public partial class DoctorSideBar : Page
     {
-        public PhysiotherapistSideBar()
+        public DoctorSideBar()
         {
             InitializeComponent();
             articlesBorder.Visibility = Visibility.Visible;
@@ -107,7 +107,7 @@ namespace clinical.Pages
         private ICollectionView PatientDataView;
         void initPatientSearch()
         {
-            patientsDataGrid.ItemsSource = DB.GetAllPatientsByPhysicianID(globals.signedIn.UserID);
+            patientsDataGrid.ItemsSource = DB.GetAllPatientsByDoctorID(globals.signedIn.UserID);
         
 
             PatientDataView = CollectionViewSource.GetDefaultView(patientsDataGrid.ItemsSource);
@@ -334,7 +334,7 @@ namespace clinical.Pages
         ICollectionView RecordsDataView;
         void initRecordSearch()
         {
-            List<Patient> patients = DB.GetAllPatientsByPhysicianID(globals.signedIn.UserID);
+            List<Patient> patients = DB.GetAllPatientsByDoctorID(globals.signedIn.UserID);
             List<MedicalRecord> records = new List<MedicalRecord>();
             foreach (var i in patients)
             {

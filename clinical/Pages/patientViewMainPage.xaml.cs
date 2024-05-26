@@ -46,11 +46,7 @@ namespace clinical.Pages
                 CreateChronicBorder(ch);
             }
 
-            List<Injury> patientInjuries = DB.GetAllInjuriesByPatientID(currPatient.PatientID);
-            foreach (Injury inj in patientInjuries)
-            {
-                CreateInjuryBorder(inj);
-            }
+            
 
             foreach (var i in DB.GetPatientPrevVisits(patient.PatientID))
             {
@@ -58,9 +54,6 @@ namespace clinical.Pages
             }
 
             medicalRecordsDataGrid.ItemsSource = DB.GetAllPatientRecords(patient.PatientID);
-            TreatmentPlan mostRecent = DB.GetMostRecentTreatmentPlanByPatientID(patient.PatientID);
-            if (mostRecent != null)
-                treatmentPlanStackPanel.Children.Add(globals.CreateTreatmentPlanUI(mostRecent));
 
         }
 
@@ -256,37 +249,6 @@ namespace clinical.Pages
         }
 
 
-        public void CreateInjuryBorder(Injury inj)
-        {
-            Border border = new Border
-            {
-                Background = new SolidColorBrush(Colors.FloralWhite),
-                CornerRadius = new CornerRadius(5),
-                Margin = new Thickness(10, 10, 0, 0)
-            };
-
-            TextBlock textBlock = new TextBlock
-            {
-                HorizontalAlignment = System.Windows.HorizontalAlignment.Center,
-                VerticalAlignment = System.Windows.VerticalAlignment.Center,
-                Text = inj.InjuryName,
-                Style = (Style)Application.Current.Resources["titleText"],
-                TextWrapping = TextWrapping.Wrap
-            };
-
-            double maxBorderWidth = injuriesWrapPanel.ActualWidth;
-
-            double desiredWidth = MeasureTextWidth(inj.InjuryName, textBlock.FontSize);
-
-            border.MinWidth = Math.Min(desiredWidth, maxBorderWidth);
-
-            border.MinWidth += 60;
-            border.MinHeight += 30;
-
-            border.Child = textBlock;
-
-            injuriesWrapPanel.Children.Add(border);
-        }
 
         private double MeasureTextWidth(string text, double fontSize)
         {

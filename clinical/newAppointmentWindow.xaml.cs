@@ -24,11 +24,11 @@ namespace clinical
     {
         private ICollectionView dataView;
         Patient selectedPatient = null;
-        User selectedPhysician = null;
+        User selectedDoctor = null;
         DateTime selectedDateTime = DateTime.Now;
         DateTime lastSelectedDT = DateTime.Now;
         AppointmentType selectedType;
-        
+
         List<string> times = new List<string>();
 
 
@@ -36,7 +36,7 @@ namespace clinical
         {
             InitializeComponent();
 
-            for(int i = DB.GetOpeningTime(); i <= DB.GetClosingTime(); i++) //slots here
+            for (int i = DB.GetOpeningTime(); i <= DB.GetClosingTime(); i++) //slots here
             {
                 times.Add($"{i}:00");
                 times.Add($"{i}:30");
@@ -46,23 +46,23 @@ namespace clinical
             List<Patient> list = DB.GetAllPatients();
             foreach (Patient pat in list)
             {
-                User phys = DB.GetUserById(pat.PhysicianID);
-                pat.PhysicianName = phys.FirstName + " " + phys.LastName;
+                User phys = DB.GetUserById(pat.DoctorID);
+                pat.DoctorName = phys.FirstName + " " + phys.LastName;
             }
             allPatientsDataGrid.ItemsSource = list;
             dataView = CollectionViewSource.GetDefaultView(allPatientsDataGrid.ItemsSource);
             textBoxFilter.TextChanged += textBoxFilter_TextChanged;
 
-            datePicker.SelectedDate=DateTime.Now;
+            datePicker.SelectedDate = DateTime.Now;
             List<AppointmentType> types = DB.GetAllAppointmentTypes();
 
             visitTypeCB.ItemsSource = types;
             timePicker.ItemsSource = times;
             timePicker.SelectedIndex = 0;
             visitTypeCB.SelectedIndex = 0;
-            
 
-            physicianPicker.ItemsSource = DB.GetAllPhysiotherapists();
+
+            DoctorPicker.ItemsSource = DB.GetAllDoctors();
 
         }
 
@@ -86,17 +86,14 @@ namespace clinical
             }
         }
 
-        Package selectedPackage;
 
         private void view(object sender, RoutedEventArgs e)
         {
             selectedPatient = (Patient)allPatientsDataGrid.SelectedItem;
             patientName.Text = selectedPatient.FirstName + " " + selectedPatient.LastName;
-            physicianName.Text = selectedPatient.PhysicianName;
-            selectedPhysician= DB.GetUserById(selectedPatient.PhysicianID);
-            selectedPackage = DB.GetPackageById(selectedPatient.ActivePackageID);
-            packageTB.Text = selectedPackage.ToString();
-            patientDueTB.Text=selectedPatient.DueAmount.ToString();
+            DoctorName.Text = selectedPatient.DoctorName;
+            selectedDoctor = DB.GetUserById(selectedPatient.DoctorID);
+            patientDueTB.Text = selectedPatient.DueAmount.ToString();
             handleFinances();
             Refresh();
 
@@ -130,15 +127,15 @@ namespace clinical
 
         private void saveClicked(object sender, MouseButtonEventArgs e)
         {
-            if(selectedPatient == null) { return; }
-            MessageBoxResult result = MessageBox.Show("Book "+selectedPatient.FullName+" a reservation on "+ selectedDateTime.ToString("g"), "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (selectedPatient == null) { return; }
+            MessageBoxResult result = MessageBox.Show("Book " + selectedPatient.FullName + " a reservation on " + selectedDateTime.ToString("g"), "Confirmation", MessageBoxButton.YesNo, MessageBoxImage.Question);
 
             // Check the user's response
             if (result == MessageBoxResult.Yes)
             {
                 int id = globals.generateNewVisitID(selectedPatient.PatientID, selectedDateTime);
                 AppointmentType ap = (AppointmentType)visitTypeCB.SelectedItem;
-                Visit visit = new Visit(id, selectedPhysician.UserID, selectedPatient.PatientID, selectedPackage.PackageID, selectedDateTime, 1, "",selectedPatient.Height,selectedPatient.Weight,false,ap.TypeID);
+                Visit visit = new Visit(id, selectedDoctor.UserID, selectedPatient.PatientID,  selectedDateTime, "", selectedPatient.Height, selectedPatient.Weight, false, ap.TypeID);
 
                 globals.ScheduleVisit(visit);
 
@@ -146,23 +143,18 @@ namespace clinical
 
                 selectedPatient.DueAmount = Double.Parse(patientDueTB.Text);
 
-                if(selectedPatient.RemainingSessions>0)selectedPatient.RemainingSessions--;
-                if (selectedPatient.RemainingSessions == 0)
-                {
-                    selectedPatient.ActivePackageID = 0;
-                }
                 DB.UpdatePatient(selectedPatient);
 
                 double paid = Double.Parse(paidTB.Text.Trim());
 
-                Payment payment = new Payment(globals.generateNewPaymentID(selectedPatient.PatientID, DateTime.Now), paid, DateTime.Now, selectedPhysician.UserID, selectedPatient.PatientID);
+                Payment payment = new Payment(globals.generateNewPaymentID(selectedPatient.PatientID, DateTime.Now), paid, DateTime.Now, selectedDoctor.UserID, selectedPatient.PatientID);
                 DB.InsertPayment(payment);
 
                 Window.GetWindow(this).Close();
             }
 
 
-            
+
         }
 
         private void dateChanged(object sender, SelectionChangedEventArgs e)
@@ -174,11 +166,11 @@ namespace clinical
 
         private void timeChanged(object sender, SelectionChangedEventArgs e)
         {
-            if ((string)timePicker.SelectedItem==null) return;
-            string s= (string)timePicker.SelectedItem;
-            string hr = "",min="";
-            hr+= s[0];
-            hr+= s[1];
+            if ((string)timePicker.SelectedItem == null) return;
+            string s = (string)timePicker.SelectedItem;
+            string hr = "", min = "";
+            hr += s[0];
+            hr += s[1];
             min += s[3];
             min += s[4];
 
@@ -189,11 +181,11 @@ namespace clinical
         private void first_avail(object sender, RoutedEventArgs e)
         {
 
-            if (selectedPatient == null ||selectedPhysician==null)
+            if (selectedPatient == null || selectedDoctor == null)
             {
                 return;
             }
-            DateTime firstFree=globals.FindFirstFreeSlot(selectedPhysician.UserID, DateTime.Today);
+            DateTime firstFree = globals.FindFirstFreeSlot(selectedDoctor.UserID, DateTime.Today);
             datePicker.IsEnabled = false;
             timePicker.IsEnabled = false;
             datePicker.SelectedDate = firstFree;
@@ -209,10 +201,10 @@ namespace clinical
             timePicker.IsEnabled = true;
         }
 
-        private void physicianChanged(object sender, SelectionChangedEventArgs e)
+        private void DoctorChanged(object sender, SelectionChangedEventArgs e)
         {
-            selectedPhysician= (User)(physicianPicker.SelectedItem);
-            physicianName.Text="Dr. "+selectedPhysician.FirstName+" "+selectedPhysician.LastName;
+            selectedDoctor = (User)(DoctorPicker.SelectedItem);
+            DoctorName.Text = "Dr. " + selectedDoctor.FirstName + " " + selectedDoctor.LastName;
             Refresh();
         }
 
@@ -224,11 +216,12 @@ namespace clinical
 
         void Refresh()
         {
-            if (selectedPhysician == null) return;
-            List<string> availTimes= globals.GetAvailableTimeSlotsOnDay(datePicker.SelectedDate.Value, selectedPhysician.UserID);
-            if (availTimes.Count == 0) {
+            if (selectedDoctor == null) return;
+            List<string> availTimes = globals.GetAvailableTimeSlotsOnDay(datePicker.SelectedDate.Value, selectedDoctor.UserID);
+            if (availTimes.Count == 0)
+            {
                 datePicker.SelectedDate.Value.AddDays(1);
-                }
+            }
             timePicker.ItemsSource = availTimes;
         }
 
@@ -238,33 +231,13 @@ namespace clinical
 
         void handleFinances()
         {
-            selectedType = (AppointmentType) visitTypeCB.SelectedItem;
+            selectedType = (AppointmentType)visitTypeCB.SelectedItem;
             if (selectedPatient != null) //selected a patient? YES
             {
-                if (selectedPackage == null || selectedPackage.PackageID == 0 || selectedPatient.RemainingSessions==0) //patient has a package? NO
                 {
                     double price = selectedType.Cost;
-                    selectedPatient.ActivePackageID = 0;
-                    double patientDueAmount = price + selectedPatient.DueAmount  ;
+                    double patientDueAmount = price + selectedPatient.DueAmount;
                     double visitDueAmount = price;
-
-                    if (paidTB.Text != null && paidTB.Text != "")
-                    {
-                        patientDueAmount-=Double.Parse(paidTB.Text.Trim());
-                        visitDueAmount-=Double.Parse(paidTB.Text.Trim());
-                    }
-
-                    visitDueTB.Text = visitDueAmount.ToString();
-                    patientDueTB.Text = patientDueAmount.ToString();
-
-
-                }
-                else
-                {
-                    
-
-                    double patientDueAmount = selectedPatient.DueAmount;
-                    double visitDueAmount = 0;
 
                     if (paidTB.Text != null && paidTB.Text != "")
                     {

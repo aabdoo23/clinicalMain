@@ -27,10 +27,10 @@ namespace clinical.Pages
             this.patient = DB.GetPatientById(medicalRecord.PatientID);
             patientNameMainTxt.Text = patient.FirstName + " " + patient.LastName;
             reportTXT.IsEnabled = false;
-            physicianNotesTXT.IsEnabled = false;
+            DoctorNotesTXT.IsEnabled = false;
             images = medicalRecord.Images;
             refresh();
-            physicianNotesTXT.Text = medicalRecord.PhysicianNotes;
+            DoctorNotesTXT.Text = medicalRecord.DoctorNotes;
             reportTXT.Text=medicalRecord.Report;
         }
         public newRecordPage(Patient patient)
@@ -39,7 +39,7 @@ namespace clinical.Pages
             this.patient = patient;
             patientNameMainTxt.Text = patient.FirstName+" "+patient.LastName;
             reportTXT.IsEnabled = false;
-            physicianNotesTXT.IsEnabled = false;
+            DoctorNotesTXT.IsEnabled = false;
         }
 
         List<string> images = new List<string>();
@@ -215,14 +215,14 @@ namespace clinical.Pages
         {
             int recID = globals.generateNewRecordID(patient.PatientID);
             MedicalRecord record = new MedicalRecord(
-                recID,"Record",DateTime.Now,reportTXT.Text.Trim(),images,patient.PatientID,physicianNotesTXT.Text.Trim());
+                recID,"Record",DateTime.Now,reportTXT.Text.Trim(),images,patient.PatientID,DoctorNotesTXT.Text.Trim());
             DB.InsertMedicalRecord(record);
             MessageBox.Show("Record saved, Record ID: " + recID);
             NavigationService.GoBack();
 
         }
 
-        private void scanPhysicianNotes(object sender, MouseButtonEventArgs e)
+        private void scanDoctorNotes(object sender, MouseButtonEventArgs e)
         {
             string filePath = readImage();
             string type = "Note";
@@ -230,7 +230,7 @@ namespace clinical.Pages
             {
                 createImageObj(filePath, type);
                 string text = PerformOCR(filePath);
-                physicianNotesTXT.Text += text.Trim();
+                DoctorNotesTXT.Text += text.Trim();
             }
             
 
@@ -255,9 +255,9 @@ namespace clinical.Pages
 
         }
 
-        private void editPhysicianNotes(object sender, MouseButtonEventArgs e)
+        private void editDoctorNotes(object sender, MouseButtonEventArgs e)
         {
-            physicianNotesTXT.IsEnabled = !physicianNotesTXT.IsEnabled;
+            DoctorNotesTXT.IsEnabled = !DoctorNotesTXT.IsEnabled;
         }
     }
 

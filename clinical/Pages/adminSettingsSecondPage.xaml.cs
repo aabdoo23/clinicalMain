@@ -24,9 +24,6 @@ namespace clinical.Pages
         public adminSettingsSecondPage()
         {
             InitializeComponent();
-            packagesDataGrid.ItemsSource = DB.GetAllPackages();
-            roomsDataGrid.ItemsSource = DB.GetAllRooms();
-            equipmentDataGrid.ItemsSource = DB.GetAllEquipment();
             appointmentTypesDataGrid.ItemsSource = DB.GetAllAppointmentTypes();
 
             //accessRequestsDataGrid.ItemsSource = DB.GetAllAccessRequests();
@@ -48,13 +45,7 @@ namespace clinical.Pages
             newPatientForm form = new newPatientForm(7);
             form.Show();
         }
-        private void viewRoom(object sender, RoutedEventArgs e)
-        {
-            Room room = (Room)roomsDataGrid.SelectedItem;
-            newPatientForm form = new newPatientForm(room);
-            form.Show();
-        }
-
+        
         private void approveRequest(object sender, RoutedEventArgs e)
         {
 
@@ -69,19 +60,7 @@ namespace clinical.Pages
         {
 
         }
-        private void viewEquipment(object sender, RoutedEventArgs e)
-        {
-            Equipment eq = (Equipment)equipmentDataGrid.SelectedItem;
-            newPatientForm form = new newPatientForm(eq);
-            form.Show();
-        }
-
-        private void viewPackage(object sender, RoutedEventArgs e)
-        {
-            Package pack = (Package)packagesDataGrid.SelectedItem;
-            newPatientForm form = new newPatientForm(pack);
-            form.Show();
-        }
+        
 
         private void goToFirstPage(object sender, RoutedEventArgs e)
         {
@@ -92,9 +71,6 @@ namespace clinical.Pages
         private void Refresh(object sender, MouseButtonEventArgs e)
         {
             InitializeComponent();
-            packagesDataGrid.ItemsSource = DB.GetAllPackages();
-            roomsDataGrid.ItemsSource = DB.GetAllRooms();
-            equipmentDataGrid.ItemsSource = DB.GetAllEquipment();
             appointmentTypesDataGrid.ItemsSource = DB.GetAllAppointmentTypes();
             //accessRequestsDataGrid.ItemsSource = DB.GetAllAccessRequests();
         }
@@ -117,37 +93,8 @@ namespace clinical.Pages
 
         private void delete(object sender, RoutedEventArgs e)
         {
-            if (packagesDataGrid.SelectedItem != null)
-            {
-                MessageBoxResult result = MessageBox.Show("Are you sure you want to delete this Package?", "Delete", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                if (result == MessageBoxResult.Yes)
-                {
-                    Package pack = (Package)packagesDataGrid.SelectedItem;
-                    DB.DeletePackage(pack.PackageID);
-                    packagesDataGrid.ItemsSource = DB.GetAllPackages();
-                }
-            }
-            else if (roomsDataGrid.SelectedItem != null)
-            {
-                MessageBoxResult result = MessageBox.Show("Are you sure you want to delete this Room?", "Delete", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                if (result == MessageBoxResult.Yes)
-                {
-                    Room room = (Room)roomsDataGrid.SelectedItem;
-                    DB.DeleteRoom(room.RoomID);
-                    roomsDataGrid.ItemsSource = DB.GetAllRooms();
-                }
-            }
-            else if (equipmentDataGrid.SelectedItem != null)
-            {
-                MessageBoxResult result = MessageBox.Show("Are you sure you want to delete this Equipment Record?", "Delete", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                if (result == MessageBoxResult.Yes)
-                {
-                    Equipment eq = (Equipment)equipmentDataGrid.SelectedItem;
-                    DB.DeleteEquipment(eq.EquipmentID);
-                    equipmentDataGrid.ItemsSource = DB.GetAllEquipment();
-                }
-            }
-            else if (appointmentTypesDataGrid.SelectedItem != null)
+            
+            if (appointmentTypesDataGrid.SelectedItem != null)
             {
                 MessageBoxResult result = MessageBox.Show("Are you sure you want to delete this appointment type?", "Delete", MessageBoxButton.YesNo, MessageBoxImage.Question);
                 if (result == MessageBoxResult.Yes)

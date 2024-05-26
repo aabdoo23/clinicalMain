@@ -12,17 +12,17 @@ using System.Windows.Media;
 namespace clinical.Pages
 {
     /// <summary>
-    /// Interaction logic for PhysioTherapistDashboard.xaml
+    /// Interaction logic for DoctorDashboard.xaml
     /// </summary>
-    public partial class PhysioTherapistDashboard : Page
+    public partial class DoctorDashboard : Page
     {
         private DateTime currentDayIndex = DateTime.Now;
-        private User physician;
-        public PhysioTherapistDashboard(User therapist)
+        private User Doctor;
+        public DoctorDashboard(User therapist)
         {
             InitializeComponent();
             if (therapist == null) throw new ArgumentNullException();
-            physician = therapist;
+            Doctor = therapist;
             UpdateDayBorders();
             leftSideFrame.NavigationService.Navigate(new DashBoardPage());
             signedInTB.Text = $"Welcome, Dr. {therapist.FirstName}";
@@ -35,7 +35,7 @@ namespace clinical.Pages
         void updateDayAppointments()
         {
             todayAppointmentsStackPanel.Children.Clear();
-            List<Visit> visits = DB.GetPhysicianVisitsOnDate(physician.UserID, currentDayIndex);
+            List<Visit> visits = DB.GetDoctorVisitsOnDate(Doctor.UserID, currentDayIndex);
             numberOfAppointmentsTB.Text = visits.Count.ToString();
 
             foreach (var i in visits)
@@ -153,8 +153,8 @@ namespace clinical.Pages
 
             if (allPanelCB.IsChecked == true && (currentDayIndex.DayOfYear != DateTime.Now.DayOfYear))
             {
-                patients = DB.GetPatientsWithVisitsOnDateByPhysicianID(physician.UserID, currentDayIndex);
-                numberOfPhysiciansTB.Text = patients.Count.ToString();
+                patients = DB.GetPatientsWithVisitsOnDateByDoctorID(Doctor.UserID, currentDayIndex);
+                numberOfDoctorsTB.Text = patients.Count.ToString();
                 if (patients.Count == 0)
                 {
                     articlesTitleTB.Text = "General Articles";
@@ -166,23 +166,11 @@ namespace clinical.Pages
             }
             else
             {
-                patients = DB.GetPatientsWithVisitsOnDateByPhysicianID(physician.UserID, DateTime.Now);
-                numberOfPhysiciansTB.Text = patients.Count.ToString();
+                patients = DB.GetPatientsWithVisitsOnDateByDoctorID(Doctor.UserID, DateTime.Now);
+                numberOfDoctorsTB.Text = patients.Count.ToString();
                 articlesTitleTB.Text = "General Articles";
             }
 
-            string injuriesOfDay = "";
-            foreach (var i in patients)
-            {
-                string patientInjuries = "";
-                List<Injury> injuries = DB.GetAllInjuriesByPatientID(i.PatientID);
-                foreach (var j in injuries)
-                {
-                    patientInjuries += j.InjuryName + " ";
-                }
-                injuriesOfDay += patientInjuries;
-            }
-            search(injuriesOfDay);
 
             if (currentDayIndex.DayOfYear == DateTime.Now.DayOfYear)
             {

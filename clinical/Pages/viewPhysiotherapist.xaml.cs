@@ -20,15 +20,15 @@ using System.Windows.Shapes;
 namespace clinical.Pages
 {
     /// <summary>
-    /// Interaction logic for viewPhysiotherapist.xaml
+    /// Interaction logic for viewDoctor.xaml
     /// </summary>
-    public partial class viewPhysiotherapist : Page
+    public partial class viewDoctor : Page
     {
-        User currPhysician;
-        public viewPhysiotherapist(User user)
+        User currDoctor;
+        public viewDoctor(User user)
         {
             InitializeComponent();
-            currPhysician=user;
+            currDoctor=user;
             if (user == null) return;
 
             firstNameTextBox.Text = user.FullName;
@@ -49,10 +49,10 @@ namespace clinical.Pages
             hiringDatePicker.IsEnabled = false;
             bdDatePicker.IsEnabled = false;
             
-            List<Patient> patients = DB.GetAllPatientsByPhysicianID(user.UserID);
+            List<Patient> patients = DB.GetAllPatientsByDoctorID(user.UserID);
             patientsDataGrid.ItemsSource= patients;
 
-            List<Visit> visits = DB.GetAllVisitsByPhysicianID(user.UserID);
+            List<Visit> visits = DB.GetAllVisitsByDoctorID(user.UserID);
             foreach(var i in visits)
             {
                 appointmentsStackPanel.Children.Add(globals.createAppointmentUIObject(i, viewVisit, viewPatient));
@@ -68,7 +68,7 @@ namespace clinical.Pages
 
         private void UpdateAttendanceChart()
         {
-            List<AttendanceRecord> attendanceRecords = DB.GetUserAttendanceRecords(currPhysician.UserID);
+            List<AttendanceRecord> attendanceRecords = DB.GetUserAttendanceRecords(currDoctor.UserID);
 
             SeriesCollection s = new LiveCharts.SeriesCollection();
             attendanceChart.Series = s;
@@ -124,7 +124,7 @@ namespace clinical.Pages
 
         private void UpdateFinancesChart()
         {
-            List<Payment> payments = DB.GetPhysicianPayments(currPhysician.UserID); // Assuming currPhysician is the current physician
+            List<Payment> payments = DB.GetDoctorPayments(currDoctor.UserID); // Assuming currDoctor is the current Doctor
 
             var distinctPatientIds = payments.Select(payment => payment.PatientID).Distinct();
 

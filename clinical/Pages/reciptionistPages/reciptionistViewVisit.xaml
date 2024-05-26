@@ -102,10 +102,10 @@
                         <TextBlock TextWrapping="Wrap" Grid.Row="3" Text="Date:" VerticalAlignment="Center" Margin="0" Foreground="{StaticResource lightFontColor}" FontSize="12" FontWeight="Bold"/>
                         <DatePicker Name="dpDatePicker" Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" Margin="0,0,10,0" SelectedDateChanged="dateChanged"/>
 
-                        <TextBlock TextWrapping="Wrap" Grid.Row="2" Text="Physician Name:" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{StaticResource lightFontColor}" FontSize="12" FontWeight="Bold"  />
-                        <TextBox Name="physicianTextBox" Text="Dr. Ahmed Mohsen" IsEnabled="False" FontSize="14" VerticalContentAlignment="Center" FontWeight="SemiBold" Background="Transparent" BorderBrush="Transparent" Foreground="{StaticResource lightFontColor}" Grid.Column="1" Grid.Row="2" Margin="5,5,10,5" Grid.ColumnSpan="2" />
-                        <Border Style="{StaticResource theLinedBorder}" Background="{StaticResource lighterColor}" CornerRadius="5" Margin="5" Grid.Row="2" Grid.Column="5" MouseDown="viewPhysician">
-                            <TextBlock Text="View Physician Profile" TextWrapping="Wrap" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="12" FontWeight="Bold" Margin="0"/>
+                        <TextBlock TextWrapping="Wrap" Grid.Row="2" Text="Doctor Name:" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{StaticResource lightFontColor}" FontSize="12" FontWeight="Bold"  />
+                        <TextBox Name="DoctorTextBox" Text="Dr. Ahmed Mohsen" IsEnabled="False" FontSize="14" VerticalContentAlignment="Center" FontWeight="SemiBold" Background="Transparent" BorderBrush="Transparent" Foreground="{StaticResource lightFontColor}" Grid.Column="1" Grid.Row="2" Margin="5,5,10,5" Grid.ColumnSpan="2" />
+                        <Border Style="{StaticResource theLinedBorder}" Background="{StaticResource lighterColor}" CornerRadius="5" Margin="5" Grid.Row="2" Grid.Column="5" MouseDown="viewDoctor">
+                            <TextBlock Text="View Doctor Profile" TextWrapping="Wrap" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="12" FontWeight="Bold" Margin="0"/>
                         </Border>
 
                         <TextBlock TextWrapping="Wrap" Grid.Row="3" Text="Time:" VerticalAlignment="Center" HorizontalAlignment="Right" Foreground="{StaticResource lightFontColor}" FontSize="12" FontWeight="Bold" Grid.Column="2"  />
@@ -173,10 +173,10 @@
                                         <ColumnDefinition Width="72"/>
                                         <ColumnDefinition/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock TextWrapping="Wrap" Grid.Row="0" Text="Physician Name:" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{StaticResource lightFontColor}" Margin="5 5 0 5" FontSize="12" FontWeight="SemiBold"  />
+                                    <TextBlock TextWrapping="Wrap" Grid.Row="0" Text="Doctor Name:" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{StaticResource lightFontColor}" Margin="5 5 0 5" FontSize="12" FontWeight="SemiBold"  />
                                     <TextBlock TextWrapping="Wrap" Grid.Row="1" Text="Timestamp:" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{StaticResource lightFontColor}" Margin="5 5 0 5" FontSize="12" FontWeight="SemiBold"  />
                                     <TextBlock TextWrapping="Wrap" Grid.Row="2" Text="Prescriped:" VerticalAlignment="Top" HorizontalAlignment="Left" Foreground="{StaticResource lightFontColor}" Margin="5 7.5 0 5" FontSize="12" FontWeight="SemiBold"  />
-                                    <TextBlock Name="physicianNameTB" Text="Dr. Ahmed Mohsen" FontSize="12" FontWeight="Bold" Background="Transparent"  VerticalAlignment="Center" Foreground="{StaticResource lightFontColor}" Grid.Column="1" Grid.Row="0" Margin="5,0" />
+                                    <TextBlock Name="DoctorNameTB" Text="Dr. Ahmed Mohsen" FontSize="12" FontWeight="Bold" Background="Transparent"  VerticalAlignment="Center" Foreground="{StaticResource lightFontColor}" Grid.Column="1" Grid.Row="0" Margin="5,0" />
                                     <TextBlock Name="timestampTB" Text="Monday, 2024"  FontSize="12" FontWeight="Bold" Background="Transparent" VerticalAlignment="Center" Foreground="{StaticResource lightFontColor}" Grid.Column="1" Grid.Row="1" Margin="5,0" />
                                     <StackPanel Grid.Row="2" Grid.Column="1" Margin="5">
                                         <TextBlock TextWrapping="Wrap" Grid.Row="2" Text="-Name, Frequency, Notes" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{StaticResource lightFontColor}" Margin="2.5" FontSize="12" FontWeight="Bold"  />

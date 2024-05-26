@@ -11,15 +11,15 @@ namespace clinical.BaseClasses
         public int PaymentID { get; set; }
         public double Amount { get; set; }
         public DateTime TimeStamp { get; set; }
-        public int PhysicianID {  get; set; }
+        public int DoctorID {  get; set; }
         public int PatientID {  get; set; }
         public string PatientName { get { return DB.GetPatientById(PatientID).FullName; } }
-        public Payment(int paymentID, double amount, DateTime timeStamp, int physicianID, int patientID)
+        public Payment(int paymentID, double amount, DateTime timeStamp, int DoctorID, int patientID)
         {
             PaymentID = paymentID;
             Amount = amount;
             TimeStamp = timeStamp;
-            PhysicianID = physicianID;
+            DoctorID = DoctorID;
             PatientID = patientID;
         }
 

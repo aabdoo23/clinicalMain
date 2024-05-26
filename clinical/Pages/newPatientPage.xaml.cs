@@ -19,8 +19,6 @@ namespace clinical.Pages
         bool edit = false;
         Patient patient;
         List<OntologyTerm> selectedChronics = new List<OntologyTerm>();
-        static List<Package> packages = DB.GetAllPackages();
-        List<Injury> selectedInjuries = new List<Injury>();
 
         private ICollectionView injuryDataView;
         private ICollectionView chronicDataView;
@@ -47,25 +45,18 @@ namespace clinical.Pages
         {
             InitializeComponent();
 
-            assignedPhys.ItemsSource = DB.GetAllPhysiotherapists();
+            assignedPhys.ItemsSource = DB.GetAllDoctors();
             ontology oi=new ontology();
             allChronicsDataGrid.ItemsSource = oi.GetFirstTenOntologies();
-            allInjuriesDataGrid.ItemsSource = DB.GetAllInjuries();
-            packagesCB.ItemsSource = packages;
             assignedPhys.SelectedIndex = 0;
             selectedChronicsDataGrid.ItemsSource = selectedChronics;
-            selectedInjuriesDataGrid.ItemsSource = selectedInjuries;
             referredCB.Checked += CheckBox_Checked;
             referredCB.Unchecked += CheckBox_Unchecked;
 
             referringTextBox.IsEnabled = false;
             referringPNTextBox.IsEnabled = false;
 
-            packagesCB.SelectedIndex = 0;
-            selectedPackage = (Package)packagesCB.SelectedItem;
 
-            injuryDataView = CollectionViewSource.GetDefaultView(allInjuriesDataGrid.ItemsSource);
-            searchInjuriesTXTBOX.TextChanged += SearchInjuryTextBox_TextChanged;
 
             chronicDataView = CollectionViewSource.GetDefaultView(DB.GetAllTerms());
             searchChronicDiseaseTXTBOX.TextChanged += SearchChronicTextBox_TextChanged;
@@ -84,11 +75,7 @@ namespace clinical.Pages
 
         }
 
-        private void SearchInjuryTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            injuryDataView.Filter = item => FilterItem(item, searchInjuriesTXTBOX.Text);
-
-        }
+       
 
         private bool FilterItem(object item, string filterText)
         {
@@ -111,7 +98,6 @@ namespace clinical.Pages
         void refresh()
         {
             selectedChronicsDataGrid.Items.Refresh();
-            selectedInjuriesDataGrid.Items.Refresh();
         }
 
 
@@ -126,8 +112,6 @@ namespace clinical.Pages
             referringTextBox.IsEnabled = false;
             referringPNTextBox.IsEnabled = false;
         }
-
-        Package selectedPackage = packages[0];
 
         private void save(object sender, MouseButtonEventArgs e)
         {
@@ -155,13 +139,6 @@ namespace clinical.Pages
             }
             int id = globals.generateNewPatientID(phone);
 
-            List<int> injuriesIDs = new List<int>();
-            foreach (Injury chronic in selectedInjuries)
-            {
-                injuriesIDs.Add(chronic.InjuryID);
-            }
-
-            selectedPackage = (Package)packagesCB.SelectedItem;
 
             double due = Double.Parse(dueTB.Text);
 
@@ -181,9 +158,7 @@ namespace clinical.Pages
                 Convert.ToDouble(weightTextBox.Text),
                 due,
                 refName,
-                refPN,
-                selectedPackage.PackageID,
-                selectedPackage.NumberOfSessions);
+                refPN);
             DB.InsertPatient(newPatient);
 
 
@@ -192,11 +167,6 @@ namespace clinical.Pages
             foreach (var ch in selectedChronics)
             {
                 DB.InsertPatientDiseases(ch.Name, newPatient.PatientID);
-            }
-
-            foreach (var inj in selectedInjuries)
-            {
-                DB.InsertPatientInjuries(inj.InjuryID, newPatient.PatientID);
             }
 
             double paid= Double.Parse(paidTB.Text);
@@ -212,21 +182,6 @@ namespace clinical.Pages
 
 
 
-
-
-        private void addInjury(object sender, RoutedEventArgs e)
-        {
-            Injury selectedInjury = (Injury)allInjuriesDataGrid.SelectedItem;
-            if (!selectedInjuries.Contains(selectedInjury)) selectedInjuries.Add(selectedInjury);
-            refresh();
-        }
-
-        private void removeInjury(object sender, RoutedEventArgs e)
-        {
-            selectedInjuries.Remove((Injury)selectedInjuriesDataGrid.SelectedItem);
-            refresh();
-        }
-
         private void removeChronic(object sender, RoutedEventArgs e)
         {
             selectedChronics.Remove((OntologyTerm)selectedChronicsDataGrid.SelectedItem);
@@ -240,21 +195,11 @@ namespace clinical.Pages
             if (!selectedChronics.Contains(selectedChronic)) selectedChronics.Add(selectedChronic);
             refresh();
         }
-
         private void paidTC(object sender, TextChangedEventArgs e)
         {
             if (paidTB.Text != null && paidTB.Text != "")
-                dueTB.Text = (selectedPackage.Price - Double.Parse(paidTB.Text.Trim())).ToString();
+                dueTB.Text = (Double.Parse(paidTB.Text.Trim())).ToString();
         }
 
-        private void selectionPackageChanged(object sender, SelectionChangedEventArgs e)
-        {
-            selectedPackage = (Package)packagesCB.SelectedItem;
-            if (paidTB.Text != null && paidTB.Text != "")
-                dueTB.Text = (selectedPackage.Price - Double.Parse(paidTB.Text.Trim())).ToString();
-
-        }
-
-        
     }
 }

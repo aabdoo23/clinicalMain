@@ -19,7 +19,7 @@ namespace clinical.Pages
                 formTitle.Content = "New Patient";
                 mainFrame.Navigate(new newPatientPage());
             }
-            else if (type == 1) //new physiotherapist
+            else if (type == 1) //new Doctor
             {
                 window.Height = 440;    
 
@@ -33,46 +33,7 @@ namespace clinical.Pages
                 formTitle.Content = "New Employee";
                 mainFrame.Navigate(new newEmployeePage(false));
             }
-            else if (type == 3) //new package
-            {
-                window.Height = 291;
-                window.Width= 500;
-
-                formTitle.Content = "New Package";
-                mainFrame.Navigate(new newPackage());
-            }
-            else if(type == 4) //new injury
-            {
-                window.Height = 321;
-                window.Width = 500;
-
-                formTitle.Content = "New Injury";
-                mainFrame.Navigate(new newInjury());
-            }
-            else if (type == 5) //new room
-            {
-                window.Height = 481;
-                window.Width = 500;
-
-                formTitle.Content = "New Room";
-                mainFrame.Navigate(new newRoom());
-            }
-            else if(type == 6) //new treatment plan
-            {
-                window.Height = 321;
-                window.Width = 500;
-
-                formTitle.Content = "New Treatment Plan";
-                mainFrame.Navigate(new newTreatmentPlan());
-            }
-            else if( type == 7) //new equipment
-            {
-                window.Height = 391;
-                window.Width = 500;
-
-                formTitle.Content = "New Equipment Device";
-                mainFrame.Navigate(new newEquipment());
-            }
+            
             //else if(type == 8) //new chronic
             //{
             //    window.Height = 271;
@@ -81,14 +42,7 @@ namespace clinical.Pages
             //    formTitle.Content = "New Chronic Disease";
             //    mainFrame.Navigate(new newChronic());
             //}
-            else if (type == 9)//new exercise
-            {
-                window.Height = 251;
-                window.Width = 500;
-
-                formTitle.Content = "New Exercise";
-                mainFrame.Navigate(new newExercise());
-            }
+            
             else if (type == 10) //new access request
             {
                 window.Height = 321;
@@ -124,44 +78,9 @@ namespace clinical.Pages
             formTitle.Content = "Edit Patient";
             mainFrame.Navigate(new newPatientPage(editable));
         }
-        //view room
-        public newPatientForm(Room toView)
-        {
-            InitializeComponent();
-            window.Height = 481;
-            window.Width = 500;
-            formTitle.Content = "View Room";
-            mainFrame.Navigate(new newRoom(toView));
-        }
+        
 
-        //view equipment
-        public newPatientForm(Equipment toView)
-        {
-            InitializeComponent();
-            window.Height = 391;
-            window.Width = 500;
-            formTitle.Content = "View Equipment";
-            mainFrame.Navigate(new newEquipment(toView));
-        }
-
-        //view exercise
-        public newPatientForm(Exercise toView)
-        {
-            InitializeComponent();
-            window.Height = 251;
-            window.Width = 500;
-            formTitle.Content = "View Exercise";
-            mainFrame.Navigate(new newExercise(toView));
-        }
-
-        public newPatientForm(Exercise toView,int x)
-        {
-            InitializeComponent();
-            window.Height = 251;
-            window.Width = 500;
-            formTitle.Content = "Add Exercise";
-            mainFrame.Navigate(new newExercise(toView,1));
-        }
+        
 
         //view Chronic
         //public newPatientForm(ChronicDisease toView)
@@ -184,35 +103,7 @@ namespace clinical.Pages
             mainFrame.Navigate(new newAppointmentTypePage(toView));
         }
 
-        //view treatment plan
-        public newPatientForm(TreatmentPlan toView)
-        {
-            InitializeComponent();
-            window.Height = 321;
-            window.Width = 500;
-            formTitle.Content = "View Treatment Plan";
-            mainFrame.Navigate(new newTreatmentPlan(toView));
-        }
-
-        //view package
-        public newPatientForm(Package toView)
-        {
-            InitializeComponent();
-            window.Height = 291;
-            window.Width = 500;
-            formTitle.Content = "View Package";
-            mainFrame.Navigate(new newPackage(toView));
-        }
-
-        //view injury
-        public newPatientForm(Injury toView)
-        {
-            InitializeComponent();
-            window.Height = 321;
-            window.Width = 500;
-            formTitle.Content = "View Injury";
-            mainFrame.Navigate(new newInjury(toView));
-        }
+        
 
         //view test
         public newPatientForm(EvaluationTest toView)

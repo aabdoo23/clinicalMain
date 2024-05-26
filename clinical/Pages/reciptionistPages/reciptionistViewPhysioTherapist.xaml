@@ -1,4 +1,4 @@
-﻿<Page x:Class="clinical.Pages.reciptionistViewPhysioTherapist"
+﻿<Page x:Class="clinical.Pages.reciptionistViewDoctor"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -36,8 +36,8 @@
 
                     <Icon:PackIconMaterial Name="goBackIcon" Kind="ArrowLeftBox" MouseDown="navigateBack" Width="35" Height="35" Foreground="{StaticResource lightFontColor}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     <StackPanel Margin="7 10 0 10" Grid.Column="1">
-                        <TextBlock Text="View Physician Profile" Foreground="{StaticResource lightFontColor}" FontSize="12"/>
-                        <TextBlock Name="physicianNameMainTxt" Text="3alolo" Foreground="{StaticResource lightFontColor}" FontSize="20" FontWeight="Bold" VerticalAlignment="Center"/>
+                        <TextBlock Text="View Doctor Profile" Foreground="{StaticResource lightFontColor}" FontSize="12"/>
+                        <TextBlock Name="DoctorNameMainTxt" Text="3alolo" Foreground="{StaticResource lightFontColor}" FontSize="20" FontWeight="Bold" VerticalAlignment="Center"/>
                     </StackPanel>
                     <!--User Image-->
                     <Icon:PackIconMaterial Kind="Account" Width="30" Height="30" Foreground="{StaticResource lightFontColor}" VerticalAlignment="Center" Grid.Column="2"/>
@@ -137,7 +137,7 @@
                             <TextBlock Name="patientName" Grid.Row="1" Text="Ahmed Ibrahim" Margin="10 5" VerticalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource lightFontColor}" FontSize="20"/>
                             <StackPanel Orientation="Horizontal" Grid.Row="2">
                                 <TextBlock Name="visitType" Grid.Row="2" Text="Follow up with " Margin="10 0 0 0" VerticalAlignment="Center"  Foreground="{StaticResource lightFontColor}" FontSize="15"/>
-                                <TextBlock Name="physicianName" Grid.Row="2" Text="DR. Ahmed" Margin="0" VerticalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource lightFontColor}" FontSize="15"/>
+                                <TextBlock Name="DoctorName" Grid.Row="2" Text="DR. Ahmed" Margin="0" VerticalAlignment="Center" FontWeight="Bold" Foreground="{StaticResource lightFontColor}" FontSize="15"/>
                             </StackPanel>
                             <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="10 10 0 0">
                                 <Icon:PackIconMaterial Grid.Row="3" Kind="Phone" Margin="0" Foreground="{StaticResource lightFontColor}"/>

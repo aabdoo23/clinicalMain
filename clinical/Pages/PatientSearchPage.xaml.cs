@@ -28,7 +28,7 @@ namespace clinical.Pages
             }
             else
             {
-                patientsDataGrid.ItemsSource = DB.GetAllPatientsByPhysicianID(globals.signedIn.UserID);
+                patientsDataGrid.ItemsSource = DB.GetAllPatientsByDoctorID(globals.signedIn.UserID);
             }
             
             dataView = CollectionViewSource.GetDefaultView(patientsDataGrid.ItemsSource);

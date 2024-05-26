@@ -82,7 +82,7 @@ namespace clinical
             return int.Parse(s);
 
         }
-        public static int generateNewPhysicianID(string nid)
+        public static int generateNewDoctorID(string nid)
         {
             DateTime dateTime = DateTime.Now;
             string s = "2";
@@ -156,7 +156,7 @@ namespace clinical
         }
 
 
-        public static void updateCalendarWithVisits(int physicianID)
+        public static void updateCalendarWithVisits(int DoctorID)
         {
 
         }
@@ -298,92 +298,6 @@ namespace clinical
 
         }
 
-        public static Border CreateTreatmentPlanUI(TreatmentPlan plan)
-        {
-            Border borderedGrid = new Border
-            {
-                Style = (Style)Application.Current.Resources["theLinedBorder"],
-                Margin = new Thickness(5, 5, 5, 0)
-            };
-
-            Grid grid = new Grid();
-
-
-            for (int i = 0; i < 4; i++)
-            {
-                grid.RowDefinitions.Add(new RowDefinition());
-            }
-
-            grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(72) });
-            grid.ColumnDefinitions.Add(new ColumnDefinition());
-
-            TextBlock physicianNameTextBlock = CreatePrescribedTextBlock("Physician Name:", 0, 0, 5, 5);
-            TextBlock timestampTextBlock = CreatePrescribedTextBlock("Timestamp:", 1, 0, 5, 5);
-            TextBlock prescribedTextBlock = CreatePrescribedTextBlock("Prescribed:", 2, 0, 7.5, 5);
-            string physName = DB.GetUserById(DB.GetVisitByID(plan.VisitID).PhysiotherapistID).FullName;
-
-            TextBlock physicianNameTB = CreatePrescribedTextBlock($"Dr. {physName}", 0, 1, 0, 5);
-            TextBlock timestampTB = CreatePrescribedTextBlock(plan.Timestamp.ToString("g"), 1, 1, 0, 5);
-
-            StackPanel stackPanel = new StackPanel
-            {
-                Margin = new Thickness(5)
-            };
-            List<IssueExercise> issues = DB.GetIssuedExercisesByTreatmentPlanID(plan.PlanID);
-            foreach (var i in issues)
-            {
-                TextBlock prescriptionItem = CreatePrescribedTextBlock($"-{DB.GetExerciseById(i.ExerciseID).ExerciseName}, {i.Frequency}, {i.Notes}", 2, 1, 2.5, 0);
-                stackPanel.Children.Add(prescriptionItem);
-            }
-
-            Grid.SetRow(stackPanel, 2);
-            Grid.SetColumn(stackPanel, 1);
-            Grid.SetRow(physicianNameTextBlock, 0);
-            Grid.SetColumn(physicianNameTextBlock, 0);
-            Grid.SetRow(timestampTextBlock, 1);
-            Grid.SetColumn(timestampTextBlock, 0);
-            Grid.SetRow(prescribedTextBlock, 2);
-            Grid.SetColumn(prescribedTextBlock, 0);
-            Grid.SetRow(physicianNameTB, 0);
-            Grid.SetColumn(physicianNameTB, 1);
-            Grid.SetRow(timestampTB, 1);
-            Grid.SetColumn(timestampTB, 1);
-            Grid.SetRow(stackPanel, 2);
-            Grid.SetColumn(stackPanel, 1);
-
-            if (!signedIn.isReciptionist)
-            {
-                Button viewPlanBTN = new Button
-                {
-                    Content = "View Plan",
-                    Margin = new Thickness(5),
-                    Background = (Brush)Application.Current.Resources["selectedColor"],
-                    Foreground = (Brush)Application.Current.Resources["lightFontColor"],
-                    BorderBrush = (Brush)Application.Current.Resources["lightFontColor"],
-                    BorderThickness = new Thickness(2),
-                    FontWeight = FontWeights.SemiBold,
-                    Padding = new Thickness(5),
-                };
-                viewPlanBTN.Click += (sender, e) => viewPrescription(plan);
-
-                Grid.SetRow(viewPlanBTN, 3);
-                Grid.SetColumnSpan(viewPlanBTN, 2);
-                grid.Children.Add(viewPlanBTN);
-            }
-
-            // Add UI elements to Grid
-            grid.Children.Add(physicianNameTextBlock);
-            grid.Children.Add(timestampTextBlock);
-            grid.Children.Add(prescribedTextBlock);
-            grid.Children.Add(physicianNameTB);
-            grid.Children.Add(timestampTB);
-            grid.Children.Add(stackPanel);
-
-            // Add Grid to Border
-            borderedGrid.Child = grid;
-
-            return borderedGrid;
-        }
 
         public static Border CreatePrescriptionUI(Prescription prescription)
         {
@@ -403,12 +317,12 @@ namespace clinical
             grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(72) });
             grid.ColumnDefinitions.Add(new ColumnDefinition());
 
-            TextBlock physicianNameTextBlock = CreatePrescribedTextBlock("Physician Name:", 0, 0, 5, 5);
+            TextBlock DoctorNameTextBlock = CreatePrescribedTextBlock("Doctor Name:", 0, 0, 5, 5);
             TextBlock timestampTextBlock = CreatePrescribedTextBlock("Timestamp:", 1, 0, 5, 5);
             TextBlock prescribedTextBlock = CreatePrescribedTextBlock("Prescribed:", 2, 0, 7.5, 5);
             string physName = DB.GetUserById(prescription.UserID).FullName;
 
-            TextBlock physicianNameTB = CreatePrescribedTextBlock($"Dr. {physName}", 0, 1, 0, 5);
+            TextBlock DoctorNameTB = CreatePrescribedTextBlock($"Dr. {physName}", 0, 1, 0, 5);
             TextBlock timestampTB = CreatePrescribedTextBlock(prescription.TimeStamp.ToString("g"), 1, 1, 0, 5);
 
             StackPanel stackPanel = new StackPanel
@@ -426,14 +340,14 @@ namespace clinical
 
             Grid.SetRow(stackPanel, 2);
             Grid.SetColumn(stackPanel, 1);
-            Grid.SetRow(physicianNameTextBlock, 0);
-            Grid.SetColumn(physicianNameTextBlock, 0);
+            Grid.SetRow(DoctorNameTextBlock, 0);
+            Grid.SetColumn(DoctorNameTextBlock, 0);
             Grid.SetRow(timestampTextBlock, 1);
             Grid.SetColumn(timestampTextBlock, 0);
             Grid.SetRow(prescribedTextBlock, 2);
             Grid.SetColumn(prescribedTextBlock, 0);
-            Grid.SetRow(physicianNameTB, 0);
-            Grid.SetColumn(physicianNameTB, 1);
+            Grid.SetRow(DoctorNameTB, 0);
+            Grid.SetColumn(DoctorNameTB, 1);
             Grid.SetRow(timestampTB, 1);
             Grid.SetColumn(timestampTB, 1);
             Grid.SetRow(stackPanel, 2);
@@ -463,10 +377,10 @@ namespace clinical
 
 
             // Add UI elements to Grid
-            grid.Children.Add(physicianNameTextBlock);
+            grid.Children.Add(DoctorNameTextBlock);
             grid.Children.Add(timestampTextBlock);
             grid.Children.Add(prescribedTextBlock);
-            grid.Children.Add(physicianNameTB);
+            grid.Children.Add(DoctorNameTB);
             grid.Children.Add(timestampTB);
             grid.Children.Add(stackPanel);
 
@@ -478,10 +392,6 @@ namespace clinical
         static void viewPrescription(Prescription prescription)
         {
             new prescriptionWindow(prescription).Show();
-        }
-        static void viewPrescription(TreatmentPlan plan)
-        {
-            new prescriptionWindow(plan).Show();
         }
 
         public static TextBlock CreatePrescribedTextBlock(string text, int row, int column, double topMargin, double leftMargin)
@@ -510,7 +420,7 @@ namespace clinical
             if (visit == null) { return null; }
 
             Patient patient = DB.GetPatientById(visit.PatientID);
-            User physician = DB.GetUserById(visit.PhysiotherapistID);
+            User Doctor = DB.GetUserById(visit.DoctorID);
             if (patient == null) { return null; }
             Border border = new Border
             {
@@ -565,9 +475,9 @@ namespace clinical
                 FontSize = 14
             };
 
-            TextBlock physicianName = new TextBlock
+            TextBlock DoctorName = new TextBlock
             {
-                Text = $"DR. {physician.FirstName} {physician.LastName}",
+                Text = $"DR. {Doctor.FirstName} {Doctor.LastName}",
                 VerticalAlignment = VerticalAlignment.Center,
                 FontWeight = FontWeights.SemiBold,
                 Foreground = (Brush)Application.Current.Resources["lightFontColor"],
@@ -575,7 +485,7 @@ namespace clinical
             };
 
             visitTypePanel.Children.Add(visitType);
-            visitTypePanel.Children.Add(physicianName);
+            visitTypePanel.Children.Add(DoctorName);
 
             StackPanel phonePanel = new StackPanel
             {
@@ -691,7 +601,7 @@ namespace clinical
             if (visit == null) { return null; }
 
             Patient patient = DB.GetPatientById(visit.PatientID);
-            User physician = DB.GetUserById(visit.PhysiotherapistID);
+            User Doctor = DB.GetUserById(visit.DoctorID);
             if (patient == null) { return null; }
             Border border = new Border
             {
@@ -746,9 +656,9 @@ namespace clinical
                 FontSize = 14
             };
 
-            TextBlock physicianName = new TextBlock
+            TextBlock DoctorName = new TextBlock
             {
-                Text = $"DR. {physician.FirstName} {physician.LastName}",
+                Text = $"DR. {Doctor.FirstName} {Doctor.LastName}",
                 VerticalAlignment = VerticalAlignment.Center,
                 FontWeight = FontWeights.SemiBold,
                 Foreground = (Brush)Application.Current.Resources["lightFontColor"],
@@ -756,7 +666,7 @@ namespace clinical
             };
 
             visitTypePanel.Children.Add(visitType);
-            visitTypePanel.Children.Add(physicianName);
+            visitTypePanel.Children.Add(DoctorName);
 
             StackPanel phonePanel = new StackPanel
             {
@@ -998,7 +908,7 @@ namespace clinical
             Visit fakeVisit = visit;
             List<DateTime> proposedSlots = GenerateTimeSlots(visit.TimeStamp, fakeVisit.TimeStamp.AddMinutes(DB.GetAppointmentTypeByID(visit.AppointmentTypeID).TimeInMinutes), TimeSpan.FromMinutes(DB.GetSlotDuration()));
 
-            List<Visit> existingVisits = DB.GetFuturePhysicianVisits(visit.PhysiotherapistID);
+            List<Visit> existingVisits = DB.GetFutureDoctorVisits(visit.DoctorID);
 
 
             // Check for conflicts with existing visits
@@ -1012,22 +922,22 @@ namespace clinical
             // If there are no conflicts, return true; otherwise, return false
             return !hasConflicts;
         }
-        public static DateTime FindFirstFreeSlot(int PhysiotherapistID, DateTime when)
+        public static DateTime FindFirstFreeSlot(int DoctorID, DateTime when)
         {
-            List<DateTime> availableSlots = FindAvailableTimeSlots(PhysiotherapistID, when);
+            List<DateTime> availableSlots = FindAvailableTimeSlots(DoctorID, when);
 
             while (availableSlots.Count == 0)
             {
                 when = when.AddDays(7);
-                availableSlots = FindAvailableTimeSlots(PhysiotherapistID, when);
+                availableSlots = FindAvailableTimeSlots(DoctorID, when);
             }
             return availableSlots[0];
         }
 
-        static List<DateTime> FindAvailableTimeSlots(int PhysiotherapistID, DateTime when)
+        static List<DateTime> FindAvailableTimeSlots(int DoctorID, DateTime when)
         {
             List<DateTime> allSlots = GenerateAllPossibleTimeSlots(when);
-            List<Visit> existingVisits = DB.GetFuturePhysicianVisits(PhysiotherapistID);
+            List<Visit> existingVisits = DB.GetFutureDoctorVisits(DoctorID);
 
             List<DateTime> unavailableSlots = existingVisits
                 .SelectMany(visit => GenerateTimeSlots(visit.TimeStamp, visit.TimeStamp.AddMinutes(DB.GetAppointmentTypeByID(visit.AppointmentTypeID).TimeInMinutes), TimeSpan.FromMinutes(DB.GetSlotDuration())))
@@ -1038,7 +948,7 @@ namespace clinical
             return availableSlots;
         }
 
-        public static List<string> GetAvailableTimeSlotsOnDay(DateTime selectedDay, int PhysiotherapistID)
+        public static List<string> GetAvailableTimeSlotsOnDay(DateTime selectedDay, int DoctorID)
         {
             // Generate time slots for the selected day
             DateTime dayStartTime = selectedDay.Date.AddHours(DB.GetOpeningTime());
@@ -1046,7 +956,7 @@ namespace clinical
             TimeSpan slotDuration = TimeSpan.FromMinutes(DB.GetSlotDuration());
 
             List<DateTime> allSlots = GenerateTimeSlots(dayStartTime, dayEndTime, slotDuration);
-            List<Visit> existingVisits = DB.GetFuturePhysicianVisits(PhysiotherapistID);
+            List<Visit> existingVisits = DB.GetFutureDoctorVisits(DoctorID);
 
             // Check for conflicts with existing visits
             List<DateTime> unavailableSlots = existingVisits

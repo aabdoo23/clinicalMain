@@ -6,7 +6,6 @@ using System.Data;
 using System.Linq;
 using System.Windows;
 using static clinical.BaseClasses.ontology;
-using Package = clinical.BaseClasses.Package;
 
 namespace clinical
 {
@@ -15,7 +14,7 @@ namespace clinical
         static MySqlConnection connection;
         public DB()
         {
-            string connectionString = "server=localhost;database=clinical;user=root;password=root;";
+            string connectionString = "server=localhost;database=neuro;user=root;password=root;";
 
             using (connection = new MySqlConnection(connectionString))
             {
@@ -210,9 +209,9 @@ namespace clinical
             return employees;
         }
 
-        public static List<User> GetAllPhysiotherapists()
+        public static List<User> GetAllDoctors()
         {
-            List<User> physiotherapists = new List<User>();
+            List<User> Doctors = new List<User>();
             using (connection)
             {
                 try
@@ -225,14 +224,14 @@ namespace clinical
                             while (reader.Read())
                             {
                                 User user = MapUser(reader);
-                                physiotherapists.Add(user);
+                                Doctors.Add(user);
                             }
                         }
                     }
                 }
                 catch (Exception e) { }
             }
-            return physiotherapists;
+            return Doctors;
         }
 
         public static List<User> GetAllAdmins()
@@ -261,7 +260,7 @@ namespace clinical
             return admins;
         }
 
-        public static List<User> GetPhysioTherapistsWithVisitsOnDate(DateTime specificDate)
+        public static List<User> GetDoctorsWithVisitsOnDate(DateTime specificDate)
         {
             List<User> patients = new List<User>();
             using (connection)
@@ -458,21 +457,20 @@ namespace clinical
                 Convert.ToInt32(reader["patientID"]),
                 reader["firstName"].ToString(),
                 reader["lastName"].ToString(),
+                reader["password"].ToString(),
                 Convert.ToDateTime(reader["birthdate"]),
                 reader["gender"].ToString(),
                 reader["phoneNumber"].ToString(),
                 reader["email"].ToString(),
                 reader["address"].ToString(),
-                Convert.ToInt32(reader["physicianID"]),
+                Convert.ToInt32(reader["DoctorID"]),
                 Convert.ToBoolean(reader["referred"]),
                 Convert.ToBoolean(reader["previouslyTreated"]),
                 Convert.ToDouble(reader["height"]),
                 Convert.ToDouble(reader["weight"]),
                 Convert.ToDouble(reader["dueAmount"]),
                 reader["referringName"].ToString(),
-                reader["referringPN"].ToString(),
-                Convert.ToInt32(reader["activePackageID"]),
-                Convert.ToInt32(reader["remainingSessions"])
+                reader["referringPN"].ToString()
 
 
             );
@@ -572,7 +570,7 @@ namespace clinical
 
             return patients;
         }
-        public static List<Patient> GetPatientsWithVisitsOnDateByPhysicianID(int physicianID, DateTime specificDate)
+        public static List<Patient> GetPatientsWithVisitsOnDateByDoctorID(int DoctorID, DateTime specificDate)
         {
             List<Patient> patients = new List<Patient>();
             using (connection)
@@ -581,10 +579,10 @@ namespace clinical
                 {
                     if (connection.State == ConnectionState.Closed) connection.Open();
 
-                    using (MySqlCommand cmd = new MySqlCommand("SELECT DISTINCT p.* FROM patient p JOIN visit v ON p.patientID = v.patientID WHERE DATE(v.timeStamp) = @specificDate AND v.userID=@physicianID", connection))
+                    using (MySqlCommand cmd = new MySqlCommand("SELECT DISTINCT p.* FROM patient p JOIN visit v ON p.patientID = v.patientID WHERE DATE(v.timeStamp) = @specificDate AND v.userID=@DoctorID", connection))
                     {
                         cmd.Parameters.AddWithValue("@specificDate", specificDate.Date);
-                        cmd.Parameters.AddWithValue("@physicianID", physicianID);
+                        cmd.Parameters.AddWithValue("@DoctorID", DoctorID);
 
                         using (MySqlDataReader reader = cmd.ExecuteReader())
                         {
@@ -604,7 +602,7 @@ namespace clinical
 
             return patients;
         }
-        public static List<Patient> GetAllPatientsByPhysicianID(int physicianID)
+        public static List<Patient> GetAllPatientsByDoctorID(int DoctorID)
         {
             List<Patient> patients = new List<Patient>();
             using (connection)
@@ -612,9 +610,9 @@ namespace clinical
                 try
                 {
                     if (connection.State == ConnectionState.Closed) connection.Open();
-                    using (MySqlCommand cmd = new MySqlCommand("SELECT * FROM Patient WHERE physicianID = @physicianID", connection))
+                    using (MySqlCommand cmd = new MySqlCommand("SELECT * FROM Patient WHERE DoctorID = @DoctorID", connection))
                     {
-                        cmd.Parameters.AddWithValue("@physicianID", physicianID);
+                        cmd.Parameters.AddWithValue("@DoctorID", DoctorID);
 
                         using (MySqlDataReader reader = cmd.ExecuteReader())
                         {
@@ -663,18 +661,19 @@ namespace clinical
                 {
                     if (connection.State == ConnectionState.Closed) connection.Open();
                     using (MySqlCommand cmd = new MySqlCommand(
-                        "INSERT INTO Patient (patientID, firstName, lastName, birthdate, gender, phoneNumber, email, address, referred, previouslyTreated, height, weight, dueAmount, physicianID, referringName, referringPN, activePackageID, remainingSessions)" +
-                        "VALUES (@patientID, @firstName, @lastName, @birthdate, @gender, @phoneNumber, @email, @address, @referred, @previouslyTreated, @height, @weight, @dueAmount, @physicianID, @referringName, @referringPN, @activePackageID, @remainingSessions)", connection))
+                        "INSERT INTO Patient (patientID, firstName, lastName, password, birthdate, gender, phoneNumber, email, address, referred, previouslyTreated, height, weight, dueAmount, DoctorID, referringName, referringPN, activePackageID, remainingSessions)" +
+                        "VALUES (@patientID, @firstName, @lastName, @password, @birthdate, @gender, @phoneNumber, @email, @address, @referred, @previouslyTreated, @height, @weight, @dueAmount, @DoctorID, @referringName, @referringPN, @activePackageID, @remainingSessions)", connection))
                     {
                         cmd.Parameters.AddWithValue("@patientID", patient.PatientID);
                         cmd.Parameters.AddWithValue("@firstName", patient.FirstName);
                         cmd.Parameters.AddWithValue("@lastName", patient.LastName);
+                        cmd.Parameters.AddWithValue("@password", patient.Password);
                         cmd.Parameters.AddWithValue("@birthdate", patient.Birthdate);
                         cmd.Parameters.AddWithValue("@gender", patient.Gender == "Male");
                         cmd.Parameters.AddWithValue("@phoneNumber", patient.PhoneNumber);
                         cmd.Parameters.AddWithValue("@email", patient.Email);
                         cmd.Parameters.AddWithValue("@address", patient.Address);
-                        cmd.Parameters.AddWithValue("@physicianID", patient.PhysicianID);
+                        cmd.Parameters.AddWithValue("@DoctorID", patient.DoctorID);
                         cmd.Parameters.AddWithValue("@referred", patient.Referred == true);
                         cmd.Parameters.AddWithValue("@previouslyTreated", patient.PreviouslyTreated == true);
                         cmd.Parameters.AddWithValue("@height", patient.Height);
@@ -682,8 +681,6 @@ namespace clinical
                         cmd.Parameters.AddWithValue("@dueAmount", patient.DueAmount);
                         cmd.Parameters.AddWithValue("@referringName", patient.referringName);
                         cmd.Parameters.AddWithValue("@referringPN", patient.referringPN);
-                        cmd.Parameters.AddWithValue("@activePackageID", patient.ActivePackageID);
-                        cmd.Parameters.AddWithValue("@remainingSessions", patient.RemainingSessions);
 
 
                         cmd.ExecuteNonQuery();
@@ -705,21 +702,22 @@ namespace clinical
                 {
                     if (connection.State == ConnectionState.Closed) connection.Open();
 
-                    string query = "UPDATE Patient SET firstName = @firstName, lastName = @lastName, birthdate = @birthdate, gender = @gender, phoneNumber=@phoneNumber," +
+                    string query = "UPDATE Patient SET firstName = @firstName, lastName = @lastName,password=@password, birthdate = @birthdate, gender = @gender, phoneNumber=@phoneNumber," +
                         " email = @email, address = @address, referred = @referred, previouslyTreated = @previouslyTreated" +
-                        ", height = @height, weight = @weight, dueAmount = @dueAmount, physicianID = @physicianID, referringName = @referringName, referringPN = @referringPN, remainingSessions=@remainingSessions WHERE patientID = @patientID";
+                        ", height = @height, weight = @weight, dueAmount = @dueAmount, DoctorID = @DoctorID, referringName = @referringName, referringPN = @referringPN, remainingSessions=@remainingSessions WHERE patientID = @patientID";
 
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
                         command.Parameters.AddWithValue("@patientID", patient.PatientID);
                         command.Parameters.AddWithValue("@firstName", patient.FirstName);
                         command.Parameters.AddWithValue("@lastName", patient.LastName);
+                        command.Parameters.AddWithValue("@password", patient.Password);
                         command.Parameters.AddWithValue("@birthdate", patient.Birthdate);
                         command.Parameters.AddWithValue("@gender", patient.Gender == "Male");
                         command.Parameters.AddWithValue("@phoneNumber", patient.PhoneNumber);
                         command.Parameters.AddWithValue("@email", patient.Email);
                         command.Parameters.AddWithValue("@address", patient.Address);
-                        command.Parameters.AddWithValue("@physicianID", patient.PhysicianID);
+                        command.Parameters.AddWithValue("@DoctorID", patient.DoctorID);
                         command.Parameters.AddWithValue("@referred", patient.Referred == true);
                         command.Parameters.AddWithValue("@previouslyTreated", patient.PreviouslyTreated == true);
                         command.Parameters.AddWithValue("@height", patient.Height);
@@ -727,7 +725,6 @@ namespace clinical
                         command.Parameters.AddWithValue("@dueAmount", patient.DueAmount);
                         command.Parameters.AddWithValue("@referringName", patient.referringName);
                         command.Parameters.AddWithValue("@referringPN", patient.referringPN);
-                        command.Parameters.AddWithValue("@remainingSessions", patient.RemainingSessions);
 
                         command.ExecuteNonQuery();
 
@@ -771,73 +768,6 @@ namespace clinical
             }
 
             return patientsToday;
-        }
-
-        public static List<Injury> GetAllInjuriesByPatientID(int patientID)
-        {
-            List<Injury> injuries = new List<Injury>();
-
-            using (connection)
-            {
-                connection.Open();
-
-                string query = "SELECT pir.patientID, pir.injuryID, i.injuryID, i.injuryName, i.injuryLocation, i.severity, i.description " +
-                               "FROM patientInjuryRelation pir " +
-                               "JOIN Injury i ON pir.injuryID = i.injuryID WHERE pir.patientID=@patientID";
-
-                using (MySqlCommand cmd = new MySqlCommand(query, connection))
-                {
-                    cmd.Parameters.AddWithValue("@patientID", patientID);
-
-                    using (MySqlDataReader reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            Injury injury = new Injury
-                            (
-                                Convert.ToInt32(reader["injuryID"]),
-                                Convert.ToString(reader["injuryName"]),
-                                Convert.ToString(reader["injuryLocation"]),
-                                Convert.ToInt32(reader["severity"]),
-                                Convert.ToString(reader["description"])
-                            );
-
-                            injuries.Add(injury);
-                        }
-                    }
-                }
-            }
-
-            return injuries;
-
-
-        }
-        public static void InsertPatientInjuries(int injuryID, int patientID)
-        {
-            using (connection)
-            {
-                try
-                {
-                    if (connection.State == ConnectionState.Closed) connection.Open();
-                    using (MySqlCommand cmd = new MySqlCommand(
-                        "INSERT INTO patientInjuryRelation (injuryID, patientID) " +
-                        "VALUES (@chronicID, @chronicDiseaseName)",
-                        connection))
-                    {
-
-                        cmd.Parameters.AddWithValue("@chronicID", injuryID);
-                        cmd.Parameters.AddWithValue("@chronicDiseaseName", patientID);
-
-                        cmd.ExecuteNonQuery();
-
-
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
-            }
         }
 
         public static List<OntologyTerm> GetAllDiseasesByPatientID(int patientID)
@@ -1088,481 +1018,6 @@ namespace clinical
         //}
 
 
-
-        /// exercise
-        ///////////////////////////////////////////////////////
-        ///
-
-        public static Exercise GetExerciseById(int exerciseID)
-        {
-            using (connection)
-            {
-                try
-                {
-                    if (connection.State == ConnectionState.Closed) connection.Open();
-                    using (MySqlCommand cmd = new MySqlCommand("SELECT * FROM Exercise WHERE exerciseID = @exerciseID", connection))
-                    {
-                        cmd.Parameters.AddWithValue("@exerciseID", exerciseID);
-
-                        using (MySqlDataReader reader = cmd.ExecuteReader())
-                        {
-                            if (reader.Read())
-                            {
-                                return MapExercise(reader);
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    // Handle exception (log, throw, etc.)
-                    MessageBox.Show(ex.Message);
-                }
-            }
-
-            return null;
-        }
-
-        public static List<Exercise> GetAllExercises()
-        {
-            List<Exercise> exercises = new List<Exercise>();
-            using (connection)
-            {
-                try
-                {
-                    if (connection.State == ConnectionState.Closed) connection.Open();
-                    using (MySqlCommand cmd = new MySqlCommand("SELECT * FROM Exercise", connection))
-                    {
-                        using (MySqlDataReader reader = cmd.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                Exercise exercise = MapExercise(reader);
-                                exercises.Add(exercise);
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    // Handle exception (log, throw, etc.)
-                    MessageBox.Show(ex.Message);
-                }
-            }
-
-            return exercises;
-        }
-
-        public static void DeleteExercise(int exerciseID)
-        {
-            using (connection)
-            {
-                try
-                {
-                    if (connection.State == ConnectionState.Closed) connection.Open();
-                    using (MySqlCommand cmd = new MySqlCommand("DELETE FROM Exercise WHERE exerciseID = @exerciseID", connection))
-                    {
-                        cmd.Parameters.AddWithValue("@exerciseID", exerciseID);
-                        cmd.ExecuteNonQuery();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    // Handle exception (log, throw, etc.)
-                    MessageBox.Show(ex.Message);
-                }
-            }
-        }
-
-        public static void InsertExercise(Exercise exercise)
-        {
-            using (connection)
-            {
-                try
-                {
-                    if (connection.State == ConnectionState.Closed) connection.Open();
-                    using (MySqlCommand cmd = new MySqlCommand(
-                        "INSERT INTO Exercise (exerciseID, exerciseName, explanationLink, notes) " +
-                        "VALUES (@exerciseID, @exerciseName, @explanationLink, @notes)",
-                        connection))
-                    {
-                        cmd.Parameters.AddWithValue("@exerciseID", exercise.ExerciseID);
-                        cmd.Parameters.AddWithValue("@exerciseName", exercise.ExerciseName);
-                        cmd.Parameters.AddWithValue("@explanationLink", exercise.ExplanationLink);
-                        cmd.Parameters.AddWithValue("@notes", exercise.Notes);
-
-                        cmd.ExecuteNonQuery();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    // Handle exception (log, throw, etc.)
-                    MessageBox.Show(ex.Message);
-                }
-            }
-        }
-
-
-        public static void UpdateExercise(Exercise exercise)
-        {
-            using (connection)
-            {
-                try
-                {
-                    if (connection.State == ConnectionState.Closed) connection.Open();
-                    using (MySqlCommand cmd = new MySqlCommand(
-                        "UPDATE Exercise SET exerciseName=@exerciseName, explanationLink = @explanationLink, notes=@notes WHERE exerciseID=@exerciseID ", connection))
-                    {
-                        cmd.Parameters.AddWithValue("@exerciseID", exercise.ExerciseID);
-                        cmd.Parameters.AddWithValue("@exerciseName", exercise.ExerciseName);
-                        cmd.Parameters.AddWithValue("@explanationLink", exercise.ExplanationLink);
-                        cmd.Parameters.AddWithValue("@notes", exercise.Notes);
-
-                        cmd.ExecuteNonQuery();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    // Handle exception (log, throw, etc.)
-                    MessageBox.Show(ex.Message);
-                }
-            }
-        }
-
-        private static Exercise MapExercise(MySqlDataReader reader)
-        {
-            return new Exercise(
-                reader.GetInt32("exerciseID"),
-                reader.GetString("exerciseName"),
-                reader.IsDBNull("explanationLink") ? null : reader.GetString("explanationLink"),
-                reader.IsDBNull("notes") ? null : reader.GetString("notes")
-            );
-        }
-
-        ///treatment plan
-        ////////////////////////////////////////////////////////////
-        ///
-
-
-        public static void InsertTreatmentPlan(TreatmentPlan treatmentPlan)
-        {
-            using (connection)
-            {
-                try
-                {
-                    if (connection.State == ConnectionState.Closed)
-                        connection.Open();
-
-                    string query = "INSERT INTO TreatmentPlan (planID, planName, planTime, injuryID, price, notes, patientID, keywords, visitID,timeStamp) " +
-                                   "VALUES (@planID, @planName, @planTime, @injuryID, @price, @notes, @patientID, @keywords, @visitID, @timeStamp)";
-
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@planID", treatmentPlan.PlanID);
-                        command.Parameters.AddWithValue("@planName", treatmentPlan.PlanName);
-                        command.Parameters.AddWithValue("@planTime", treatmentPlan.PlanTimeInWeeks);
-                        command.Parameters.AddWithValue("@injuryID", treatmentPlan.InjuryID);
-                        command.Parameters.AddWithValue("@price", treatmentPlan.Price);
-                        command.Parameters.AddWithValue("@notes", treatmentPlan.Notes);
-                        command.Parameters.AddWithValue("@patientID", treatmentPlan.PatientID);
-                        command.Parameters.AddWithValue("@keywords", treatmentPlan.Keywords);
-                        command.Parameters.AddWithValue("@visitID", treatmentPlan.VisitID);
-                        command.Parameters.AddWithValue("@timeStamp", treatmentPlan.Timestamp);
-
-                        command.ExecuteNonQuery();
-
-                        MessageBox.Show("TreatmentPlan inserted successfully.");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error: {ex.Message}");
-                }
-            }
-        }
-
-        public static List<TreatmentPlan> GetAllTreatmentPlans()
-        {
-            List<TreatmentPlan> treatmentPlans = new List<TreatmentPlan>();
-
-            using (connection)
-            {
-                try
-                {
-                    connection.Open();
-                    string query = "SELECT * FROM TreatmentPlan";
-
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
-                    using (MySqlDataReader reader = command.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            TreatmentPlan treatmentPlan = new TreatmentPlan(
-                                Convert.ToInt32(reader["planID"]),
-                                Convert.ToString(reader["planName"]),
-                                Convert.ToInt32(reader["planTime"]),
-                                Convert.ToDouble(reader["price"]),
-                                Convert.ToString(reader["notes"]),
-                                Convert.ToString(reader["keywords"]),
-                                Convert.ToInt32(reader["injuryID"]),
-                                Convert.ToInt32(reader["patientID"]),
-                                Convert.ToInt32(reader["visitID"]),
-                                Convert.ToDateTime(reader["timeStamp"])
-                            );
-
-                            treatmentPlans.Add(treatmentPlan);
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error: {ex.Message}");
-                }
-            }
-
-            return treatmentPlans;
-        }
-
-        public static TreatmentPlan GetTreatmentPlanByID(int planID)
-        {
-            using (connection)
-            {
-                try
-                {
-                    connection.Open();
-                    string query = "SELECT * FROM TreatmentPlan WHERE planID = @planID";
-
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@planID", planID);
-
-                        using (MySqlDataReader reader = command.ExecuteReader())
-                        {
-                            if (reader.Read())
-                            {
-                                return new TreatmentPlan(
-                                    Convert.ToInt32(reader["planID"]),
-                                    Convert.ToString(reader["planName"]),
-                                    Convert.ToInt32(reader["planTime"]),
-                                    Convert.ToDouble(reader["price"]),
-                                    Convert.ToString(reader["notes"]),
-                                    Convert.ToString(reader["keywords"]),
-                                    Convert.ToInt32(reader["injuryID"]),
-                                    Convert.ToInt32(reader["patientID"]),
-                                    Convert.ToInt32(reader["visitID"]),
-                                    Convert.ToDateTime(reader["timeStamp"])
-
-                                );
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error: {ex.Message}");
-                }
-            }
-
-            return null; // Return null if the treatment plan with the specified ID is not found
-        }
-        public static List<TreatmentPlan> GetAllTreatmentPlansByPatientID(int patientID)
-        {
-            List<TreatmentPlan> treatmentPlans = new List<TreatmentPlan>();
-
-            using (connection)
-            {
-                try
-                {
-                    connection.Open();
-                    string query = "SELECT * FROM TreatmentPlan WHERE patientID=@pId";
-
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@pId", patientID);
-                        using (MySqlDataReader reader = command.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                TreatmentPlan treatmentPlan = new TreatmentPlan(
-                                    Convert.ToInt32(reader["planID"]),
-                                    Convert.ToString(reader["planName"]),
-                                    Convert.ToInt32(reader["planTime"]),
-                                    Convert.ToDouble(reader["price"]),
-                                    Convert.ToString(reader["notes"]),
-                                    Convert.ToString(reader["keywords"]),
-                                    Convert.ToInt32(reader["injuryID"]),
-                                    Convert.ToInt32(reader["patientID"]),
-                                    Convert.ToInt32(reader["visitID"]),
-                                    Convert.ToDateTime(reader["timeStamp"])
-                                );
-
-                                treatmentPlans.Add(treatmentPlan);
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error: {ex.Message}");
-                }
-            }
-
-            return treatmentPlans;
-        }
-        public static TreatmentPlan GetMostRecentTreatmentPlanByPatientID(int patientID)
-        {
-
-            using (connection)
-            {
-                try
-                {
-                    connection.Open();
-                    string query = "SELECT * FROM TreatmentPlan WHERE patientID=@pId ORDER BY timeStamp DESC LIMIT 1;";
-
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@pId", patientID);
-                        using (MySqlDataReader reader = command.ExecuteReader())
-                        {
-                            if (reader.Read())
-                            {
-                                return new TreatmentPlan(
-                                    Convert.ToInt32(reader["planID"]),
-                                    Convert.ToString(reader["planName"]),
-                                    Convert.ToInt32(reader["planTime"]),
-                                    Convert.ToDouble(reader["price"]),
-                                    Convert.ToString(reader["notes"]),
-                                    Convert.ToString(reader["keywords"]),
-                                    Convert.ToInt32(reader["injuryID"]),
-                                    Convert.ToInt32(reader["patientID"]),
-                                    Convert.ToInt32(reader["visitID"]),
-                                    Convert.ToDateTime(reader["timeStamp"])
-                                );
-
-
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error: {ex.Message}");
-                }
-            }
-
-            return null;
-        }
-
-        public static List<TreatmentPlan> GetAllTreatmentPlansByVisitID(int visitID)
-        {
-            List<TreatmentPlan> treatmentPlans = new List<TreatmentPlan>();
-
-            using (connection)
-            {
-                try
-                {
-                    connection.Open();
-                    string query = "SELECT * FROM TreatmentPlan WHERE visitID=@pId";
-
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@pId", visitID);
-                        using (MySqlDataReader reader = command.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                TreatmentPlan treatmentPlan = new TreatmentPlan(
-                                    Convert.ToInt32(reader["planID"]),
-                                    Convert.ToString(reader["planName"]),
-                                    Convert.ToInt32(reader["planTime"]),
-                                    Convert.ToDouble(reader["price"]),
-                                    Convert.ToString(reader["notes"]),
-                                    Convert.ToString(reader["keywords"]),
-                                    Convert.ToInt32(reader["injuryID"]),
-                                    Convert.ToInt32(reader["patientID"]),
-                                    Convert.ToInt32(reader["visitID"]),
-                                    Convert.ToDateTime(reader["timeStamp"])
-                                );
-
-                                treatmentPlans.Add(treatmentPlan);
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error: {ex.Message}");
-                }
-            }
-
-            return treatmentPlans;
-        }
-
-        public static void UpdateTreatmentPlan(TreatmentPlan treatmentPlan)
-        {
-            using (connection)
-            {
-                try
-                {
-                    if (connection.State == ConnectionState.Closed)
-                        connection.Open();
-
-                    string query = "UPDATE TreatmentPlan SET planName = @planName, " +
-                                   "planTime = @planTime, injuryID = @injuryID, price = @price, " +
-                                   "notes = @notes, patientID = @patientID, visitID = @visitID, keywords=@keywords, timeStamp=@timeStamp " +
-                                   "WHERE planID = @planID";
-
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@planName", treatmentPlan.PlanName);
-                        command.Parameters.AddWithValue("@planTime", treatmentPlan.PlanTimeInWeeks);
-                        command.Parameters.AddWithValue("@injuryID", treatmentPlan.InjuryID);
-                        command.Parameters.AddWithValue("@price", treatmentPlan.Price);
-                        command.Parameters.AddWithValue("@notes", treatmentPlan.Notes);
-                        command.Parameters.AddWithValue("@keywords", treatmentPlan.Keywords);
-                        command.Parameters.AddWithValue("@patientID", treatmentPlan.PatientID);
-                        command.Parameters.AddWithValue("@visitID", treatmentPlan.VisitID);
-                        command.Parameters.AddWithValue("@planID", treatmentPlan.PlanID);
-                        command.Parameters.AddWithValue("@timeStamp", treatmentPlan.Timestamp);
-
-                        command.ExecuteNonQuery();
-
-                        MessageBox.Show("TreatmentPlan updated successfully.");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error: {ex.Message}");
-                }
-            }
-        }
-
-        public static void DeleteTreatmentPlan(int planID)
-        {
-            using (connection)
-            {
-                try
-                {
-                    if (connection.State == ConnectionState.Closed)
-                        connection.Open();
-
-                    string query = "DELETE FROM TreatmentPlan WHERE planID = @planID";
-
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@planID", planID);
-
-                        command.ExecuteNonQuery();
-
-                        MessageBox.Show("TreatmentPlan deleted successfully.");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error: {ex.Message}");
-                }
-            }
-        }
 
 
         /// chatRoom
@@ -2216,134 +1671,6 @@ namespace clinical
         }
 
 
-        /// packages
-        /////////////////////////////////////////////////////////////////////////
-        ///
-        public static List<Package> GetAllPackages()
-        {
-            List<Package> packages = new List<Package>();
-
-            using (connection)
-            {
-                connection.Open();
-
-                string query = "SELECT * FROM Package";
-
-                using (MySqlCommand cmd = new MySqlCommand(query, connection))
-                {
-                    using (MySqlDataReader reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            Package package = new Package(
-                                Convert.ToInt32(reader["PackageID"]),
-                                Convert.ToString(reader["PackageName"]),
-                                Convert.ToInt32(reader["NumberOfSessions"]),
-                                Convert.ToDouble(reader["Price"]),
-                                Convert.ToString(reader["Description"])
-                                );
-
-                            packages.Add(package);
-                        }
-                    }
-                }
-            }
-
-            return packages;
-        }
-
-        public static Package GetPackageById(int packageId)
-        {
-            using (connection)
-            {
-                connection.Open();
-
-                string query = "SELECT * FROM Package WHERE PackageID = @PackageID";
-
-                using (MySqlCommand cmd = new MySqlCommand(query, connection))
-                {
-                    cmd.Parameters.AddWithValue("@PackageID", packageId);
-
-                    using (MySqlDataReader reader = cmd.ExecuteReader())
-                    {
-                        if (reader.Read())
-                        {
-                            return new Package(
-                                Convert.ToInt32(reader["PackageID"]),
-                                Convert.ToString(reader["PackageName"]),
-                                Convert.ToInt32(reader["NumberOfSessions"]),
-                                Convert.ToDouble(reader["Price"]),
-                                Convert.ToString(reader["Description"])
-                            );
-                        }
-                    }
-                }
-            }
-
-            return null; // Package not found
-        }
-
-        public static void InsertPackage(BaseClasses.Package package)
-        {
-            using (connection)
-            {
-                connection.Open();
-
-                string query = "INSERT INTO Package (PackageID, PackageName, NumberOfSessions, Price, Description) " +
-                               "VALUES (@PackageID, @PackageName, @NumberOfSessions, @Price, @Description)";
-
-                using (MySqlCommand cmd = new MySqlCommand(query, connection))
-                {
-                    cmd.Parameters.AddWithValue("@PackageID", package.PackageID);
-                    cmd.Parameters.AddWithValue("@PackageName", package.PackageName);
-                    cmd.Parameters.AddWithValue("@NumberOfSessions", package.NumberOfSessions);
-                    cmd.Parameters.AddWithValue("@Price", package.Price);
-                    cmd.Parameters.AddWithValue("@Description", package.Description);
-
-                    cmd.ExecuteNonQuery();
-                }
-            }
-        }
-
-        public static void UpdatePackage(BaseClasses.Package package)
-        {
-            using (connection)
-            {
-                connection.Open();
-
-                string query = "UPDATE Package SET PackageName=@PackageName,NumberOfSessions=@NumberOfSessions,Price=@Price, Description=@Description  WHERE PackageID=@PackageID ";
-
-                using (MySqlCommand cmd = new MySqlCommand(query, connection))
-                {
-                    cmd.Parameters.AddWithValue("@PackageID", package.PackageID);
-                    cmd.Parameters.AddWithValue("@PackageName", package.PackageName);
-                    cmd.Parameters.AddWithValue("@NumberOfSessions", package.NumberOfSessions);
-                    cmd.Parameters.AddWithValue("@Price", package.Price);
-                    cmd.Parameters.AddWithValue("@Description", package.Description);
-
-                    cmd.ExecuteNonQuery();
-                }
-            }
-        }
-
-
-        public static void DeletePackage(int packageId)
-        {
-            using (connection)
-            {
-                connection.Open();
-
-                string query = "DELETE FROM Package WHERE PackageID = @PackageID";
-
-                using (MySqlCommand cmd = new MySqlCommand(query, connection))
-                {
-                    cmd.Parameters.AddWithValue("@PackageID", packageId);
-
-                    cmd.ExecuteNonQuery();
-                }
-            }
-        }
-
         /// scanTest
         /////////////////////////////////////////////////////////////////////////
         ///
@@ -2511,547 +1838,6 @@ namespace clinical
         }
 
 
-        /// injury
-        /////////////////////////////////////////////////////////////////////////
-        ///
-        public static void InsertInjury(Injury injury)
-        {
-            using (connection)
-            {
-                try
-                {
-                    if (connection.State == ConnectionState.Closed) connection.Open();
-
-                    string query = "INSERT INTO Injury (injuryID, injuryName, injuryLocation, severity) " +
-                                   "VALUES (@injuryID, @injuryName, @injuryLocation, @severity)";
-
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@injuryID", injury.InjuryID);
-                        command.Parameters.AddWithValue("@injuryName", injury.InjuryName);
-                        command.Parameters.AddWithValue("@injuryLocation", injury.InjuryLocation);
-                        command.Parameters.AddWithValue("@severity", injury.Severity);
-
-                        command.ExecuteNonQuery();
-
-                        MessageBox.Show("Injury inserted successfully.");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error: {ex.Message}");
-                }
-            }
-        }
-
-        public static void UpdateInjury(Injury injury)
-        {
-            using (connection)
-            {
-                try
-                {
-                    if (connection.State == ConnectionState.Closed) connection.Open();
-
-                    string query = "UPDATE Injury SET injuryName = @injuryName, " +
-                                   "injuryLocation = @injuryLocation, severity = @severity " +
-                                   "WHERE injuryID = @injuryID";
-
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@injuryID", injury.InjuryID);
-                        command.Parameters.AddWithValue("@injuryName", injury.InjuryName);
-                        command.Parameters.AddWithValue("@injuryLocation", injury.InjuryLocation);
-                        command.Parameters.AddWithValue("@severity", injury.Severity);
-
-                        command.ExecuteNonQuery();
-
-                        MessageBox.Show("Injury updated successfully.");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error: {ex.Message}");
-                }
-            }
-        }
-
-        public static void DeleteInjury(int injuryID)
-        {
-            using (connection)
-            {
-                try
-                {
-                    if (connection.State == ConnectionState.Closed) connection.Open();
-
-                    string query = "DELETE FROM Injury WHERE injuryID = @injuryID";
-
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@injuryID", injuryID);
-
-                        command.ExecuteNonQuery();
-
-                        MessageBox.Show("Injury deleted successfully.");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error: {ex.Message}");
-                }
-            }
-        }
-
-        public static Injury GetInjuryByID(int injuryID)
-        {
-            using (connection)
-            {
-                try
-                {
-                    if (connection.State == ConnectionState.Closed) connection.Open();
-
-                    string query = "SELECT * FROM Injury WHERE injuryID = @injuryID";
-
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@injuryID", injuryID);
-
-                        using (MySqlDataReader reader = command.ExecuteReader())
-                        {
-                            if (reader.Read())
-                            {
-                                return new Injury(
-                                    Convert.ToInt32(reader["injuryID"]),
-                                    reader["injuryName"].ToString(),
-                                    reader["injuryLocation"].ToString(),
-                                    Convert.ToInt32(reader["severity"]),
-                                    reader["description"].ToString()
-
-                                );
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error: {ex.Message}");
-                }
-
-                return null;
-            }
-        }
-
-        public static List<Injury> GetAllInjuries()
-        {
-            List<Injury> injuries = new List<Injury>();
-
-            using (connection)
-            {
-                try
-                {
-                    if (connection.State == ConnectionState.Closed) connection.Open();
-
-                    string query = "SELECT * FROM Injury";
-
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
-                    {
-                        using (MySqlDataReader reader = command.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                Injury injury = new Injury(
-                                    Convert.ToInt32(reader["injuryID"]),
-                                    reader["injuryName"].ToString(),
-                                    reader["injuryLocation"].ToString(),
-                                    Convert.ToInt32(reader["severity"]),
-                                    reader["description"].ToString()
-
-                                );
-
-                                injuries.Add(injury);
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error: {ex.Message}");
-                }
-
-                return injuries;
-            }
-        }
-
-
-        ///equipment
-        ////////////////////////////////////////////////////////////////////////////
-        ///
-        public static void InsertEquipment(Equipment equipment)
-        {
-            using (connection)
-            {
-                try
-                {
-                    if (connection.State == ConnectionState.Closed) connection.Open();
-
-                    string query = "INSERT INTO Equipment (equipmentID, equipmentName, equipmentFunction, latestMaintenanceDate, toCheck, roomID) " +
-                                   "VALUES (@equipmentID, @equipmentName, @equipmentFunction, @latestMaintenanceDate, @toCheck, @roomID)";
-
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@equipmentID", equipment.EquipmentID);
-                        command.Parameters.AddWithValue("@equipmentName", equipment.EquipmentName);
-                        command.Parameters.AddWithValue("@equipmentFunction", equipment.Function);
-                        command.Parameters.AddWithValue("@latestMaintenanceDate", equipment.LatestMaintenanceDate);
-                        command.Parameters.AddWithValue("@toCheck", equipment.ToCheck);
-                        command.Parameters.AddWithValue("@roomID", equipment.RoomID);
-
-                        command.ExecuteNonQuery();
-
-                        MessageBox.Show("Equipment inserted successfully.");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error: {ex.Message}");
-                }
-            }
-        }
-
-        public static void UpdateEquipment(Equipment equipment)
-        {
-            using (connection)
-            {
-                try
-                {
-                    if (connection.State == ConnectionState.Closed) connection.Open();
-
-                    string query = "UPDATE Equipment SET equipmentName = @equipmentName, equipmentFunction = @equipmentFunction, " +
-                                   "latestMaintenanceDate = @latestMaintenanceDate, toCheck = @toCheck, roomID = @roomID " +
-                                   "WHERE equipmentID = @equipmentID";
-
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@equipmentID", equipment.EquipmentID);
-                        command.Parameters.AddWithValue("@equipmentName", equipment.EquipmentName);
-                        command.Parameters.AddWithValue("@equipmentFunction", equipment.Function);
-                        command.Parameters.AddWithValue("@latestMaintenanceDate", equipment.LatestMaintenanceDate);
-                        command.Parameters.AddWithValue("@toCheck", equipment.ToCheck);
-                        command.Parameters.AddWithValue("@roomID", equipment.RoomID);
-
-                        command.ExecuteNonQuery();
-
-                        MessageBox.Show("Equipment updated successfully.");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error: {ex.Message}");
-                }
-            }
-        }
-
-        public static void DeleteEquipment(int equipmentID)
-        {
-            using (connection)
-            {
-                try
-                {
-                    if (connection.State == ConnectionState.Closed) connection.Open();
-
-                    string query = "DELETE FROM Equipment WHERE equipmentID = @equipmentID";
-
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@equipmentID", equipmentID);
-
-                        command.ExecuteNonQuery();
-
-                        MessageBox.Show("Equipment deleted successfully.");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error: {ex.Message}");
-                }
-            }
-        }
-
-        public static Equipment GetEquipmentByID(int equipmentID)
-        {
-            using (connection)
-            {
-                try
-                {
-                    if (connection.State == ConnectionState.Closed) connection.Open();
-
-                    string query = "SELECT * FROM Equipment WHERE equipmentID = @equipmentID";
-
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@equipmentID", equipmentID);
-
-                        using (MySqlDataReader reader = command.ExecuteReader())
-                        {
-                            if (reader.Read())
-                            {
-                                return new Equipment(
-                                    Convert.ToInt32(reader["equipmentID"]),
-                                    reader["equipmentName"].ToString(),
-                                    reader["equipmentFunction"].ToString(),
-                                    Convert.ToDateTime(reader["latestMaintenanceDate"]),
-                                    Convert.ToBoolean(reader["toCheck"]),
-                                    Convert.ToInt32(reader["roomID"])
-                                );
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error: {ex.Message}");
-                }
-
-                return null;
-            }
-        }
-
-        public static List<Equipment> GetAllEquipment()
-        {
-            List<Equipment> equipmentList = new List<Equipment>();
-
-            using (connection)
-            {
-                try
-                {
-                    if (connection.State == ConnectionState.Closed) connection.Open();
-
-                    string query = "SELECT * FROM Equipment";
-
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
-                    {
-                        using (MySqlDataReader reader = command.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                Equipment equipment = new Equipment(
-                                    Convert.ToInt32(reader["equipmentID"]),
-                                    reader["equipmentName"].ToString(),
-                                    reader["equipmentFunction"].ToString(),
-                                    Convert.ToDateTime(reader["latestMaintenanceDate"]),
-                                    Convert.ToBoolean(reader["toCheck"]),
-                                    Convert.ToInt32(reader["roomID"])
-                                );
-
-                                equipmentList.Add(equipment);
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error: {ex.Message}");
-                }
-
-                return equipmentList;
-            }
-        }
-
-
-        /// room 
-        /////////////////////////////////////////////////////////////////////
-        ///
-        public static void InsertRoom(Room room)
-        {
-            using (connection)
-            {
-                try
-                {
-                    if (connection.State == ConnectionState.Closed) connection.Open();
-
-                    string query = "INSERT INTO Room (roomID, roomNumber) VALUES (@roomID, @roomNumber)";
-
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@roomID", room.RoomID);
-                        command.Parameters.AddWithValue("@roomNumber", room.RoomNumber);
-
-                        command.ExecuteNonQuery();
-
-                        MessageBox.Show("Room inserted successfully.");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error: {ex.Message}");
-                }
-            }
-        }
-
-        public static void UpdateRoom(Room room)
-        {
-            using (connection)
-            {
-                try
-                {
-                    if (connection.State == ConnectionState.Closed) connection.Open();
-
-                    string query = "UPDATE Room SET roomNumber = @roomNumber WHERE roomID = @roomID";
-
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@roomID", room.RoomID);
-                        command.Parameters.AddWithValue("@roomNumber", room.RoomNumber);
-
-                        command.ExecuteNonQuery();
-
-                        MessageBox.Show("Room updated successfully.");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error: {ex.Message}");
-                }
-            }
-        }
-
-        public static void DeleteRoom(int roomID)
-        {
-            using (connection)
-            {
-                try
-                {
-                    if (connection.State == ConnectionState.Closed) connection.Open();
-
-                    string query = "DELETE FROM Room WHERE roomID = @roomID";
-
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@roomID", roomID);
-
-                        command.ExecuteNonQuery();
-
-                        MessageBox.Show("Room deleted successfully.");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error: {ex.Message}");
-                }
-            }
-        }
-
-        public static Room GetRoomByID(int roomID)
-        {
-            using (connection)
-            {
-                try
-                {
-                    if (connection.State == ConnectionState.Closed) connection.Open();
-
-                    string query = "SELECT * FROM Room WHERE roomID = @roomID";
-
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@roomID", roomID);
-
-                        using (MySqlDataReader reader = command.ExecuteReader())
-                        {
-                            if (reader.Read())
-                            {
-                                return new Room(
-                                    Convert.ToInt32(reader["roomID"]),
-                                    reader["roomNumber"].ToString());
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error: {ex.Message}");
-                }
-
-                return null;
-            }
-        }
-
-        public static List<Room> GetAllRooms()
-        {
-            List<Room> roomList = new List<Room>();
-
-            using (connection)
-            {
-                try
-                {
-                    if (connection.State == ConnectionState.Closed) connection.Open();
-
-                    string query = "SELECT * FROM Room";
-
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
-                    {
-                        using (MySqlDataReader reader = command.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                Room room = new Room(
-                                    Convert.ToInt32(reader["roomID"]),
-                                    reader["roomNumber"].ToString()
-                                );
-
-                                roomList.Add(room);
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error: {ex.Message}");
-                }
-
-                return roomList;
-            }
-        }
-        public static List<Equipment> GetEquipmentByRoomID(int roomID)
-        {
-            List<Equipment> equipmentList = new List<Equipment>();
-
-            using (connection)
-            {
-                try
-                {
-                    if (connection.State == ConnectionState.Closed) connection.Open();
-
-                    string query = "SELECT * FROM Equipment WHERE roomID = @roomID";
-
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@roomID", roomID);
-
-                        using (MySqlDataReader reader = command.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                Equipment equipment = new Equipment(
-                                    Convert.ToInt32(reader["equipmentID"]),
-                                    reader["equipmentName"].ToString(),
-                                    reader["equipmentFunction"].ToString(),
-                                    Convert.ToDateTime(reader["latestMaintenanceDate"]),
-                                    Convert.ToBoolean(reader["toCheck"]),
-                                    Convert.ToInt32(reader["roomID"])
-                                );
-
-                                equipmentList.Add(equipment);
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error: {ex.Message}");
-                }
-            }
-
-            return equipmentList;
-        }
 
         /// attendanceRecord
         /////////////////////////////////////////////////////////////////////
@@ -3316,11 +2102,9 @@ namespace clinical
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
                         command.Parameters.AddWithValue("@visitID", visit.VisitID);
-                        command.Parameters.AddWithValue("@userID", visit.PhysiotherapistID);
+                        command.Parameters.AddWithValue("@userID", visit.DoctorID);
                         command.Parameters.AddWithValue("@patientID", visit.PatientID);
-                        command.Parameters.AddWithValue("@packageID", visit.PackageID);
                         command.Parameters.AddWithValue("@timeStamp", visit.TimeStamp);
-                        command.Parameters.AddWithValue("@roomID", visit.RoomID);
                         command.Parameters.AddWithValue("@therapistNotes", visit.TherapistNotes);
                         command.Parameters.AddWithValue("@height", visit.Height);
                         command.Parameters.AddWithValue("@weight", visit.Weight);
@@ -3352,11 +2136,9 @@ namespace clinical
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
                         command.Parameters.AddWithValue("@visitID", visit.VisitID);
-                        command.Parameters.AddWithValue("@userID", visit.PhysiotherapistID);
+                        command.Parameters.AddWithValue("@userID", visit.DoctorID);
                         command.Parameters.AddWithValue("@patientID", visit.PatientID);
-                        command.Parameters.AddWithValue("@packageID", visit.PackageID);
                         command.Parameters.AddWithValue("@timeStamp", visit.TimeStamp);
-                        command.Parameters.AddWithValue("@roomID", visit.RoomID);
                         command.Parameters.AddWithValue("@therapistNotes", visit.TherapistNotes);
                         command.Parameters.AddWithValue("@height", visit.Height);
                         command.Parameters.AddWithValue("@weight", visit.Weight);
@@ -3633,9 +2415,9 @@ namespace clinical
                 return visitList;
             }
         }
-        public static List<Visit> GetAllVisitsByPhysicianID(int physicianID)
+        public static List<Visit> GetAllVisitsByDoctorID(int DoctorID)
         {
-            List<Visit> visitsForPhysician = new List<Visit>();
+            List<Visit> visitsForDoctor = new List<Visit>();
 
             using (connection)
             {
@@ -3645,11 +2427,11 @@ namespace clinical
 
                     string query = "SELECT v.* FROM Visit v " +
                                    "INNER JOIN User u ON v.userID = u.userID " +
-                                   "WHERE u.userID = @physicianID ORDER BY timeStamp ASC";
+                                   "WHERE u.userID = @DoctorID ORDER BY timeStamp ASC";
 
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
-                        command.Parameters.AddWithValue("@physicianID", physicianID);
+                        command.Parameters.AddWithValue("@DoctorID", DoctorID);
 
                         using (MySqlDataReader reader = command.ExecuteReader())
                         {
@@ -3657,7 +2439,7 @@ namespace clinical
                             {
 
 
-                                visitsForPhysician.Add(MapVisit(reader));
+                                visitsForDoctor.Add(MapVisit(reader));
                             }
                         }
                     }
@@ -3668,7 +2450,7 @@ namespace clinical
                 }
             }
 
-            return visitsForPhysician;
+            return visitsForDoctor;
         }
         public static List<Visit> GetTodayVisits()
         {
@@ -3703,9 +2485,9 @@ namespace clinical
 
             return todayVisits;
         }
-        public static List<Visit> GetFuturePhysicianVisits(int physicianID)
+        public static List<Visit> GetFutureDoctorVisits(int DoctorID)
         {
-            List<Visit> todayPhysicianVisits = new List<Visit>();
+            List<Visit> todayDoctorVisits = new List<Visit>();
 
             using (connection)
             {
@@ -3715,11 +2497,11 @@ namespace clinical
 
                     string query = "SELECT v.* FROM Visit v " +
                                    "INNER JOIN User u ON v.userID = u.userID " +
-                                   "WHERE u.userID = @physicianID AND DATE(v.timeStamp) >= CURDATE() AND isDone=0 ORDER BY timeStamp ASC";
+                                   "WHERE u.userID = @DoctorID AND DATE(v.timeStamp) >= CURDATE() AND isDone=0 ORDER BY timeStamp ASC";
 
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
-                        command.Parameters.AddWithValue("@physicianID", physicianID);
+                        command.Parameters.AddWithValue("@DoctorID", DoctorID);
 
                         using (MySqlDataReader reader = command.ExecuteReader())
                         {
@@ -3727,7 +2509,7 @@ namespace clinical
                             {
 
 
-                                todayPhysicianVisits.Add(MapVisit(reader));
+                                todayDoctorVisits.Add(MapVisit(reader));
                             }
                         }
                     }
@@ -3738,11 +2520,11 @@ namespace clinical
                 }
             }
 
-            return todayPhysicianVisits;
+            return todayDoctorVisits;
         }
-        public static List<Visit> GetPhysicianVisitsOnDate(int physicianID, DateTime date)
+        public static List<Visit> GetDoctorVisitsOnDate(int DoctorID, DateTime date)
         {
-            List<Visit> physicianVisitsOnDate = new List<Visit>();
+            List<Visit> DoctorVisitsOnDate = new List<Visit>();
 
             using (connection)
             {
@@ -3750,11 +2532,11 @@ namespace clinical
                 {
                     if (connection.State == ConnectionState.Closed) connection.Open();
 
-                    string query = "SELECT * FROM Visit WHERE userID = @physicianID AND DATE(timeStamp) = @visitDate ORDER BY timeStamp ASC";
+                    string query = "SELECT * FROM Visit WHERE userID = @DoctorID AND DATE(timeStamp) = @visitDate ORDER BY timeStamp ASC";
 
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
-                        command.Parameters.AddWithValue("@physicianID", physicianID);
+                        command.Parameters.AddWithValue("@DoctorID", DoctorID);
                         command.Parameters.AddWithValue("@visitDate", date.ToString("yyyy-MM-dd"));
 
                         using (MySqlDataReader reader = command.ExecuteReader())
@@ -3762,7 +2544,7 @@ namespace clinical
                             while (reader.Read())
                             {
 
-                                physicianVisitsOnDate.Add(MapVisit(reader));
+                                DoctorVisitsOnDate.Add(MapVisit(reader));
                             }
                         }
                     }
@@ -3773,11 +2555,11 @@ namespace clinical
                 }
             }
 
-            return physicianVisitsOnDate;
+            return DoctorVisitsOnDate;
         }
         public static List<Visit> GetAllVisitsOnDate(DateTime date)
         {
-            List<Visit> physicianVisitsOnDate = new List<Visit>();
+            List<Visit> DoctorVisitsOnDate = new List<Visit>();
 
             using (connection)
             {
@@ -3795,7 +2577,7 @@ namespace clinical
                         {
                             while (reader.Read())
                             {
-                                physicianVisitsOnDate.Add(MapVisit(reader));
+                                DoctorVisitsOnDate.Add(MapVisit(reader));
                             }
                         }
                     }
@@ -3806,7 +2588,7 @@ namespace clinical
                 }
             }
 
-            return physicianVisitsOnDate;
+            return DoctorVisitsOnDate;
         }
         private static Visit MapVisit(MySqlDataReader reader)
         {
@@ -3814,9 +2596,7 @@ namespace clinical
                 Convert.ToInt32(reader["visitID"]),
                 Convert.ToInt32(reader["userID"]),
                 Convert.ToInt32(reader["patientID"]),
-                Convert.ToInt32(reader["packageID"]),
                 Convert.ToDateTime(reader["timeStamp"]),
-                Convert.ToInt32(reader["roomID"]),
                 reader["therapistNotes"].ToString(),
                 Convert.ToDouble(reader["height"]),
                 Convert.ToDouble(reader["weight"]),
@@ -4390,8 +3170,8 @@ namespace clinical
                 {
                     if (connection.State == ConnectionState.Closed) connection.Open();
 
-                    string query = "INSERT INTO MedicalRecord (recordID, type, timeStamp, report, images, patientID, physicianNotes) " +
-                                   "VALUES (@recordID, @type, @timeStamp, @report, @images, @patientID, @physicianNotes)";
+                    string query = "INSERT INTO MedicalRecord (recordID, type, timeStamp, report, images, patientID, DoctorNotes) " +
+                                   "VALUES (@recordID, @type, @timeStamp, @report, @images, @patientID, @DoctorNotes)";
 
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
@@ -4401,7 +3181,7 @@ namespace clinical
                         command.Parameters.AddWithValue("@report", medicalRecord.Report);
                         command.Parameters.AddWithValue("@images", string.Join(",", medicalRecord.Images));
                         command.Parameters.AddWithValue("@patientID", medicalRecord.PatientID);
-                        command.Parameters.AddWithValue("@physicianNotes", medicalRecord.PhysicianNotes);
+                        command.Parameters.AddWithValue("@DoctorNotes", medicalRecord.DoctorNotes);
 
                         command.ExecuteNonQuery();
 
@@ -4424,7 +3204,7 @@ namespace clinical
 
                     string query = "UPDATE MedicalRecord SET type = @type, " +
                                    "timeStamp = @timeStamp, report = @report, images = @images, " +
-                                   "patientID = @patientID, physicianNotes = @physicianNotes " +
+                                   "patientID = @patientID, DoctorNotes = @DoctorNotes " +
                                    "WHERE recordID = @recordID";
 
                     using (MySqlCommand command = new MySqlCommand(query, connection))
@@ -4435,7 +3215,7 @@ namespace clinical
                         command.Parameters.AddWithValue("@report", medicalRecord.Report);
                         command.Parameters.AddWithValue("@images", string.Join(",", medicalRecord.Images));
                         command.Parameters.AddWithValue("@patientID", medicalRecord.PatientID);
-                        command.Parameters.AddWithValue("@physicianNotes", medicalRecord.PhysicianNotes);
+                        command.Parameters.AddWithValue("@DoctorNotes", medicalRecord.DoctorNotes);
 
                         command.ExecuteNonQuery();
 
@@ -4498,7 +3278,7 @@ namespace clinical
                                     reader["report"].ToString(),
                                     new List<string>(reader["images"].ToString().Split(',')),
                                     Convert.ToInt32(reader["patientID"]),
-                                    reader["physicianNotes"].ToString()
+                                    reader["DoctorNotes"].ToString()
                                 );
                             }
                         }
@@ -4537,7 +3317,7 @@ namespace clinical
                                     reader["report"].ToString(),
                                     new List<string>(reader["images"].ToString().Split(',')),
                                     Convert.ToInt32(reader["patientID"]),
-                                    reader["physicianNotes"].ToString()
+                                    reader["DoctorNotes"].ToString()
                                 );
 
                                 medicalRecordList.Add(medicalRecord);
@@ -4580,7 +3360,7 @@ namespace clinical
                                     reader["report"].ToString(),
                                     new List<string>(reader["images"].ToString().Split(',')),
                                     Convert.ToInt32(reader["patientID"]),
-                                    reader["physicianNotes"].ToString()
+                                    reader["DoctorNotes"].ToString()
                                 );
 
                                 patientMedicalRecords.Add(medicalRecord);
@@ -4842,268 +3622,6 @@ namespace clinical
             }
         }
 
-        ///issueExercise
-        /////////////////////////////////////////////////////////////////////////
-        ///
-        public static void InsertIssueExercise(IssueExercise issueExercise)
-        {
-            using (connection)
-            {
-                try
-                {
-                    if (connection.State == ConnectionState.Closed) connection.Open();
-
-                    string query = "INSERT INTO IssueExercise (issueID, exerciseID, patientID, treatmentPlanID, frequency, notes) " +
-                                   "VALUES (@issueID, @exerciseID, @patientID, @prescriptionID, @frequency, @notes)";
-
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@issueID", issueExercise.IssueID);
-                        command.Parameters.AddWithValue("@exerciseID", issueExercise.ExerciseID);
-                        command.Parameters.AddWithValue("@patientID", issueExercise.PatientID);
-                        command.Parameters.AddWithValue("@prescriptionID", issueExercise.TreatmentPlanID);
-                        command.Parameters.AddWithValue("@frequency", issueExercise.Frequency);
-                        command.Parameters.AddWithValue("@notes", issueExercise.Notes);
-
-                        command.ExecuteNonQuery();
-
-                        //MessageBox.Show("Issue exercise record inserted successfully.");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error: {ex.Message}");
-                }
-            }
-        }
-
-        public static void UpdateIssueExercise(IssueExercise issueExercise)
-        {
-            using (connection)
-            {
-                try
-                {
-                    if (connection.State == ConnectionState.Closed) connection.Open();
-
-                    string query = "UPDATE IssueExercise SET exerciseID = @exerciseID, " +
-                                   "patientID = @patientID, treatmentPlanID = @prescriptionID, " +
-                                   "frequency = @frequency, notes = @notes " +
-                                   "WHERE issueID = @issueID";
-
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@issueID", issueExercise.IssueID);
-                        command.Parameters.AddWithValue("@exerciseID", issueExercise.ExerciseID);
-                        command.Parameters.AddWithValue("@patientID", issueExercise.PatientID);
-                        command.Parameters.AddWithValue("@prescriptionID", issueExercise.TreatmentPlanID);
-                        command.Parameters.AddWithValue("@frequency", issueExercise.Frequency);
-                        command.Parameters.AddWithValue("@notes", issueExercise.Notes);
-
-                        command.ExecuteNonQuery();
-
-                        //MessageBox.Show("Issue exercise record updated successfully.");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error: {ex.Message}");
-                }
-            }
-        }
-
-        public static void DeleteIssueExercise(int issueID)
-        {
-            using (connection)
-            {
-                try
-                {
-                    if (connection.State == ConnectionState.Closed) connection.Open();
-
-                    string query = "DELETE FROM IssueExercise WHERE issueID = @issueID";
-
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@issueID", issueID);
-
-                        command.ExecuteNonQuery();
-
-                        //MessageBox.Show("Issue exercise record deleted successfully.");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error: {ex.Message}");
-                }
-            }
-        }
-
-        public static IssueExercise GetIssueExerciseByID(int issueID)
-        {
-            using (connection)
-            {
-                try
-                {
-                    if (connection.State == ConnectionState.Closed) connection.Open();
-
-                    string query = "SELECT * FROM IssueExercise WHERE issueID = @issueID";
-
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@issueID", issueID);
-
-                        using (MySqlDataReader reader = command.ExecuteReader())
-                        {
-                            if (reader.Read())
-                            {
-                                return new IssueExercise(
-                                    Convert.ToInt32(reader["issueID"]),
-                                    Convert.ToInt32(reader["exerciseID"]),
-                                    Convert.ToInt32(reader["patientID"]),
-                                    Convert.ToInt32(reader["treatmentPlanID"]),
-                                    reader["frequency"].ToString(),
-                                    reader["notes"].ToString()
-                                );
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error: {ex.Message}");
-                }
-
-                return null;
-            }
-        }
-
-        public static List<IssueExercise> GetIssuedExercisesByTreatmentPlanID(int planID)
-        {
-            List<IssueExercise> issuedExercises = new List<IssueExercise>();
-
-            using (connection)
-            {
-                try
-                {
-                    if (connection.State == ConnectionState.Closed) connection.Open();
-
-                    string query = "SELECT * FROM IssueExercise WHERE treatmentPlanID = @prescriptionID";
-
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@prescriptionID", planID);
-
-                        using (MySqlDataReader reader = command.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                IssueExercise issueExercise = new IssueExercise(
-                                    Convert.ToInt32(reader["issueID"]),
-                                    Convert.ToInt32(reader["exerciseID"]),
-                                    Convert.ToInt32(reader["patientID"]),
-                                    Convert.ToInt32(reader["treatmentPlanID"]),
-                                    reader["frequency"].ToString(),
-                                    reader["notes"].ToString()
-                                );
-
-                                issuedExercises.Add(issueExercise);
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error: {ex.Message}");
-                }
-
-                return issuedExercises;
-            }
-        }
-
-        public static List<IssueExercise> GetIssuedExercisesByPatientID(int patientID)
-        {
-            List<IssueExercise> issuedExercises = new List<IssueExercise>();
-
-            using (connection)
-            {
-                try
-                {
-                    if (connection.State == ConnectionState.Closed) connection.Open();
-
-                    string query = "SELECT * FROM IssueExercise WHERE patientID = @patientID";
-
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@patientID", patientID);
-
-                        using (MySqlDataReader reader = command.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                IssueExercise issueExercise = new IssueExercise(
-                                    Convert.ToInt32(reader["issueID"]),
-                                    Convert.ToInt32(reader["exerciseID"]),
-                                    Convert.ToInt32(reader["patientID"]),
-                                    Convert.ToInt32(reader["treatmentPlanID"]),
-                                    reader["frequency"].ToString(),
-                                    reader["notes"].ToString()
-                                );
-
-                                issuedExercises.Add(issueExercise);
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error: {ex.Message}");
-                }
-
-                return issuedExercises;
-            }
-        }
-
-        public static List<IssueExercise> GetAllIssuesOfExercise(int exerciseID)
-        {
-            List<IssueExercise> allIssuesOfExercise = new List<IssueExercise>();
-
-            using (connection)
-            {
-                try
-                {
-                    if (connection.State == ConnectionState.Closed) connection.Open();
-
-                    string query = "SELECT * FROM IssueExercise WHERE exerciseID = @exerciseID";
-
-                    using (MySqlCommand command = new MySqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@exerciseID", exerciseID);
-
-                        using (MySqlDataReader reader = command.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                IssueExercise issueExercise = new IssueExercise(
-                                    Convert.ToInt32(reader["issueID"]),
-                                    Convert.ToInt32(reader["exerciseID"]),
-                                    Convert.ToInt32(reader["patientID"]),
-                                    Convert.ToInt32(reader["treatmentPlanID"]),
-                                    reader["frequency"].ToString(),
-                                    reader["notes"].ToString()
-                                );
-
-                                allIssuesOfExercise.Add(issueExercise);
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error: {ex.Message}");
-                }
-
-                return allIssuesOfExercise;
-            }
-        }
 
         ///payment
         //////////////////////////////////////////////////////////////////
@@ -5128,7 +3646,7 @@ namespace clinical
                                 Convert.ToInt32(reader["paymentID"]),
                                 Convert.ToDouble(reader["amount"]),
                                 Convert.ToDateTime(reader["timestamp"]),
-                                Convert.ToInt32(reader["physicianID"]),
+                                Convert.ToInt32(reader["DoctorID"]),
                                 Convert.ToInt32(reader["patientID"])
                             );
 
@@ -5168,7 +3686,7 @@ namespace clinical
                                     Convert.ToInt32(reader["paymentID"]),
                                     Convert.ToDouble(reader["amount"]),
                                     Convert.ToDateTime(reader["timestamp"]),
-                                    Convert.ToInt32(reader["physicianID"]),
+                                    Convert.ToInt32(reader["DoctorID"]),
                                     Convert.ToInt32(reader["patientID"])
                                 );
 
@@ -5186,20 +3704,20 @@ namespace clinical
             return patientPayments;
         }
 
-        public static List<Payment> GetPhysicianPayments(int physicianID)
+        public static List<Payment> GetDoctorPayments(int DoctorID)
         {
-            List<Payment> physicianPayments = new List<Payment>();
+            List<Payment> DoctorPayments = new List<Payment>();
 
             using (connection)
             {
                 try
                 {
                     connection.Open();
-                    string query = "SELECT * FROM payment WHERE physicianID = @physicianID";
+                    string query = "SELECT * FROM payment WHERE DoctorID = @DoctorID";
 
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
-                        command.Parameters.AddWithValue("@physicianID", physicianID);
+                        command.Parameters.AddWithValue("@DoctorID", DoctorID);
 
                         using (MySqlDataReader reader = command.ExecuteReader())
                         {
@@ -5209,11 +3727,11 @@ namespace clinical
                                     Convert.ToInt32(reader["paymentID"]),
                                     Convert.ToDouble(reader["amount"]),
                                     Convert.ToDateTime(reader["timestamp"]),
-                                    Convert.ToInt32(reader["physicianID"]),
+                                    Convert.ToInt32(reader["DoctorID"]),
                                     Convert.ToInt32(reader["patientID"])
                                 );
 
-                                physicianPayments.Add(payment);
+                                DoctorPayments.Add(payment);
                             }
                         }
                     }
@@ -5224,7 +3742,7 @@ namespace clinical
                 }
             }
 
-            return physicianPayments;
+            return DoctorPayments;
         }
 
         public static void InsertPayment(Payment payment)
@@ -5234,15 +3752,15 @@ namespace clinical
                 try
                 {
                     connection.Open();
-                    string query = "INSERT INTO payment (paymentID, amount, timestamp, physicianID, patientID) " +
-                                   "VALUES (@paymentID, @amount, @timestamp, @physicianID, @patientID)";
+                    string query = "INSERT INTO payment (paymentID, amount, timestamp, DoctorID, patientID) " +
+                                   "VALUES (@paymentID, @amount, @timestamp, @DoctorID, @patientID)";
 
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
                         command.Parameters.AddWithValue("@paymentID", payment.PaymentID);
                         command.Parameters.AddWithValue("@amount", payment.Amount);
                         command.Parameters.AddWithValue("@timestamp", payment.TimeStamp);
-                        command.Parameters.AddWithValue("@physicianID", payment.PhysicianID);
+                        command.Parameters.AddWithValue("@DoctorID", payment.DoctorID);
                         command.Parameters.AddWithValue("@patientID", payment.PatientID);
 
                         command.ExecuteNonQuery();
@@ -5263,14 +3781,14 @@ namespace clinical
                 {
                     connection.Open();
                     string query = "UPDATE payment SET amount = @amount, timestamp = @timestamp, " +
-                                   "physicianID = @physicianID, patientID = @patientID " +
+                                   "DoctorID = @DoctorID, patientID = @patientID " +
                                    "WHERE paymentID = @paymentID";
 
                     using (MySqlCommand command = new MySqlCommand(query, connection))
                     {
                         command.Parameters.AddWithValue("@amount", payment.Amount);
                         command.Parameters.AddWithValue("@timestamp", payment.TimeStamp);
-                        command.Parameters.AddWithValue("@physicianID", payment.PhysicianID);
+                        command.Parameters.AddWithValue("@DoctorID", payment.DoctorID);
                         command.Parameters.AddWithValue("@patientID", payment.PatientID);
                         command.Parameters.AddWithValue("@paymentID", payment.PaymentID);
 

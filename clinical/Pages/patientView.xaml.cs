@@ -29,7 +29,7 @@ namespace clinical
             InitializeComponent();
             selectedPatient= patient;
             mainFrame.Navigate(new patientViewMainPage(selectedPatient));
-            sideFrame.Navigate(new PhysiotherapistSideBar());
+            sideFrame.Navigate(new DoctorSideBar());
 
         }
         public patientView(MedicalRecord medicalRecord)
@@ -37,22 +37,22 @@ namespace clinical
             InitializeComponent();
             selectedPatient=DB.GetPatientById(medicalRecord.PatientID);
             mainFrame.Navigate(new newRecordPage(medicalRecord));
-            sideFrame.Navigate(new PhysiotherapistSideBar());
+            sideFrame.Navigate(new DoctorSideBar());
 
         }
-        public patientView(User viewPhysician)
+        public patientView(User viewDoctor)
         {
             InitializeComponent();
-            mainFrame.Navigate(new reciptionistViewPhysioTherapist(viewPhysician));
+            mainFrame.Navigate(new reciptionistViewDoctor(viewDoctor));
 
-            sideFrame.Navigate(new PhysiotherapistSideBar());
+            sideFrame.Navigate(new DoctorSideBar());
 
         }
-        public patientView(Visit viewPhysician)
+        public patientView(Visit viewDoctor)
         {
             InitializeComponent();
-            mainFrame.Navigate(new visit(viewPhysician));
-            sideFrame.Navigate(new PhysiotherapistSideBar());
+            mainFrame.Navigate(new visit(viewDoctor));
+            sideFrame.Navigate(new DoctorSideBar());
 
         }
 

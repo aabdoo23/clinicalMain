@@ -259,7 +259,7 @@
                                             <DataGridTextColumn Header="#" IsReadOnly="True" CanUserResize="False" Width="auto" Binding="{Binding RecordID}"/>
                                             <DataGridTextColumn Header="Type" Binding="{Binding Type}" IsReadOnly="True" Width="25*"/>
                                             <DataGridTextColumn Header="Date" Binding="{Binding TimeStamp}" IsReadOnly="True" Width="30*"/>
-                                            <!--<DataGridTextColumn Header="Description" Binding="{Binding PhysicianNotes}" IsReadOnly="True" Width="40*"/>-->
+                                            <!--<DataGridTextColumn Header="Description" Binding="{Binding DoctorNotes}" IsReadOnly="True" Width="40*"/>-->
                                             <DataGridTemplateColumn Header="" IsReadOnly="True" Width="auto">
                                                 <DataGridTemplateColumn.CellTemplate>
                                                     <DataTemplate>

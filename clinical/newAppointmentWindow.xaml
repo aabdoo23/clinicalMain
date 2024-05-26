@@ -60,14 +60,14 @@
 
                             <Line Width="3" Margin="10 3" Stroke="{StaticResource lighterColor}" StrokeThickness="10" X1="1" X2="1" Y1="1" Y2="35" />
 
-                            <TextBlock Text="Physician: " FontWeight="Bold" VerticalAlignment="Center" FontSize="16"  Foreground="{StaticResource lightFontColor}"/>
-                            <TextBlock Name="physicianName" Text="Not selected"  VerticalAlignment="Center" FontSize="16" Foreground="{StaticResource lightFontColor}"/>
+                            <TextBlock Text="Doctor: " FontWeight="Bold" VerticalAlignment="Center" FontSize="16"  Foreground="{StaticResource lightFontColor}"/>
+                            <TextBlock Name="DoctorName" Text="Not selected"  VerticalAlignment="Center" FontSize="16" Foreground="{StaticResource lightFontColor}"/>
 
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="Assign to different physician: " FontWeight="Bold" VerticalAlignment="Center" FontSize="16" Margin="20 0"  Foreground="{StaticResource lightFontColor}"/>
-                            <ComboBox Name="physicianPicker" VerticalAlignment="Center" Width="200" SelectionChanged="physicianChanged"/>
+                            <TextBlock Text="Assign to different Doctor: " FontWeight="Bold" VerticalAlignment="Center" FontSize="16" Margin="20 0"  Foreground="{StaticResource lightFontColor}"/>
+                            <ComboBox Name="DoctorPicker" VerticalAlignment="Center" Width="200" SelectionChanged="DoctorChanged"/>
                         </StackPanel>
                         <Line Height="4" Margin="10 7 10 3" Stroke="{StaticResource lighterColor}" StrokeThickness="10" X1="1" X2="1020" Y1="1" Y2="1" />
 

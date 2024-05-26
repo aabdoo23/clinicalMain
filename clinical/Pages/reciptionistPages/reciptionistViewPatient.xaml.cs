@@ -40,28 +40,20 @@ namespace clinical.Pages.reciptionistPages
             idTextBox.Text = patient.PatientID.ToString();
             payTextBox.Text = "0";
             referringTextBox.Text = patient.referringName+$", {patient.referringPN}";
-            remainingSessionsTextBox.Text = patient.RemainingSessions.ToString();
             ageTB.Text = patient.Age.ToString();
 
-            List<User> physicians = DB.GetAllPhysiotherapists();
-            physicianCB.ItemsSource=physicians;
-            for(int i = 0; i < physicians.Count; i++)
+            List<User> Doctors = DB.GetAllDoctors();
+            DoctorCB.ItemsSource=Doctors;
+            for(int i = 0; i < Doctors.Count; i++)
             {
-                if (patient.PhysicianID == physicians[i].UserID)
+                if (patient.DoctorID == Doctors[i].UserID)
                 {
-                    physicianCB.SelectedIndex = i; break;
+                    DoctorCB.SelectedIndex = i; break;
                 }
             }
             dueTextBox.Text = patient.DueAmount.ToString();
 
             handleFinances();
-            List<Package> allPackages = DB.GetAllPackages();
-            packageCB.ItemsSource = allPackages;
-            Package patientPackage= DB.GetPackageById(patient.ActivePackageID);
-            for (int i = 0; i < allPackages.Count; i++)
-            {
-                if (allPackages[i].PackageID == patientPackage.PackageID) { packageCB.SelectedIndex = i; break; }
-            }
             
 
             List<Payment> payments = DB.GetPatientPayments(patient.PatientID);
@@ -102,13 +94,11 @@ namespace clinical.Pages.reciptionistPages
             emailTextBox.IsEnabled = !emailTextBox.IsEnabled;
             phoneTextBox.IsEnabled = !phoneTextBox.IsEnabled;
             dueTextBox.IsEnabled = !dueTextBox.IsEnabled;
-            packageCB.IsEnabled = !packageCB.IsEnabled;
             genderTB.IsEnabled = !genderTB.IsEnabled;
             addressTextBox.IsEnabled = !addressTextBox.IsEnabled;
             referringTextBox.IsEnabled = !referringTextBox.IsEnabled;
-            remainingSessionsTextBox.IsEnabled = !remainingSessionsTextBox.IsEnabled;
             ageTB.IsEnabled = !ageTB.IsEnabled;
-            physicianCB.IsEnabled= !physicianCB.IsEnabled;
+            DoctorCB.IsEnabled= !DoctorCB.IsEnabled;
         }
 
         private void syncPatientInfo(object sender, MouseButtonEventArgs e)
@@ -118,8 +108,7 @@ namespace clinical.Pages.reciptionistPages
             string em=emailTextBox.Text.Trim();
             string pn = phoneTextBox.Text.Trim();
             double due = Double.Parse(dueTextBox.Text.Trim());
-            int packId = ((clinical.BaseClasses.Package)packageCB.SelectedItem).PackageID;
-            int physId = ((User)physicianCB.SelectedItem).UserID;
+            int physId = ((User)DoctorCB.SelectedItem).UserID;
             int age = int.Parse(ageTB.Text);
             string address = addressTextBox.Text;
             string referringName= referringTextBox.Text.Split(",")[0].Trim();
@@ -131,8 +120,7 @@ namespace clinical.Pages.reciptionistPages
             newP.Email = em;
             newP.PhoneNumber=pn;
             newP.DueAmount=due;
-            newP.ActivePackageID=packId;
-            newP.PhysicianID=physId;
+            newP.DoctorID=physId;
             newP.Address=address;
             newP.referringName=referringName;
             newP.referringPN=referringPN;
@@ -157,7 +145,7 @@ namespace clinical.Pages.reciptionistPages
             MessageBoxResult result = MessageBox.Show($"Register payment of {toBePaid} for {patient.FullName}?","Payment Confirmation",MessageBoxButton.YesNo);
             if (result == MessageBoxResult.Yes)
             {
-                DB.InsertPayment(new Payment(globals.generateNewPaymentID(patient.PatientID,DateTime.Now), toBePaid,DateTime.Now,patient.PhysicianID,patient.PatientID));
+                DB.InsertPayment(new Payment(globals.generateNewPaymentID(patient.PatientID,DateTime.Now), toBePaid,DateTime.Now,patient.DoctorID,patient.PatientID));
                 patient.DueAmount = patientDue;
                 DB.UpdatePatient(patient);
             }
@@ -171,10 +159,6 @@ namespace clinical.Pages.reciptionistPages
 
             if (patient != null) //selected a patient? YES
             {
-                Package selectedPackage = (Package)packageCB.SelectedItem;
-                if (selectedPackage == null || selectedPackage.PackageID == 0 || patient.RemainingSessions == 0) //patient has a package? NO
-                {
-                    patient.ActivePackageID = 0;
                     double patientDueAmount = patient.DueAmount;
 
                     if (payTextBox.Text != null && payTextBox.Text != "")
@@ -185,17 +169,6 @@ namespace clinical.Pages.reciptionistPages
                     dueTextBox.Text = patientDueAmount.ToString();
 
 
-                }
-                else
-                {
-                    double patientDueAmount = patient.DueAmount;
-
-                    if (payTextBox.Text != null && payTextBox.Text != "")
-                    {
-                        patientDueAmount -= Double.Parse(payTextBox.Text.Trim());
-                    }
-                    dueTextBox.Text = patientDueAmount.ToString();
-                }
             }
         }
 
@@ -204,19 +177,10 @@ namespace clinical.Pages.reciptionistPages
             handleFinances();
         }
 
-        private void packageSelectionChange(object sender, SelectionChangedEventArgs e)
+        private void doctorSelectionChange(object sender, SelectionChangedEventArgs e)
         {
 
-
-            Package selectedPackage = (Package)packageCB.SelectedItem;
-
-            if (payTextBox.Text != null && payTextBox.Text != "" &&selectedPackage!=null && selectedPackage.PackageID!=patient.ActivePackageID)
-                dueTextBox.Text = (selectedPackage.Price - Double.Parse(payTextBox.Text.Trim())).ToString();
-            handleFinances();
-            
         }
-
-        
     }
 }
 

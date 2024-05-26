@@ -18,7 +18,7 @@ mc:Ignorable="av"
 
         </Grid.RowDefinitions>
 
-        <Label Name="formTitle" Content="View PhysioTherapist Info" FontWeight="Bold" VerticalAlignment="Bottom" HorizontalAlignment="Left" Foreground="{StaticResource lightFontColor}" FontSize="22" Margin="11,0,0,0"/>
+        <Label Name="formTitle" Content="View Doctor Info" FontWeight="Bold" VerticalAlignment="Bottom" HorizontalAlignment="Left" Foreground="{StaticResource lightFontColor}" FontSize="22" Margin="11,0,0,0"/>
             <Icon:PackIconMaterial Kind="CloseBox" Width="30" Height="50" Margin="0 0 10 0" Foreground="{StaticResource lightFontColor}" HorizontalAlignment="Right" VerticalAlignment="Bottom" MouseDown="closeBTN"/>
         <Icon:PackIconMaterial Kind="WindowMinimize" Width="25" Height="15" Margin="0 0 45 6" Foreground="{StaticResource lightFontColor}" HorizontalAlignment="Right" VerticalAlignment="Bottom" MouseDown="minimizeBTN"/>
         <Border Grid.Row="1" Style="{StaticResource theBorder}" Margin="0 10 0 0" CornerRadius="0 0 10 10" Background="{StaticResource lightFontColor}">

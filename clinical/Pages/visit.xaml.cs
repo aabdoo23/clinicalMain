@@ -39,13 +39,9 @@ namespace clinical.Pages
             patientNameText.Text = currPatient.FullName;
             visitIdText.Text = currVisit.VisitID.ToString();
             visitDate.Text = currVisit.TimeStamp.ToString("g");
-            physicianName.Text = currPatient.PhysicianName;
+            DoctorName.Text = currPatient.DoctorName;
             hwborder.IsEnabled = false;
-            List<TreatmentPlan>treatmentPlans= DB.GetAllTreatmentPlansByVisitID(selectedVisit.VisitID);
-            foreach(TreatmentPlan tp in treatmentPlans)
-            {
-                treatmentPlansStackPanel.Children.Add(globals.CreateTreatmentPlanUI(tp));
-            }
+            
             noteTXT.Text = currVisit.TherapistNotes;
             List<Prescription>prescriptions = DB.GetAllPrescriptionsByVisitID(selectedVisit.VisitID);
             foreach(Prescription p in prescriptions)
@@ -101,11 +97,7 @@ namespace clinical.Pages
             noteTXT.IsEnabled = !noteTXT.IsEnabled;
         }
 
-        private void newTreatmentPlan(object sender, MouseButtonEventArgs e)
-        {
-            prescriptionWindow window = new prescriptionWindow(currVisit, currPatient,true);
-            window.Show();
-        }
+        
 
 
 

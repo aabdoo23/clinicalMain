@@ -18,10 +18,10 @@ namespace clinical.BaseClasses
             {
                 return DB.GetPatientById(PatientID).FullName;
             } }
-        public string PhysicianNotes { get; set; }
+        public string DoctorNotes { get; set; }
 
         // Constructor
-        public MedicalRecord(int recordID, string type, DateTime timeStamp, string report, List<string> images, int patientID, string physicianNotes)
+        public MedicalRecord(int recordID, string type, DateTime timeStamp, string report, List<string> images, int patientID, string DoctorNotes)
         {
             RecordID = recordID;
             Type = type;
@@ -29,7 +29,7 @@ namespace clinical.BaseClasses
             Report = report;
             Images = images;
             PatientID = patientID;
-            PhysicianNotes = physicianNotes;
+            DoctorNotes = DoctorNotes;
         }
 
     }

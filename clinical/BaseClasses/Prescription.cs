@@ -16,12 +16,12 @@ namespace clinical.BaseClasses
         public int VisitID { get; set; }
 
         public Prescription() { }
-        public Prescription(int prescriptionID, DateTime timeStamp, int patientID, int physiotherapistID, int visitID)
+        public Prescription(int prescriptionID, DateTime timeStamp, int patientID, int DoctorID, int visitID)
         {
             PrescriptionID = prescriptionID;
             TimeStamp = timeStamp;
             PatientID = patientID;
-            UserID = physiotherapistID;
+            UserID = DoctorID;
             VisitID = visitID;
             
         }

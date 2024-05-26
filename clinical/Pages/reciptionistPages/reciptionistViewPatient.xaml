@@ -107,17 +107,12 @@
                         <TextBlock TextWrapping="Wrap" Grid.Row="4" Text="Address:" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{StaticResource lightFontColor}" FontSize="12" FontWeight="Bold"  />
                         <TextBox x:Name="addressTextBox" IsEnabled="False" Text="Dr. Ahmed Mohsen, +2010100110101" FontSize="14" VerticalContentAlignment="Center" FontWeight="SemiBold" Background="Transparent" BorderBrush="Transparent" Foreground="{StaticResource lightFontColor}" Grid.Column="1" Grid.Row="4" Margin="5,5,5,5" Grid.ColumnSpan="4" />
 
-                        <TextBlock TextWrapping="Wrap" Grid.Row="5" Text="Active Package:" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{StaticResource lightFontColor}" FontSize="12" FontWeight="Bold"  />
-                        <ComboBox Name="packageCB" FontSize="12" IsEnabled="False" VerticalContentAlignment="Center" FontWeight="SemiBold" Foreground="{StaticResource darkerColor}" Grid.Column="1" Grid.Row="5" Margin="5,5,5,5" Grid.ColumnSpan="4" SelectionChanged="packageSelectionChange" />
-
-                        <TextBlock TextWrapping="Wrap" Grid.Column="0" Grid.Row="6" Text="Remaining Sessions in Package:" Grid.ColumnSpan="3" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{StaticResource lightFontColor}" FontSize="12" FontWeight="Bold" Width="178"  />
-                        <TextBox Name="remainingSessionsTextBox" Text="123 sessions left" IsEnabled="False" FontSize="14" VerticalContentAlignment="Center" FontWeight="SemiBold" Background="Transparent" BorderBrush="Transparent" Foreground="{StaticResource lightFontColor}" Grid.Column="3" Grid.Row="6" Margin="0,5,5,5" Grid.ColumnSpan="2" />
-
-                        <TextBlock TextWrapping="Wrap" Grid.Column="0" Grid.Row="7" Text="Referring Physician:" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{StaticResource lightFontColor}" FontSize="12" FontWeight="Bold"  />
+                        <TextBlock TextWrapping="Wrap" Grid.Column="0" Grid.Row="7" Text="Referring Doctor:" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{StaticResource lightFontColor}" FontSize="12" FontWeight="Bold"  />
                         <TextBox Name="referringTextBox" Text="Dr. Ahmed Mohsen, +2010100110101" TextWrapping="Wrap" IsEnabled="False" FontSize="14" VerticalContentAlignment="Center" FontWeight="SemiBold" Background="Transparent" BorderBrush="Transparent" Foreground="{StaticResource lightFontColor}" Grid.Column="1" Grid.Row="7" Margin="5,5,5,5" Grid.ColumnSpan="4" />
 
-                        <TextBlock TextWrapping="Wrap" Grid.Row="8" Text="Assigned Physician:" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{StaticResource lightFontColor}" FontSize="12" FontWeight="Bold" Grid.ColumnSpan="2" Width="116"  />
-                        <ComboBox x:Name="physicianCB" FontSize="12" IsEnabled="False" VerticalContentAlignment="Center" FontWeight="SemiBold" Foreground="{StaticResource darkerColor}" Grid.Column="2" Grid.Row="8" Margin="0,5,5,5" Grid.ColumnSpan="3" SelectionChanged="packageSelectionChange" />
+                        <TextBlock TextWrapping="Wrap" Grid.Row="8" Text="Assigned Doctor:" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{StaticResource lightFontColor}" FontSize="12" FontWeight="Bold" Grid.ColumnSpan="2" Width="116"  />
+
+                        <ComboBox x:Name="DoctorCB" FontSize="12" IsEnabled="False" VerticalContentAlignment="Center" FontWeight="SemiBold" Foreground="{StaticResource darkerColor}" Grid.Column="2" Grid.Row="8" Margin="0,5,5,5" Grid.ColumnSpan="3" SelectionChanged="doctorSelectionChange" />
 
                         <TextBlock TextWrapping="Wrap" Grid.Row="10" Text="Due Amount:" VerticalAlignment="Center" HorizontalAlignment="Left" Foreground="{StaticResource lightFontColor}" FontSize="12" FontWeight="Bold"  />
                         <TextBox Name="dueTextBox" FontSize="14" IsEnabled="False" VerticalContentAlignment="Center" FontWeight="SemiBold" Background="Transparent" BorderBrush="Transparent" Foreground="{StaticResource lightFontColor}" Grid.Column="1" Grid.Row="10" Margin="10,5" />

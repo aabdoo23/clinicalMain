@@ -85,10 +85,10 @@ namespace clinical.Pages
 
         }
 
-        private void viewPhysician(object sender, RoutedEventArgs e)
+        private void viewDoctor(object sender, RoutedEventArgs e)
         {
-            User selectedPhysician = (User)physiciansDataGrid.SelectedItem;
-            leftSideFrame.NavigationService.Navigate(new reciptionistViewPhysioTherapist(selectedPhysician));
+            User selectedDoctor = (User)DoctorsDataGrid.SelectedItem;
+            leftSideFrame.NavigationService.Navigate(new reciptionistViewDoctor(selectedDoctor));
             leftSideFrame.Visibility = Visibility.Visible;
             leftSideFrame.BringIntoView();
             //patientView view = ;
@@ -171,25 +171,25 @@ namespace clinical.Pages
            
             if (allPanelCB.IsChecked == true &&(currentDayIndex.DayOfYear!=DateTime.Now.DayOfYear ))
             {
-                physiciansDGTitleTB.Text = currentDayIndex.ToString("M") + "' Physicians";
+                DoctorsDGTitleTB.Text = currentDayIndex.ToString("M") + "' Doctors";
                 patientsDGTitleTB.Text = currentDayIndex.ToString("M") + "' Patients";
                 selectedDayTB.Text = currentDayIndex.ToString("D");
                 List<Patient> patients = DB.GetPatientsWithVisitsOnDate(currentDayIndex);
-                List<User> physiotherapists = DB.GetPhysioTherapistsWithVisitsOnDate(currentDayIndex);
+                List<User> Doctors = DB.GetDoctorsWithVisitsOnDate(currentDayIndex);
                 patientsDataGrid.ItemsSource = patients;
-                physiciansDataGrid.ItemsSource = physiotherapists;
-                numberOfPhysiciansTB.Text = physiotherapists.Count.ToString();
+                DoctorsDataGrid.ItemsSource = Doctors;
+                numberOfDoctorsTB.Text = Doctors.Count.ToString();
             }
             else
             {  
-                physiciansDGTitleTB.Text = "Today's Physicians";
+                DoctorsDGTitleTB.Text = "Today's Doctors";
                 patientsDGTitleTB.Text = "Today's Patients";
                 selectedDayTB.Text = currentDayIndex.ToString("M")+", Today";
                 List<Patient> patients = DB.GetPatientsWithVisitsOnDate(DateTime.Now);
-                List<User> physiotherapists = DB.GetPhysioTherapistsWithVisitsOnDate(DateTime.Now);
+                List<User> Doctors = DB.GetDoctorsWithVisitsOnDate(DateTime.Now);
                 patientsDataGrid.ItemsSource = patients;
-                physiciansDataGrid.ItemsSource = physiotherapists;
-                numberOfPhysiciansTB.Text = physiotherapists.Count.ToString();
+                DoctorsDataGrid.ItemsSource = Doctors;
+                numberOfDoctorsTB.Text = Doctors.Count.ToString();
 
             }
             if (dayStack != null)

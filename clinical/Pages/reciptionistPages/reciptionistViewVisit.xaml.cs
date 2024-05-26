@@ -21,10 +21,9 @@ namespace clinical.Pages.reciptionistPages
             mainTxt.Text = $"{visit.PatientName}, {visit.Type}, {visit.TimeStamp}";
             idTextBox.Text = visit.VisitID.ToString();
             patientNameTextBox.Text = visit.PatientName.ToString();
-            physicianTextBox.Text = visit.PhysioTherapistName.ToString();
+            DoctorTextBox.Text = visit.DoctorName.ToString();
             dpDatePicker.SelectedDate = visit.TimeStamp;
             typeTextBox.Text = DB.GetAppointmentTypeByID(visit.AppointmentTypeID).ToString();
-            packageTextBox.Text = DB.GetPackageById(visit.PackageID).ToString();
             selectedDateTime = currVisit.TimeStamp;
             List<string> times = new List<string>();
             for (int i = DB.GetOpeningTime(); i <= DB.GetClosingTime(); i++) //slots here
@@ -36,30 +35,26 @@ namespace clinical.Pages.reciptionistPages
             timeCB.ItemsSource = times;
             timeCB.SelectedItem = visit.TimeStamp.ToString("HH:mm");
             List<Prescription> visitPrescriptions = DB.GetAllPrescriptionsByVisitID(visit.VisitID);
-            List<TreatmentPlan> visitTreatmentPlans = DB.GetAllTreatmentPlansByVisitID(visit.VisitID);
             foreach (var i in visitPrescriptions)
             {
                 prescriptionsStackPanel.Children.Add(globals.CreatePrescriptionUI(i));
             }
-            foreach (var i in visitTreatmentPlans)
-            {
-                treatmentPlansStackPanel.Children.Add(globals.CreateTreatmentPlanUI(i));
-            }
+            
 
         }
 
         void Refresh()
         {
-            List<string> availTimes = globals.GetAvailableTimeSlotsOnDay(dpDatePicker.SelectedDate.Value, currVisit.PhysiotherapistID);
+            List<string> availTimes = globals.GetAvailableTimeSlotsOnDay(dpDatePicker.SelectedDate.Value, currVisit.DoctorID);
             if (availTimes.Count == 0)
             {
                 dpDatePicker.SelectedDate.Value.AddDays(1);
             }
             timeCB.ItemsSource = availTimes;
         }
-        private void viewPhysician(object sender, MouseButtonEventArgs e)
+        private void viewDoctor(object sender, MouseButtonEventArgs e)
         {
-            NavigationService.Navigate(new reciptionistViewPhysioTherapist(DB.GetUserById(currVisit.PhysiotherapistID)));
+            NavigationService.Navigate(new reciptionistViewDoctor(DB.GetUserById(currVisit.DoctorID)));
         }
 
         private void viewPatient(object sender, MouseButtonEventArgs e)

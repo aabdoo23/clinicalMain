@@ -16,12 +16,12 @@ namespace clinical.Pages
     public partial class newEmployeePage : Page
     {
         List<int> selectedDays = new List<int>();
-        bool IsPhysician;
-        public newEmployeePage(bool isPhysician)
+        bool IsDoctor;
+        public newEmployeePage(bool isDoctor)
         {
             InitializeComponent();
 
-            IsPhysician = isPhysician;
+            IsDoctor = isDoctor;
             bdDatePicker.SelectedDate = DateTime.Now;
             hiringDatePicker.SelectedDate = DateTime.Now;
             sundayCB.IsChecked = true;
@@ -97,9 +97,9 @@ namespace clinical.Pages
             }
             int id;
 
-            if (IsPhysician)
+            if (IsDoctor)
             {
-                id = globals.generateNewPhysicianID(nid);
+                id = globals.generateNewDoctorID(nid);
             }
             else id = globals.generateNewEmployeeID(nid);
 

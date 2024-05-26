@@ -10,27 +10,27 @@ using System.Windows.Media;
 namespace clinical.Pages
 {
     /// <summary>
-    /// Interaction logic for reciptionistViewPhysioTherapist.xaml
+    /// Interaction logic for reciptionistViewDoctor.xaml
     /// </summary>
-    public partial class reciptionistViewPhysioTherapist : Page
+    public partial class reciptionistViewDoctor : Page
     {
-        User physician;
+        User Doctor;
 
-        public reciptionistViewPhysioTherapist(User physiotherapist)
+        public reciptionistViewDoctor(User Doctor)
         {
             InitializeComponent();
-            physician = physiotherapist;
-            physicianNameMainTxt.Text = physician.FullName;
-            nameTextBox.Text = physician.FullName;
-            emailTextBox.Text = physician.Email;
-            phoneTextBox.Text = physician.PhoneNumber;
+            Doctor = Doctor;
+            DoctorNameMainTxt.Text = Doctor.FullName;
+            nameTextBox.Text = Doctor.FullName;
+            emailTextBox.Text = Doctor.Email;
+            phoneTextBox.Text = Doctor.PhoneNumber;
 
-            List<Patient> patientList = DB.GetAllPatientsByPhysicianID(physician.UserID);
+            List<Patient> patientList = DB.GetAllPatientsByDoctorID(Doctor.UserID);
 
             patientsDataGrid.ItemsSource = patientList;
 
-            List<Visit> physicianUpcomingVisits = DB.GetFuturePhysicianVisits(physician.UserID);
-            foreach (var i in physicianUpcomingVisits)
+            List<Visit> DoctorUpcomingVisits = DB.GetFutureDoctorVisits(Doctor.UserID);
+            foreach (var i in DoctorUpcomingVisits)
             {
                 upcomingAppointmentsStackPanel.Children.Add(globals.createAppointmentUIObject(i, viewVisit, viewPatient));
 
